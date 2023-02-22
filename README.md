@@ -10,7 +10,10 @@ Add your own name (do not add the names for others!) to the section below.
 
 | Profile Picture | Name | Email |
 |---|---|---|
-| ![](https://eu.ui-avatars.com/api/?name=OOPP&length=4&size=50&color=DDD&background=777&font-size=0.325) | Andreas Tsatsanis | a.tsatsanis@student.tudelft.nl |
+| ![](https://cdn.discordapp.com/attachments/364480706279112725/1077901492746453032/Screenshot_2023-02-22_at_11.35.32_AM.png) | Andreas Tsatsanis | a.tsatsanis@student.tudelft.nl |
+| ![](https://eu.ui-avatars.com/api/?name=hi&length=4&size=50&color=DDD&background=777&font-size=0.325) | your name here | your@email.here |
+|   |   |   |
+
 
 <!-- Instructions (remove once assignment has been completed -->
 <!-- - Add (only!) your own name to the table above (use Markdown formatting) -->
