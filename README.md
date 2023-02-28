@@ -12,7 +12,7 @@ Add your own name (do not add the names for others!) to the section below.
 |---|---|---|
 | ![](https://cdn.discordapp.com/attachments/364480706279112725/1077907371113857115/pfp2.png) | Andreas Tsatsanis | a.tsatsanis@student.tudelft.nl |
 | ![](https://eu.ui-avatars.com/api/?name=hi&length=4&size=50&color=DDD&background=1c542d&font-size=0.325) | Lucas Witte | L.C.Witte@student.tudelft.nl |
-| ![](https://eu.ui-avatars.com/api/?name=hi&length=4&size=50&color=DDD&background=777&font-size=0.325) | your name here | your@email.here |
+| ![](https://eu.ui-avatars.com/api/?name=hi&length=4&size=50&color=DDD&background=1c112d&font-size=0.325) | Maja Czerwińska | M.P.Czerwinska-1@student.tudelft.nl |
 | ![](https://eu.ui-avatars.com/api/?name=hi&length=4&size=50&color=DDD&background=777&font-size=0.325) | your name here | your@email.here |
 | ![](https://eu.ui-avatars.com/api/?name=hi&length=4&size=50&color=DDD&background=777&font-size=0.325) | your name here | your@email.here |
 | ![](https://eu.ui-avatars.com/api/?name=hi&length=4&size=50&color=DDD&background=777&font-size=0.325) | your name here | your@email.here |
