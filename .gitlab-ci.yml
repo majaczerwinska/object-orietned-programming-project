@@ -35,7 +35,7 @@ test_job:
     - mv build/reports/jacoco/aggregate/jacocoTestReport.xml ./coverage/report.xml
     - coverage=$(cat coverage/index.html | grep -o -E "Total[^%]+?%" | sed -E "s/<.*>//" | sed -E "s/Total//")
     - coverage=${coverage::-1} # Remove %
-    - echo TestCoverage: $coverage%
+    - echo TestCoverage:$coverage%
     - if [ $coverage -ge $GOOD_COVERAGE ]; then exit 0; fi # If enough tests then pass
     - if [ $coverage -ge $MINIMUM_COVERAGE ]; then exit 1; fi # If not enough tests then semi fail
     - exit 2 # If less than minimum tests then fail build entirely
