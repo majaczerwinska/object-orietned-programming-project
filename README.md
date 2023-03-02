@@ -15,7 +15,7 @@ Add your own name (do not add the names for others!) to the section below.
 | ![](https://eu.ui-avatars.com/api/?name=MC&length=4&size=50&color=DDD&background=1c112d&font-size=0.325) | Maja Czerwińska | M.P.Czerwinska-1@student.tudelft.nl |
 | ![](https://eu.ui-avatars.com/api/?name=GV&length=4&size=50&color=fff&background=5E1A75&font-size=0.325) | Galya Vergieva | G.Vergieva@student.tudelft.nl |
 | ![](https://eu.ui-avatars.com/api/?name=PS&length=4&size=50&color=fff&background=25674A&font-size=0.325) | your name here | your@email.here |
-| ![](https://eu.ui-avatars.com/api/?name=TD&length=4&size=50&color=fff&background=783717&font-size=0.325) | your name here | your@email.here |
+| ![](https://eu.ui-avatars.com/api/?name=TD&length=4&size=50&color=fff&background=783717&font-size=0.325) | Tudor Christian Damian | t.c.damian@student.tudelft.nl |
 
 <!-- Instructions (remove once assignment has been completed -->
 <!-- - Add (only!) your own name to the table above (use Markdown formatting) -->
