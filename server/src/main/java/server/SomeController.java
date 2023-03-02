@@ -1,21 +1,20 @@
 package server;
 
-import commons.User;
+import commons.Card;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import server.database.UserRepository;
+import server.database.CardRepository;
 
 @Controller
 @RequestMapping("/")
 public class SomeController {
     private VisitCounterService vcs;
-    private UserRepository users;
+    private CardRepository users;
 
-    public SomeController(VisitCounterService v, UserRepository users) {
+    public SomeController(VisitCounterService v, CardRepository users) {
         this.vcs = v;
         this.users = users;
     }
@@ -29,10 +28,10 @@ public class SomeController {
     @GetMapping("/{id}")
     @ResponseBody
     public String index(@PathVariable("id") String id) {
-        this.vcs.increase();
-        User u = new User();
-        u.setName(id);
-        users.save(u);
+//        this.vcs.increase();
+//        Card u = new Card();
+//        u.setName(id);
+//        users.save(u);
         return "Hello " + id;
     }
 }

@@ -15,11 +15,10 @@
  */
 package server.database;
 
-import commons.User;
+import commons.Card;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import commons.Quote;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, String> {}
+public interface CardRepository extends JpaRepository<Card, Integer> {}
