@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 @Entity
-public class List {
+public class TaskList {
     @Id
     private int id;
     private String name;
@@ -15,14 +15,14 @@ public class List {
 //    private List<Tag> tags;
 
 
-    public List(int id, String name, int color, java.util.List<Card> cardList) {
+    public TaskList(int id, String name, int color, java.util.List<Card> cardList) {
         this.id = id;
         this.name = name;
         this.color = color;
         this.cardList = new ArrayList<Card>();
     }
 
-    protected List() {}
+    protected TaskList() {}
     public void setId(int id) {
         this.id = id;
     }
@@ -54,7 +54,7 @@ public class List {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        List list = (List) o;
+        TaskList list = (TaskList) o;
         return id == list.id && color == list.color && Objects.equals(name, list.name) && Objects.equals(cardList, list.cardList);
     }
 
