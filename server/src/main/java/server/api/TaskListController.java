@@ -1,17 +1,17 @@
 package server.api;
 
-import commons.List;
+import commons.TaskList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import server.AddListService;
+import server.AddTaskListService;
 
 @RestController
 @RequestMapping("/api/lists")
-public class ListController {
-    private AddListService als;
+public class TaskListController {
+    private AddTaskListService als;
     @Autowired
-    public ListController(AddListService l) {
+    public TaskListController(AddTaskListService l) {
         this.als = l;
     }
 
@@ -22,9 +22,9 @@ public class ListController {
     }
     @PostMapping(path = { "", "/" })
 
-    public ResponseEntity<List> addList(@RequestBody List list) {
+    public ResponseEntity<TaskList> addList(@RequestBody TaskList list) {
         if(list.getName()==null) return ResponseEntity.badRequest().build();
-        List saved = als.save(list);
+        TaskList saved = als.save(list);
         return ResponseEntity.ok(saved);
     }
 
