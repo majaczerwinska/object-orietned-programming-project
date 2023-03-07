@@ -26,32 +26,31 @@ public class CardTest {
     @Test
     public void checkConstructor() {
         var q = new Card(0, "hi");
-        var p = new Card(0, "hi");
-        assertEquals(q, p);
-        assertEquals(q, );
+        assertEquals(q.getId(), 0);
+        assertEquals(q.getTitle(), "hi");
     }
 
     @Test
     public void equalsHashCode() {
-        var a = new Quote(new Person("a", "b"), "c");
-        var b = new Quote(new Person("a", "b"), "c");
+        var a = new Card(0, "a");
+        var b = new Card(0, "a");
         assertEquals(a, b);
         assertEquals(a.hashCode(), b.hashCode());
     }
 
     @Test
     public void notEqualsHashCode() {
-        var a = new Quote(new Person("a", "b"), "c");
-        var b = new Quote(new Person("a", "b"), "d");
+        var a = new Card(0, "a");
+        var b = new Card(0, "b");
         assertNotEquals(a, b);
         assertNotEquals(a.hashCode(), b.hashCode());
     }
 
     @Test
     public void hasToString() {
-        var actual = new Quote(new Person("a", "b"), "c").toString();
+        var actual = new Card(0, "c").toString();
         assertTrue(actual.contains(Quote.class.getSimpleName()));
         assertTrue(actual.contains("\n"));
-        assertTrue(actual.contains("person"));
+        assertTrue(actual.contains("Card"));
     }
 }

@@ -13,7 +13,7 @@ public class Card {
     private String title;
     private String description;
     private int color;
-    private List<Card> subtasks;
+//    private List<Card> subtasks;
 //    private List<Tag> tags;
 
     public Card(int id, String title) {
@@ -21,7 +21,7 @@ public class Card {
         this.title = title;
         this.description = "";
         this.color = 0xffffff;
-        this.subtasks = new ArrayList<>();
+//        this.subtasks = new ArrayList<>();
     }
 
     protected Card() {}
@@ -69,5 +69,16 @@ public class Card {
     @Override
     public int hashCode() {
         return Objects.hash(id, title);
+    }
+
+    @Override
+    public String toString() {
+        return "Card #+"+id+"\n"+title+"\n"+description+"\n"+color;
+//        return "Card{" +
+//                "id=" + id +
+//                ", title='" + title + '\'' +
+//                ", description='" + description + '\'' +
+//                ", color=" + color +
+//                '}';
     }
 }
