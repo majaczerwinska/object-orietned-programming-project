@@ -2,6 +2,8 @@ package commons;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -11,6 +13,7 @@ public class Card {
     private String title;
     private String description;
     private int color;
+    private List<Card> subtasks;
 //    private List<Tag> tags;
 
     public Card(int id, String title) {
@@ -18,6 +21,7 @@ public class Card {
         this.title = title;
         this.description = "";
         this.color = 0xffffff;
+        this.subtasks = new ArrayList<>();
     }
 
     protected Card() {}

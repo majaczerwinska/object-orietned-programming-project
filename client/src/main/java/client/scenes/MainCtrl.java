@@ -28,16 +28,20 @@ public class MainCtrl {
     private Scene overview;
 
     private AddQuoteCtrl addCtrl;
+    private CardCtrl cardCtrl;
     private Scene add;
+    private Scene card;
 
     public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-            Pair<AddQuoteCtrl, Parent> add) {
+            Pair<AddQuoteCtrl, Parent> add, Pair<CardCtrl, Parent> card) {
         this.primaryStage = primaryStage;
         this.overviewCtrl = overview.getKey();
         this.overview = new Scene(overview.getValue());
 
         this.addCtrl = add.getKey();
+        this.cardCtrl = card.getKey();
         this.add = new Scene(add.getValue());
+        this.card = new Scene(card.getValue());
 
         showOverview();
         primaryStage.show();
@@ -52,6 +56,7 @@ public class MainCtrl {
     public void showAdd() {
         primaryStage.setTitle("Quotes: Adding Quote");
         primaryStage.setScene(add);
+        primaryStage.setScene(card);
         add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
 }
