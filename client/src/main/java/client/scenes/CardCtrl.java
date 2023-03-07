@@ -17,6 +17,12 @@ public class CardCtrl {
     private TextField text;
     @FXML
     private Button button;
+
+    /**
+     *
+     * @param server -
+     * @param mainCtrl -
+     */
     @Inject
     public CardCtrl(ServerUtils server, MainCtrl mainCtrl){
         this.mainCtrl  =mainCtrl;
@@ -24,7 +30,9 @@ public class CardCtrl {
     }
 
 
-
+    /**
+     *
+     */
     @FXML
     protected void doit() {
         String title = text.getText();

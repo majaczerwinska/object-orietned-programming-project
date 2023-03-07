@@ -49,8 +49,66 @@ public class CardTest {
     @Test
     public void hasToString() {
         var actual = new Card(0, "c").toString();
-        assertTrue(actual.contains(Quote.class.getSimpleName()));
         assertTrue(actual.contains("\n"));
         assertTrue(actual.contains("Card"));
+    }
+
+    @Test
+    void setId() {
+        Card c = new Card(0,"a");
+        c.setId(1);
+        assertEquals(c.getId(), 1);
+    }
+
+    @Test
+    void setTitle() {
+        Card c = new Card(0,"a");
+        c.setTitle("b");
+        assertEquals(c.getTitle(), "b");
+    }
+
+    @Test
+    void setDescription() {
+        Card c = new Card(0,"a");
+        c.setDescription("b");
+        assertEquals(c.getDescription(), "b");
+    }
+
+    @Test
+    void setColor() {
+        Card c = new Card(0,"a");
+        c.setColor(1);
+        assertEquals(c.getColor(), 1);
+    }
+
+    @Test
+    void getId() {
+        Card c = new Card(0,"a");
+        assertEquals(c.getId(), 0);
+    }
+
+    @Test
+    void getTitle() {
+        Card c = new Card(0,"a");
+        assertEquals(c.getTitle(), "a");
+    }
+
+    @Test
+    void getColor() {
+        Card c = new Card(0,"a");
+        c.setColor(1);
+        assertEquals(c.getColor(), 1);
+    }
+
+    @Test
+    void getDescription() {
+        Card c = new Card(0,"a");
+        c.setDescription("b");
+        assertEquals(c.getDescription(), "b");
+    }
+
+    @Test
+    void emptyConstructor() {
+        Card c = new Card();
     }
 }

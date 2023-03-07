@@ -35,6 +35,10 @@ public class ServerUtils {
 
     private static final String SERVER = "http://localhost:8080/";
 
+    /**
+     *
+     * @throws IOException -
+     */
     public void getQuotesTheHardWay() throws IOException {
         var url = new URL("http://localhost:8080/api/quotes");
         var is = url.openConnection().getInputStream();
@@ -45,6 +49,10 @@ public class ServerUtils {
         }
     }
 
+    /**
+     *
+     * @return -
+     */
     public List<Quote> getQuotes() {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/quotes") //
@@ -53,6 +61,11 @@ public class ServerUtils {
                 .get(new GenericType<List<Quote>>() {});
     }
 
+    /**
+     *
+     * @param quote -
+     * @return -
+     */
     public Quote addQuote(Quote quote) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/quotes") //
@@ -61,6 +74,11 @@ public class ServerUtils {
                 .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
     }
 
+    /**
+     *
+     * @param card -
+     * @return -
+     */
     public Card addCard(Card card) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/cards") //
