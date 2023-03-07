@@ -10,16 +10,31 @@ import server.AddTaskListService;
 @RequestMapping("/api/lists")
 public class TaskListController {
     private AddTaskListService als;
+
+    /**
+     *
+     * @param l -
+     */
     @Autowired
     public TaskListController(AddTaskListService l) {
         this.als = l;
     }
 
+    /**
+     *
+     * @return -
+     */
     @GetMapping("/")
     //@ResponseBody
     public String visit() {
         return "lists";
     }
+
+    /**
+     *
+     * @param list -
+     * @return -
+     */
     @PostMapping(path = { "", "/" })
 
     public ResponseEntity<TaskList> addList(@RequestBody TaskList list) {
@@ -28,6 +43,11 @@ public class TaskListController {
         return ResponseEntity.ok(saved);
     }
 
+    /**
+     *
+     * @param id -
+     * @return -
+     */
     @DeleteMapping("/list/{id}/delete")
     //@ResponseBody
     public String deleteList(@PathVariable("id") int id) {
