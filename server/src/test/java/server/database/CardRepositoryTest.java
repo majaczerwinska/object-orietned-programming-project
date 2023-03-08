@@ -46,8 +46,6 @@ public class CardRepositoryTest implements CardRepository{
     @Override
     public void delete(Card entity) {
         cards.remove(entity);
-
-
     }
 
     @Override
