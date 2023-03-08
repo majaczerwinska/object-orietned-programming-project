@@ -32,6 +32,13 @@ public class MainCtrl {
     private Scene add;
     private Scene card;
 
+    /**
+     *
+     * @param primaryStage -
+     * @param overview -
+     * @param add -
+     * @param card -
+     */
     public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
             Pair<AddQuoteCtrl, Parent> add, Pair<CardCtrl, Parent> card) {
         this.primaryStage = primaryStage;
@@ -47,12 +54,18 @@ public class MainCtrl {
         primaryStage.show();
     }
 
+    /**
+     *
+     */
     public void showOverview() {
         primaryStage.setTitle("Quotes: Overview");
         primaryStage.setScene(overview);
         overviewCtrl.refresh();
     }
 
+    /**
+     *
+     */
     public void showAdd() {
         primaryStage.setTitle("Quotes: Adding Quote");
         primaryStage.setScene(add);

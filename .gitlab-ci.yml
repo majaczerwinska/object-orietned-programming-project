@@ -18,12 +18,12 @@ build_job:
     untracked: true
     expire_in: 15 mins
 
-# Check the jacoco test coverage report, should be at least 50
+# Check the jacoco test coverage report, should be at least 15
 test_job:
   stage: test
   variables:
-    GOOD_COVERAGE: 75
-    MINIMUM_COVERAGE: 5
+    GOOD_COVERAGE: 65
+    MINIMUM_COVERAGE: 15
   needs:
     - build_job
   dependencies:

@@ -8,7 +8,6 @@ import javafx.scene.control.Button;
 
 import javafx.scene.control.TextField;
 
-import java.util.Random;
 
 public class CardCtrl {
     private final ServerUtils server;
@@ -17,6 +16,12 @@ public class CardCtrl {
     private TextField text;
     @FXML
     private Button button;
+
+    /**
+     *
+     * @param server -
+     * @param mainCtrl -
+     */
     @Inject
     public CardCtrl(ServerUtils server, MainCtrl mainCtrl){
         this.mainCtrl  =mainCtrl;
@@ -24,13 +29,13 @@ public class CardCtrl {
     }
 
 
-
+    /**
+     *
+     */
     @FXML
     protected void doit() {
         String title = text.getText();
-        Random random = new Random();
-        int id = random.nextInt();
-        Card card = new Card(id,title);
+        Card card = new Card(title);
         server.addCard(card);
 
 
