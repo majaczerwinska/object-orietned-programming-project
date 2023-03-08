@@ -1,12 +1,12 @@
 package server;
 
 import commons.Board;
-import commons.Card;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import server.database.BoardRepository;
-import server.database.CardRepository;
+
 
 @Service
 public class BoardService {
