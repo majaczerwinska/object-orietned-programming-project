@@ -14,14 +14,12 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CardControllerTest {
-    private Random r;
     private CardRepositoryTest repo;
     private CardController con;
     private CardService ser;
 
     @BeforeEach
     public void setup() {
-        r = new Random();
         repo = new CardRepositoryTest();
         ser = new CardService(repo);
         con = new CardController(ser);
@@ -29,20 +27,19 @@ public class CardControllerTest {
 
     @Test
     public void addCardTest(){
-        int id = r.nextInt();
-        Card card = new Card(id, "title");
+        Card card = new Card("title");
         con.addCard(card);
-        assertTrue(repo.existsById(id));
+        assertTrue(repo.existsById(card.getId()));
 
     }
 
     @Test
     public void deleteTest(){
-        int id = r.nextInt();
-        Card card = new Card(id, "title");
+
+        Card card = new Card("title");
         con.addCard(card);
-        con.deleteCard(id);
-        assertFalse(repo.existsById(id));
+        con.deleteCard(card.getId());
+        assertFalse(repo.existsById(card.getId()));
 
     }
 

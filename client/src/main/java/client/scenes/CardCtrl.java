@@ -36,9 +36,7 @@ public class CardCtrl {
     @FXML
     protected void doit() {
         String title = text.getText();
-        Random random = new Random();
-        int id = random.nextInt();
-        Card card = new Card(id,title);
+        Card card = new Card(title);
         server.addCard(card);
 
 

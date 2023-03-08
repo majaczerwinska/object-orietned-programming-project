@@ -1,39 +1,31 @@
 package server.api;
 
+import commons.Card;
 import commons.TaskList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import server.AddTaskListService;
+import server.TaskListService;
 
 @RestController
 @RequestMapping("/api/lists")
 public class TaskListController {
-    private AddTaskListService als;
+    private TaskListService als;
 
     /**
-     *
-     * @param l -
+     *Constructor
+     * @param l - the service on use
      */
     @Autowired
-    public TaskListController(AddTaskListService l) {
+    public TaskListController(TaskListService l) {
         this.als = l;
     }
 
-    /**
-     *
-     * @return -
-     */
-    @GetMapping("/")
-    //@ResponseBody
-    public String visit() {
-        return "lists";
-    }
 
     /**
-     *
-     * @param list -
-     * @return -
+     *Adds a list ot the database
+     * @param list - the list to be added
+     * @return - a response entity
      */
     @PostMapping(path = { "", "/" })
 
@@ -43,13 +35,15 @@ public class TaskListController {
         return ResponseEntity.ok(saved);
     }
 
+
+
+
     /**
-     *
-     * @param id -
-     * @return -
+     *deletes a list from the database
+     * @param id - the id of the list
+     * @return - a string showing the id of the deleted list
      */
-    @DeleteMapping("/list/{id}/delete")
-    //@ResponseBody
+    @DeleteMapping("/{id}")
     public String deleteList(@PathVariable("id") int id) {
         als.delete(als.getById(id));
         return "Deleted list #" + id;

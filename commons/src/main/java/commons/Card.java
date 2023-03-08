@@ -1,6 +1,7 @@
 package commons;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 //import java.util.ArrayList;
 //import java.util.List;
@@ -8,32 +9,32 @@ import java.util.Objects;
 
 @Entity
 public class Card {
-    @Id
+
     private int id;
     private String title;
     private String description;
     private int color;
-//    private List<Card> subtasks;
-//    private List<Tag> tags;
+
 
     /**
-     *
-     * @param id -
-     * @param title -
+     *Constructor
+     * @param title - the name of the card
      */
-    public Card(int id, String title) {
-        this.id = id;
+    public Card(String title) {
         this.title = title;
         this.description = "";
         this.color = 0xffffff;
-//        this.subtasks = new ArrayList<>();
+
     }
 
-    protected Card() {}
+    /**
+     * Default constructor
+     */
+    public Card() {}
 
     /**
-     *
-     * @param id -
+     *Sets the id of the card
+     * @param id - the id
      */
     public void setId(int id) {
         this.id = id;
@@ -41,8 +42,8 @@ public class Card {
 
 
     /**
-     *
-     * @param title -
+     *Sets the title of the card
+     * @param title - the new title
      */
     public void setTitle(String title) {
         this.title = title;
@@ -50,8 +51,8 @@ public class Card {
 
 
     /**
-     *
-     * @param description -
+     *Sets the description of the card
+     * @param description - the new description
      */
     public void setDescription(String description) {
         this.description = description;
@@ -59,8 +60,8 @@ public class Card {
 
 
     /**
-     *
-     * @param color -
+     *Sets the color of the card
+     * @param color - the new color
      */
     public void setColor(int color) {
         this.color = color;
@@ -68,18 +69,19 @@ public class Card {
 
 
     /**
-     *
-     * @return -
+     *Retrieves the id of the card
+     * @return - the id
      */
     @Id
+    @GeneratedValue
     public int getId() {
         return id;
     }
 
 
     /**
-     *
-     * @return -
+     *Retrieves the title of the card
+     * @return - the title
      */
     public String getTitle() {
         return title;
@@ -87,8 +89,8 @@ public class Card {
 
 
     /**
-     *
-     * @return -
+     *Retrieves the color of the card
+     * @return - the color
      */
     public int getColor() {
         return color;
@@ -96,8 +98,8 @@ public class Card {
 
 
     /**
-     *
-     * @return -
+     *Retrieves the description of the card
+     * @return - the description
      */
     public String getDescription() {
         return description;
@@ -105,9 +107,9 @@ public class Card {
 
 
     /**
-     *
-     * @param o -
-     * @return -
+     *checks if two cards are equal
+     * @param o - the other object
+     * @return - true iff they are
      */
     @Override
     public boolean equals(Object o) {
@@ -119,8 +121,8 @@ public class Card {
 
 
     /**
-     *
-     * @return -
+     *hashes the card
+     * @return - the hashcode of the card
      */
     @Override
     public int hashCode() {
@@ -129,17 +131,11 @@ public class Card {
 
 
     /**
-     *
+     * Creates a string representation of the card
      * @return string of card attributes
      */
     @Override
     public String toString() {
-        return "Card #+"+id+"\n"+title+"\n"+description+"\n"+color;
-//        return "Card{" +
-//                "id=" + id +
-//                ", title='" + title + '\'' +
-//                ", description='" + description + '\'' +
-//                ", color=" + color +
-//                '}';
+        return "Card #+" + id + "\n" + title + "\n" + description + "\n" + color;
     }
 }

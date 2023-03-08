@@ -16,39 +16,34 @@ public class CardController {
     //private CardRepository cards;
 
     /**
-     *
-     * @param c -
+     *Constructor
+     * @param c - the service we use
      */
     @Autowired
     public CardController(CardService c) {
         this.acs = c;
-        //this.cards = cards;
     }
 
 
 
     /**
-     *
-     * @param card -
-     * @return -
+     *Adds a card to the database
+     * @param card - the card to be added
+     * @return - a response entity
      */
     @PostMapping(path = { "", "/" })
     public ResponseEntity<Card> addCard(@RequestBody Card card) {
-        //int nextid = acs.getNextID();
-       // Card newCard = new Card(nextid, title);
-     //   cards.save(newCard);
         if(card.getTitle()==null) return ResponseEntity.badRequest().build();
         Card saved = acs.save(card);
         return ResponseEntity.ok(saved);
     }
 
     /**
-     *
-     * @param id -
-     * @return -
+     *deletes a card from the database
+     * @param id - the id of the card to be deleted
+     * @return - a string showing the id of the deleted card
      */
     @DeleteMapping("/card/{id}/delete")
-    //@ResponseBody
     public String deleteCard(@PathVariable("id") int id) {
         acs.delete(acs.getById(id));
         return "Deleted card #" + id;

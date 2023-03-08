@@ -12,13 +12,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 public class CardServiceTest {
-    private Random r;
     private CardRepositoryTest repo;
     private CardService ser;
 
     @BeforeEach
     public void setup() {
-        r = new Random();
         repo = new CardRepositoryTest();
         ser = new CardService(repo);
     }
@@ -26,33 +24,28 @@ public class CardServiceTest {
 
     @Test
     public void saveTest(){
-        int id = r.nextInt();
-        Card card = new Card(id, "title");
+        Card card = new Card("title");
         ser.save(card);
-        assertTrue(repo.existsById(id));
+        assertTrue(repo.existsById(card.getId()));
 
     }
 
     @Test
     public void getByIdTest(){
-        int id = r.nextInt();
-        Card card = new Card(id, "title");
+        Card card = new Card("title");
         ser.save(card);
 
-        System.out.println(ser.getById(id));
-        assertEquals(ser.getById(id), card);
+        System.out.println(ser.getById(card.getId()));
+        assertEquals(ser.getById(card.getId()), card);
 
     }
 
     @Test
     public void deleteTest(){
-        int id = r.nextInt();
-        Card card = new Card(id, "title");
+        Card card = new Card("title");
         ser.save(card);
         ser.delete(card);
-
-
-        assertFalse(repo.existsById(id));
+        assertFalse(repo.existsById(card.getId()));
 
     }
 
