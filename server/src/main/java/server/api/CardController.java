@@ -5,14 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import server.AddCardService;
+import server.CardService;
 //import server.VisitCounterService;
 //import server.database.CardRepository;
 
 @RestController
 @RequestMapping("/api/cards")
 public class CardController {
-    private AddCardService acs;
+    private CardService acs;
     //private CardRepository cards;
 
     /**
@@ -20,20 +20,12 @@ public class CardController {
      * @param c -
      */
     @Autowired
-    public CardController(AddCardService c) {
+    public CardController(CardService c) {
         this.acs = c;
         //this.cards = cards;
     }
 
-    /**
-     *
-     * @return -
-     */
-    @GetMapping("/")
-    //@ResponseBody
-    public String visit() {
-        return "cards";
-    }
+
 
     /**
      *

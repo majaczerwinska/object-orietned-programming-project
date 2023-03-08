@@ -7,28 +7,20 @@ import org.springframework.stereotype.Service;
 import server.database.CardRepository;
 
 @Service
-public final class AddCardService {
+public final class CardService {
     private CardRepository repo;
-    private int currentID;
+
 
     /**
      * Constructor
      * @param repo card repository
      */
     @Autowired
-    public AddCardService( @Qualifier("card") CardRepository repo) {
-        this.currentID = 0;
+    public CardService(@Qualifier("card") CardRepository repo) {
         this.repo = repo;
     }
 
-    /**
-     * deprecated
-     * @return id
-     */
-    public int getNextID() {
-        this.currentID++;
-        return this.currentID;
-    }
+
 
     /**
      * save a card to the database
