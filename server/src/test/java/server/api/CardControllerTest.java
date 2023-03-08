@@ -1,15 +1,11 @@
 package server.api;
 
 import commons.Card;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import server.CardService;
-import server.database.CardRepository;
 import server.database.CardRepositoryTest;
-import server.database.QuoteRepositoryTest;
 
-import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 

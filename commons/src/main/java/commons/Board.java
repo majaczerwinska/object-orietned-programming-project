@@ -138,4 +138,13 @@ public class Board {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
+
+    /**
+     * Creates a string representation of the board
+     * @return string of board attributes
+     */
+    @Override
+    public String toString() {
+        return "Board#+" + id + "\n" + name + "\n" + key + "\n" + colour;
+    }
 }
