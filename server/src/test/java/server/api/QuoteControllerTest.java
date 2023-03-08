@@ -15,10 +15,11 @@
  */
 package server.api;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.OK;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -59,6 +60,30 @@ public class QuoteControllerTest {
         assertTrue(random.wasCalled);
         assertEquals("q2", actual.getBody().quote);
     }
+
+
+    @Test
+    public void testGetAll() {
+        assertEquals(sut.getAll(), new ArrayList<Quote>());
+    }
+
+    @Test
+    public void testGetByZeroId() {
+//        System.out.println();
+        var actual = sut.getById(0);
+        assertEquals(BAD_REQUEST, actual.getStatusCode());
+    }
+
+//    @Test
+//    public void testGetById() {
+////        System.out.println();
+//        Quote q = new Quote(new Person("a","b"), "c");
+//        sut.add(q);
+//        System.out.println(sut.getAll());
+//        var actual = sut.getById(0);
+////        System.out.println(actual);
+////        assertNull(actual);
+//    }
 
     @Test
     public void databaseIsUsed() {
