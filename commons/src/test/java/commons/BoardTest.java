@@ -50,15 +50,15 @@ public class BoardTest {
     @Test
     void setKey() {
         Board c = new Board("a");
-        c.setKey("b");
-        assertEquals(c.getKey(), "b");
+        c.setBoardkey("b");
+        assertEquals(c.getBoardkey(), "b");
     }
 
     @Test
     void setColor() {
         Board c = new Board("a");
-        c.setColour(1);
-        assertEquals(c.getColour(), 1);
+        c.setColor(1);
+        assertEquals(c.getColor(), 1);
     }
 
     @Test
@@ -76,15 +76,15 @@ public class BoardTest {
     @Test
     void getColor() {
         Board c = new Board("a");
-        c.setColour(1);
-        assertEquals(c.getColour(), 1);
+        c.setColor(1);
+        assertEquals(c.getColor(), 1);
     }
 
     @Test
     void getDescription() {
         Board c = new Board("a");
-        c.setKey("b");
-        assertEquals(c.getKey(), "b");
+        c.setBoardkey("b");
+        assertEquals(c.getBoardkey(), "b");
     }
 
     @Test

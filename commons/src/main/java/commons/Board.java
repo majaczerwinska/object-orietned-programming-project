@@ -9,9 +9,10 @@ import java.util.Objects;
 public class Board {
 
     private int id;
+    private int color;
     private String name;
-    private String key;
-    private int colour;
+    private String boardkey;
+
 
 
     /**
@@ -20,9 +21,8 @@ public class Board {
      */
     public Board( String name){
         this.name = name;
-        colour = 0xffffff;
+        color = 0xffffff;
 //        this.lists = new ArrayList<>();
-
     }
 
     /**
@@ -66,8 +66,8 @@ public class Board {
      * Retrieves the key of the board
      * @return the key
      */
-    public String getKey() {
-        return key;
+    public String getBoardkey() {
+        return boardkey;
     }
 
     /**
@@ -92,24 +92,24 @@ public class Board {
      * Sets the key of the board
      * @param key the new key
      */
-    public void setKey(String key) {
-        this.key = key;
+    public void setBoardkey(String key) {
+        this.boardkey = key;
     }
 
     /**
      * Retrieves the color of the board
      * @return the color
      */
-    public int getColour() {
-        return colour;
+    public int getColor() {
+        return color;
     }
 
     /**
      * Changes the color of the board
      * @param colour the new color
      */
-    public void setColour(int colour) {
-        this.colour = colour;
+    public void setColor(int colour) {
+        this.color = colour;
     }
 
     /**
@@ -145,6 +145,6 @@ public class Board {
      */
     @Override
     public String toString() {
-        return "Board#+" + id + "\n" + name + "\n" + key + "\n" + colour;
+        return "Board#+" + id + "\n" + name + "\n" + boardkey + "\n" + color;
     }
 }

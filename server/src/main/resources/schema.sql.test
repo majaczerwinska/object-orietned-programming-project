@@ -1,0 +1,7 @@
+create table board (
+    id          INTEGER       NOT NULL   AUTO_INCREMENT,
+    name       varchar(64)   NOT NULL,
+    color      INTEGER,
+    boardkey   varchar(16)   NOT NULL,
+    primary key (id)
+);
