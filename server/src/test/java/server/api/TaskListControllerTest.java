@@ -47,6 +47,16 @@ public class TaskListControllerTest {
 
     }
 
+    @Test
+    public void renameTest(){
+
+        TaskList task = new TaskList("title");
+        con.addList(task);
+        con.renameList(task.getId(),"t");
+        assertEquals(task.getName(),"t");
+
+    }
+
 
 
 

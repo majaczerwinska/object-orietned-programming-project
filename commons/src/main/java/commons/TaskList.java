@@ -11,9 +11,6 @@ public class TaskList {
     private int color;
 
 
-   // private List<Card> cardList;
-//    private List<Tag> tags;
-
 
     /**
      *
