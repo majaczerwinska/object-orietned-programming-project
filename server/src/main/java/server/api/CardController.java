@@ -17,7 +17,7 @@ public class CardController {
 
     /**
      *Constructor
-     * @param c - the service we use
+     * @param c the service we use
      */
     @Autowired
     public CardController(CardService c) {
@@ -53,7 +53,7 @@ public class CardController {
      * edits card's title, description, color
      * @param id card's id
      * @param card card with updated information
-     * @return a response entity
+     * @return a response entity with the card object
      */
 
     @PutMapping("/{id}")
