@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test;
 import server.CardService;
 import server.TaskListService;
 import server.TaskListServiceTest;
-import server.database.CardRepository;
+//import server.database.CardRepository;
 import server.database.CardRepositoryTest;
-import server.database.QuoteRepositoryTest;
+//import server.database.QuoteRepositoryTest;
 import server.database.TaskListRepositoryTest;
 
 import java.util.Random;

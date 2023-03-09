@@ -3,7 +3,7 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Card;
-import jakarta.ws.rs.WebApplicationException;
+//import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
@@ -21,7 +21,7 @@ public class CardCtrl {
     /**
      *
      * @param server -
-     * @param mainCtrl -
+//     * @param mainCtrl -
      */
     @Inject
     public CardCtrl(ServerUtils server){
