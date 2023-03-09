@@ -17,7 +17,7 @@ public class CardController {
 
     /**
      *Constructor
-     * @param c - the service we use
+     * @param c the service we use
      */
     @Autowired
     public CardController(CardService c) {
@@ -47,5 +47,22 @@ public class CardController {
     public String deleteCard(@PathVariable("id") int id) {
         acs.delete(acs.getById(id));
         return "Deleted card #" + id;
+    }
+
+    /**
+     * edits card's title, description, color
+     * @param id card's id
+     * @param card card with updated information
+     * @return a response entity with the card object
+     */
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Card> editCard(@PathVariable("id") int id, @RequestBody Card card) {
+        if(!acs.existsById(id) || card.getTitle() == null){
+            return ResponseEntity.badRequest().build();
+        }
+        card.setId(id);
+        acs.setCardInfo(card);
+        return ResponseEntity.ok(card);
     }
 }
