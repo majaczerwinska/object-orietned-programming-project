@@ -23,16 +23,16 @@ import java.net.URISyntaxException;
 import client.scenes.CardCtrl;
 import com.google.inject.Injector;
 
-import client.scenes.AddQuoteCtrl;
-import client.scenes.MainCtrl;
-import client.scenes.QuoteOverviewCtrl;
+//import client.scenes.AddQuoteCtrl;
+//import client.scenes.MainCtrl;
+//import client.scenes.QuoteOverviewCtrl;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    private static final Injector INJECTOR = createInjector(new MyModule());
-    private static final MyFXML FXML = new MyFXML(INJECTOR);
+//    private static final Injector INJECTOR = createInjector(new MyModule());
+//    private static final MyFXML FXML = new MyFXML(INJECTOR);
 
     /**
      *
@@ -55,10 +55,12 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
 
-        var overview = FXML.load(QuoteOverviewCtrl.class, "client", "scenes", "QuoteOverview.fxml");
-        var add = FXML.load(AddQuoteCtrl.class, "client", "scenes", "AddQuote.fxml");
-        var card = FXML.load(CardCtrl.class, "client", "scenes", "Card.fxml");
-        var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, overview, add, card);
+//        var overview = FXML.load(QuoteOverviewCtrl.class, "client", "scenes", "QuoteOverview.fxml");
+//        var add = FXML.load(AddQuoteCtrl.class, "client", "scenes", "AddQuote.fxml");
+//        var card = FXML.load(CardCtrl.class, "client", "scenes", "Card.fxml");
+//        var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
+//        mainCtrl.initialize(primaryStage, overview, add, card);
+
+
     }
 }

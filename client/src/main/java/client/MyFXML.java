@@ -48,6 +48,7 @@ public class MyFXML {
      * @return -
      * @param <T> -
      */
+
     public <T> Pair<T, Parent> load(Class<T> c, String... parts) {
         try {
             var loader = new FXMLLoader(getLocation(parts), null, null,

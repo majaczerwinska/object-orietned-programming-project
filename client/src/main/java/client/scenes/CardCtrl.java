@@ -3,6 +3,7 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Card;
+import jakarta.ws.rs.WebApplicationException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
@@ -11,7 +12,7 @@ import javafx.scene.control.TextField;
 
 public class CardCtrl {
     private final ServerUtils server;
-    private final MainCtrl mainCtrl;
+//    private final MainCtrl mainCtrl;
     @FXML
     private TextField text;
     @FXML
@@ -23,10 +24,14 @@ public class CardCtrl {
      * @param mainCtrl -
      */
     @Inject
-    public CardCtrl(ServerUtils server, MainCtrl mainCtrl){
-        this.mainCtrl  =mainCtrl;
+    public CardCtrl(ServerUtils server){
+//        this.mainCtrl  =mainCtrl;
         this.server = server;
     }
+
+
+
+
 
 
     /**
