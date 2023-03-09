@@ -48,4 +48,21 @@ public class CardController {
         acs.delete(acs.getById(id));
         return "Deleted card #" + id;
     }
+
+    /**
+     * edits card's title, description, color
+     * @param id card's id
+     * @param card card with updated information
+     * @return a response entity
+     */
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Card> editCard(@PathVariable("id") int id, @RequestBody Card card) {
+        if(!acs.existsById(id) || card.getTitle() == null){
+            return ResponseEntity.badRequest().build();
+        }
+        card.setId(id);
+        acs.setCardInfo(card);
+        return ResponseEntity.ok(card);
+    }
 }
