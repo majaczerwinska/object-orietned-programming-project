@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import server.database.TaskListRepository;
 
+import java.util.Optional;
+
 @Service
 public final class TaskListService {
     private TaskListRepository repo;
@@ -48,5 +50,16 @@ public final class TaskListService {
     public TaskList getById(int id){
         TaskList list = repo.getById(id);
         return list;
+    }
+
+    /**
+     * Updates the name of a list in the database
+     * @param id the id of the updated list
+     * @param newName the new name for the list
+     */
+    public void updateTaskListName(int id, String newName) {
+        Optional<TaskList> taskList = repo.findById(id);
+        taskList.get().setName(newName);
+        repo.save(taskList.get());
     }
 }

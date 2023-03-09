@@ -1,6 +1,7 @@
 package commons;
 
 import javax.persistence.*;
+import java.awt.*;
 
 @Entity
 public class TaskList {
@@ -20,8 +21,8 @@ public class TaskList {
      * @param name - the name of the list
      */
     public TaskList( String name) {
-        this.id = id;
         this.name = name;
+        this.color = 0xffffff;
 
     }
 

@@ -20,6 +20,18 @@ public class TaskListController {
         this.als = l;
     }
 
+    /**
+     * Renames the tasklist
+     * @param id the id of the list
+     * @param newName the new name of the list
+     * @return a string showing the id of the renamed list and the new name
+     */
+    @PutMapping("/edit/{id}")
+    public String rename(@PathVariable("id") int id, String newName){
+        als.updateTaskListName(id, newName);
+        return "Updated tasklist " + id + "name to " + newName;
+    }
+
 
     /**
      *Adds a list ot the database
