@@ -52,6 +52,28 @@ public final class CardService {
         return card;
     }
 
+    /**
+     * return true if a card with the given id exists, false otherwise
+     * @param id card id
+     * @return boolean
+     */
+    public boolean existsById(int id){
+        return repo.existsById(id);
+    }
+
+    /**
+     * set card's information
+     * @param card with updated information
+     */
+
+    public void setCardInfo(Card card){
+        Card c = repo.getById(card.getId());
+        c.setDescription(card.getDescription());
+        c.setTitle(card.getTitle());
+        c.setColor(card.getColor());
+        repo.save(c);
+    }
+
 
 
 

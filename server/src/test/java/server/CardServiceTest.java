@@ -34,11 +34,18 @@ public class CardServiceTest {
     public void getByIdTest(){
         Card card = new Card("title");
         ser.save(card);
-
-        System.out.println(ser.getById(card.getId()));
         assertEquals(ser.getById(card.getId()), card);
 
     }
+
+    @Test
+    public void existsByIdTest(){
+        Card card = new Card("title");
+        ser.save(card);
+        assertTrue(ser.existsById(card.getId()));
+
+    }
+
 
     @Test
     public void deleteTest(){
@@ -48,6 +55,18 @@ public class CardServiceTest {
         assertFalse(repo.existsById(card.getId()));
 
     }
+
+    @Test
+    public void setCardInfoTest(){
+        Card card = new Card("title");
+        ser.save(card);
+        Card card2 = new Card("title2");
+        card2.setId(card.getId());
+        ser.setCardInfo(card2);
+        assertEquals(card.getTitle(), card2.getTitle());
+
+    }
+
 
 
 }
