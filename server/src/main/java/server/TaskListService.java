@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import server.database.TaskListRepository;
 
-import java.util.Optional;
 
 @Service
 public final class TaskListService {
@@ -53,13 +52,21 @@ public final class TaskListService {
     }
 
     /**
+     * Checks if the list exists
+     * @param id the id of the list
+     * @return true iff it exists
+     */
+    public boolean existsById(int id){
+        return repo.existsById(id);
+    }
+
+    /**
      * Updates the name of a list in the database
-     * @param id the id of the updated list
+     * @param list the updated list
      * @param newName the new name for the list
      */
-    public void updateTaskListName(int id, String newName) {
-        Optional<TaskList> taskList = repo.findById(id);
-        taskList.get().setName(newName);
-        repo.save(taskList.get());
+    public void updateTaskListName(TaskList list, String newName) {
+        list.setName(newName);
+        repo.save(list);
     }
 }

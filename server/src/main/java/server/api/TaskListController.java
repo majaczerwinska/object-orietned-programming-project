@@ -27,9 +27,10 @@ public class TaskListController {
      * @return a string showing the id of the renamed list and the new name
      */
     @PutMapping("/edit/{id}")
-    public String rename(@PathVariable("id") int id, String newName){
-        als.updateTaskListName(id, newName);
-        return "Updated tasklist " + id + "name to " + newName;
+    public ResponseEntity<TaskList> renameList(@PathVariable("id") int id, String newName){
+        if(!als.existsById(id)) return ResponseEntity.badRequest().build();
+        als.updateTaskListName(als.getById(id), newName);
+        return ResponseEntity.ok(als.getById(id));
     }
 
 

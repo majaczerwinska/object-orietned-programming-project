@@ -35,9 +35,16 @@ public class TaskListServiceTest {
     public void getByIdTest(){
         TaskList card = new TaskList("title");
         ser.save(card);
-
-        System.out.println(ser.getById(card.getId()));
         assertEquals(ser.getById(card.getId()), card);
+
+    }
+
+    @Test
+    public void existsByIdTest(){
+        TaskList card = new TaskList("title");
+        ser.save(card);
+
+        assertTrue(ser.existsById(card.getId()));
 
     }
 
@@ -47,6 +54,15 @@ public class TaskListServiceTest {
         ser.save(card);
         ser.delete(card);
         assertFalse(repo.existsById(card.getId()));
+
+    }
+
+    @Test
+    public void updateTaskListTest(){
+        TaskList list = new TaskList("title");
+        ser.save(list);
+        ser.updateTaskListName(list,"t");
+        assertEquals(list.getName(), "t");
 
     }
 
