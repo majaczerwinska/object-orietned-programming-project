@@ -7,17 +7,18 @@ import org.springframework.web.bind.annotation.*;
 import server.TaskService;
 
 @RestController
-@RequestMapping("/api/task")
+@RequestMapping("/api/tasks")
 public class TaskController {
-    private TaskService als;
+    @Autowired
+    private TaskService ts;
 
     /**
      *Constructor
-     * @param l - the service on use
+     * @param ts - the service on use
      */
-    @Autowired
-    public TaskController(TaskService l) {
-        this.als = l;
+
+    public TaskController(TaskService ts) {
+        this.ts = ts;
     }
 
     /**
@@ -28,22 +29,23 @@ public class TaskController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<Task> editTask(@PathVariable("id") int id, String newName){
-        if(!als.existsById(id)) return ResponseEntity.badRequest().build();
-        als.updateTask(als.getById(id), newName);
-        return ResponseEntity.ok(als.getById(id));
+        if(!ts.existsById(id)) return ResponseEntity.badRequest().build();
+        ts.updateTask(ts.getById(id), newName);
+        return ResponseEntity.ok(ts.getById(id));
     }
 
 
     /**
      *Adds a task to the card (and the database)
+     * @param cardId - the id of the card
      * @param task - the task to be added
      * @return a response entity
      */
     @PostMapping(path = { "", "/{cardId}" })
     public ResponseEntity<Task> addTaskToCard(@PathVariable("cardId") int cardId, @RequestBody Task task) {
         if(task.getName()==null) return ResponseEntity.badRequest().build();
-        Task saved = als.save(task);
-        als.addToCard(cardId, task);
+        Task saved = ts.save(task);
+        ts.addToCard(cardId, task);
         return ResponseEntity.ok(saved);
     }
 
@@ -54,7 +56,7 @@ public class TaskController {
      */
     @DeleteMapping("/{id}")
     public String deleteTask(@PathVariable("id") int id) {
-        als.delete(als.getById(id));
+        ts.delete(ts.getById(id));
         return "Deleted list #" + id;
     }
 }

@@ -6,18 +6,18 @@ import org.junit.jupiter.api.Test;
 import server.CardListService;
 //import server.database.CardRepository;
 //import server.database.QuoteRepositoryTest;
-import server.database.TaskListRepositoryTest;
+import server.database.CardListRepositoryTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SubtaskListControllerTest {
-    private TaskListRepositoryTest repo;
+    private CardListRepositoryTest repo;
     private CardListController con;
     private CardListService ser;
 
     @BeforeEach
     public void setup() {
-        repo = new TaskListRepositoryTest();
+        repo = new CardListRepositoryTest();
         ser = new CardListService(repo);
         con = new CardListController(ser);
     }

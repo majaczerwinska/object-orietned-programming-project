@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
-public class TaskListRepositoryTest implements TaskListRepository {
+public class CardListRepositoryTest implements CardListRepository {
 
     Set<CardList> tasks = new HashSet<>();
 

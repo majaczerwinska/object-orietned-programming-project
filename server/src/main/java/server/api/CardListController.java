@@ -1,6 +1,5 @@
 package server.api;
 
-import commons.Card;
 import commons.CardList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -49,6 +48,11 @@ public class CardListController {
         return ResponseEntity.ok(saved);
     }
 
+    /**
+     *Adds a list ot the board and the database
+     * @param cards - the list to be added
+     * @return - a response entity
+     */
     @PostMapping(path = {"/{boardId}"})
     public ResponseEntity<CardList> addListToBoard(@PathVariable("boardId") int listId, @RequestBody CardList cards) {
         // if(!cls.existsById(listId)) return ResponseEntity.badRequest().build();

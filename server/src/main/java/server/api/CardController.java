@@ -18,9 +18,16 @@ public class CardController {
     @Autowired
     private TaskService tls;
 
-
+    /** Default constructor
+     *
+     */
     public CardController(){}
 
+    /**
+     * Controller #3
+     * @param c - card service
+     * @param tls - taskservice
+     */
     public CardController(CardService c, TaskService tls) {
         this.acs = c;
         this.tls = tls;
@@ -50,6 +57,7 @@ public class CardController {
 
     /**
      *Adds a card to the list (and the database)
+     * @param listId - id of the list
      * @param card - the task to be added
      * @return a response entity
      */

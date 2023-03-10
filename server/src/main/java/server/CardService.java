@@ -76,6 +76,11 @@ public final class CardService {
         repo.save(c);
     }
 
+    /**
+     * Adds a card to the list
+     * @param listId - id of the list
+     * @param card - the card
+     */
     public void addToList(int listId, Card card){
         CardList cardlist = cls.getById(listId);
         cardlist.getCards().add(card);

@@ -5,12 +5,12 @@ import commons.CardList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import server.database.TaskListRepository;
+import server.database.CardListRepository;
 
 
 @Service
 public final class CardListService {
-    private TaskListRepository repo;
+    private CardListRepository repo;
     @Autowired
     private BoardService bs;
 
@@ -19,7 +19,7 @@ public final class CardListService {
      * @param repo - the repository in use
      */
     @Autowired
-    public CardListService(@Qualifier("list") TaskListRepository repo) {
+    public CardListService(@Qualifier("list") CardListRepository repo) {
         this.repo = repo;
     }
 
@@ -73,6 +73,11 @@ public final class CardListService {
         repo.save(list);
     }
 
+    /**
+     * Adds a list of cards to a board
+     * @param boardId - id of the board
+     * @param cards - id of the card
+     */
     public void addToBoard(int boardId, CardList cards){
         Board board = bs.getById(boardId);
         board.getLists().add(cards);

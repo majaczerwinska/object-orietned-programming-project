@@ -20,4 +20,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository("list")
-public interface TaskListRepository extends JpaRepository<CardList, Integer> {}
+public interface CardListRepository extends JpaRepository<CardList, Integer> {}

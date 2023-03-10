@@ -3,18 +3,18 @@ package server;
 import commons.CardList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import server.database.TaskListRepositoryTest;
+import server.database.CardListRepositoryTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
 public class SubtaskListServiceTest {
-    private TaskListRepositoryTest repo;
+    private CardListRepositoryTest repo;
     private CardListService ser;
 
     @BeforeEach
     public void setup() {
-        repo = new TaskListRepositoryTest();
+        repo = new CardListRepositoryTest();
         ser = new CardListService(repo);
     }
 
