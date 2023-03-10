@@ -107,5 +107,6 @@ public class CardTest {
     @Test
     void emptyConstructor() {
         Card c = new Card();
+        assertTrue(c.getTitle()==null);
     }
 }

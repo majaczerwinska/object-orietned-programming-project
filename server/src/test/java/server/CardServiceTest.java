@@ -3,10 +3,10 @@ package server;
 import commons.Card;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import server.api.CardController;
+
 import server.database.CardRepositoryTest;
 
-import java.util.Random;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
