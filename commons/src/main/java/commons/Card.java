@@ -1,17 +1,22 @@
 package commons;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 public class Card {
-
+    @Id
+    @SequenceGenerator(name = "card_sequence", sequenceName = "card_sequence")
+    @GeneratedValue(generator = "card_sequence", strategy = GenerationType.SEQUENCE)
     private int id;
     private String title;
     private String description;
     private int color;
+
+    @OneToMany
+    private List<Task> tasks;
 
 
     /**
@@ -22,7 +27,7 @@ public class Card {
         this.title = title;
         this.description = "";
         this.color = 0xffffff;
-
+        this.tasks = new ArrayList<>();
     }
 
     /**
@@ -70,8 +75,8 @@ public class Card {
      *Retrieves the id of the card
      * @return - the id
      */
-    @Id
-    @GeneratedValue
+//    @Id
+//    @GeneratedValue
     public int getId() {
         return id;
     }
@@ -101,6 +106,21 @@ public class Card {
      */
     public String getDescription() {
         return description;
+    }
+
+
+    /**
+     * Retrieves the card the task is in
+     * @return - the TaskList
+     */
+    public List<Task> getTasks() {return tasks;}
+
+    /**
+     * Sets the list that belongs to a card
+     * @param tasks - the list
+     */
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 
 

@@ -1,14 +1,12 @@
 package server.database;
 
-import commons.Card;
-import commons.TaskList;
+import commons.CardList;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
-import org.springframework.scheduling.config.Task;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.HashSet;
@@ -19,13 +17,13 @@ import java.util.function.Function;
 
 public class TaskListRepositoryTest implements TaskListRepository {
 
-    Set<TaskList> tasks = new HashSet<>();
+    Set<CardList> tasks = new HashSet<>();
 
     /**
      * @return
      */
     @Override
-    public List<TaskList> findAll() {
+    public List<CardList> findAll() {
         return null;
     }
 
@@ -34,7 +32,7 @@ public class TaskListRepositoryTest implements TaskListRepository {
      * @return
      */
     @Override
-    public List<TaskList> findAll(Sort sort) {
+    public List<CardList> findAll(Sort sort) {
         return null;
     }
 
@@ -45,7 +43,7 @@ public class TaskListRepositoryTest implements TaskListRepository {
      * @return a page of entities
      */
     @Override
-    public Page<TaskList> findAll(Pageable pageable) {
+    public Page<CardList> findAll(Pageable pageable) {
         return null;
     }
 
@@ -54,7 +52,7 @@ public class TaskListRepositoryTest implements TaskListRepository {
      * @return
      */
     @Override
-    public List<TaskList> findAllById(Iterable<Integer> integers) {
+    public List<CardList> findAllById(Iterable<Integer> integers) {
         return null;
     }
 
@@ -86,7 +84,7 @@ public class TaskListRepositoryTest implements TaskListRepository {
      * @throws IllegalArgumentException in case the given entity is {@literal null}.
      */
     @Override
-    public void delete(TaskList entity) {
+    public void delete(CardList entity) {
         tasks.remove(entity);
     }
 
@@ -109,7 +107,7 @@ public class TaskListRepositoryTest implements TaskListRepository {
      * @throws IllegalArgumentException in case the given {@literal entities} or one of its entities is {@literal null}.
      */
     @Override
-    public void deleteAll(Iterable<? extends TaskList> entities) {
+    public void deleteAll(Iterable<? extends CardList> entities) {
 
     }
 
@@ -130,7 +128,7 @@ public class TaskListRepositoryTest implements TaskListRepository {
      * @throws IllegalArgumentException in case the given {@literal entity} is {@literal null}.
      */
     @Override
-    public <S extends TaskList> S save(S entity) {
+    public <S extends CardList> S save(S entity) {
         tasks.add(entity);
         return entity;
     }
@@ -141,7 +139,7 @@ public class TaskListRepositoryTest implements TaskListRepository {
      * @return
      */
     @Override
-    public <S extends TaskList> List<S> saveAll(Iterable<S> entities) {
+    public <S extends CardList> List<S> saveAll(Iterable<S> entities) {
         return null;
     }
 
@@ -153,7 +151,7 @@ public class TaskListRepositoryTest implements TaskListRepository {
      * @throws IllegalArgumentException if {@literal id} is {@literal null}.
      */
     @Override
-    public Optional<TaskList> findById(Integer integer) {
+    public Optional<CardList> findById(Integer integer) {
         return Optional.empty();
     }
 
@@ -166,7 +164,7 @@ public class TaskListRepositoryTest implements TaskListRepository {
      */
     @Override
     public boolean existsById(Integer integer) {
-        for(TaskList task : tasks){
+        for(CardList task : tasks){
             if(task.getId()==integer) return true;
         }
         return false;
@@ -187,7 +185,7 @@ public class TaskListRepositoryTest implements TaskListRepository {
      * @return the saved entity
      */
     @Override
-    public <S extends TaskList> S saveAndFlush(S entity) {
+    public <S extends CardList> S saveAndFlush(S entity) {
         return null;
     }
 
@@ -199,7 +197,7 @@ public class TaskListRepositoryTest implements TaskListRepository {
      * @since 2.5
      */
     @Override
-    public <S extends TaskList> List<S> saveAllAndFlush(Iterable<S> entities) {
+    public <S extends CardList> List<S> saveAllAndFlush(Iterable<S> entities) {
         return null;
     }
 
@@ -212,7 +210,7 @@ public class TaskListRepositoryTest implements TaskListRepository {
      * @since 2.5
      */
     @Override
-    public void deleteAllInBatch(Iterable<TaskList> entities) {
+    public void deleteAllInBatch(Iterable<CardList> entities) {
 
     }
 
@@ -248,7 +246,7 @@ public class TaskListRepositoryTest implements TaskListRepository {
      * @deprecated use {@link JpaRepository#getById(ID)} instead.
      */
     @Override
-    public TaskList getOne(Integer integer) {
+    public CardList getOne(Integer integer) {
         return null;
     }
 
@@ -264,9 +262,9 @@ public class TaskListRepositoryTest implements TaskListRepository {
      * @since 2.5
      */
     @Override
-    public TaskList getById(Integer integer) {
+    public CardList getById(Integer integer) {
         if(!existsById(integer)) return null;
-        for(TaskList task : tasks){
+        for(CardList task : tasks){
             if(task.getId()==integer) return task;
         }
         return null;
@@ -280,7 +278,7 @@ public class TaskListRepositoryTest implements TaskListRepository {
      * @throws IncorrectResultSizeDataAccessException if the Example yields more than one result.
      */
     @Override
-    public <S extends TaskList> Optional<S> findOne(Example<S> example) {
+    public <S extends CardList> Optional<S> findOne(Example<S> example) {
         return Optional.empty();
     }
 
@@ -290,7 +288,7 @@ public class TaskListRepositoryTest implements TaskListRepository {
      * @return
      */
     @Override
-    public <S extends TaskList> List<S> findAll(Example<S> example) {
+    public <S extends CardList> List<S> findAll(Example<S> example) {
         return null;
     }
 
@@ -301,7 +299,7 @@ public class TaskListRepositoryTest implements TaskListRepository {
      * @return
      */
     @Override
-    public <S extends TaskList> List<S> findAll(Example<S> example, Sort sort) {
+    public <S extends CardList> List<S> findAll(Example<S> example, Sort sort) {
         return null;
     }
 
@@ -314,7 +312,7 @@ public class TaskListRepositoryTest implements TaskListRepository {
      * @return a {@link Page} of entities matching the given {@link Example}.
      */
     @Override
-    public <S extends TaskList> Page<S> findAll(Example<S> example, Pageable pageable) {
+    public <S extends CardList> Page<S> findAll(Example<S> example, Pageable pageable) {
         return null;
     }
 
@@ -325,7 +323,7 @@ public class TaskListRepositoryTest implements TaskListRepository {
      * @return the number of instances matching the {@link Example}.
      */
     @Override
-    public <S extends TaskList> long count(Example<S> example) {
+    public <S extends CardList> long count(Example<S> example) {
         return 0;
     }
 
@@ -336,7 +334,7 @@ public class TaskListRepositoryTest implements TaskListRepository {
      * @return {@literal true} if the data store contains elements that match the given {@link Example}.
      */
     @Override
-    public <S extends TaskList> boolean exists(Example<S> example) {
+    public <S extends CardList> boolean exists(Example<S> example) {
         return false;
     }
 
@@ -350,7 +348,7 @@ public class TaskListRepositoryTest implements TaskListRepository {
      * @since 2.6
      */
     @Override
-    public <S extends TaskList, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+    public <S extends CardList, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;
     }
 }
