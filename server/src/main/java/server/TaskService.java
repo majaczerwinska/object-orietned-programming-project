@@ -5,7 +5,6 @@ import commons.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import server.database.CardRepository;
 import server.database.TaskRepository;
 
 

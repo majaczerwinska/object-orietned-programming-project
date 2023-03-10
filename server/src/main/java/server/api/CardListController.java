@@ -50,6 +50,7 @@ public class CardListController {
 
     /**
      *Adds a list ot the board and the database
+     * @param listId - id of the board
      * @param cards - the list to be added
      * @return - a response entity
      */
