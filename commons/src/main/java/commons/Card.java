@@ -14,6 +14,7 @@ public class Card {
     private int color;
 
 
+
     /**
      *Constructor
      * @param title - the name of the card
@@ -23,7 +24,9 @@ public class Card {
         this.description = "";
         this.color = 0xffffff;
 
+
     }
+
 
     /**
      * Default constructor
