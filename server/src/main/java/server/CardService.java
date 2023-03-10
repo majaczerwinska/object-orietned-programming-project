@@ -51,8 +51,7 @@ public final class CardService {
      * @return card object
      */
     public Card getById(int id){
-        Card card = repo.getById(id);
-        return card;
+         return repo.getById(id);
     }
 
     /**

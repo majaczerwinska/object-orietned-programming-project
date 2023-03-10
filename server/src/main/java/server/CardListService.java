@@ -1,7 +1,6 @@
 package server;
 
 import commons.Board;
-import commons.Card;
 import commons.CardList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

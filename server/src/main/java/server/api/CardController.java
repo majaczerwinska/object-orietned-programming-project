@@ -1,12 +1,10 @@
 package server.api;
 
 import commons.Card;
-import commons.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import server.CardListService;
 import server.CardService;
 import server.TaskService;
 //import server.VisitCounterService;
@@ -57,7 +55,6 @@ public class CardController {
      */
     @PostMapping(path = { "/{listId}" })
     public ResponseEntity<Card> addCardToList(@PathVariable("listId") int listId, @RequestBody Card card) {
-       // if(!cls.existsById(listId)) return ResponseEntity.badRequest().build();
         if(card.getTitle()==null) return ResponseEntity.badRequest().build();
         Card saved = acs.save(card);
         acs.addToList(listId, card);
