@@ -19,6 +19,7 @@ public class Card {
     private List<Task> tasks;
 
 
+
     /**
      *Constructor
      * @param title - the name of the card
@@ -29,6 +30,7 @@ public class Card {
         this.color = 0xffffff;
         this.tasks = new ArrayList<>();
     }
+
 
     /**
      * Default constructor
