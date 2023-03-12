@@ -62,8 +62,8 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("test.fxml"));
-            Scene scene = new Scene(root, 500, 400, Color.ANTIQUEWHITE);
+            Parent root = FXMLLoader.load(getClass().getResource("Landing.fxml"));
+            Scene scene = new Scene(root);
 
             stage.setTitle("main scene title goes here");
 
