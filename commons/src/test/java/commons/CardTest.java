@@ -21,6 +21,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CardTest {
 
     @Test
@@ -107,5 +110,13 @@ public class CardTest {
     @Test
     void emptyConstructor() {
         Card c = new Card();
+        assertTrue(c.getTitle()==null);
+    }
+
+    @Test
+    void getListTest(){
+        Card c = new Card("test");
+        List<Task> task = new ArrayList<>();
+        assertEquals(task, c.getTasks());
     }
 }

@@ -26,18 +26,15 @@ import java.net.URISyntaxException;
 //import client.scenes.AddQuoteCtrl;
 //import client.scenes.MainCtrl;
 //import client.scenes.QuoteOverviewCtrl;
-import client.scenes.CardCtrl;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
+
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.scene.image.Image;
 
+import javafx.stage.Stage;
 
 public class Main extends Application {
 

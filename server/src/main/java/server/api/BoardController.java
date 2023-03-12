@@ -12,6 +12,7 @@ import server.BoardService;
 @RestController
 @RequestMapping("/api/boards")
 public class BoardController {
+    @Autowired
     private BoardService abs;
 
 

@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TaskListTest {
+class SubtaskListTest {
 
-    TaskList tl = new TaskList("test");
+    CardList tl = new CardList("test");
 
     @Test
     void setId() {
@@ -44,7 +44,7 @@ class TaskListTest {
 
     @Test
     void testEmptyConstructor() {
-        TaskList t = new TaskList();
+        CardList t = new CardList();
         assertNull(t.getName());
     }
 }

@@ -1,22 +1,25 @@
 package server;
 
-import commons.TaskList;
+import commons.Board;
+import commons.CardList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import server.database.TaskListRepository;
+import server.database.CardListRepository;
 
 
 @Service
-public final class TaskListService {
-    private TaskListRepository repo;
+public final class CardListService {
+    private CardListRepository repo;
+    @Autowired
+    private BoardService bs;
 
     /**
      *Constructor
      * @param repo - the repository in use
      */
     @Autowired
-    public TaskListService(@Qualifier("list") TaskListRepository repo) {
+    public CardListService(@Qualifier("list") CardListRepository repo) {
         this.repo = repo;
     }
 
@@ -26,7 +29,7 @@ public final class TaskListService {
      * @param list - the list to be saved
      * @return - the saved list
      */
-    public TaskList save(TaskList list){
+    public CardList save(CardList list){
         repo.save(list);
         return list;
     }
@@ -36,7 +39,7 @@ public final class TaskListService {
      * @param list - the list to be deleted
      * @return - the deleted list
      */
-    public TaskList delete(TaskList list){
+    public CardList delete(CardList list){
         repo.delete(repo.getById(list.getId()));
         return list;
     }
@@ -46,8 +49,8 @@ public final class TaskListService {
      * @param id - the id of the list
      * @return - the list
      */
-    public TaskList getById(int id){
-        TaskList list = repo.getById(id);
+    public CardList getById(int id){
+        CardList list = repo.getById(id);
         return list;
     }
 
@@ -65,8 +68,20 @@ public final class TaskListService {
      * @param list the updated list
      * @param newName the new name for the list
      */
-    public void updateTaskListName(TaskList list, String newName) {
+    public void updateTaskListName(CardList list, String newName) {
         list.setName(newName);
         repo.save(list);
+    }
+
+    /**
+     * Adds a list of cards to a board
+     * @param boardId - id of the board
+     * @param cards - id of the card
+     */
+    public void addToBoard(int boardId, CardList cards){
+        Board board = bs.getById(boardId);
+        board.getLists().add(cards);
+        bs.save(board);
+
     }
 }

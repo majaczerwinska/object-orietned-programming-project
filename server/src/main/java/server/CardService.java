@@ -1,6 +1,7 @@
 package server;
 
 import commons.Card;
+import commons.CardList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,8 @@ import server.database.CardRepository;
 @Service
 public final class CardService {
     private CardRepository repo;
+    @Autowired
+    private CardListService cls;
 
 
     /**
@@ -48,8 +51,7 @@ public final class CardService {
      * @return card object
      */
     public Card getById(int id){
-        Card card = repo.getById(id);
-        return card;
+         return repo.getById(id);
     }
 
     /**
@@ -72,6 +74,17 @@ public final class CardService {
         c.setTitle(card.getTitle());
         c.setColor(card.getColor());
         repo.save(c);
+    }
+
+    /**
+     * Adds a card to the list
+     * @param listId - id of the list
+     * @param card - the card
+     */
+    public void addToList(int listId, Card card){
+        CardList cardlist = cls.getById(listId);
+        cardlist.getCards().add(card);
+        cls.save(cardlist);
     }
 
 

@@ -1,39 +1,34 @@
 package server;
 
-import commons.Card;
-import commons.TaskList;
+import commons.CardList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import server.api.CardController;
-import server.database.CardRepositoryTest;
-import server.database.TaskListRepositoryTest;
-
-import java.util.Random;
+import server.database.CardListRepositoryTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class TaskListServiceTest {
-    private TaskListRepositoryTest repo;
-    private TaskListService ser;
+public class SubtaskListServiceTest {
+    private CardListRepositoryTest repo;
+    private CardListService ser;
 
     @BeforeEach
     public void setup() {
-        repo = new TaskListRepositoryTest();
-        ser = new TaskListService(repo);
+        repo = new CardListRepositoryTest();
+        ser = new CardListService(repo);
     }
 
 
     @Test
     public void saveTest(){
-        TaskList card = new TaskList("title");
+        CardList card = new CardList("title");
         ser.save(card);
         assertTrue(repo.existsById(card.getId()));
     }
 
     @Test
     public void getByIdTest(){
-        TaskList card = new TaskList("title");
+        CardList card = new CardList("title");
         ser.save(card);
         assertEquals(ser.getById(card.getId()), card);
 
@@ -41,7 +36,7 @@ public class TaskListServiceTest {
 
     @Test
     public void existsByIdTest(){
-        TaskList card = new TaskList("title");
+        CardList card = new CardList("title");
         ser.save(card);
 
         assertTrue(ser.existsById(card.getId()));
@@ -50,7 +45,7 @@ public class TaskListServiceTest {
 
     @Test
     public void deleteTest(){
-        TaskList card = new TaskList("title");
+        CardList card = new CardList("title");
         ser.save(card);
         ser.delete(card);
         assertFalse(repo.existsById(card.getId()));
@@ -59,7 +54,7 @@ public class TaskListServiceTest {
 
     @Test
     public void updateTaskListTest(){
-        TaskList list = new TaskList("title");
+        CardList list = new CardList("title");
         ser.save(list);
         ser.updateTaskListName(list,"t");
         assertEquals(list.getName(), "t");

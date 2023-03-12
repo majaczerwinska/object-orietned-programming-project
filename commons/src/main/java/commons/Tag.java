@@ -13,6 +13,7 @@ public class Tag {
     private String description;
     private int color;
 
+
     /**
      * Constructor method
      * 
@@ -22,7 +23,10 @@ public class Tag {
         this.title = title;
         this.description = "";
         this.color = 0xffffff;
+
     }
+
+
 
     /**
      * Default constructor method
