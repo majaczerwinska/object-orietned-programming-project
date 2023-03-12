@@ -6,20 +6,37 @@ import org.springframework.http.ResponseEntity;
 //import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import server.CardService;
+import server.TaskService;
 //import server.VisitCounterService;
 //import server.database.CardRepository;
 
 @RestController
 @RequestMapping("/api/cards")
 public class CardController {
+    @Autowired
     private CardService acs;
+    @Autowired
+    private TaskService tls;
 
+    /** Default constructor
+     *
+     */
+    public CardController(){}
+
+    /**
+     * Controller #3
+     * @param c - card service
+     * @param tls - taskservice
+     */
+    public CardController(CardService c, TaskService tls) {
+        this.acs = c;
+        this.tls = tls;
+    }
 
     /**
      *Constructor
      * @param c the service we use
      */
-    @Autowired
     public CardController(CardService c) {
         this.acs = c;
     }
@@ -35,6 +52,20 @@ public class CardController {
     public ResponseEntity<Card> addCard(@RequestBody Card card) {
         if(card.getTitle()==null) return ResponseEntity.badRequest().build();
         Card saved = acs.save(card);
+        return ResponseEntity.ok(saved);
+    }
+
+    /**
+     *Adds a card to the list (and the database)
+     * @param listId - id of the list
+     * @param card - the task to be added
+     * @return a response entity
+     */
+    @PostMapping(path = { "/{listId}" })
+    public ResponseEntity<Card> addCardToList(@PathVariable("listId") int listId, @RequestBody Card card) {
+        if(card.getTitle()==null) return ResponseEntity.badRequest().build();
+        Card saved = acs.save(card);
+        acs.addToList(listId, card);
         return ResponseEntity.ok(saved);
     }
 
@@ -65,4 +96,6 @@ public class CardController {
         acs.setCardInfo(card);
         return ResponseEntity.ok(card);
     }
+
+
 }

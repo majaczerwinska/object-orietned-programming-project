@@ -1,14 +1,20 @@
 package commons;
 
 import javax.persistence.*;
-import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-public class TaskList {
-
+public class CardList {
+    @Id
+    @SequenceGenerator(name = "card_sequence", sequenceName = "card_sequence")
+    @GeneratedValue(generator = "card_sequence", strategy = GenerationType.SEQUENCE)
     private int id;
     private String name;
     private int color;
+
+    @OneToMany
+    private List<Card> cards;
 
 
 
@@ -17,16 +23,16 @@ public class TaskList {
      * Constructor
      * @param name - the name of the list
      */
-    public TaskList( String name) {
+    public CardList(String name) {
         this.name = name;
         this.color = 0xffffff;
-
+        this.cards = new ArrayList<>();
     }
 
     /**
      * Default constructor
      */
-    public TaskList() {}
+    public CardList() {}
 
     /**
      *Changes the id
@@ -52,28 +58,28 @@ public class TaskList {
         this.color = color;
     }
 
-//    /**
-//     * gets the list of cards
-//     * @return the list
-//     */
-//    public List<Card> getCardList() {
-//        return cardList;
-//    }
-//
-//    /**
-//     * Changes the list of cards
-//     * @param cardList the new list
-//     */
-//    public void setCardList(List<Card> cardList) {
-//        this.cardList = cardList;
-//    }
+    /**
+     * gets the list of cards
+     * @return the list
+     */
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    /**
+     * Changes the list of cards
+     * @param cards -  the new list
+     */
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
+    }
 
     /**
      *retrieves the id
      * @return - the id
      */
-    @Id
-    @GeneratedValue
+//    @Id
+//    @GeneratedValue
     public int getId() {
         return id;
     }
