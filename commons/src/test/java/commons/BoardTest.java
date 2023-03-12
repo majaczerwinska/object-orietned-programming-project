@@ -2,6 +2,9 @@ package commons;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -38,6 +41,14 @@ public class BoardTest {
        Board c = new Board("a");
         c.setId(1);
         assertEquals(c.getId(), 1);
+    }
+
+    @Test
+    void setLists() {
+        Board c = new Board("a");
+        List<CardList> list = new ArrayList<>();
+        c.setLists(list);
+        assertEquals(c.getLists(), list);
     }
 
     @Test

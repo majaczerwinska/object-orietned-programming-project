@@ -15,7 +15,7 @@ public class Card {
     private String description;
     private int color;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Task> tasks;
 
 
@@ -156,6 +156,6 @@ public class Card {
      */
     @Override
     public String toString() {
-        return "Card #+" + id + "\n" + title + "\n" + description + "\n" + color;
+        return "Card #" + id + "\n" + title + "\n" + description + "\n" + color;
     }
 }

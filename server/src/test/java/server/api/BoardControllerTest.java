@@ -3,7 +3,7 @@ package server.api;
 import commons.Board;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import server.BoardService;
+import server.service.BoardService;
 import server.database.BoardRepositoryTest;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

@@ -10,7 +10,7 @@ public class Board {
     @Id
     @SequenceGenerator(name = "card_sequence", sequenceName = "card_sequence")
     @GeneratedValue(generator = "card_sequence", strategy = GenerationType.SEQUENCE)
-    private int id;
+    public int id;
     private int color;
     private String name;
     private String boardkey;
@@ -42,6 +42,8 @@ public class Board {
     public String getName() {
         return name;
     }
+
+
 
     /**
      * Changes the name of the board
@@ -79,8 +81,7 @@ public class Board {
      * Retrieves the id of the board
      * @return the id
      */
-//    @Id
-//    @GeneratedValue
+
     public int getId() {
         return id;
     }

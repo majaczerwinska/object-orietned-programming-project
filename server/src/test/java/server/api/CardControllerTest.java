@@ -1,11 +1,13 @@
 package server.api;
 
 import commons.Card;
+import commons.CardList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import server.CardService;
+import server.service.CardService;
+import server.database.CardListRepositoryTest;
 import server.database.CardRepositoryTest;
 
 
@@ -13,39 +15,46 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CardControllerTest {
     private CardRepositoryTest repo;
+    private CardListRepositoryTest cl;
     private CardController con;
     private CardService ser;
 
     @BeforeEach
     public void setup() {
         repo = new CardRepositoryTest();
-        ser = new CardService(repo);
+        cl = new CardListRepositoryTest();
+        ser = new CardService(repo, cl);
         con = new CardController(ser);
     }
 
     @Test
     public void addCardTest(){
+        CardList list = new CardList("l");
+        cl.save(list);
         Card card = new Card("title");
-        con.addCard(card);
+        con.addCard(list.getId(),card);
         assertTrue(repo.existsById(card.getId()));
 
     }
 
     @Test
     public void deleteTest(){
-
+        CardList list = new CardList("l");
+        cl.save(list);
         Card card = new Card("title");
-        con.addCard(card);
-        con.deleteCard(card.getId());
+        con.addCard(list.getId(), card);
+        con.deleteCard(list.getId(), card.getId());
         assertFalse(repo.existsById(card.getId()));
 
     }
 
     @Test
     public void editCardTest(){
+        CardList list = new CardList("l");
+        cl.save(list);
         Card card = new Card("title");
         Card card2 = new Card("title2");
-        con.addCard(card);
+        con.addCard(list.getId(), card);
         con.editCard(card.getId(), card2);
         assertEquals(card, card2);
 
@@ -54,9 +63,11 @@ public class CardControllerTest {
     @Test
     public void editCardNullTest(){
         ResponseEntity<Card> responseEntity = ResponseEntity.badRequest().build();
+        CardList list = new CardList("l");
+        cl.save(list);
         Card card = new Card("title");
         Card card2 = new Card();
-        con.addCard(card);
+        con.addCard(list.getId(),card);
         con.editCard(card.getId(), card2);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
 

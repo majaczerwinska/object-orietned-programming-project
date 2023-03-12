@@ -6,13 +6,13 @@ import commons.Board;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import server.BoardService;
+import server.service.BoardService;
 
 
 @RestController
 @RequestMapping("/api/boards")
 public class BoardController {
-    @Autowired
+
     private BoardService abs;
 
 
@@ -42,11 +42,12 @@ public class BoardController {
     /**
      *deletes a board from the database
      * @param id - the id of the board to be deleted
-     * @return - a string showing the id of the deleted board
+     * @return - a response entity
      */
     @DeleteMapping("/{id}")
-    public String deleteBoard(@PathVariable("id") int id) {
-        abs.delete(abs.getById(id));
-        return "Deleted board #" + id;
+    public ResponseEntity<Board> deleteBoard(@PathVariable("id") int id) {
+        if(!abs.existsById(id)) return ResponseEntity.badRequest().build();
+        Board board = abs.delete(abs.getById(id));
+        return ResponseEntity.ok(board);
     }
 }

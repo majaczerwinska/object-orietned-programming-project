@@ -13,7 +13,7 @@ public class CardList {
     private String name;
     private int color;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Card> cards;
 
 
@@ -99,5 +99,6 @@ public class CardList {
     public int getColor() {
         return color;
     }
+
 
   }

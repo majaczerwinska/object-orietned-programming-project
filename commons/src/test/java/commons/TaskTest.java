@@ -30,4 +30,22 @@ public class TaskTest {
         task.setName("test1");
         assertEquals("test1", task.getName());
     }
+
+    @Test
+    public void setIdTest(){
+        Task task = new Task("test");
+        task.setId(6);
+        assertEquals(task.getId(), 6);
+    }
+
+    @Test
+    public void getIdTest(){
+        Task task = new Task("test");
+        assertEquals(task.getId(), 0);
+    }
+
+
+
+
+
 }

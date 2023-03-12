@@ -1,4 +1,4 @@
-package server;
+package server.service;
 
 import commons.Board;
 
@@ -50,6 +50,15 @@ public class BoardService {
     public Board getById(int id){
         Board board = repo.getById(id);
         return board;
+    }
+
+    /**
+     * checks if the board exists
+     * @param id board id
+     * @return board object
+     */
+    public boolean existsById(int id){
+       return repo.existsById(id);
     }
 
 }

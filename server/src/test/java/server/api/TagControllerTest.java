@@ -1,12 +1,9 @@
 package server.api;
 
-import commons.Card;
 import commons.Tag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import server.CardService;
-import server.TagService;
-import server.database.CardRepositoryTest;
+import server.service.TagService;
 import server.database.TagRepositoryTest;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;

@@ -25,15 +25,7 @@ public class Task {
         this.name = name;
     }
 
-    /**
-     * Constructor for testing
-     * @param id - id of a task
-     * @param name - name of a task
-     */
-    public Task(int id, String name){
-        this.id = id;
-        this.name = name;
-    }
+
 
     /**
      * Returns the id of a task
