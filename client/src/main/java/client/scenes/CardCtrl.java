@@ -7,7 +7,9 @@ import commons.Card;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.shape.Circle;
 
 
 public class CardCtrl {
@@ -18,6 +20,13 @@ public class CardCtrl {
     @FXML
     private Button button;
 
+//    @FXML
+//    private Circle bigBlueButton;
+
+    @FXML
+    protected void onBigBlueButtonClick() {
+//        bigBlueButton.
+    }
     /**
      *
      * @param server -

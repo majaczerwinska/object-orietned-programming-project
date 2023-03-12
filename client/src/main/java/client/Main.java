@@ -37,6 +37,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
+
+
 public class Main extends Application {
 
 //    private static final Injector INJECTOR = createInjector(new MyModule());
@@ -63,6 +65,8 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         try {
+
+
             Parent root = FXMLLoader.load(getClass().getResource("test.fxml"));
             Scene scene = new Scene(root, 500, 400, Color.ANTIQUEWHITE);
 
