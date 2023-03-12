@@ -27,19 +27,26 @@ import java.net.URISyntaxException;
 //import client.scenes.MainCtrl;
 //import client.scenes.QuoteOverviewCtrl;
 
+import client.scenes.CardCtrl;
+import client.scenes.LandingCtrl;
+import client.scenes.MainCtrl;
+import client.scenes.PublicBoardCtrl;
+import com.google.inject.Injector;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
+//import javafx.fxml.FXMLLoader;
 
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.paint.Color;
+//import javafx.scene.Parent;
+//import javafx.scene.Scene;
+//import javafx.scene.paint.Color;
 
 import javafx.stage.Stage;
 
+import static com.google.inject.Guice.createInjector;
+
 public class Main extends Application {
 
-//    private static final Injector INJECTOR = createInjector(new MyModule());
-//    private static final MyFXML FXML = new MyFXML(INJECTOR);
+    private static final Injector INJECTOR = createInjector(new MyModule());
+    private static final MyFXML FXML = new MyFXML(INJECTOR);
 
     /**
      *
@@ -53,25 +60,21 @@ public class Main extends Application {
 
     /**
      *
-     * @param stage the primary stage for this application, onto which
+     * @param primaryStage the primary stage for this application, onto which
      * the application scene can be set.
      * Applications may create other stages, if needed, but they will not be
      * primary stages.
      * @throws IOException -
      */
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage primaryStage) throws IOException {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("Landing.fxml"));
-            Scene scene = new Scene(root);
+            var landing = FXML.load(LandingCtrl.class, "client", "scenes", "Landing.fxml");
+            var publicBoard = FXML.load(PublicBoardCtrl.class, "client", "scenes", "PublicBoard.fxml");
+            var card = FXML.load(CardCtrl.class, "client", "scenes", "CardCreator.fxml");
 
-            stage.setTitle("main scene title goes here");
-
-            stage.setX(400);
-            stage.setY(200);
-
-            stage.setScene(scene);
-            stage.show();
+            var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
+            mainCtrl.initialize(primaryStage, landing, card, publicBoard);
         } catch (Exception e) {
             System.out.println("very sad exception :(\nin start method of client.main..");
             e.printStackTrace();
@@ -80,8 +83,7 @@ public class Main extends Application {
 //        var overview = FXML.load(QuoteOverviewCtrl.class, "client", "scenes", "QuoteOverview.fxml");
 //        var add = FXML.load(AddQuoteCtrl.class, "client", "scenes", "AddQuote.fxml");
 //        var card = FXML.load(CardCtrl.class, "client", "scenes", "Card.fxml");
-//        var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-//        mainCtrl.initialize(primaryStage, overview, add, card);
+//
 
     }
 }
