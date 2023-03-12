@@ -1,17 +1,22 @@
 package commons;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 public class Board {
-
+    @Id
+    @SequenceGenerator(name = "card_sequence", sequenceName = "card_sequence")
+    @GeneratedValue(generator = "card_sequence", strategy = GenerationType.SEQUENCE)
     private int id;
     private int color;
     private String name;
     private String boardkey;
+
+    @OneToMany
+    private List<CardList> lists;
 
 
 
@@ -22,7 +27,7 @@ public class Board {
     public Board( String name){
         this.name = name;
         color = 0xffffff;
-//        this.lists = new ArrayList<>();
+        this.lists = new ArrayList<>();
     }
 
     /**
@@ -46,21 +51,21 @@ public class Board {
         this.name = name;
     }
 
-//    /**
-//     * Gets the list of lists
-//     * @return the list
-//     */
-//    public List<TaskList> getLists() {
-//        return lists;
-//    }
-//
-//    /**
-//     * Changes the list of lists
-//     * @param lists the new list
-//     */
-//    public void setLists(List<TaskList> lists) {
-//        this.lists = lists;
-//    }
+    /**
+     * Gets the list of lists
+     * @return the list
+     */
+    public List<CardList> getLists() {
+        return lists;
+    }
+
+    /**
+     * Changes the list of lists
+     * @param lists the new list
+     */
+    public void setLists(List<CardList> lists) {
+        this.lists = lists;
+    }
 
     /**
      * Retrieves the key of the board
@@ -74,8 +79,8 @@ public class Board {
      * Retrieves the id of the board
      * @return the id
      */
-    @Id
-    @GeneratedValue
+//    @Id
+//    @GeneratedValue
     public int getId() {
         return id;
     }
