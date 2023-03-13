@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 
 public class CardCtrl {
     private final ServerUtils server;
+    private final MainCtrl mainCtrl;
     @FXML
     private TextField text;
     @FXML
@@ -19,11 +20,11 @@ public class CardCtrl {
     /**
      *
      * @param server -
-//     * @param mainCtrl -
+     * @param mainCtrl -
      */
     @Inject
-    public CardCtrl(ServerUtils server){
-//        this.mainCtrl  =mainCtrl;
+    public CardCtrl(ServerUtils server, MainCtrl mainCtrl){
+        this.mainCtrl = mainCtrl;
         this.server = server;
     }
 
@@ -40,7 +41,5 @@ public class CardCtrl {
         String title = text.getText();
         Card card = new Card(title);
         server.addCard(card);
-
-
     }
 }
