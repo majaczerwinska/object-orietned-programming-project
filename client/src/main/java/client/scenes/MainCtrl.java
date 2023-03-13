@@ -24,52 +24,55 @@ public class MainCtrl {
 
     private Stage primaryStage;
 
-    private QuoteOverviewCtrl overviewCtrl;
-    private Scene overview;
 
-    private AddQuoteCtrl addCtrl;
+    private LandingCtrl landingCtrl;
+    private Scene landing;
+
     private CardCtrl cardCtrl;
-    private Scene add;
-    private Scene card;
+    private Scene cardCreator;
+
+    private PublicBoardCtrl publicBoardCtrl;
+    private Scene publicBoard;
 
     /**
      *
      * @param primaryStage -
-     * @param overview -
-     * @param add -
+     * @param landing -
+     * @param publicBoard -
      * @param card -
      */
-    public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-            Pair<AddQuoteCtrl, Parent> add, Pair<CardCtrl, Parent> card) {
+    public void initialize(Stage primaryStage, Pair<LandingCtrl, Parent> landing,
+                           Pair<CardCtrl, Parent> card,Pair<PublicBoardCtrl, Parent> publicBoard) {
         this.primaryStage = primaryStage;
-        this.overviewCtrl = overview.getKey();
-        this.overview = new Scene(overview.getValue());
+        this.landingCtrl = landing.getKey();
+        this.landing = new Scene(landing.getValue());
 
-        this.addCtrl = add.getKey();
         this.cardCtrl = card.getKey();
-        this.add = new Scene(add.getValue());
-        this.card = new Scene(card.getValue());
+        this.cardCreator = new Scene(card.getValue());
 
-        showOverview();
+        this.publicBoardCtrl = publicBoard.getKey();
+        this.publicBoard = new Scene(publicBoard.getValue());
+
+        showLanding();
         primaryStage.show();
     }
 
     /**
      *
      */
-    public void showOverview() {
-        primaryStage.setTitle("Quotes: Overview");
-        primaryStage.setScene(overview);
-        overviewCtrl.refresh();
+    public void showLanding() {
+        primaryStage.setTitle("Landing page!!");
+        primaryStage.setScene(landing);
+        landingCtrl.refresh();
     }
 
     /**
      *
      */
-    public void showAdd() {
-        primaryStage.setTitle("Quotes: Adding Quote");
-        primaryStage.setScene(add);
-        primaryStage.setScene(card);
-        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+    public void showPublicBoard() {
+        primaryStage.setTitle("Public Board :)");
+        primaryStage.setScene(publicBoard);
+        primaryStage.show();
+        publicBoardCtrl.refresh();
     }
 }
