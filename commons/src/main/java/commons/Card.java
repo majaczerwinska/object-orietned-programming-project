@@ -14,6 +14,9 @@ public class Card {
     private String title;
     private String description;
     private int color;
+    private double position;
+
+
 
     @OneToMany
     private List<Task> tasks;
@@ -36,6 +39,23 @@ public class Card {
      * Default constructor
      */
     public Card() {}
+
+    /**
+     *
+     * @return the card's relative position within the list
+     */
+    public double getPosition() {
+        return position;
+    }
+
+    /**
+     * set the relative position attribute of a card
+     * @param position the new position
+     */
+    public void setPosition(double position) {
+        this.position = position;
+    }
+
 
     /**
      *Sets the id of the card
