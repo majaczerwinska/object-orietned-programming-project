@@ -1,13 +1,13 @@
 package commons;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 public class Tag {
-
+    @Id
+    @SequenceGenerator(name = "card_sequence", sequenceName = "card_sequence")
+    @GeneratedValue(generator = "card_sequence", strategy = GenerationType.SEQUENCE)
     private int id;
     private String title;
     private String description;
@@ -75,8 +75,6 @@ public class Tag {
      * 
      * @return - the id
      */
-    @Id
-    @GeneratedValue
     public int getId() {
         return id;
     }

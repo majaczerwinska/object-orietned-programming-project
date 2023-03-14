@@ -6,16 +6,22 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "cards")
 public class Card {
     @Id
+    @Column(name = "card_id")
     @SequenceGenerator(name = "card_sequence", sequenceName = "card_sequence")
     @GeneratedValue(generator = "card_sequence", strategy = GenerationType.SEQUENCE)
     private int id;
+    @Column(name = "card_name")
     private String title;
+    @Column(name = "card_description")
     private String description;
+    @Column(name = "card_color")
     private int color;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(targetEntity = Task.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "card_id")
     private List<Task> tasks;
 
 

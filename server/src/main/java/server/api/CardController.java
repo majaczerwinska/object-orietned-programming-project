@@ -52,7 +52,7 @@ public class CardController {
 
         if(card==null) return ResponseEntity.badRequest().build();
 
-        return ResponseEntity.ok(card);
+        return ResponseEntity.ok().build();
     }
 
     /**

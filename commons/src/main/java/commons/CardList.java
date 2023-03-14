@@ -5,15 +5,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "lists")
 public class CardList {
     @Id
+    @Column(name = "list_id")
     @SequenceGenerator(name = "card_sequence", sequenceName = "card_sequence")
     @GeneratedValue(generator = "card_sequence", strategy = GenerationType.SEQUENCE)
     private int id;
+    @Column(name = "list_name")
     private String name;
+    @Column(name = "list_color")
     private int color;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany( targetEntity = Card.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "list_id")
     private List<Card> cards;
 
 
@@ -99,6 +104,15 @@ public class CardList {
     public int getColor() {
         return color;
     }
+
+    /**
+     * Creates a string for the object
+     * @return a string representation
+     */
+    public String toString(){
+        return "List #" + id + ", " +name + ", " + color ;
+    }
+
 
 
   }

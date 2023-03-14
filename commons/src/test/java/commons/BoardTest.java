@@ -50,6 +50,13 @@ public class BoardTest {
         c.setLists(list);
         assertEquals(c.getLists(), list);
     }
+    @Test
+    void setTags() {
+        Board c = new Board("a");
+        List<Tag> list = new ArrayList<>();
+        c.setTags(list);
+        assertEquals(c.getTags(), list);
+    }
 
     @Test
     void setTitle() {

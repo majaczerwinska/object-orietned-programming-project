@@ -8,7 +8,10 @@ import org.springframework.stereotype.Service;
 import server.database.CardListRepository;
 import server.database.CardRepository;
 
+
+
 @Service
+
 public final class CardService {
 
     private CardRepository repo;
@@ -52,11 +55,10 @@ public final class CardService {
      */
     public Card delete(Card card, int listId){
         if(!cl.existsById(listId)) return null;
+        repo.delete(repo.getById(card.getId()));
         CardList list = cl.getById(listId);
         list.getCards().remove(card);
         cl.save(list);
-        repo.delete(repo.getById(card.getId()));
-
         return card;
     }
 

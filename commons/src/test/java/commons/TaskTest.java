@@ -43,6 +43,13 @@ public class TaskTest {
         Task task = new Task("test");
         assertEquals(task.getId(), 0);
     }
+    @Test
+    public void toStringTest(){
+        Task task = new Task("test");
+        assertEquals(task.toString(), "Task #" + task.getId()+ ", " + task.getName());
+    }
+
+
 
 
 

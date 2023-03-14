@@ -6,17 +6,27 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "BOARD")
 public class Board {
     @Id
+    @Column(name = "id")
     @SequenceGenerator(name = "card_sequence", sequenceName = "card_sequence")
     @GeneratedValue(generator = "card_sequence", strategy = GenerationType.SEQUENCE)
     public int id;
+    @Column(name = "color")
     private int color;
+    @Column(name = "name")
     private String name;
+    @Column(name = "boardkey")
     private String boardkey;
 
-    @OneToMany
+    @OneToMany(targetEntity = CardList.class,cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "list_id")
     private List<CardList> lists;
+
+    @OneToMany(targetEntity = Tag.class,cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "tag_id")
+    private List<Tag> tags;
 
 
 
@@ -28,6 +38,8 @@ public class Board {
         this.name = name;
         color = 0xffffff;
         this.lists = new ArrayList<>();
+        this.boardkey = "";
+        this.tags = new ArrayList<>();
     }
 
     /**
@@ -116,6 +128,22 @@ public class Board {
      */
     public void setColor(int colour) {
         this.color = colour;
+    }
+
+    /**
+     * Gets the tags assigned to a board
+     * @return all tags in the board
+     */
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    /**
+     * Sets the tags of the board
+     * @param tags the tags of the board
+     */
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 
     /**

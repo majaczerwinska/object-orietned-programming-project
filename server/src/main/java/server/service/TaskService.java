@@ -10,6 +10,7 @@ import server.database.TaskRepository;
 
 
 @Service
+
 public final class TaskService {
 
     private TaskRepository repo;

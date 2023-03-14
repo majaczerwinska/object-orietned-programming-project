@@ -60,6 +60,6 @@ public class TaskController {
         if(!ts.existsById(id)) return ResponseEntity.badRequest().build();
         Task t = ts.delete(ts.getById(id), cardId);
         if(t==null) return ResponseEntity.badRequest().build();
-        return ResponseEntity.ok(t);
+        return ResponseEntity.ok().build();
     }
 }

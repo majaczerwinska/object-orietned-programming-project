@@ -47,7 +47,8 @@ public class BoardController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Board> deleteBoard(@PathVariable("id") int id) {
         if(!abs.existsById(id)) return ResponseEntity.badRequest().build();
-        Board board = abs.delete(abs.getById(id));
-        return ResponseEntity.ok(board);
+        Board board = abs.getById(id);
+        abs.delete(board);
+        return ResponseEntity.ok().build();
     }
 }

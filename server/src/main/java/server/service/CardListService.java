@@ -2,7 +2,6 @@ package server.service;
 
 
 import commons.Board;
-import commons.Card;
 import commons.CardList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -11,7 +10,10 @@ import server.database.BoardRepository;
 import server.database.CardListRepository;
 
 
+
+
 @Service
+
 public final class CardListService {
     private CardListRepository repo;
 

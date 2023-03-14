@@ -57,4 +57,10 @@ class CardListTest {
         CardList t = new CardList();
         assertNull(t.getName());
     }
+
+    @Test
+    public void toStringTest(){
+        CardList t = new CardList("t");
+        assertEquals(t.toString(), "List #" + t.getId()+ ", " + t.getName()+ ", "+t.getColor());
+    }
 }

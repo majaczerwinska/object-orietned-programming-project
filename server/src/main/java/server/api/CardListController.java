@@ -62,7 +62,7 @@ public class CardListController {
         if(!als.existsById(id)) return ResponseEntity.badRequest().build();
         CardList list = als.delete(als.getById(id), boardId);
         if(list==null) return ResponseEntity.badRequest().build();
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok().build();
     }
 
 

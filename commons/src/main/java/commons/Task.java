@@ -3,12 +3,15 @@ package commons;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "tasks")
 public class Task {
 
     @Id
+    @Column(name = "task_id")
     @SequenceGenerator(name = "list_sequence", sequenceName = "list_sequence")
     @GeneratedValue(generator = "list_sequence", strategy = GenerationType.SEQUENCE)
     private int id;
+    @Column(name = "task_name")
     private String name;
 
 
@@ -58,4 +61,13 @@ public class Task {
     public void setName(String name) {
         this.name = name;
     }
+
+    /**
+     * Creates a string of the object
+     * @return a text representation
+     */
+    public  String toString(){
+        return "Task #" +id +", " + name;
+    }
+
 }
