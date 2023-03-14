@@ -19,6 +19,9 @@ public class Card {
     private String description;
     @Column(name = "card_color")
     private int color;
+    private double position;
+
+
 
     @OneToMany(targetEntity = Task.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "card_id")
@@ -42,6 +45,23 @@ public class Card {
      * Default constructor
      */
     public Card() {}
+
+    /**
+     *
+     * @return the card's relative position within the list
+     */
+    public double getPosition() {
+        return position;
+    }
+
+    /**
+     * set the relative position attribute of a card
+     * @param position the new position
+     */
+    public void setPosition(double position) {
+        this.position = position;
+    }
+
 
     /**
      *Sets the id of the card
