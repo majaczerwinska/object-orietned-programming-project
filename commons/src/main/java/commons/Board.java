@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "BOARD")
+@Table(name = "BOARDS")
 public class Board {
     @Id
     @Column(name = "id")
@@ -20,11 +20,11 @@ public class Board {
     @Column(name = "boardkey")
     private String boardkey;
 
-    @OneToMany(targetEntity = CardList.class,cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(targetEntity = CardList.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "list_id")
     private List<CardList> lists;
 
-    @OneToMany(targetEntity = Tag.class,cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(targetEntity = Tag.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "tag_id")
     private List<Tag> tags;
 

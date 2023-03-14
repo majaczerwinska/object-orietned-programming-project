@@ -22,6 +22,9 @@ public class Card {
     private double position;
 
 
+    @OneToMany( targetEntity = Tag.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "tag_id")
+    private List<Tag> tags;
 
     @OneToMany(targetEntity = Task.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "card_id")
@@ -38,6 +41,7 @@ public class Card {
         this.description = "";
         this.color = 0xffffff;
         this.tasks = new ArrayList<>();
+        this.tags = new ArrayList<>();
     }
 
 

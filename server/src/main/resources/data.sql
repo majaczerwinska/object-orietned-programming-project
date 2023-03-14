@@ -1,1 +1,1 @@
-INSERT INTO BOARD (id, name, boardkey, color) values (0, 'PublicBoard','main', 0)
+INSERT INTO BOARDS (id, name, boardkey, color) values (0, 'PublicBoard','main', 0)

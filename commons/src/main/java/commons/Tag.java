@@ -4,11 +4,14 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Table(name = "tags")
 public class Tag {
     @Id
+    @Column(name = "tag_id")
     @SequenceGenerator(name = "card_sequence", sequenceName = "card_sequence")
     @GeneratedValue(generator = "card_sequence", strategy = GenerationType.SEQUENCE)
     private int id;
+    @Column(name = "tag_name")
     private String title;
     private String description;
     private int color;
