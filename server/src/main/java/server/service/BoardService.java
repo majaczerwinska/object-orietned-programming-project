@@ -1,4 +1,4 @@
-package server;
+package server.service;
 
 import commons.Board;
 
@@ -7,8 +7,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import server.database.BoardRepository;
 
+import javax.transaction.Transactional;
+
 
 @Service
+@Transactional
+
 public class BoardService {
     private BoardRepository repo;
     /**
@@ -35,11 +39,10 @@ public class BoardService {
     /**
      * delete a board from the database
      * @param board to delete
-     * @return the board
      */
-    public Board delete(Board board){
-        repo.delete(repo.getById(board.getId()));
-        return board;
+    public void delete(Board board){
+        repo.delete(board);
+
     }
 
     /**
@@ -50,6 +53,15 @@ public class BoardService {
     public Board getById(int id){
         Board board = repo.getById(id);
         return board;
+    }
+
+    /**
+     * checks if the board exists
+     * @param id board id
+     * @return board object
+     */
+    public boolean existsById(int id){
+       return repo.existsById(id);
     }
 
 }

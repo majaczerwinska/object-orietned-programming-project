@@ -1,14 +1,17 @@
 package commons;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Table(name = "tags")
 public class Tag {
-
+    @Id
+    @Column(name = "tag_id")
+    @SequenceGenerator(name = "card_sequence", sequenceName = "card_sequence")
+    @GeneratedValue(generator = "card_sequence", strategy = GenerationType.SEQUENCE)
     private int id;
+    @Column(name = "tag_name")
     private String title;
     private String description;
     private int color;
@@ -75,8 +78,6 @@ public class Tag {
      * 
      * @return - the id
      */
-    @Id
-    @GeneratedValue
     public int getId() {
         return id;
     }

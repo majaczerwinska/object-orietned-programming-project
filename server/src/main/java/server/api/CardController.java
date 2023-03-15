@@ -1,37 +1,19 @@
 package server.api;
 
 import commons.Card;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import server.CardService;
-import server.TaskService;
+import server.service.CardService;
 //import server.VisitCounterService;
 //import server.database.CardRepository;
 
 @RestController
 @RequestMapping("/api/cards")
 public class CardController {
-    @Autowired
+
     private CardService acs;
-    @Autowired
-    private TaskService tls;
 
-    /** Default constructor
-     *
-     */
-    public CardController(){}
-
-    /**
-     * Controller #3
-     * @param c - card service
-     * @param tls - taskservice
-     */
-    public CardController(CardService c, TaskService tls) {
-        this.acs = c;
-        this.tls = tls;
-    }
 
     /**
      *Constructor
@@ -46,38 +28,31 @@ public class CardController {
     /**
      *Adds a card to the database
      * @param card - the card to be added
+     * @param listId - the id of the list to which we add the card
      * @return - a response entity
      */
-    @PostMapping(path = { "", "/" })
-    public ResponseEntity<Card> addCard(@RequestBody Card card) {
+    @PostMapping("/{listId}")
+    public ResponseEntity<Card> addCard(@PathVariable("listId") int listId, @RequestBody Card card) {
         if(card.getTitle()==null) return ResponseEntity.badRequest().build();
-        Card saved = acs.save(card);
-        return ResponseEntity.ok(saved);
-    }
-
-    /**
-     *Adds a card to the list (and the database)
-     * @param listId - id of the list
-     * @param card - the task to be added
-     * @return a response entity
-     */
-    @PostMapping(path = { "/{listId}" })
-    public ResponseEntity<Card> addCardToList(@PathVariable("listId") int listId, @RequestBody Card card) {
-        if(card.getTitle()==null) return ResponseEntity.badRequest().build();
-        Card saved = acs.save(card);
-        acs.addToList(listId, card);
+        Card saved = acs.save(card, listId);
+        if(saved==null) return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(saved);
     }
 
     /**
      *deletes a card from the database
      * @param id - the id of the card to be deleted
-     * @return - a string showing the id of the deleted card
+     * @param listId - the id of the list from which the card is deleted
+     * @return - a response entity
      */
-    @DeleteMapping("/card/{id}/delete")
-    public String deleteCard(@PathVariable("id") int id) {
-        acs.delete(acs.getById(id));
-        return "Deleted card #" + id;
+    @DeleteMapping("/{listId}/{id}")
+    public ResponseEntity<Card> deleteCard(@PathVariable("listId") int listId, @PathVariable("id") int id) {
+        if(!acs.existsById(id)) return ResponseEntity.badRequest().build();
+        Card card = acs.delete(acs.getById(id), listId);
+
+        if(card==null) return ResponseEntity.badRequest().build();
+
+        return ResponseEntity.ok().build();
     }
 
     /**

@@ -1,26 +1,33 @@
-package server;
+package server.service;
 
 import commons.Card;
 import commons.CardList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import server.database.CardListRepository;
 import server.database.CardRepository;
 
+
+
 @Service
+
 public final class CardService {
+
     private CardRepository repo;
-    @Autowired
-    private CardListService cls;
+
+    private CardListRepository cl;
 
 
     /**
      * Constructor
      * @param repo card repository
+     * @param cl card list repository
      */
     @Autowired
-    public CardService(@Qualifier("card") CardRepository repo) {
+    public CardService(@Qualifier("card") CardRepository repo, @Qualifier("list") CardListRepository cl) {
         this.repo = repo;
+        this.cl = cl;
     }
 
 
@@ -28,20 +35,30 @@ public final class CardService {
     /**
      * save a card to the database
      * @param card card to save
+     * @param listId the id of the list in which the card is saved
      * @return the card
      */
-    public Card save(Card card){
+    public Card save(Card card, int listId){
+        if(!cl.existsById(listId)) return null;
         repo.save(card);
+        CardList list = cl.getById(listId);
+        list.getCards().add(card);
+        cl.save(list);
         return card;
     }
 
     /**
      * delete a card from the database
      * @param card to delete
+     * @param listId the list from which we delete
      * @return the card
      */
-    public Card delete(Card card){
+    public Card delete(Card card, int listId){
+        if(!cl.existsById(listId)) return null;
         repo.delete(repo.getById(card.getId()));
+        CardList list = cl.getById(listId);
+        list.getCards().remove(card);
+        cl.save(list);
         return card;
     }
 
@@ -76,16 +93,7 @@ public final class CardService {
         repo.save(c);
     }
 
-    /**
-     * Adds a card to the list
-     * @param listId - id of the list
-     * @param card - the card
-     */
-    public void addToList(int listId, Card card){
-        CardList cardlist = cls.getById(listId);
-        cardlist.getCards().add(card);
-        cls.save(cardlist);
-    }
+
 
 
 

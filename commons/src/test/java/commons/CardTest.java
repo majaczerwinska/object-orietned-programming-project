@@ -75,6 +75,14 @@ public class CardTest {
     }
 
     @Test
+    void setTasks() {
+        Card c = new Card("a");
+        List<Task> list = new ArrayList<>();
+        c.setTasks(list);
+        assertEquals(c.getTasks(), list);
+    }
+
+    @Test
     void setColor() {
         Card c = new Card("a");
         c.setColor(1);

@@ -1,46 +1,64 @@
-package server;
+package server.service;
+
 
 import commons.Board;
 import commons.CardList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import server.database.BoardRepository;
 import server.database.CardListRepository;
 
 
+
+
 @Service
+
 public final class CardListService {
     private CardListRepository repo;
-    @Autowired
-    private BoardService bs;
+
+    private BoardRepository br;
 
     /**
      *Constructor
-     * @param repo - the repository in use
+     * @param repo - the list repository in use
+     * @param br - the board repository in use
      */
     @Autowired
-    public CardListService(@Qualifier("list") CardListRepository repo) {
+    public CardListService(@Qualifier("list") CardListRepository repo,@Qualifier("board") BoardRepository br) {
         this.repo = repo;
+        this.br = br;
     }
 
 
     /**
      *Saves the list in the database
      * @param list - the list to be saved
+     * @param boardId - the board to which we save the list
      * @return - the saved list
      */
-    public CardList save(CardList list){
+    public CardList save(CardList list, int boardId){
+        if(!br.existsById(boardId)) return null;
         repo.save(list);
+        Board board = br.getById(boardId);
+        board.getLists().add(list);
+        br.save(board);
         return list;
+
     }
 
     /**
      * deletes a list from the database
      * @param list - the list to be deleted
+     * @param boardId - the board from which we delete the list
      * @return - the deleted list
      */
-    public CardList delete(CardList list){
+    public CardList delete(CardList list, int boardId){
+        if(!br.existsById(boardId)) return null;
         repo.delete(repo.getById(list.getId()));
+        Board board = br.getById(boardId);
+        board.getLists().remove(list);
+        br.save(board);
         return list;
     }
 
@@ -73,15 +91,5 @@ public final class CardListService {
         repo.save(list);
     }
 
-    /**
-     * Adds a list of cards to a board
-     * @param boardId - id of the board
-     * @param cards - id of the card
-     */
-    public void addToBoard(int boardId, CardList cards){
-        Board board = bs.getById(boardId);
-        board.getLists().add(cards);
-        bs.save(board);
 
-    }
 }

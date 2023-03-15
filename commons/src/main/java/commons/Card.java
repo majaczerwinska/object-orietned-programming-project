@@ -6,19 +6,28 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "cards")
 public class Card {
     @Id
+    @Column(name = "card_id")
     @SequenceGenerator(name = "card_sequence", sequenceName = "card_sequence")
     @GeneratedValue(generator = "card_sequence", strategy = GenerationType.SEQUENCE)
     private int id;
+    @Column(name = "card_name")
     private String title;
+    @Column(name = "card_description")
     private String description;
+    @Column(name = "card_color")
     private int color;
     private double position;
 
 
+    @OneToMany( targetEntity = Tag.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "tag_id")
+    private List<Tag> tags;
 
-    @OneToMany
+    @OneToMany(targetEntity = Task.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "card_id")
     private List<Task> tasks;
 
 
@@ -32,6 +41,7 @@ public class Card {
         this.description = "";
         this.color = 0xffffff;
         this.tasks = new ArrayList<>();
+        this.tags = new ArrayList<>();
     }
 
 
@@ -176,6 +186,6 @@ public class Card {
      */
     @Override
     public String toString() {
-        return "Card #+" + id + "\n" + title + "\n" + description + "\n" + color;
+        return "Card #" + id + "\n" + title + "\n" + description + "\n" + color;
     }
 }

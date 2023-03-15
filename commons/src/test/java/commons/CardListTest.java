@@ -2,9 +2,12 @@ package commons;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-class SubtaskListTest {
+class CardListTest {
 
     CardList tl = new CardList("test");
 
@@ -12,6 +15,13 @@ class SubtaskListTest {
     void setId() {
         tl.setId(1);
         assertEquals(tl.getId(), 1);
+    }
+
+    @Test
+    void setCards() {
+        List<Card> list = new ArrayList<>();
+        tl.setCards(list);
+        assertEquals(tl.getCards(), list);
     }
 
     @Test
@@ -46,5 +56,11 @@ class SubtaskListTest {
     void testEmptyConstructor() {
         CardList t = new CardList();
         assertNull(t.getName());
+    }
+
+    @Test
+    public void toStringTest(){
+        CardList t = new CardList("t");
+        assertEquals(t.toString(), "List #" + t.getId()+ ", " + t.getName()+ ", "+t.getColor());
     }
 }

@@ -1,12 +1,12 @@
 package server.api;
 
-import commons.Card;
+import commons.Board;
 import commons.Tag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import server.CardService;
-import server.TagService;
-import server.database.CardRepositoryTest;
+import server.database.BoardRepository;
+import server.database.BoardRepositoryTest;
+import server.service.TagService;
 import server.database.TagRepositoryTest;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -14,20 +14,24 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TagControllerTest {
     private TagRepositoryTest repo;
+    private BoardRepositoryTest br;
     private TagController con;
     private TagService ser;
 
     @BeforeEach
     public void setup() {
         repo = new TagRepositoryTest();
-        ser = new TagService(repo);
+        br = new BoardRepositoryTest();
+        ser = new TagService(repo, br);
         con = new TagController(ser);
     }
 
     @Test
     public void addTagTest(){
         Tag tag= new Tag("title");
-        con.addTag(tag);
+        Board b = new Board("t");
+        br.save(b);
+        con.addTag(b.getId(),tag);
         assertTrue(repo.existsById(tag.getId()));
 
     }
@@ -36,8 +40,10 @@ public class TagControllerTest {
     public void deleteTest(){
 
         Tag tag= new Tag("title");
-        con.addTag(tag);
-        con.deleteTag(tag.getId());
+        Board b = new Board("t");
+        br.save(b);
+        con.addTag(b.getId(),tag);
+        con.deleteTag(b.getId(),tag.getId());
         assertFalse(repo.existsById(tag.getId()));
 
     }
