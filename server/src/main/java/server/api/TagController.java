@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.service.TagService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/tags")
 public class TagController {
@@ -19,6 +21,11 @@ public class TagController {
     @Autowired
     public TagController(TagService ser){
         this.ser = ser;
+    }
+
+    @GetMapping(path = { "", "/" })
+    public List<Tag> getTags() {
+        return ser.getAll();
     }
 
     /**

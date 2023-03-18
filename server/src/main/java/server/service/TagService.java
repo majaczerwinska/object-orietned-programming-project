@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import server.database.BoardRepository;
 import server.database.TagRepository;
 
+import java.util.List;
+
 @Service
 public class TagService {
     private final TagRepository repo;
@@ -21,6 +23,10 @@ public class TagService {
     public TagService(@Qualifier("tag") TagRepository repo, BoardRepository br){
         this.repo =repo;
         this.br = br;
+    }
+
+    public List<Tag> getAll() {
+        return repo.findAll();
     }
 
     /**

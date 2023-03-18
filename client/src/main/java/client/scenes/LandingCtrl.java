@@ -32,6 +32,11 @@ public class LandingCtrl {
         mainCtrl.showPublicBoard();
     }
 
+    public void showTagManager(ActionEvent e){
+        System.out.println("showTagManger!!!");
+        mainCtrl.showTagManager();
+    }
+
     /**
      *
      * @param actionEvent event details, automatic

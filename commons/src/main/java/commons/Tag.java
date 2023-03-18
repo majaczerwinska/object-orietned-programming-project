@@ -26,7 +26,18 @@ public class Tag {
         this.title = title;
         this.description = "";
         this.color = 0xffffff;
+    }
 
+    public Tag(String title, String description) {
+        this.title = title;
+        this.description = description;
+        this.color = 0xffffff;
+    }
+
+    public Tag(String title, String description, int color) {
+        this.title = title;
+        this.description = description;
+        this.color = color;
     }
 
 
