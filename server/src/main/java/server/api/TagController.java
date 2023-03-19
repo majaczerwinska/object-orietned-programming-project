@@ -49,4 +49,23 @@ public class TagController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Adds a tag to the card
+     * @param boardId the board to which the card and the tag belong
+     * @param cardId the card to which the tag is added
+     * @param tagId the tag that is assigned to a card
+     * @return the tag that was matched to a card
+     */
+    @PutMapping( "/{boardId}/{cardId}/{tagId}")
+    public ResponseEntity<Tag> addTagToCard(@PathVariable("boardId") int boardId,
+                                            @PathVariable("cardId") int cardId,
+                                            @PathVariable("tagId") int tagId) {
+        if(!ser.existsById(tagId)) return ResponseEntity.badRequest().build();
+        Tag saved = ser.addTagToCard(boardId, cardId, tagId);
+        if(saved==null) return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok().build();
+    }
+
+
+
 }
