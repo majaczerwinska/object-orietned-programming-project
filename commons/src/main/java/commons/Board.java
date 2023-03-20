@@ -21,11 +21,11 @@ public class Board {
     private String boardkey;
 
     @OneToMany(targetEntity = CardList.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "list_id")
+    @JoinColumn(name = "board_id")
     private List<CardList> lists;
 
     @OneToMany(targetEntity = Tag.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "tag_id")
+    @JoinColumn(name = "board_id")
     private List<Tag> tags;
 
 
