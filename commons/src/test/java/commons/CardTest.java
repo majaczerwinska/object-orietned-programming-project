@@ -81,6 +81,13 @@ public class CardTest {
         c.setTasks(list);
         assertEquals(c.getTasks(), list);
     }
+    @Test
+    void setTasgs() {
+        Card c = new Card("a");
+        List<Tag> list = new ArrayList<>();
+        c.setTags(list);
+        assertEquals(c.getTags(), list);
+    }
 
     @Test
     void setColor() {
@@ -93,6 +100,17 @@ public class CardTest {
     void getId() {
         Card c = new Card("a");
         assertEquals(c.getId(), 0);
+    }
+    @Test
+    void getPosition() {
+        Card c = new Card("a");
+        assertEquals(c.getPosition(), 0.0);
+    }
+    @Test
+    void setPosition() {
+        Card c = new Card("a");
+        c.setPosition(1.0);
+        assertEquals(c.getPosition(), 1.0);
     }
 
     @Test

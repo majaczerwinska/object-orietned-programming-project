@@ -3,6 +3,8 @@ package commons;
 import org.junit.jupiter.api.Test;
 
 
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -90,6 +92,16 @@ public class TagTest {
         Tag c = new Tag("a");
         assertEquals(c.getId(), 0);
     }
+    @Test
+    void setCardsAndGetCards() {
+        Tag c = new Tag("a");
+        List<Card> list = new ArrayList<>();
+        Card card = new Card("wdjhbhr");
+        list.add(card);
+        c.setCards(list);
+        assertEquals(c.getCards(), list);
+    }
+
 
     @Test
     void getTitle() {
