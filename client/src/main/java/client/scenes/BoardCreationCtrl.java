@@ -43,8 +43,8 @@ public class BoardCreationCtrl {
 
     /**
      * board creator controller constructor
-     * @param server
-     * @param mainCtrl
+     * @param server server
+     * @param mainCtrl main controller
      */
     @Inject
     public BoardCreationCtrl(ServerUtils server, MainCtrl mainCtrl){
@@ -52,7 +52,13 @@ public class BoardCreationCtrl {
         this.server = server;
     }
 
-    public int hashHexCode(String str) { // java String#hashCode
+    /**
+     * hash hex code 
+     * @param str string to be turned into a has value
+     * @return int
+     */
+    public int hashHexCode(String str) { 
+        // java String#hashCode
         int hash = 0;
         for (var i = 0; i < str.length(); i++) {
            hash = str.charAt(i) + ((hash << 5) - hash);
