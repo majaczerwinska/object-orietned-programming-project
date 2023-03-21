@@ -10,5 +10,6 @@
       <Button layoutX="285.0" layoutY="245.0" mnemonicParsing="false" onAction="#onTeamActionEvent" text="Team" />
       <Button layoutX="424.0" layoutY="246.0" mnemonicParsing="false" text="Private" />
       <Text layoutX="245.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" text="application main screen" />
+      <Button mnemonicParsing="false" onMouseClicked="#onSelectClickEvent" text="Select" />
    </children>
 </AnchorPane>

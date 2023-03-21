@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.service.BoardService;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/boards")
@@ -50,5 +52,17 @@ public class BoardController {
         Board board = abs.getById(id);
         abs.delete(board);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/")
+    public List<Board> getBoards(){
+        return abs.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Board> getBoard(@PathVariable("id") int id){
+        if(id < 0 || !abs.existsById(id)) return ResponseEntity.badRequest().body(null);
+        Board b = abs.getById(id);
+        return ResponseEntity.ok(b);
     }
 }

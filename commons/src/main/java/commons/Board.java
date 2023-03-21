@@ -34,7 +34,7 @@ public class Board {
      * Constructor
      * @param name the name of the board
      */
-    public Board( String name){
+    public Board(String name){
         this.name = name;
         color = 0xffffff;
         this.lists = new ArrayList<>();

@@ -23,12 +23,21 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 //import java.net.URL;
 //import java.util.List;
 
+import commons.Board;
 import commons.Card;
+import jakarta.ws.rs.core.GenericType;
+import javafx.scene.control.ListView;
 import org.glassfish.jersey.client.ClientConfig;
 
 //import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.List;
 //import jakarta.ws.rs.core.GenericType;
 
 public class ServerUtils {
@@ -75,7 +84,6 @@ public class ServerUtils {
 //    }
 
     /**
-     *
      * @param card -
      * @return -
      */
@@ -86,4 +94,45 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(card, APPLICATION_JSON), Card.class);
     }
+
+    public Board addBoard(Board board) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/boards/")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(board, APPLICATION_JSON), Board.class);
+    }
+
+    public List<Board> getBoards() {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/boards/")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(new GenericType<>() {
+                });
+    }
+
+    public Board getBoard(int id){
+        try{
+            return ClientBuilder.newClient(new ClientConfig())
+                    .target(SERVER).path("api/boards/"+id)
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .get(new GenericType<>() {
+                    });
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+//    public void getBoardsTheHardWay() throws IOException {
+//        var url = new URL("http://localhost:8080/api/boards/");
+//        var is = url.openConnection().getInputStream();
+//        var br = new BufferedReader(new InputStreamReader(is));
+//        String line;
+//        while ((line = br.readLine()) != null) {
+//            System.out.println(line);
+//        }
+//    }
 }

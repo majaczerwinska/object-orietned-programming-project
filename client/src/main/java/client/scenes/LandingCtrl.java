@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.input.MouseEvent;
 
 import javax.inject.Inject;
+import java.io.IOException;
 
 public class LandingCtrl {
 
@@ -45,4 +46,11 @@ public class LandingCtrl {
      */
     public void refresh() {
     }
+
+    public void onSelectClickEvent(MouseEvent mouseEvent) {
+        System.out.println("Select was clicked");
+        mainCtrl.showSelect();
+    }
+
+
 }
