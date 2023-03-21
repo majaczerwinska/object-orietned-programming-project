@@ -5,7 +5,6 @@ import javafx.event.ActionEvent;
 import javafx.scene.input.MouseEvent;
 
 import javax.inject.Inject;
-import java.io.IOException;
 
 public class LandingCtrl {
 
@@ -56,6 +55,10 @@ public class LandingCtrl {
     public void refresh() {
     }
 
+    /**
+     * takes you to board selection scene
+     * @param mouseEvent - click
+     */
     public void onSelectClickEvent(MouseEvent mouseEvent) {
         System.out.println("Select was clicked");
         mainCtrl.showSelect();

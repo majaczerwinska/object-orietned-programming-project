@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="192.0" prefWidth="601.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.popupJoinCtrl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="192.0" prefWidth="601.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.PopupJoinCtrl">
    <children>
       <Label layoutX="68.0" layoutY="87.0" prefHeight="17.0" prefWidth="751.0" text="The board with given key cannot be found. Provide a different key or create a new board." />
       <Button layoutX="527.0" layoutY="147.0" mnemonicParsing="false" onMouseClicked="#back" text="Go back" />

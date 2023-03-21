@@ -6,17 +6,11 @@ import commons.Board;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-
-import java.io.IOException;
-import java.net.URL;
-import java.sql.*;
 import java.util.List;
-import java.util.ResourceBundle;
 
 public class BoardSelectCtrl{
     @FXML
@@ -39,13 +33,20 @@ public class BoardSelectCtrl{
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
-
+    /**
+     *
+     * @param server
+     * @param mainCtrl
+     */
     @Inject
     public BoardSelectCtrl(ServerUtils server, MainCtrl mainCtrl){
         this.mainCtrl = mainCtrl;
         this.server = server;
     }
 
+    /**
+     * updates contents of a list of joined boards
+     */
     public void refresh() {
             try{
                 items.clear();
@@ -68,6 +69,11 @@ public class BoardSelectCtrl{
 //        refresh();
 //    }
 
+    /**
+     * !not finished!
+     * checks if the board you want to join exists
+     * @param mouseEvent - click
+     */
     @FXML
     public void join(MouseEvent mouseEvent){
        Board board = server.getBoard(Integer.parseInt(boardKey.getText()));
@@ -77,11 +83,19 @@ public class BoardSelectCtrl{
 
     }
 
+    /**
+     * (should) take you to board creation scene
+     * @param mouseEvent - click
+     */
     @FXML
     public void goCreate(MouseEvent mouseEvent){
         mainCtrl.showLanding();
     }
 
+    /**
+     * takes you back to the landing page
+     * @param mouseEvent - click
+     */
     @FXML
     public void back(MouseEvent mouseEvent){
         mainCtrl.showLanding();

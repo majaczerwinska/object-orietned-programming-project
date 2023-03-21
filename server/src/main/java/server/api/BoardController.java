@@ -54,11 +54,20 @@ public class BoardController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * gets all boards from the database
+     * @return - list of boards
+     */
     @GetMapping("/")
     public List<Board> getBoards(){
         return abs.findAll();
     }
 
+    /**
+     * gets a board from database with provided id
+     * @param id - id of the board
+     * @return - the board
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Board> getBoard(@PathVariable("id") int id){
         if(id < 0 || !abs.existsById(id)) return ResponseEntity.badRequest().body(null);

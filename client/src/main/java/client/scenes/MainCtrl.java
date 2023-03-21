@@ -20,8 +20,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
-import java.io.IOException;
-
 public class MainCtrl {
 
     private Stage primaryStage;
@@ -38,25 +36,29 @@ public class MainCtrl {
     private BoardSelectCtrl boardSelectCtrl;
     private Scene boardSelect;
 
-    private popupJoinCtrl popupJoinCtrl;
+    private PopupJoinCtrl popupJoinCtrl;
     private Scene popupJoin;
 
     private TagManagerCtrl tagManagerCtrl;
     private Scene tagManager;
 
     /**
-     * @param primaryStage -
-     * @param landing      -
-     * @param publicBoard  -
-     * @param card         -
-     * @param tagManager   -
+     *
+     * @param primaryStage
+     * @param landing
+     * @param card
+     * @param publicBoard
+     * @param boardSelect
+     * @param popup
+     * @param tagManager
      */
+
     public void initialize(Stage primaryStage,
                            Pair<LandingCtrl, Parent> landing,
                            Pair<CardCtrl, Parent> card,
                            Pair<PublicBoardCtrl, Parent> publicBoard,
                            Pair<BoardSelectCtrl, Parent> boardSelect,
-                           Pair<popupJoinCtrl, Parent> popup,
+                           Pair<PopupJoinCtrl, Parent> popup,
                            Pair<TagManagerCtrl, Parent> tagManager) {
         this.primaryStage = primaryStage;
         this.landingCtrl = landing.getKey();
@@ -100,6 +102,9 @@ public class MainCtrl {
         publicBoardCtrl.refresh();
     }
 
+    /**
+     * shows board selection scene
+     */
     public void showSelect() {
         primaryStage.setTitle("Board selection");
         primaryStage.setScene(boardSelect);
@@ -107,6 +112,9 @@ public class MainCtrl {
         boardSelectCtrl.refresh();
     }
 
+    /**
+     * shows a popup
+     */
     public void showPopup() {
         primaryStage.setTitle("Something went wrong");
         primaryStage.setScene(popupJoin);
