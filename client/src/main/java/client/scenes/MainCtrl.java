@@ -108,5 +108,6 @@ public class MainCtrl {
         primaryStage.setTitle("Board Creation");
         primaryStage.setScene(boardCreation);
         primaryStage.show();
+        boardCreationCtrl.refresh();
     }
 }

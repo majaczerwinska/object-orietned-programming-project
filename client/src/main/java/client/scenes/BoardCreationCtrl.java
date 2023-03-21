@@ -112,4 +112,10 @@ public class BoardCreationCtrl {
         }
         server.addBoard(newBoard);
     }
+
+    /**
+     *
+     */
+    public void refresh() {
+    }
 }
