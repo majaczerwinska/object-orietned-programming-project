@@ -76,6 +76,10 @@ public class CardRepositoryTest implements CardRepository{
 
     @Override
     public Optional<Card> findById(Integer integer) {
+        if(!existsById(integer)) return Optional.empty();
+        for(Card card : cards){
+            if(card.getId()==integer) return Optional.of(card);
+        }
         return Optional.empty();
     }
 

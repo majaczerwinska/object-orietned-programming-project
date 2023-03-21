@@ -45,7 +45,8 @@ public class CardCtrl {
     @FXML
     private TextArea newTask;
 
-    private int id;
+    private int cardId;
+    private int boardId;
 
 //    @FXML
 //    private Circle bigBlueButton;
@@ -77,24 +78,26 @@ public class CardCtrl {
 
     /**
      * Prepares the scene with the right tags to chose out of and the current name and description.
-     * @param id the id of the card entered when opening this scene
+     * @param cardId the id of the card entered when opening this scene
      */
     @FXML
-    private void openScene(int id) {
-        this.id = id;
-        // TODO when the scene is started the id of the card should be provided so that we know which card we are working with.
+    private void openScene(int cardId, int boardId) {
+        this.cardId = cardId;
+        this.boardId = boardId;
+        List<Tag> allTags = server.getTagsFromBoard(this.boardId);
 
-        Card card = server.getCard(id);
+
+        Card card = server.getCard(cardId);
 
         tags.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         ObservableList<String> items = FXCollections.observableArrayList();
         MultipleSelectionModel<String> selectionModel = tags.getSelectionModel();
 
-        // TODO get all the created tags from database and instantiate them in a list view, also get the tags of this card and select them in listview/
-//        for (int i = 0; i < ALLTAGS.size(); i++) {
-//            items.add(ALLTAGS.get(i).getTitle());
-//            if (TAGSOFCARD.contains(ALLTAGS.get(i))) selectionModel.select(i);
-//        }
+
+        for (int i = 0; i < allTags.size(); i++) {
+            items.add(allTags.get(i).getTitle());
+            if (card.getTags().contains(allTags.get(i))) selectionModel.select(i);
+        }
         tags.setItems(items);
 
 
@@ -105,12 +108,12 @@ public class CardCtrl {
 
 
         for (Task t : card.getTasks()) {
-        TextField textField = new TextField(t.getName());
-        CheckBox checkBox = new CheckBox();
-        HBox hbox = new HBox();
-        hbox.getChildren().add(textField);
-        hbox.getChildren().add(checkBox);
-        vbox.getChildren().add(hbox);
+            TextField textField = new TextField(t.getName());
+            CheckBox checkBox = new CheckBox();
+            HBox hbox = new HBox();
+            hbox.getChildren().add(textField);
+            hbox.getChildren().add(checkBox);
+            vbox.getChildren().add(hbox);
         }
     }
 
@@ -128,11 +131,11 @@ public class CardCtrl {
      */
     @FXML
     private void addTask(){
-        Card c = server.getCard(id);
+        Card c = server.getCard(cardId);
         List<Task> l = c.getTasks();
         l.add(new Task(newTask.getText()));
         c.setTasks(l);
-        server.editCard(id, c);
+        server.editCard(cardId, c);
     }
 
 
@@ -148,13 +151,14 @@ public class CardCtrl {
         ObservableList<String> tags = this.tags.getSelectionModel().getSelectedItems();
         List<Tag> tagList = new ArrayList<>();
         List<Task> taskList = new ArrayList<>();
+        List<Tag> allTags = server.getTagsFromBoard(boardId);
 
-        //TODO get a list of all tags from database, compare them with the listview and add them to a list if they are checked on.
-//        for (Tag t : ALLTAGS) {
-//            if (tags.contains(t.getTitle())) {
-//                tagList.add(t);
-//            }
-//        }
+
+        for (Tag t : allTags) {
+            if (tags.contains(t.getTitle())) {
+                tagList.add(t);
+            }
+        }
 
         addNotSelectedTasks(taskList);
 
@@ -162,7 +166,7 @@ public class CardCtrl {
         card.setDescription(description);
         card.setTasks(taskList);
         card.setTags(tagList);
-        card.setId(this.id);
+        card.setId(this.cardId);
 
         if (name.isEmpty() || description.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -171,14 +175,15 @@ public class CardCtrl {
             alert.showAndWait();
         }
         else {
-            server.editCard(id, card);
+            server.editCard(cardId, card);
         }
-        // TODO call the scene again so all values will be replaced with there new values. REFRESH
+        this.openScene(cardId, boardId);
     }
 
     /**
      * Get all the text of not selected checkboxes and add those tasks to the new taskList
-     * @param taskList The list of tasks that will become the new list of tasks of the card after saving.
+     * @param taskList The list of tasks that will
+     * become the new list of tasks of the card after saving.
      */
     private void addNotSelectedTasks(List<Task> taskList) {
         for (Node node :vbox.getChildren()) {
