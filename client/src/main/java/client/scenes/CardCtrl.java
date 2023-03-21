@@ -64,12 +64,7 @@ public class CardCtrl {
         this.mainCtrl = mainCtrl;
         this.server = server;
     }
-
-
-
-
-
-
+    
     /**
      *
      */

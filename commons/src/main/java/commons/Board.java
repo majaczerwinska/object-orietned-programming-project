@@ -19,13 +19,15 @@ public class Board {
     private String name;
     @Column(name = "boardkey")
     private String boardkey;
+    @Column(name = "password")
+    private String password;
 
     @OneToMany(targetEntity = CardList.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "list_id")
+    @JoinColumn(name = "board_id")
     private List<CardList> lists;
 
     @OneToMany(targetEntity = Tag.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "tag_id")
+    @JoinColumn(name = "board_id")
     private List<Tag> tags;
 
 
@@ -34,12 +36,13 @@ public class Board {
      * Constructor
      * @param name the name of the board
      */
-    public Board( String name){
+    public Board(String name){
         this.name = name;
         color = 0xffffff;
         this.lists = new ArrayList<>();
         this.boardkey = "";
         this.tags = new ArrayList<>();
+        this.password = "";
     }
 
     /**
@@ -55,8 +58,22 @@ public class Board {
         return name;
     }
 
+    /**
+     * password getter method
+     * @return String
+     */
+    public String getPassword() {
+        return password;
+    }
 
-
+    /**
+     * password setter method
+     * @param password
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+ 
     /**
      * Changes the name of the board
      * @param name the new name
