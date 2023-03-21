@@ -24,6 +24,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import java.util.List;
 
 import commons.Card;
+import commons.Board;
 import jakarta.ws.rs.core.GenericType;
 import commons.Tag;
 import org.glassfish.jersey.client.ClientConfig;
@@ -181,5 +182,18 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(newTag, APPLICATION_JSON), Tag.class);
+    }
+
+    /**
+     * method that adds a board to the database
+     * @param board
+     * @return
+     */
+    public Board addBoard(Board board) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/board") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(board, APPLICATION_JSON), Board.class);   
     }
 }

@@ -49,6 +49,10 @@ public class LandingCtrl {
         System.out.println("team action event :)");
     }
 
+    public void onPrivateClickEvent() {
+        mainCtrl.showBoardCreation();
+    }
+
     /**
      *
      */
