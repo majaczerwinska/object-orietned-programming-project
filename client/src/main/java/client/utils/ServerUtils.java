@@ -136,7 +136,45 @@ public class ServerUtils {
         }
         return null;
     }
+
     /**
+     * Get card by id
+     * @param id the id to get cards by
+     * @return the card found by id
+     */
+    public Card getCard(int id) {
+        try {
+            return ClientBuilder.newClient(new ClientConfig())
+                    .target(SERVER).path("api/cards" + id)
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .get(new GenericType<Card>() {
+                    });
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    /**
+     * Edit card with id to the new card
+     * @param id the id of the card to edit
+     * @param card the new card the old card is replaced by
+     * @return return the card edited
+     */
+    public Card editCard(int id, Card card) {
+        try {
+            return ClientBuilder.newClient(new ClientConfig())
+                    .target(SERVER).path("api/cards" + id)
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .put(Entity.entity(card, APPLICATION_JSON), Card.class);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+        /**
      * Gets a list of all tags from a board
      * @param boardId the id from the board we need the tags from
      * @return the list with tags from the board
