@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 //import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import server.service.CardService;
+
+import java.util.Random;
 //import server.VisitCounterService;
 //import server.database.CardRepository;
 
@@ -72,5 +74,10 @@ public class CardController {
         return ResponseEntity.ok(card);
     }
 
-
+    @GetMapping("/{id}")
+    public ResponseEntity<Card> getCard(@PathVariable("id") int id) {
+        if(id < 0 || !acs.existsById(id)) return ResponseEntity.badRequest().body(null);
+        Card c =acs.findById(id).get();
+        return ResponseEntity.ok(c);
+    }
 }

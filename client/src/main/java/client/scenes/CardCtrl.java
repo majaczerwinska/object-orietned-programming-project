@@ -84,6 +84,8 @@ public class CardCtrl {
         this.id = id;
         // TODO when the scene is started the id of the card should be provided so that we know which card we are working with.
 
+        Card card = server.getCard(id);
+
         tags.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         ObservableList<String> items = FXCollections.observableArrayList();
         MultipleSelectionModel<String> selectionModel = tags.getSelectionModel();
@@ -96,20 +98,20 @@ public class CardCtrl {
         tags.setItems(items);
 
 
-        // TODO get the name and description of the card from database and instantiate the textField and textArea with them in it.
-//        this.name.setText(GETNAMEFROMDATABASE);
-//        this.description.setText(GETDESCRIPTIONFROMDATABASE);
+
+        this.name.setText(card.getTitle());
+        this.description.setText(card.getDescription());
 
 
-        // TODO get all tasks a card had from database and add them to a hbox together with a checkbox and add those to a vbox.
-//        for (String str : GETALLTASKSFROMDATABASE.getName()) {
-//        TextField textField = new TextField(str);
-//        CheckBox checkBox = new CheckBox();
-//        HBox hbox = new HBox();
-//        hbox.getChildren().add(textField);
-//        hbox.getChildren().add(checkBox);
-//        vbox.getChildren().add(hbox);
-//        }
+
+        for (Task t : card.getTasks()) {
+        TextField textField = new TextField(t.getName());
+        CheckBox checkBox = new CheckBox();
+        HBox hbox = new HBox();
+        hbox.getChildren().add(textField);
+        hbox.getChildren().add(checkBox);
+        vbox.getChildren().add(hbox);
+        }
     }
 
     /**
@@ -126,8 +128,11 @@ public class CardCtrl {
      */
     @FXML
     private void addTask(){
-        // TODO Add to database
-        //Task task = new Task(newTask.getText());
+        Card c = server.getCard(id);
+        List<Task> l = c.getTasks();
+        l.add(new Task(newTask.getText()));
+        c.setTasks(l);
+        server.editCard(id, c);
     }
 
 
@@ -156,8 +161,7 @@ public class CardCtrl {
         Card card = new Card(name);
         card.setDescription(description);
         card.setTasks(taskList);
-        // TODO there is no setTags method in the Card class.
-        //card.setTags(tagList);
+        card.setTags(tagList);
         card.setId(this.id);
 
         if (name.isEmpty() || description.isEmpty()) {
@@ -167,9 +171,9 @@ public class CardCtrl {
             alert.showAndWait();
         }
         else {
-            // TODO save card to database.
+            server.editCard(id, card);
         }
-        // TODO call the scene again so all values will be replaced with there new values.
+        // TODO call the scene again so all values will be replaced with there new values. REFRESH
     }
 
     /**

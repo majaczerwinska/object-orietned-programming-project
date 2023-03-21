@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import server.database.CardListRepository;
 import server.database.CardRepository;
 
+import java.util.Optional;
 
 
 @Service
@@ -69,6 +70,9 @@ public final class CardService {
      */
     public Card getById(int id){
          return repo.getById(id);
+    }
+    public Optional<Card> findById(int id){
+        return repo.findById(id);
     }
 
     /**

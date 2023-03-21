@@ -24,6 +24,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 //import java.util.List;
 
 import commons.Card;
+import jakarta.ws.rs.core.GenericType;
 import org.glassfish.jersey.client.ClientConfig;
 
 //import commons.Quote;
@@ -85,5 +86,36 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(card, APPLICATION_JSON), Card.class);
+    }
+
+    /**
+     //     *
+     //     * @return -
+     //     */
+    public Card getCard(int id) {
+        try {
+            return ClientBuilder.newClient(new ClientConfig())
+                    .target(SERVER).path("api/cards" + id)
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .get(new GenericType<Card>() {
+                    });
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public Card editCard(int id, Card card) {
+        try {
+            return ClientBuilder.newClient(new ClientConfig())
+                    .target(SERVER).path("api/cards" + id)
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .put(Entity.entity(card, APPLICATION_JSON), Card.class);
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 }
