@@ -45,6 +45,14 @@ public class BoardServiceTest {
     }
 
     @Test
+    public void existsByIdTestFalse(){
+        Board board = new Board("title");
+        assertFalse(ser.existsById(board.getId()));
+        assertFalse(ser.existsById(0));
+
+    }
+
+    @Test
     public void deleteTest(){
         Board board = new Board("title");
         ser.save(board);

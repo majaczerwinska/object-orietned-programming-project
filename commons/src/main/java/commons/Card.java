@@ -19,11 +19,15 @@ public class Card {
     private String description;
     @Column(name = "card_color")
     private int color;
+    @Column(name = "card_position")
     private double position;
 
 
-    @OneToMany( targetEntity = Tag.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "tag_id")
+    @ManyToMany
+    @JoinTable(
+            name = "cards_tags",
+            joinColumns = @JoinColumn(name = "card_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private List<Tag> tags;
 
     @OneToMany(targetEntity = Task.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
@@ -155,6 +159,21 @@ public class Card {
         this.tasks = tasks;
     }
 
+    /**
+     * Gets the tags of the card
+     * @return a list of tags
+     */
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    /**
+     * Sets the list of tags for the card
+     * @param tags the tags belonging to the card
+     */
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
 
     /**
      *checks if two cards are equal

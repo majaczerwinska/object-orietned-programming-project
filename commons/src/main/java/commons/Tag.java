@@ -1,6 +1,8 @@
 package commons;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -13,8 +15,13 @@ public class Tag {
     private int id;
     @Column(name = "tag_name")
     private String title;
+    @Column(name = "tag_description")
     private String description;
+    @Column(name = "tag_color")
     private int color;
+    @ManyToMany(mappedBy = "tags")
+    private List<Card> cards;
+
 
 
     /**
@@ -26,7 +33,33 @@ public class Tag {
         this.title = title;
         this.description = "";
         this.color = 0xffffff;
+        this.cards = new ArrayList<>();
+    }
 
+    /**
+     * Constructor with title and description
+     * @param title the title of the tag
+     * @param description the description of the tag
+     */
+    public Tag(String title, String description) {
+        this.title = title;
+        this.description = description;
+        this.color = 0xffffff;
+        this.cards = new ArrayList<>();
+    }
+
+
+    /**
+     * Constructor with title and description
+     * @param title the title of the tag
+     * @param description the description of the tag
+     * @param color the color of the tag
+     */
+    public Tag(String title, String description, int color) {
+        this.title = title;
+        this.description = description;
+        this.color = color;
+        this.cards = new ArrayList<>();
     }
 
 
@@ -35,6 +68,22 @@ public class Tag {
      * Default constructor method
      */
     public Tag() {
+    }
+
+    /**
+     * Gets the cards that are assigned to this tag
+     * @return a list of cards
+     */
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    /**
+     * Sets the list of cards to this tag
+     * @param cards the list which match this tag
+     */
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
     }
 
     /**

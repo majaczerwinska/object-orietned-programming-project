@@ -41,16 +41,23 @@ public class MainCtrl {
     private popupJoinCtrl popupJoinCtrl;
     private Scene popupJoin;
 
+    private TagManagerCtrl tagManagerCtrl;
+    private Scene tagManager;
+
     /**
-     *
      * @param primaryStage -
-     * @param landing -
-     * @param publicBoard -
-     * @param card -
+     * @param landing      -
+     * @param publicBoard  -
+     * @param card         -
+     * @param tagManager   -
      */
-    public void initialize(Stage primaryStage, Pair<LandingCtrl, Parent> landing,
-                           Pair<CardCtrl, Parent> card,Pair<PublicBoardCtrl, Parent> publicBoard,
-                           Pair<BoardSelectCtrl, Parent> boardSelect, Pair<popupJoinCtrl, Parent> popup) {
+    public void initialize(Stage primaryStage,
+                           Pair<LandingCtrl, Parent> landing,
+                           Pair<CardCtrl, Parent> card,
+                           Pair<PublicBoardCtrl, Parent> publicBoard,
+                           Pair<BoardSelectCtrl, Parent> boardSelect,
+                           Pair<popupJoinCtrl, Parent> popup,
+                           Pair<TagManagerCtrl, Parent> tagManager) {
         this.primaryStage = primaryStage;
         this.landingCtrl = landing.getKey();
         this.landing = new Scene(landing.getValue());
@@ -66,6 +73,9 @@ public class MainCtrl {
 
         this.popupJoinCtrl = popup.getKey();
         this.popupJoin = new Scene(popup.getValue());
+
+        this.tagManagerCtrl = tagManager.getKey();
+        this.tagManager = new Scene(tagManager.getValue());
 
         showLanding();
         primaryStage.show();
@@ -97,10 +107,19 @@ public class MainCtrl {
         boardSelectCtrl.refresh();
     }
 
-    public void showPopup(){
+    public void showPopup() {
         primaryStage.setTitle("Something went wrong");
         primaryStage.setScene(popupJoin);
         primaryStage.show();
         popupJoinCtrl.refresh();
     }
-}
+        /**
+         * Shows the tag manager scene
+         */
+        public void showTagManager() {
+            primaryStage.setTitle("Tag Manager :)");
+            primaryStage.setScene(tagManager);
+            primaryStage.show();
+//            tagManagerCtrl.refresh();
+        }
+    }

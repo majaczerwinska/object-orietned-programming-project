@@ -1,26 +1,47 @@
 package server.service;
 import commons.Board;
+import commons.Card;
 import commons.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import server.database.BoardRepository;
+import server.database.CardRepository;
 import server.database.TagRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 public class TagService {
     private final TagRepository repo;
     private final BoardRepository br;
+    private final CardRepository cr;
 
     /**
      * Constructor
      * @param repo the tag repository used
      * @param br the board repository used
+     * @param cr the card repository used
      */
     @Autowired
-    public TagService(@Qualifier("tag") TagRepository repo, BoardRepository br){
+    public TagService(@Qualifier("tag") TagRepository repo, @Qualifier("board") BoardRepository br,
+                      @Qualifier("card") CardRepository cr){
         this.repo =repo;
         this.br = br;
+        this.cr = cr;
+    }
+
+    /**
+     * Gets all tags from a board
+     * @param boardId the id of the board we need to get the tags from
+     * @return list of tags
+     */
+    public List<Tag> getTagsFromBoard(int boardId) {
+        Board board = br.getById(boardId);
+        return board.getTags();
     }
 
     /**
@@ -46,9 +67,8 @@ public class TagService {
      */
     public Tag delete(Tag tag, int boardId){
         if(!br.existsById(boardId)) return null;
-        Board board = br.getById(boardId);
-        board.getTags().remove(tag);
-        br.save(board);
+        tag.getCards().forEach(card -> card.getTags().remove(tag));
+        tag.setCards(new ArrayList<>());
         repo.delete(tag);
         return tag;
     }
@@ -70,5 +90,38 @@ public class TagService {
     public boolean existsById(int id){
         return repo.existsById(id);
     }
+
+    /**
+     * Adds a tag to the card
+     * @param boardId the board to which the card and the tag belong
+     * @param cardId the card to which the tag is added
+     * @param tagId the tag that is assigned to a card
+     * @return the tag that was matched to a card
+     */
+    public Tag addTagToCard(int boardId, int cardId, int tagId){
+        Tag tag = repo.getById(tagId);
+        if(!br.existsById(boardId) || !cr.existsById(cardId) ) return null;
+        Card card = cr.getById(cardId);
+        card.getTags().add(tag);
+        cr.save(card);
+        tag.getCards().add(card);
+        repo.save(tag);
+        return tag;
+    }
+
+    /**
+     * Edits a tag in the database
+     * @param tag the id of the tag to be edited
+     * @param newTag the new tag with the right attributes
+     * @return the edited tag
+     */
+    @Transactional
+    public Tag editTag(Tag tag, Tag newTag) {
+            tag.setTitle(newTag.getTitle());
+            tag.setDescription(newTag.getDescription());
+            tag.setColor(newTag.getColor());
+            return tag;
+    }
+
 
 }

@@ -3,15 +3,32 @@ package commons;
 import org.junit.jupiter.api.Test;
 
 
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TagTest {
 
     @Test
-    public void checkConstructor() {
+    public void checkConstructorTitle() {
         var q = new Tag("hi");
         assertEquals(q.getTitle(), "hi");
+    }
+
+    @Test
+    public void checkConstructorTitleDescription() {
+        var q = new Tag("hi", "desc");
+        assertEquals(q.getTitle(), "hi");
+        assertEquals(q.getDescription(), "desc");
+    }
+
+    @Test
+    public void checkConstructorTitleDescriptionColor() {
+        var q = new Tag("hi", "desc", 1);
+        assertEquals(q.getTitle(), "hi");
+        assertEquals(q.getDescription(), "desc");
+        assertEquals(q.getColor(), 1);
     }
 
     @Test
@@ -90,6 +107,16 @@ public class TagTest {
         Tag c = new Tag("a");
         assertEquals(c.getId(), 0);
     }
+    @Test
+    void setCardsAndGetCards() {
+        Tag c = new Tag("a");
+        List<Card> list = new ArrayList<>();
+        Card card = new Card("wdjhbhr");
+        list.add(card);
+        c.setCards(list);
+        assertEquals(c.getCards(), list);
+    }
+
 
     @Test
     void getTitle() {

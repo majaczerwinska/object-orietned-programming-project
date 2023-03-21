@@ -21,12 +21,13 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 //import java.io.IOException;
 //import java.io.InputStreamReader;
 //import java.net.URL;
-//import java.util.List;
+import java.util.List;
 
 import commons.Board;
 import commons.Card;
 import jakarta.ws.rs.core.GenericType;
 import javafx.scene.control.ListView;
+import commons.Tag;
 import org.glassfish.jersey.client.ClientConfig;
 
 //import commons.Quote;
@@ -38,6 +39,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.List;
+//import jakarta.ws.rs.core.GenericType;
 //import jakarta.ws.rs.core.GenericType;
 
 public class ServerUtils {
@@ -95,6 +97,7 @@ public class ServerUtils {
                 .post(Entity.entity(card, APPLICATION_JSON), Card.class);
     }
 
+
     public Board addBoard(Board board) {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(SERVER).path("api/boards/")
@@ -135,4 +138,58 @@ public class ServerUtils {
 //            System.out.println(line);
 //        }
 //    }
+    /**
+     * Gets a list of all tags from a board
+     * @param boardId the id from the board we need the tags from
+     * @return the list with tags from the board
+     */
+    public List<Tag> getTagsFromBoard(int boardId) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/tags/" + boardId) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<Tag>>() {});
+    }
+
+    /**
+     * Adds a tag to the database
+     * @param tag the tag to be added
+     * @param boardId the id from the board where the tag needs to be added
+     * @return the added tag
+     */
+    public Tag addTag(Tag tag, int boardId) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/tags/" + boardId) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(tag, APPLICATION_JSON), Tag.class);
+    }
+
+    /**
+     * Deletes a tag (calls the delete method in the controller)
+     * @param tag the tag to be deleted
+     * @param boardId the boardId from where the tag is coming from
+     * @return the deleted tag
+     */
+    public Tag deleteTag(Tag tag, int boardId) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/tags/" + boardId + "/" + tag.getId()) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .delete(Tag.class);
+    }
+
+    /**
+     * Edits a tag in the database (calls the edit method from the controller)
+     * @param oldTag the old tag
+     * @param newTag the tag with de new attributes
+     * @return the edited tag
+     */
+    public Tag editTag(Tag oldTag, Tag newTag){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/tags/" + oldTag.getId()) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .put(Entity.entity(newTag, APPLICATION_JSON), Tag.class);
+    }
 }

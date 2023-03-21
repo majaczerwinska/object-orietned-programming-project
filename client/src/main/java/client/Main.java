@@ -74,7 +74,9 @@ public class Main extends Application {
             var popupJoin = FXML.load(popupJoinCtrl.class, "client", "scenes", "popupJoin.fxml");
 
             var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-            mainCtrl.initialize(primaryStage, landing, card, publicBoard, selectBoard, popupJoin);
+            var tagManager = FXML.load(TagManagerCtrl.class, "client", "scenes", "TagManager.fxml");
+
+            mainCtrl.initialize(primaryStage, landing, card, publicBoard, selectBoard, popupJoin, tagManager);
         } catch (Exception e) {
             System.out.println("very sad exception :(\nin start method of client.main..");
             e.printStackTrace();
