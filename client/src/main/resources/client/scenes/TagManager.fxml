@@ -12,13 +12,13 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="628.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.TagManagerCtrl">
    <children>
-      <ListView fx:id="tagListView" layoutX="18.0" layoutY="63.0" prefHeight="322.0" prefWidth="281.0" />
+      <ListView fx:id="tagListView" layoutX="18.0" layoutY="63.0" onMouseClicked="#showSelectedItem" prefHeight="322.0" prefWidth="281.0" />
       <Label fx:id="labelBoard" alignment="CENTER" prefHeight="63.0" prefWidth="600.0" text="Tags for board ..." textAlignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Button fx:id="btnAdd" alignment="CENTER" layoutX="314.0" layoutY="350.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="90.0" text="Add tag" />
+      <Button fx:id="btnAdd" alignment="CENTER" layoutX="314.0" layoutY="350.0" mnemonicParsing="false" onAction="#addTag" prefHeight="30.0" prefWidth="90.0" text="Add tag" />
       <VBox layoutX="314.0" layoutY="79.0" prefHeight="241.0" prefWidth="127.0" spacing="15.0">
          <children>
             <Label text="Title" />
@@ -39,7 +39,7 @@
             <TextField fx:id="tfColor" />
          </children>
       </VBox>
-      <Button fx:id="btnUpdate" alignment="CENTER" layoutX="417.0" layoutY="350.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="90.0" text="Update" />
-      <Button fx:id="btnDelete" alignment="CENTER" layoutX="517.0" layoutY="350.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="90.0" text="Delete" />
+      <Button fx:id="btnUpdate" alignment="CENTER" layoutX="417.0" layoutY="350.0" mnemonicParsing="false" onAction="#editTag" prefHeight="30.0" prefWidth="90.0" text="Edit" />
+      <Button fx:id="btnDelete" alignment="CENTER" layoutX="517.0" layoutY="350.0" mnemonicParsing="false" onAction="#deleteTag" prefHeight="30.0" prefWidth="90.0" text="Delete" />
    </children>
 </AnchorPane>

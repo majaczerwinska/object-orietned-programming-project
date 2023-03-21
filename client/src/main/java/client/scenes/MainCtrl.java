@@ -43,9 +43,11 @@ public class MainCtrl {
      * @param landing -
      * @param publicBoard -
      * @param card -
+     * @param tagManager -
      */
     public void initialize(Stage primaryStage, Pair<LandingCtrl, Parent> landing,
-                           Pair<CardCtrl, Parent> card,Pair<PublicBoardCtrl, Parent> publicBoard, Pair<TagManagerCtrl, Parent> tagManager) {
+                           Pair<CardCtrl, Parent> card,Pair<PublicBoardCtrl, Parent> publicBoard,
+                           Pair<TagManagerCtrl, Parent> tagManager) {
         this.primaryStage = primaryStage;
         this.landingCtrl = landing.getKey();
         this.landing = new Scene(landing.getValue());
@@ -82,6 +84,9 @@ public class MainCtrl {
         publicBoardCtrl.refresh();
     }
 
+    /**
+     * Shows the tag manager scene
+     */
     public void showTagManager() {
         primaryStage.setTitle("Tag Manager :)");
         primaryStage.setScene(tagManager);
