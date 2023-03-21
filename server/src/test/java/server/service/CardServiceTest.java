@@ -48,6 +48,16 @@ public class CardServiceTest {
     }
 
     @Test
+    public void findByIdTest(){
+        CardList list = new CardList("c");
+        cl.save(list);
+        Card card = new Card("title");
+        ser.save(card, list.getId());
+        assertEquals(ser.findById(card.getId()).get(), card);
+
+    }
+
+    @Test
     public void existsByIdTest(){
         CardList list = new CardList("c");
         cl.save(list);

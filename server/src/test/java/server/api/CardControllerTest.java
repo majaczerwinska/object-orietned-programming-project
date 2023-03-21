@@ -1,7 +1,9 @@
 package server.api;
 
+import commons.Board;
 import commons.Card;
 import commons.CardList;
+import commons.Tag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,8 @@ import server.service.CardService;
 import server.database.CardListRepositoryTest;
 import server.database.CardRepositoryTest;
 
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -71,6 +75,16 @@ public class CardControllerTest {
         con.editCard(card.getId(), card2);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
 
+    }
+
+    @Test
+    public void getCardTest(){
+        CardList list = new CardList("c");
+        cl.save(list);
+        Card card = new Card("title");
+        con.addCard(list.getId(), card);
+        ResponseEntity<Card> cardResponseEntity = ResponseEntity.ok(card);
+        assertEquals(con.getCard(card.getId()), cardResponseEntity);
     }
 
 
