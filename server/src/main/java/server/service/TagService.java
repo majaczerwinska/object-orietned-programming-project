@@ -5,9 +5,13 @@ import commons.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import server.database.BoardRepository;
 import server.database.CardRepository;
 import server.database.TagRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -28,6 +32,16 @@ public class TagService {
         this.repo =repo;
         this.br = br;
         this.cr = cr;
+    }
+
+    /**
+     * Gets all tags from a board
+     * @param boardId the id of the board we need to get the tags from
+     * @return list of tags
+     */
+    public List<Tag> getTagsFromBoard(int boardId) {
+        Board board = br.getById(boardId);
+        return board.getTags();
     }
 
     /**
@@ -53,9 +67,8 @@ public class TagService {
      */
     public Tag delete(Tag tag, int boardId){
         if(!br.existsById(boardId)) return null;
-        Board board = br.getById(boardId);
-        board.getTags().remove(tag);
-        br.save(board);
+        tag.getCards().forEach(card -> card.getTags().remove(tag));
+        tag.setCards(new ArrayList<>());
         repo.delete(tag);
         return tag;
     }
@@ -94,6 +107,20 @@ public class TagService {
         tag.getCards().add(card);
         repo.save(tag);
         return tag;
+    }
+
+    /**
+     * Edits a tag in the database
+     * @param tag the id of the tag to be edited
+     * @param newTag the new tag with the right attributes
+     * @return the edited tag
+     */
+    @Transactional
+    public Tag editTag(Tag tag, Tag newTag) {
+            tag.setTitle(newTag.getTitle());
+            tag.setDescription(newTag.getDescription());
+            tag.setColor(newTag.getColor());
+            return tag;
     }
 
 

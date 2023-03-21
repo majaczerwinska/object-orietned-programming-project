@@ -11,6 +11,8 @@ import server.database.CardRepositoryTest;
 import server.database.TagRepositoryTest;
 import server.service.TagService;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -37,6 +39,17 @@ public class TagServiceTest {
         ser.save(tag, b.getId());
         assertTrue(repo.existsById(tag.getId()));
 
+    }
+
+    @Test
+    public void getTagsFromBoardTest(){
+        Tag tag = new Tag("title");
+        Board b = new Board("b");
+        int boardId = b.getId();
+        List<Tag> tagList = List.of(tag);
+        br.save(b);
+        ser.save(tag, boardId);
+        assertEquals(ser.getTagsFromBoard(boardId), tagList);
     }
 
     @Test
@@ -96,6 +109,30 @@ public class TagServiceTest {
         ser.delete(tag, b.getId());
         assertFalse(repo.existsById(tag.getId()));
 
+    }
+
+//    @Test
+//    public void editTagTest(){
+//        Tag tag = new Tag("title");
+//        Board b = new Board("b");
+//        br.save(b);
+//        ser.save(tag, b.getId());
+//        ser.editTag(tag,"t", "hi", 1);
+//        assertEquals(tag.getTitle(), "t");
+//        assertEquals(tag.getDescription(), "hi");
+//        assertEquals(tag.getColor(), 1);
+//    }
+
+    @Test
+    public void editTagTest(){
+        Tag tag = new Tag("title");
+        Board b = new Board("b");
+        br.save(b);
+        ser.save(tag, b.getId());
+        ser.editTag(tag, new Tag("t", "hi", 1));
+        assertEquals(tag.getTitle(), "t");
+        assertEquals(tag.getDescription(), "hi");
+        assertEquals(tag.getColor(), 1);
     }
 
 

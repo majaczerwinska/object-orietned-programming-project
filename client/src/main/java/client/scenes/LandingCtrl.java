@@ -33,6 +33,15 @@ public class LandingCtrl {
     }
 
     /**
+     * Shows the tag manager scene
+     * @param actionEvent the event when clicking the "tag manager" button
+     */
+    public void showTagManager(ActionEvent actionEvent){
+        System.out.println("showTagManger!!!");
+        mainCtrl.showTagManager();
+    }
+
+    /**
      *
      * @param actionEvent event details, automatic
      */

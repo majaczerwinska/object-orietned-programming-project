@@ -11,9 +11,24 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TagTest {
 
     @Test
-    public void checkConstructor() {
+    public void checkConstructorTitle() {
         var q = new Tag("hi");
         assertEquals(q.getTitle(), "hi");
+    }
+
+    @Test
+    public void checkConstructorTitleDescription() {
+        var q = new Tag("hi", "desc");
+        assertEquals(q.getTitle(), "hi");
+        assertEquals(q.getDescription(), "desc");
+    }
+
+    @Test
+    public void checkConstructorTitleDescriptionColor() {
+        var q = new Tag("hi", "desc", 1);
+        assertEquals(q.getTitle(), "hi");
+        assertEquals(q.getDescription(), "desc");
+        assertEquals(q.getColor(), 1);
     }
 
     @Test
