@@ -27,10 +27,7 @@ import java.net.URISyntaxException;
 //import client.scenes.MainCtrl;
 //import client.scenes.QuoteOverviewCtrl;
 
-import client.scenes.CardCtrl;
-import client.scenes.LandingCtrl;
-import client.scenes.MainCtrl;
-import client.scenes.PublicBoardCtrl;
+import client.scenes.*;
 import com.google.inject.Injector;
 import javafx.application.Application;
 //import javafx.fxml.FXMLLoader;
@@ -73,9 +70,10 @@ public class Main extends Application {
             var landing = FXML.load(LandingCtrl.class, "client", "scenes", "Landing.fxml");
             var publicBoard = FXML.load(PublicBoardCtrl.class, "client", "scenes", "PublicBoard.fxml");
             var card = FXML.load(CardCtrl.class, "client", "scenes", "CardCreator.fxml");
+            var tagManager = FXML.load(TagManagerCtrl.class, "client", "scenes", "TagManager.fxml");
 
             var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-            mainCtrl.initialize(primaryStage, landing, card, publicBoard);
+            mainCtrl.initialize(primaryStage, landing, card, publicBoard, tagManager);
         } catch (Exception e) {
             System.out.println("very sad exception :(\nin start method of client.main..");
             e.printStackTrace();

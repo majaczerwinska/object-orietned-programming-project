@@ -34,7 +34,32 @@ public class Tag {
         this.description = "";
         this.color = 0xffffff;
         this.cards = new ArrayList<>();
+    }
 
+    /**
+     * Constructor with title and description
+     * @param title the title of the tag
+     * @param description the description of the tag
+     */
+    public Tag(String title, String description) {
+        this.title = title;
+        this.description = description;
+        this.color = 0xffffff;
+        this.cards = new ArrayList<>();
+    }
+
+
+    /**
+     * Constructor with title and description
+     * @param title the title of the tag
+     * @param description the description of the tag
+     * @param color the color of the tag
+     */
+    public Tag(String title, String description, int color) {
+        this.title = title;
+        this.description = description;
+        this.color = color;
+        this.cards = new ArrayList<>();
     }
 
 
