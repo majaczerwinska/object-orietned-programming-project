@@ -42,6 +42,9 @@ public class MainCtrl {
     private TagManagerCtrl tagManagerCtrl;
     private Scene tagManager;
 
+    private ListCreationCtrl listCreationCtrl;
+    private Scene listCreate;
+
     /**
      *
      * @param primaryStage
@@ -51,6 +54,7 @@ public class MainCtrl {
      * @param boardSelect
      * @param popup
      * @param tagManager
+     * @param listCreate
      */
 
     public void initialize(Stage primaryStage,
@@ -59,7 +63,8 @@ public class MainCtrl {
                            Pair<PublicBoardCtrl, Parent> publicBoard,
                            Pair<BoardSelectCtrl, Parent> boardSelect,
                            Pair<PopupJoinCtrl, Parent> popup,
-                           Pair<TagManagerCtrl, Parent> tagManager) {
+                           Pair<TagManagerCtrl, Parent> tagManager,
+                           Pair<ListCreationCtrl, Parent> listCreate) {
         this.primaryStage = primaryStage;
         this.landingCtrl = landing.getKey();
         this.landing = new Scene(landing.getValue());
@@ -78,6 +83,9 @@ public class MainCtrl {
 
         this.tagManagerCtrl = tagManager.getKey();
         this.tagManager = new Scene(tagManager.getValue());
+
+        this.listCreationCtrl = listCreate.getKey();
+        this.listCreate = new Scene(listCreate.getValue());
 
         showLanding();
         primaryStage.show();
@@ -129,5 +137,14 @@ public class MainCtrl {
             primaryStage.setScene(tagManager);
             primaryStage.show();
 //            tagManagerCtrl.refresh();
+        }
+
+    /**
+     * shows a scene where you can create a new list and add it to the public board
+     */
+        public void showListCreate(){
+            primaryStage.setTitle("List creation");
+            primaryStage.setScene(listCreate);
+            primaryStage.show();
         }
     }
