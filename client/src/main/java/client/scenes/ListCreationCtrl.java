@@ -34,4 +34,12 @@ public class ListCreationCtrl {
         CardList list = new CardList(name.getText());
         server.createList(0, list);
     }
+
+    /**
+     * takes you back to the overview
+     * @param mouseEvent - click
+     */
+    public void cancel(MouseEvent mouseEvent){
+        mainCtrl.showPublicBoard();
+    }
 }
