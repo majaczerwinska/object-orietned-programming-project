@@ -25,8 +25,11 @@ import java.util.List;
 
 import commons.Board;
 import commons.Card;
+import jakarta.ws.rs.ProcessingException;
+import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.core.GenericType;
 import commons.Tag;
+import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 
 //import commons.Quote;
@@ -227,5 +230,21 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(newTag, APPLICATION_JSON), Tag.class);
+    }
+
+    public int testConnection(String ip) {
+        try {
+            Client client = ClientBuilder.newClient();
+            Response response = client.target(ip)
+                    .request()
+                    .get();
+            String body = response.readEntity(String.class);
+            System.out.println("Response: " + body);
+            response.close();
+            return response.getStatus();
+        } catch (ProcessingException e) {
+            System.out.println("Connection timed out: " + e.getMessage());
+            return -1;
+        }
     }
 }

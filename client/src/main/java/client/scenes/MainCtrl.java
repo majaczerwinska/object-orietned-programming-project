@@ -56,7 +56,7 @@ public class MainCtrl {
      * @param boardSelect
      * @param popup
      * @param tagManager
-     * @param serverSelect
+     * @param select
      */
 
     public void initialize(Stage primaryStage,
@@ -66,7 +66,7 @@ public class MainCtrl {
                            Pair<BoardSelectCtrl, Parent> boardSelect,
                            Pair<PopupJoinCtrl, Parent> popup,
                            Pair<TagManagerCtrl, Parent> tagManager,
-                           Pair<ServerSelectCtrl, Parent> serverSelect) {
+                           Pair<ServerSelectCtrl, Parent> select) {
         this.primaryStage = primaryStage;
         this.landingCtrl = landing.getKey();
         this.landing = new Scene(landing.getValue());
@@ -86,8 +86,8 @@ public class MainCtrl {
         this.tagManagerCtrl = tagManager.getKey();
         this.tagManager = new Scene(tagManager.getValue());
 
-        this.serverSelectCtrl = serverSelect.getKey();
-        this.serverSelect = new Scene(tagManager.getValue());
+        this.serverSelectCtrl = select.getKey();
+        this.serverSelect = new Scene(select.getValue());
 
 //        showLanding();
         showServerSelect();

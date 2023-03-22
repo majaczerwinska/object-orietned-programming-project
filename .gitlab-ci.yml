@@ -33,6 +33,8 @@ test_job:
     # preserve coverage information in an easy-to-reach folder
     - mv build/reports/jacoco/aggregate/html ./coverage
     - mv build/reports/jacoco/aggregate/jacocoTestReport.xml ./coverage/report.xml
+    - overview=$(cat coverage/index.html)
+    - echo $overview
     - coverage=$(cat coverage/index.html | grep -o -E "Total[^%]+?%" | sed -E "s/<.*>//" | sed -E "s/Total//")
     - coverage=${coverage::-1} # Remove %
     - echo TestCoverage:$coverage%

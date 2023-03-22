@@ -100,14 +100,24 @@ public class ServerSelectCtrl {
                 connectionStatus.setText("[ Unknown ]");
                 connectionStatus.setStyle("-fx-text-fill: black;");
                 break;
-            case 1: // Connection Successful
+            case 200: // Connection Successful
                 connectionStatus.setText("[ Successful ]");
-                connectionStatus.setStyle("-fx-text-fill: green;");
+                connectionStatus.setStyle("color: green;");
                 break;
-            case 2: // Failed
-                connectionStatus.setText("[ Failed ]");
+            case 404: // Not found
+                connectionStatus.setText("[ 404 Not Found ]");
                 connectionStatus.setStyle("-fx-text-fill: red;");
                 break;
+            case -1: // Timeout
+                connectionStatus.setText("[ Connection Timed Out ]");
+                connectionStatus.setStyle("-fx-text-fill: darkred;");
+                break;
         }
+    }
+
+    public void onTestConnection() {
+        String ip = selectedServer.getText();
+        int res = server.testConnection(ip);
+        setConnectionStatus(res);
     }
 }
