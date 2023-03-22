@@ -42,6 +42,11 @@ public class MainCtrl {
     private TagManagerCtrl tagManagerCtrl;
     private Scene tagManager;
 
+
+    private ServerSelectCtrl serverSelectCtrl;
+    private Scene serverSelect;
+
+
     /**
      *
      * @param primaryStage
@@ -51,6 +56,7 @@ public class MainCtrl {
      * @param boardSelect
      * @param popup
      * @param tagManager
+     * @param serverSelect
      */
 
     public void initialize(Stage primaryStage,
@@ -59,7 +65,8 @@ public class MainCtrl {
                            Pair<PublicBoardCtrl, Parent> publicBoard,
                            Pair<BoardSelectCtrl, Parent> boardSelect,
                            Pair<PopupJoinCtrl, Parent> popup,
-                           Pair<TagManagerCtrl, Parent> tagManager) {
+                           Pair<TagManagerCtrl, Parent> tagManager,
+                           Pair<ServerSelectCtrl, Parent> serverSelect) {
         this.primaryStage = primaryStage;
         this.landingCtrl = landing.getKey();
         this.landing = new Scene(landing.getValue());
@@ -79,8 +86,21 @@ public class MainCtrl {
         this.tagManagerCtrl = tagManager.getKey();
         this.tagManager = new Scene(tagManager.getValue());
 
-        showLanding();
+        this.serverSelectCtrl = serverSelect.getKey();
+        this.serverSelect = new Scene(tagManager.getValue());
+
+//        showLanding();
+        showServerSelect();
         primaryStage.show();
+    }
+
+    /**
+     * prompt the user to select a server ip, defaults to localhost:8080
+     */
+    public void showServerSelect() {
+        primaryStage.setTitle("Select Talio Server");
+        primaryStage.setScene(serverSelect);
+        serverSelectCtrl.refresh();
     }
 
     /**
@@ -121,13 +141,18 @@ public class MainCtrl {
         primaryStage.show();
         popupJoinCtrl.refresh();
     }
-        /**
-         * Shows the tag manager scene
-         */
-        public void showTagManager() {
-            primaryStage.setTitle("Tag Manager :)");
-            primaryStage.setScene(tagManager);
-            primaryStage.show();
+
+
+    /**
+     * Shows the tag manager scene
+     */
+    public void showTagManager() {
+        primaryStage.setTitle("Tag Manager :)");
+        primaryStage.setScene(tagManager);
+        primaryStage.show();
 //            tagManagerCtrl.refresh();
-        }
     }
+
+
+
+}

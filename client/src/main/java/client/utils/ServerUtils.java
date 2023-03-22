@@ -43,7 +43,7 @@ import jakarta.ws.rs.client.Entity;
 
 public class ServerUtils {
 
-    private static final String SERVER = "http://localhost:8080/";
+    public static String SERVER = "http://localhost:8080/";
 
 //    /**
 //     *
