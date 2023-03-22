@@ -42,18 +42,19 @@ public class BoardService {
      * @param board to delete
      */
     public void delete(Board board){
-        repo.delete(board);
-
+        if(repo.existsById(board.getId())){
+            repo.delete(board);
+        }
     }
 
     /**
      * return board instance given its id
+     *
      * @param id board id
      * @return board object
      */
     public Board getById(int id){
-        Board board = repo.findById(id).get();
-        return board;
+        return repo.getById(id);
     }
 
     /**

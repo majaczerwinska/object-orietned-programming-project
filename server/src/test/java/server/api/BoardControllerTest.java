@@ -30,7 +30,6 @@ public class BoardControllerTest {
 
     @Test
     public void deleteTest(){
-
         Board board = new Board("title");
         con.addBoard(board);
         con.deleteBoard(board.getId());
