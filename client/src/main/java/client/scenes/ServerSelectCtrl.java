@@ -3,6 +3,7 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Tag;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.net.URL;
@@ -46,6 +48,9 @@ public class ServerSelectCtrl {
 
     @FXML
     private Button enterServer;
+
+    @FXML
+    private Button exitBtn;
 
     @FXML
     private ListView<String> servers;
@@ -96,28 +101,43 @@ public class ServerSelectCtrl {
 
     private void setConnectionStatus(int status) {
         switch (status) {
-            case 0: // unknown
-                connectionStatus.setText("[ Unknown ]");
-                connectionStatus.setStyle("-fx-text-fill: black;");
+            case 0: // loading
+                connectionStatus.setText("Loading...");
+                connectionStatus.setFill(Color.BLACK);
                 break;
             case 200: // Connection Successful
-                connectionStatus.setText("[ Successful ]");
-                connectionStatus.setStyle("color: green;");
+                connectionStatus.setText("200 Successful");
+                connectionStatus.setFill(Color.GREEN);
+                break;
+            case 301:
+                connectionStatus.setText("301 Moved Permanently");
+                connectionStatus.setFill(Color.CORAL);
                 break;
             case 404: // Not found
-                connectionStatus.setText("[ 404 Not Found ]");
-                connectionStatus.setStyle("-fx-text-fill: red;");
+                connectionStatus.setText("404 Not Found");
+                connectionStatus.setFill(Color.RED);
                 break;
             case -1: // Timeout
-                connectionStatus.setText("[ Connection Timed Out ]");
-                connectionStatus.setStyle("-fx-text-fill: darkred;");
+                connectionStatus.setText("Server not found (408 timeout)");
+                connectionStatus.setFill(Color.ORANGERED);
+                break;
+            case -2: // not a talio server
+                connectionStatus.setText("Not a talio server");
+                connectionStatus.setFill(Color.GOLDENROD);
                 break;
         }
     }
 
     public void onTestConnection() {
-        String ip = selectedServer.getText();
+        String ip = ipField.getText();
+        setConnectionStatus(0);
         int res = server.testConnection(ip);
+        System.out.println("Server responded with status code : "+res);
         setConnectionStatus(res);
+    }
+
+
+    public void exitApp() {
+        Platform.exit();
     }
 }

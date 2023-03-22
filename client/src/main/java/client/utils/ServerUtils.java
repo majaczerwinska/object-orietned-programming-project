@@ -241,7 +241,15 @@ public class ServerUtils {
             String body = response.readEntity(String.class);
             System.out.println("Response: " + body);
             response.close();
-            return response.getStatus();
+            if (response.getStatus() == 200) {
+                if (body.contains("talio")) {
+                    return response.getStatus();
+                } else {
+                    return -2;
+                }
+            } else {
+                return response.getStatus();
+            }
         } catch (ProcessingException e) {
             System.out.println("Connection timed out: " + e.getMessage());
             return -1;

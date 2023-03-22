@@ -11,12 +11,14 @@
       <Button fx:id="enterServer" layoutX="490.0" layoutY="221.0" mnemonicParsing="false" text="Enter Server" />
       <TextField fx:id="ipField" layoutX="300.0" layoutY="56.0" prefHeight="26.0" prefWidth="277.0" text="http://localhost:8080" />
       <Button fx:id="addServer" layoutX="499.0" layoutY="98.0" mnemonicParsing="false" text="Add Server" />
-      <ListView fx:id="servers" layoutX="27.0" layoutY="30.0" prefHeight="342.0" prefWidth="240.0" />
+      <ListView fx:id="servers" layoutX="27.0" layoutY="56.0" prefHeight="316.0" prefWidth="240.0" />
       <Text layoutX="300.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter domain or IP address" />
       <Text layoutX="300.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Selected server:" />
       <Text fx:id="selectedServer" layoutX="300.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="http://localhost:8080" />
       <Button fx:id="testConnection" layoutX="299.0" layoutY="221.0" mnemonicParsing="false" onAction="#onTestConnection" text="Test Connection" />
-      <Text fx:id="connectionStatus" layoutX="375.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="[ Unknown ]" />
+      <Text fx:id="connectionStatus" layoutX="375.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Unknown" />
       <Text layoutX="300.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Connection:" />
+      <Text layoutX="25.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select a  talio server" />
+      <Button fx:id="exitBtn" layoutX="510.0" layoutY="349.0" mnemonicParsing="false" onAction="#exitApp" text="Exit App" textFill="#a81b1b" />
    </children>
 </AnchorPane>
