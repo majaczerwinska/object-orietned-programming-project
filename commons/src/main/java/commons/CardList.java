@@ -110,7 +110,16 @@ public class CardList {
      * @return a string representation
      */
     public String toString(){
-        return "List #" + id + ", " +name + ", " + color ;
+        String res = "List #" + id + "\n name: " +name + "\n color: " + color + "\n";
+        if (this.cards.size() < 1) {
+            res += "this list has no cards";
+        } else {
+            res += "Cards:\n";
+            for (Card c : cards) {
+                res += c.toString();
+            }
+        }
+        return res;
     }
 
 
