@@ -2,22 +2,22 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.Tag;
+//import commons.Tag;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
+//import javafx.collections.FXCollections;
+//import javafx.collections.ObservableList;
+//import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+//import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
+//import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-import java.net.URL;
+//import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
+//import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
 
@@ -69,7 +69,10 @@ public class ServerSelectCtrl {
     }
 
 
-
+    /**
+     * Sets the server to which the client sends the http requests
+     * @param ip ip of the server
+     */
     public void setServer(String ip) {
         ServerUtils.SERVER = ip;
     }
@@ -82,6 +85,10 @@ public class ServerSelectCtrl {
     }
 
 
+    /**
+     * save another ip to the list of known servers
+     * @param ip the address to be saved
+     */
     public void saveIP(String ip) {
         if (ip == null || ip.length() < 1) {
             System.out.println("Invalid ip saved");
@@ -92,6 +99,10 @@ public class ServerSelectCtrl {
         prefs.put(ipID, ips);
     }
 
+    /**
+     * Get the list of known server addresses
+     * @return a list of IP addresses
+     */
     public List<String> getIPs() {
         String ips = prefs.get(ipID, "http://localhost:8080");
         List<String> ipList = new ArrayList<>(List.of(ips.split(",")));
@@ -128,6 +139,9 @@ public class ServerSelectCtrl {
         }
     }
 
+    /**
+     * Event handler for the test connection button
+     */
     public void onTestConnection() {
         String ip = ipField.getText();
         setConnectionStatus(0);
@@ -137,6 +151,9 @@ public class ServerSelectCtrl {
     }
 
 
+    /**
+     * event handler for the exit app button
+     */
     public void exitApp() {
         Platform.exit();
     }

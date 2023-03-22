@@ -232,6 +232,12 @@ public class ServerUtils {
                 .put(Entity.entity(newTag, APPLICATION_JSON), Tag.class);
     }
 
+    /**
+     * send a request to an ip and await a response, making sure that
+     * a connection can be established with a talio server
+     * @param ip address to test connection to
+     * @return status code (-1: timeout, -2: response received, but address is not a talio server)
+     */
     public int testConnection(String ip) {
         try {
             Client client = ClientBuilder.newClient();
