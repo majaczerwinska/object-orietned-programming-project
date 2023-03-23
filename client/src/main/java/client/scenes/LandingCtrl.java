@@ -58,6 +58,9 @@ public class LandingCtrl {
         System.out.println("team action event :)");
     }
 
+    /**
+     * show board creation menu when clicking on private button
+     */
     public void onPrivateClickEvent() {
         mainCtrl.showBoardCreation();
     }
