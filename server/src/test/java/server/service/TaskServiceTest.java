@@ -45,6 +45,15 @@ public class TaskServiceTest {
         assertEquals(ser.getById(task.getId()), task);
 
     }
+    @Test
+    public void findByIdTest(){
+        Task task = new Task("title");
+        Card card = new Card("title");
+        cr.save(card);
+        ser.save(task, card.getId());
+        assertEquals(ser.findById(task.getId()).get(), task);
+
+    }
 
     @Test
     public void existsByIdTest(){

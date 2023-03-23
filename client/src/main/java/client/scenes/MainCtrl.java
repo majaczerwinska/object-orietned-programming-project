@@ -41,6 +41,14 @@ public class MainCtrl {
 
     private TagManagerCtrl tagManagerCtrl;
     private Scene tagManager;
+    private TaskCreatorCtrl taskCreatorCtrl;
+    private Scene taskCreator;
+
+
+
+    private ServerSelectCtrl serverSelectCtrl;
+    private Scene serverSelect;
+
 
     /**
      *
@@ -51,6 +59,8 @@ public class MainCtrl {
      * @param boardSelect
      * @param popup
      * @param tagManager
+     * @param select
+     * @param taskCreator
      */
 
     public void initialize(Stage primaryStage,
@@ -59,7 +69,9 @@ public class MainCtrl {
                            Pair<PublicBoardCtrl, Parent> publicBoard,
                            Pair<BoardSelectCtrl, Parent> boardSelect,
                            Pair<PopupJoinCtrl, Parent> popup,
-                           Pair<TagManagerCtrl, Parent> tagManager) {
+                           Pair<TagManagerCtrl, Parent> tagManager,
+                           Pair<ServerSelectCtrl, Parent> select,
+                           Pair<TaskCreatorCtrl, Parent> taskCreator) {
         this.primaryStage = primaryStage;
         this.landingCtrl = landing.getKey();
         this.landing = new Scene(landing.getValue());
@@ -79,8 +91,24 @@ public class MainCtrl {
         this.tagManagerCtrl = tagManager.getKey();
         this.tagManager = new Scene(tagManager.getValue());
 
-        showLanding();
+        this.taskCreatorCtrl = taskCreator.getKey();
+        this.taskCreator = new Scene(taskCreator.getValue());
+
+        this.serverSelectCtrl = select.getKey();
+        this.serverSelect = new Scene(select.getValue());
+
+//        showLanding();
+        showServerSelect();
         primaryStage.show();
+    }
+
+    /**
+     * prompt the user to select a server ip, defaults to localhost:8080
+     */
+    public void showServerSelect() {
+        primaryStage.setTitle("Select Talio Server");
+        primaryStage.setScene(serverSelect);
+        serverSelectCtrl.refresh();
     }
 
     /**
@@ -121,13 +149,26 @@ public class MainCtrl {
         primaryStage.show();
         popupJoinCtrl.refresh();
     }
-        /**
-         * Shows the tag manager scene
-         */
-        public void showTagManager() {
-            primaryStage.setTitle("Tag Manager :)");
-            primaryStage.setScene(tagManager);
-            primaryStage.show();
+
+
+    /**
+     * Shows the tag manager scene
+     */
+    public void showTagManager() {
+        primaryStage.setTitle("Tag Manager :)");
+        primaryStage.setScene(tagManager);
+        primaryStage.show();
 //            tagManagerCtrl.refresh();
-        }
     }
+
+
+    /**
+     * Shows the task creator scene
+     */
+    public void showTaskCreator() {
+        primaryStage.setTitle("Task creator :)");
+        primaryStage.setScene(taskCreator);
+        primaryStage.show();
+    }
+
+}

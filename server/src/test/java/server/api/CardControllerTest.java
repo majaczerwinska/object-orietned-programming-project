@@ -1,9 +1,6 @@
 package server.api;
 
-import commons.Board;
-import commons.Card;
-import commons.CardList;
-import commons.Tag;
+import commons.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -13,6 +10,7 @@ import server.database.CardListRepositoryTest;
 import server.database.CardRepositoryTest;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -85,6 +83,16 @@ public class CardControllerTest {
         con.addCard(list.getId(), card);
         ResponseEntity<Card> cardResponseEntity = ResponseEntity.ok(card);
         assertEquals(con.getCard(card.getId()), cardResponseEntity);
+    }
+    @Test
+    public void getTasksTest(){
+        CardList list = new CardList("c");
+        cl.save(list);
+        Card card = new Card("title");
+        List<Task> tasks = new ArrayList<>();
+        card.setTasks(tasks);
+        con.addCard(list.getId(), card);
+        assertEquals(con.getTasks(card.getId()),ResponseEntity.ok(tasks) );
     }
 
 

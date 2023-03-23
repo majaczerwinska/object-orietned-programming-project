@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import server.database.CardRepository;
 import server.database.TaskRepository;
 
+import java.util.Optional;
+
 
 @Service
 
@@ -88,6 +90,16 @@ public final class TaskService {
         task.setName(newName);
         repo.save(task);
     }
+
+    /**
+     * Finds a task by id
+     * @param id the id of the task
+     * @return an optional of the task
+     */
+    public Optional<Task> findById(int id){
+        return repo.findById(id);
+    }
+
 
 
 }
