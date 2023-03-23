@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import server.database.BoardRepository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 
 @Service
@@ -51,7 +52,7 @@ public class BoardService {
      * @return board object
      */
     public Board getById(int id){
-        Board board = repo.getById(id);
+        Board board = repo.findById(id).get();
         return board;
     }
 
@@ -63,5 +64,14 @@ public class BoardService {
     public boolean existsById(int id){
        return repo.existsById(id);
     }
+
+    /**
+     * returns all boards from the database
+     * @return - the boards
+     */
+    public List<Board> findAll(){
+        return repo.findAll();
+    }
+
 
 }

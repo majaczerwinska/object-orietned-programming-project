@@ -27,6 +27,7 @@
             <Button mnemonicParsing="false" onMouseClicked="#onPublicClickEvent" text="Public" />
             <Button mnemonicParsing="false" onAction="#onTeamActionEvent" text="Team" />
             <Button mnemonicParsing="false" text="Private" />
+            <Button mnemonicParsing="false" onMouseClicked="#onSelectClickEvent" text="Select" />
             <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #986a15;">
                <children>
                   <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="WELCOME TO TALIO">

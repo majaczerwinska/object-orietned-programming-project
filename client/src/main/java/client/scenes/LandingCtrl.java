@@ -58,4 +58,15 @@ public class LandingCtrl {
      */
     public void refresh() {
     }
+
+    /**
+     * takes you to board selection scene
+     * @param mouseEvent - click
+     */
+    public void onSelectClickEvent(MouseEvent mouseEvent) {
+        System.out.println("Select was clicked");
+        mainCtrl.showSelect();
+    }
+
+
 }
