@@ -196,6 +196,6 @@ public class Board {
      */
     @Override
     public String toString() {
-        return "Board#+" + id + "\n" + name + "\n" + boardkey + "\n" + color;
+        return "Board #" + id + "\n name: " + name + "\n key: " + boardkey + "\n color: " + color;
     }
 }

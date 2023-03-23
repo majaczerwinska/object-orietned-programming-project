@@ -113,4 +113,17 @@ public class TagControllerTest {
         assertEquals(tag.getColor(), 1);
 
     }
+
+    @Test
+    public void removeTagFromCard2Test(){
+        Tag tag= new Tag("title");
+        Board b = new Board("t");
+        Card c = new Card("t");
+        cr.save(c);
+        br.save(b);
+        con.addTag(b.getId(),tag);
+        con.addTagToCard(b.getId(), c.getId(), tag.getId());
+        assertEquals(con.removeTagFromCard(c.getId(), 500),ResponseEntity.badRequest().build());;
+
+    }
 }

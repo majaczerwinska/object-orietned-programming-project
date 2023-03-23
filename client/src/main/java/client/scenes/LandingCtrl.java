@@ -42,6 +42,15 @@ public class LandingCtrl {
     }
 
     /**
+     * Shows the task creator scene
+     * @param actionEvent the event when clicking the "task creator" button
+     */
+    public void showTaskCreator(ActionEvent actionEvent){
+        System.out.println("showTaskCreator!!!");
+        mainCtrl.showTaskCreator();
+    }
+
+    /**
      *
      * @param actionEvent event details, automatic
      */

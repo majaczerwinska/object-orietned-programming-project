@@ -72,12 +72,28 @@ public class Main extends Application {
             var card = FXML.load(CardCtrl.class, "client", "scenes", "CardCreator.fxml");
             var selectBoard = FXML.load(BoardSelectCtrl.class, "client", "scenes", "BoardSelect.fxml");
             var popupJoin = FXML.load(PopupJoinCtrl.class, "client", "scenes", "popupJoin.fxml");
-            var boardCreation = FXML.load(BoardCreationCtrl.class, "client", "scenes", "BoardCreation.fxml");
+            var listCreate = FXML.load(ListCreationCtrl.class, "client", "scenes", "ListCreate.fxml");
+            var tagManager = FXML.load(TagManagerCtrl.class, "client", "scenes", "TagManager.fxml");
+            var serverSelect = FXML.load(ServerSelectCtrl.class, "client", "scenes", "ServerSelect.fxml");
+            var taskCreator = FXML.load(TaskCreatorCtrl.class, "client", "scenes", "TaskCreator.fxml");
+
 
             var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-            var tagManager = FXML.load(TagManagerCtrl.class, "client", "scenes", "TagManager.fxml");
 
-            mainCtrl.initialize(primaryStage, landing, card, publicBoard, selectBoard, popupJoin, tagManager, boardCreation);
+
+            mainCtrl.initialize(
+                    primaryStage,
+                    landing,
+                    card,
+                    publicBoard,
+                    selectBoard,
+                    popupJoin,
+                    tagManager,
+                    listCreate,
+                    serverSelect,
+                    taskCreator
+            );
+
         } catch (Exception e) {
             System.out.println("very sad exception :(\nin start method of client.main..");
             e.printStackTrace();

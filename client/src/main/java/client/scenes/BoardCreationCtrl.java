@@ -9,6 +9,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import commons.Board;
 
+
 public class BoardCreationCtrl {
 
     private final MainCtrl mainCtrl;
