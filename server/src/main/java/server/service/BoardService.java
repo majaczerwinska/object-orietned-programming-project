@@ -52,8 +52,12 @@ public class BoardService {
      * @return board object
      */
     public Board getById(int id){
-        Board board = repo.findById(id).get();
-        return board;
+        System.out.println("board get by id called");
+        System.out.println("all boards: "+repo.findAll());
+        if (repo.findById(id).isEmpty()) {
+            return null;
+        }
+        return repo.findById(id).get();
     }
 
     /**

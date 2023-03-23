@@ -80,7 +80,13 @@ public class BoardRepositoryTest implements BoardRepository {
 
     @Override
     public Optional<Board> findById(Integer integer) {
-        return Optional.empty();
+        Board b = null;
+        for (Board board : boards) {
+            if (board.getId() == integer) {
+                b = board;
+            }
+        }
+        return Optional.of(b);
     }
 
     @Override

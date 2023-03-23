@@ -245,6 +245,7 @@ public class CardListRepositoryTest implements CardListRepository {
      * @see EntityManager#getReference(Class, Object) for details on when an exception is thrown.
      * @deprecated use {@link JpaRepository#getById(ID)} instead.
      */
+    @Deprecated
     @Override
     public CardList getOne(Integer integer) {
         return null;

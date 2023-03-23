@@ -67,7 +67,7 @@ public class Task {
      * @return a text representation
      */
     public  String toString(){
-        return "Task #" +id +", " + name;
+        return "Task #" +id +", name: " + name;
     }
 
 }

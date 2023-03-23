@@ -192,6 +192,6 @@ public class Tag {
      */
     @Override
     public String toString() {
-        return "Tag #+" + id + "\n" + title + "\n" + description + "\n" + color;
+        return "Tag #" + id + "\n title: " + title + "\n description: " + description + "\n color: " + color;
     }
 }
