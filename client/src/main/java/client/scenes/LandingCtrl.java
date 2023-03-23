@@ -77,6 +77,13 @@ public class LandingCtrl {
     }
 
     /**
+     * show board creation menu when clicking on private button
+     */
+    public void onPrivateClickEvent() {
+        mainCtrl.showBoardCreation();
+    }
+
+    /**
      *
      */
     public void refresh() {

@@ -82,7 +82,7 @@ public class BoardCreationCtrl {
             // color gets defaulted to white
             colorValue = "ffffff";
         }
-        else if(colorValue.length() != 6)
+        if(colorValue.length() != 6 && colorValue.length() != 0)
         {
             // show error
             errorLabel.setText("The hexcode has the wrong amount of digits.");
@@ -111,6 +111,12 @@ public class BoardCreationCtrl {
             String passwordValue = passwordTextField.getText();
             newBoard.setPassword(passwordValue);
         }
-        // server.addBoard();
+        //server.addBoard(newBoard);
+    }
+
+    /**
+     *
+     */
+    public void refresh() {
     }
 }

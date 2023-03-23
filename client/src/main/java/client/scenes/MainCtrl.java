@@ -199,6 +199,7 @@ public class MainCtrl {
     }
 
     /**
+<<<<<<< HEAD
      * Shows board overview
      */
     public  void showBoardOverwiew(){
