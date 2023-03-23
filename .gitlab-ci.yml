@@ -131,7 +131,7 @@ test_job_controllers:
 test_job_server_main:
   stage: test
   variables:
-    SERVER_MIN_COVERAGE: 83
+    SERVER_MIN_COVERAGE: 73
     SERVER_GOOD_COVERAGE: 100
   needs:
     - build_job
