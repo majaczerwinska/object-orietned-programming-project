@@ -41,5 +41,6 @@
       </VBox>
       <Button fx:id="btnUpdate" alignment="CENTER" layoutX="417.0" layoutY="350.0" mnemonicParsing="false" onAction="#editTag" prefHeight="30.0" prefWidth="90.0" text="Edit" />
       <Button fx:id="btnDelete" alignment="CENTER" layoutX="517.0" layoutY="350.0" mnemonicParsing="false" onAction="#deleteTag" prefHeight="30.0" prefWidth="90.0" text="Delete" />
+      <Button fx:id="backbtn" layoutX="18.0" layoutY="19.0" mnemonicParsing="false" onAction="#backButton" prefHeight="30.0" prefWidth="68.0" text="Back" />
    </children>
 </AnchorPane>

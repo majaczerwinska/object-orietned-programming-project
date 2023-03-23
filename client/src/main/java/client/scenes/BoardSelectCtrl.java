@@ -89,7 +89,7 @@ public class BoardSelectCtrl{
      */
     @FXML
     public void goCreate(MouseEvent mouseEvent){
-        mainCtrl.showLanding();
+        mainCtrl.showBoardCreation();
     }
 
     /**

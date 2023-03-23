@@ -8,6 +8,7 @@ import javafx.application.Platform;
 //import javafx.event.ActionEvent;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
@@ -244,6 +245,14 @@ public class ServerSelectCtrl {
         setConnectionStatus(res);
     }
 
+    /**
+     * Enters the server (goes to select board scene)
+     * @param actionEvent the event when clicking the "Enter server" button
+     */
+    public void enterServer(ActionEvent actionEvent){
+        System.out.println("entering server");
+        mainCtrl.showLanding();
+    }
 
     /**
      * event handler for the exit app button

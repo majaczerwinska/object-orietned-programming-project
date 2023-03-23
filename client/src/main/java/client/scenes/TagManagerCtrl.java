@@ -33,6 +33,7 @@ public class TagManagerCtrl implements Initializable {
     @FXML
     private TextField tfColor;
 
+
     /**
      *
      * @param server -
@@ -163,4 +164,12 @@ public class TagManagerCtrl implements Initializable {
         }
     }
 
+    /**
+     * Goes back to previous scene
+     * @param actionEvent the event when clicking the back button
+     */
+    public void backButton(ActionEvent actionEvent){
+        System.out.println("going back");
+        mainCtrl.showBoardOverwiew();
+    }
 }

@@ -51,6 +51,24 @@ public class LandingCtrl {
     }
 
     /**
+     * Shows board overview
+     * @param actionEvent the event of clicking on the button
+     */
+    public void showBoardOverview(ActionEvent actionEvent){
+        System.out.println("show board overview");
+        mainCtrl.showBoardOverwiew();
+    }
+
+    /**
+     * Shows board selection scene
+     * @param actionEvent the event of clicking the button
+     */
+    public void showBoardSelect(ActionEvent actionEvent){
+        System.out.println("show boardSelect");
+        mainCtrl.showSelect();
+    }
+
+    /**
      *
      * @param actionEvent event details, automatic
      */
