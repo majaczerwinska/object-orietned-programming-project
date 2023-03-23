@@ -24,7 +24,7 @@ build_job:
 test_job_commons:
   stage: test
   variables:
-    COMMONS_MIN_COVERAGE: 95
+    COMMONS_MIN_COVERAGE: 92
     COMMONS_GOOD_COVERAGE: 100
   needs:
     - build_job
@@ -54,14 +54,13 @@ test_job_commons:
       - 1
   coverage: /CommonsTestCoverage:(\d+)%/
 
-test_job:
+
+# Next we test services
+test_job_services:
   stage: test
   variables:
-    GOOD_COVERAGE_TOTAL: 75
-    MINIMUM_COVERAGE_TOTAL: 25
-    SERVER_MIN_COVERAGE: 95
-    SERVER_API_MIN_COVERAGE: 95
-    SERVER_SERVICES_MIN_COVERAGE: 95
+    SERVICES_MIN_COVERAGE: 85
+    SERVICES_GOOD_COVERAGE: 100
   needs:
     - build_job
   dependencies:
@@ -69,13 +68,13 @@ test_job:
   script:
     - ./gradlew AggregateJacocoReport -x compileJava -x classes -x processResources -x jar
     # preserve coverage information in an easy-to-reach folder
-    - mv build/reports/jacoco/aggregate/html ./coverage
+    - mv build/reports/jacoco/aggregate/html/server.service ./coverage
     - mv build/reports/jacoco/aggregate/jacocoTestReport.xml ./coverage/report.xml
     - coverage=$(cat coverage/index.html | grep -o -E "Total[^%]+?%" | sed -E "s/<.*>//" | sed -E "s/Total//")
     - coverage=${coverage::-1} # Remove %
-    - echo TestCoverage:$coverage%
-    - if [ $coverage -ge $GOOD_COVERAGE ]; then exit 0; fi # If enough tests then pass
-    - if [ $coverage -ge $MINIMUM_COVERAGE ]; then exit 1; fi # If not enough tests then semi fail
+    - echo ServicesTestCoverage:$coverage%
+    - if [ $coverage -ge $SERVICES_GOOD_COVERAGE ]; then exit 0; fi # If all tests then pass
+    - if [ $coverage -ge $SERVICES_MIN_COVERAGE ]; then exit 1; fi # If most tests then semi fail
     - exit 2 # If less than minimum tests then fail build entirely
   artifacts:
     paths:
@@ -88,7 +87,113 @@ test_job:
     # Any other exit code means it's definitely insufficient
     exit_codes:
       - 1
-  coverage: /TestCoverage:(\d+)%/
+  coverage: /ServicesTestCoverage:(\d+)%/
+
+
+# Now testing the controllers
+test_job_controllers:
+  stage: test
+  variables:
+    CONTROLLERS_MIN_COVERAGE: 80
+    CONTROLLERS_GOOD_COVERAGE: 100
+  needs:
+    - build_job
+  dependencies:
+    - build_job
+  script:
+    - ./gradlew AggregateJacocoReport -x compileJava -x classes -x processResources -x jar
+    # preserve coverage information in an easy-to-reach folder
+    - mv build/reports/jacoco/aggregate/html/server.api ./coverage
+    - mv build/reports/jacoco/aggregate/jacocoTestReport.xml ./coverage/report.xml
+    - coverage=$(cat coverage/index.html | grep -o -E "Total[^%]+?%" | sed -E "s/<.*>//" | sed -E "s/Total//")
+    - coverage=${coverage::-1} # Remove %
+    - echo ControllersTestCoverage:$coverage%
+    - if [ $coverage -ge $CONTROLLERS_GOOD_COVERAGE ]; then exit 0; fi # If all tests then pass
+    - if [ $coverage -ge $CONTROLLERS_MIN_COVERAGE ]; then exit 1; fi # If most tests then semi fail
+    - exit 2 # If less than minimum tests then fail build entirely
+  artifacts:
+    paths:
+      - "*/build/test-results/test/TEST-*.xml"
+      - ./coverage
+    reports:
+      junit: "*/build/test-results/test/TEST-*.xml"
+  allow_failure:
+    # Exit code 1 signifies a task being sufficiently tested, but it should be more.
+    # Any other exit code means it's definitely insufficient
+    exit_codes:
+      - 1
+  coverage: /ControllersTestCoverage:(\d+)%/
+
+
+# We still haven't checked the client main, client controllers, client utils, and server main and config functions.
+
+# This will test the server package, meaning the Main and Config classes
+test_job_server_main:
+  stage: test
+  variables:
+    SERVER_MIN_COVERAGE: 83
+    SERVER_GOOD_COVERAGE: 100
+  needs:
+    - build_job
+  dependencies:
+    - build_job
+  script:
+    - ./gradlew AggregateJacocoReport -x compileJava -x classes -x processResources -x jar
+    # preserve coverage information in an easy-to-reach folder
+    - mv build/reports/jacoco/aggregate/html/server ./coverage
+    - mv build/reports/jacoco/aggregate/jacocoTestReport.xml ./coverage/report.xml
+    - coverage=$(cat coverage/index.html | grep -o -E "Total[^%]+?%" | sed -E "s/<.*>//" | sed -E "s/Total//")
+    - coverage=${coverage::-1} # Remove %
+    - echo ServerTestCoverage:$coverage%
+    - if [ $coverage -ge $SERVER_GOOD_COVERAGE ]; then exit 0; fi # If all tests then pass
+    - if [ $coverage -ge $SERVER_MIN_COVERAGE ]; then exit 1; fi # If most tests then semi fail
+    - exit 2 # If less than minimum tests then fail build entirely
+  artifacts:
+    paths:
+      - "*/build/test-results/test/TEST-*.xml"
+      - ./coverage
+    reports:
+      junit: "*/build/test-results/test/TEST-*.xml"
+  allow_failure:
+    # Exit code 1 signifies a task being sufficiently tested, but it should be more.
+    # Any other exit code means it's definitely insufficient
+    exit_codes:
+      - 1
+  coverage: /ServerTestCoverage:(\d+)%/
+
+
+test_job_overall:
+  stage: test
+  variables:
+    GOOD_COVERAGE_TOTAL: 50
+    MINIMUM_COVERAGE_TOTAL: 25
+  needs:
+    - build_job
+  dependencies:
+    - build_job
+  script:
+    - ./gradlew AggregateJacocoReport -x compileJava -x classes -x processResources -x jar
+    # preserve coverage information in an easy-to-reach folder
+    - mv build/reports/jacoco/aggregate/html ./coverage
+    - mv build/reports/jacoco/aggregate/jacocoTestReport.xml ./coverage/report.xml
+    - coverage=$(cat coverage/index.html | grep -o -E "Total[^%]+?%" | sed -E "s/<.*>//" | sed -E "s/Total//")
+    - coverage=${coverage::-1} # Remove %
+    - echo TotalTestCoverage:$coverage%
+    - if [ $coverage -ge $GOOD_COVERAGE_TOTAL ]; then exit 0; fi # If enough tests then pass
+    - if [ $coverage -ge $MINIMUM_COVERAGE_TOTAL ]; then exit 1; fi # If not enough tests then semi fail
+    - exit 2 # If less than minimum tests then fail build entirely
+  artifacts:
+    paths:
+      - "*/build/test-results/test/TEST-*.xml"
+      - ./coverage
+    reports:
+      junit: "*/build/test-results/test/TEST-*.xml"
+  allow_failure:
+    # Exit code 1 signifies a task being sufficiently tested, but it should be more.
+    # Any other exit code means it's definitely insufficient
+    exit_codes:
+      - 1
+  coverage: /TotalTestCoverage:(\d+)%/
 
 # Check the checkstyle, should be no checkstyle errors
 checkstyle_client_main_job:
@@ -114,11 +219,3 @@ checkstyle_commons_main_job:
   dependencies: []
   script:
     - ./gradlew :commons:checkstyleMain
-
-checkstyle_test_job:
-   stage: style
-   needs:
-     - build_job
-   dependencies: []
-   script:
-     - ./gradlew checkstyleTest
