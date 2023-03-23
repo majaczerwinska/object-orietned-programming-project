@@ -7,9 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 @SpringBootTest
 public class MainTest {
 
