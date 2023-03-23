@@ -99,6 +99,22 @@ public class TagController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Removes the connection between a tag and a card
+     * @param cardId the card
+     * @param tagId the tag
+     * @return a response entity
+     */
+    @PutMapping("/{cardId}/{tagId}")
+    public ResponseEntity<Tag> removeTagFromCard(@PathVariable("cardId") int cardId, @PathVariable("tagId") int tagId) {
+        if(!ser.existsById(tagId)){
+            return ResponseEntity.badRequest().build();
+        }
+        Tag t =ser.removeTagFromCard(cardId, tagId);
+        if(t==null)  return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(t);
+    }
+
 
 
 }

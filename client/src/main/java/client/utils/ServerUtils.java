@@ -25,6 +25,7 @@ import java.util.List;
 
 import commons.Board;
 import commons.Card;
+import commons.Task;
 import jakarta.ws.rs.core.GenericType;
 import commons.Tag;
 import org.glassfish.jersey.client.ClientConfig;
@@ -199,6 +200,20 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(tag, APPLICATION_JSON), Tag.class);
+    }
+
+    /**
+     * Adds a task to the database
+     * @param task the task to be added
+     * @param cardId the id from the card where the task needs to be added
+     * @return the added task
+     */
+    public Task addTask(Task task, int cardId) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/tasks/" + cardId) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(task, APPLICATION_JSON), Task.class);
     }
 
     /**

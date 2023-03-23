@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.service.TaskService;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/tasks")
 public class TaskController {
@@ -62,4 +64,15 @@ public class TaskController {
         if(t==null) return ResponseEntity.badRequest().build();
         return ResponseEntity.ok().build();
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<Task> getTask( @PathVariable("id") int id){
+        if(!ts.existsById(id)) return ResponseEntity.badRequest().build();
+        Optional<Task> t = ts.findById(id);
+        if(t.isEmpty())return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(t.get());
+
+    }
+
+
+
 }
