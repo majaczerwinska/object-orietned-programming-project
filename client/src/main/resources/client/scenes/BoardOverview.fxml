@@ -12,7 +12,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.25" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="814.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<SplitPane dividerPositions="0.25" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="814.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.BoardOverviewCtrl">
   <items>
       <VBox alignment="TOP_CENTER" prefHeight="493.0" prefWidth="200.0" spacing="10.0">
          <children>
@@ -25,7 +25,7 @@
                <children>
                   <Label text="Tags" />
                   <ListView prefHeight="190.0" prefWidth="125.0" />
-                  <Button mnemonicParsing="false" text="Tag manager" />
+                  <Button fx:id="btnTagManager" mnemonicParsing="false" onAction="#showTagManager" text="Tag manager" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
