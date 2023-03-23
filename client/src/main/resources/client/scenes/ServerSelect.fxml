@@ -11,7 +11,7 @@
       <Button fx:id="enterServer" layoutX="489.0" layoutY="257.0" mnemonicParsing="false" onAction="#enterServer" text="Enter Server" />
       <TextField fx:id="ipField" layoutX="300.0" layoutY="56.0" prefHeight="26.0" prefWidth="277.0" text="http://localhost:8080" />
       <Button fx:id="addServer" layoutX="499.0" layoutY="98.0" mnemonicParsing="false" onAction="#addIP" text="Add Server" />
-      <ListView fx:id="servers" layoutX="27.0" layoutY="56.0" onMouseClicked="#showSelectedItem" prefHeight="316.0" prefWidth="240.0" />
+      <ListView fx:id="servers" layoutX="27.0" layoutY="56.0" onMouseClicked="#changeSelectedServer" prefHeight="316.0" prefWidth="240.0" />
       <Text fx:id="ipFieldHeader" layoutX="300.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter domain or IP address" />
       <Text layoutX="300.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Selected server:" />
       <Text fx:id="selectedServer" layoutX="300.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="http://localhost:8080" />
