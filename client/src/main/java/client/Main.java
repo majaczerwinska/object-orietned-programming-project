@@ -76,7 +76,7 @@ public class Main extends Application {
             var tagManager = FXML.load(TagManagerCtrl.class, "client", "scenes", "TagManager.fxml");
             var serverSelect = FXML.load(ServerSelectCtrl.class, "client", "scenes", "ServerSelect.fxml");
             var taskCreator = FXML.load(TaskCreatorCtrl.class, "client", "scenes", "TaskCreator.fxml");
-
+            var boardCreation = FXML.load(BoardCreationCtrl.class, "client", "scenes", "BoardCreation.fxml");
 
             var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
 
@@ -91,7 +91,8 @@ public class Main extends Application {
                     tagManager,
                     listCreate,
                     serverSelect,
-                    taskCreator
+                    taskCreator,
+                    boardCreation
             );
 
         } catch (Exception e) {

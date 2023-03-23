@@ -45,7 +45,6 @@ public class MainCtrl {
     private Scene taskCreator;
 
 
-
     private ServerSelectCtrl serverSelectCtrl;
     private Scene serverSelect;
 
@@ -79,7 +78,8 @@ public class MainCtrl {
                            Pair<TagManagerCtrl, Parent> tagManager,
                            Pair<ListCreationCtrl, Parent> listCreate,
                            Pair<ServerSelectCtrl, Parent> select,
-                           Pair<TaskCreatorCtrl, Parent> taskCreator) {
+                           Pair<TaskCreatorCtrl, Parent> taskCreator,
+                           Pair<BoardCreationCtrl, Parent> boardCreation) {
         this.primaryStage = primaryStage;
         this.landingCtrl = landing.getKey();
         this.landing = new Scene(landing.getValue());
@@ -107,6 +107,9 @@ public class MainCtrl {
 
         this.serverSelectCtrl = select.getKey();
         this.serverSelect = new Scene(select.getValue());
+
+        this.boardCreationCtrl = boardCreation.getKey();
+        this.boardCreation = new Scene(boardCreation.getValue());
 
         showServerSelect();
         primaryStage.show();
@@ -188,6 +191,15 @@ public class MainCtrl {
     public void showTaskCreator() {
         primaryStage.setTitle("Task creator :)");
         primaryStage.setScene(taskCreator);
+        primaryStage.show();
+    }
+
+    /**
+     * Shows the Board Creation
+     */
+    public void showBoardCreation() {
+        primaryStage.setTitle("Board Creation");
+        primaryStage.setScene(boardCreation);
         primaryStage.show();
     }
 
