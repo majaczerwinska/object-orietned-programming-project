@@ -25,6 +25,7 @@ import java.util.List;
 
 import commons.Board;
 import commons.Card;
+import commons.CardList;
 import jakarta.ws.rs.ProcessingException;
 import jakarta.ws.rs.client.Client;
 import commons.Task;
@@ -245,6 +246,20 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(newTag, APPLICATION_JSON), Tag.class);
+    }
+
+    /**
+     * creates new list and assigns it to a board
+     * @param boardId - board to add the list to
+     * @param list - a new list
+     * @return - list
+     */
+    public CardList createList(int boardId, CardList list) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/lists/" + boardId)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(list, APPLICATION_JSON), CardList.class);
     }
 
     /**

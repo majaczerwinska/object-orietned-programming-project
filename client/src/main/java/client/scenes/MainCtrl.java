@@ -50,6 +50,9 @@ public class MainCtrl {
     private Scene serverSelect;
 
 
+    private ListCreationCtrl listCreationCtrl;
+    private Scene listCreate;
+
     /**
      *
      * @param primaryStage
@@ -59,6 +62,7 @@ public class MainCtrl {
      * @param boardSelect
      * @param popup
      * @param tagManager
+     * @param listCreate
      * @param select
      * @param taskCreator
      */
@@ -70,6 +74,7 @@ public class MainCtrl {
                            Pair<BoardSelectCtrl, Parent> boardSelect,
                            Pair<PopupJoinCtrl, Parent> popup,
                            Pair<TagManagerCtrl, Parent> tagManager,
+                           Pair<ListCreationCtrl, Parent> listCreate,
                            Pair<ServerSelectCtrl, Parent> select,
                            Pair<TaskCreatorCtrl, Parent> taskCreator) {
         this.primaryStage = primaryStage;
@@ -91,13 +96,15 @@ public class MainCtrl {
         this.tagManagerCtrl = tagManager.getKey();
         this.tagManager = new Scene(tagManager.getValue());
 
+        this.listCreationCtrl = listCreate.getKey();
+        this.listCreate = new Scene(listCreate.getValue());
+
         this.taskCreatorCtrl = taskCreator.getKey();
         this.taskCreator = new Scene(taskCreator.getValue());
 
         this.serverSelectCtrl = select.getKey();
         this.serverSelect = new Scene(select.getValue());
 
-//        showLanding();
         showServerSelect();
         primaryStage.show();
     }
@@ -159,7 +166,17 @@ public class MainCtrl {
         primaryStage.setScene(tagManager);
         primaryStage.show();
 //            tagManagerCtrl.refresh();
-    }
+        }
+
+    /**
+     * shows a scene where you can create a new list and add it to the public board
+     */
+        public void showListCreate(){
+            primaryStage.setTitle("List creation");
+            primaryStage.setScene(listCreate);
+            primaryStage.show();
+        }
+
 
 
     /**
