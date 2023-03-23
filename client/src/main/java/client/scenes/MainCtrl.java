@@ -42,6 +42,9 @@ public class MainCtrl {
     private TagManagerCtrl tagManagerCtrl;
     private Scene tagManager;
 
+    private BoardCreationCtrl boardCreationCtrl;
+    private Scene boardCreation;
+
     /**
      *
      * @param primaryStage
@@ -51,15 +54,17 @@ public class MainCtrl {
      * @param boardSelect
      * @param popup
      * @param tagManager
+     * @param boardCreation
      */
 
     public void initialize(Stage primaryStage,
-                           Pair<LandingCtrl, Parent> landing,
-                           Pair<CardCtrl, Parent> card,
-                           Pair<PublicBoardCtrl, Parent> publicBoard,
-                           Pair<BoardSelectCtrl, Parent> boardSelect,
-                           Pair<PopupJoinCtrl, Parent> popup,
-                           Pair<TagManagerCtrl, Parent> tagManager) {
+            Pair<LandingCtrl, Parent> landing,
+            Pair<CardCtrl, Parent> card,
+            Pair<PublicBoardCtrl, Parent> publicBoard,
+            Pair<BoardSelectCtrl, Parent> boardSelect,
+            Pair<PopupJoinCtrl, Parent> popup,
+            Pair<TagManagerCtrl, Parent> tagManager,
+            Pair<BoardCreationCtrl, Parent> boardCreation) {
         this.primaryStage = primaryStage;
         this.landingCtrl = landing.getKey();
         this.landing = new Scene(landing.getValue());
@@ -124,13 +129,23 @@ public class MainCtrl {
         primaryStage.show();
         popupJoinCtrl.refresh();
     }
-        /**
-         * Shows the tag manager scene
-         */
-        public void showTagManager() {
-            primaryStage.setTitle("Tag Manager :)");
-            primaryStage.setScene(tagManager);
-            primaryStage.show();
-//            tagManagerCtrl.refresh();
-        }
+
+    /**
+     * Shows the tag manager scene
+     */
+    public void showTagManager() {
+        primaryStage.setTitle("Tag Manager :)");
+        primaryStage.setScene(tagManager);
+        primaryStage.show();
+        // tagManagerCtrl.refresh();
     }
+
+    /**
+     * Shows the board creation menu
+     */
+    public void showBoardCreation() {
+            primaryStage.setTitle("Board Creation");
+            primaryStage.setScene(boardCreation);
+            primaryStage.show();
+        }
+}
