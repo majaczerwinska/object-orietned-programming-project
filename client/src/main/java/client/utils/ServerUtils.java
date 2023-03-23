@@ -25,7 +25,6 @@ import java.util.List;
 
 import commons.Board;
 import commons.Card;
-import commons.Board;
 import jakarta.ws.rs.core.GenericType;
 import commons.Tag;
 import org.glassfish.jersey.client.ClientConfig;

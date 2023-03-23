@@ -144,8 +144,8 @@ public class MainCtrl {
      * Shows the board creation menu
      */
     public void showBoardCreation() {
-            primaryStage.setTitle("Board Creation");
-            primaryStage.setScene(boardCreation);
-            primaryStage.show();
-        }
+        primaryStage.setTitle("Board Creation");
+        primaryStage.setScene(boardCreation);
+        primaryStage.show();
+    }
 }
