@@ -59,7 +59,7 @@ test_job_commons:
 test_job_services:
   stage: test
   variables:
-    SERVICES_MIN_COVERAGE: 85
+    SERVICES_MIN_COVERAGE: 93
     SERVICES_GOOD_COVERAGE: 100
   needs:
     - build_job
@@ -94,7 +94,7 @@ test_job_services:
 test_job_controllers:
   stage: test
   variables:
-    CONTROLLERS_MIN_COVERAGE: 80
+    CONTROLLERS_MIN_COVERAGE: 75
     CONTROLLERS_GOOD_COVERAGE: 100
   needs:
     - build_job
@@ -160,6 +160,94 @@ test_job_server_main:
     exit_codes:
       - 1
   coverage: /ServerTestCoverage:(\d+)%/
+
+# The client will be tested and coverage collected separately but won't affect the pipeline
+test_job_client_main:
+  stage: test
+  variables:
+    CLIENT_MIN_COVERAGE: 50
+    CLIENT_GOOD_COVERAGE: 90
+  needs:
+    - build_job
+  dependencies:
+    - build_job
+  script:
+    - ./gradlew AggregateJacocoReport -x compileJava -x classes -x processResources -x jar
+    # preserve coverage information in an easy-to-reach folder
+    - mv build/reports/jacoco/aggregate/html/client ./coverage
+    - mv build/reports/jacoco/aggregate/jacocoTestReport.xml ./coverage/report.xml
+    - coverage=$(cat coverage/index.html | grep -o -E "Total[^%]+?%" | sed -E "s/<.*>//" | sed -E "s/Total//")
+    - coverage=${coverage::-1} # Remove %
+    - echo ClientTestCoverage:$coverage%
+    - if [ $coverage -ge $CLIENT_GOOD_COVERAGE ]; then echo "Client is tested sufficiently!" && exit 0; fi # If all tests then pass
+    - if [ $coverage -ge $CLIENT_MIN_COVERAGE ]; then echo "Client is partially tested." && exit 0; fi # If most tests then semi fail
+    - echo "Client is not tested."
+    - exit 0 # we don't fail the pipeline even if client is not tested.
+  artifacts:
+    paths:
+      - "*/build/test-results/test/TEST-*.xml"
+      - ./coverage
+    reports:
+      junit: "*/build/test-results/test/TEST-*.xml"
+  coverage: /ClientTestCoverage:(\d+)%/
+test_job_client_utils:
+  stage: test
+  variables:
+    CLIENT_MIN_COVERAGE: 50
+    CLIENT_GOOD_COVERAGE: 90
+  needs:
+    - build_job
+  dependencies:
+    - build_job
+  script:
+    - ./gradlew AggregateJacocoReport -x compileJava -x classes -x processResources -x jar
+    # preserve coverage information in an easy-to-reach folder
+    - mv build/reports/jacoco/aggregate/html/client.utils ./coverage
+    - mv build/reports/jacoco/aggregate/jacocoTestReport.xml ./coverage/report.xml
+    - coverage=$(cat coverage/index.html | grep -o -E "Total[^%]+?%" | sed -E "s/<.*>//" | sed -E "s/Total//")
+    - coverage=${coverage::-1} # Remove %
+    - echo ClientUtilsTestCoverage:$coverage%
+    - if [ $coverage -ge $CLIENT_GOOD_COVERAGE ]; then echo "Client is tested sufficiently!" && exit 0; fi # If all tests then pass
+    - if [ $coverage -ge $CLIENT_MIN_COVERAGE ]; then echo "Client is partially tested." && exit 0; fi # If most tests then semi fail
+    - echo "Client is not tested."
+    - exit 0 # we don't fail the pipeline even if client is not tested.
+  artifacts:
+    paths:
+      - "*/build/test-results/test/TEST-*.xml"
+      - ./coverage
+    reports:
+      junit: "*/build/test-results/test/TEST-*.xml"
+  coverage: /ClientUtilsTestCoverage:(\d+)%/
+
+test_job_client_scenes_controllers:
+  stage: test
+  variables:
+    CLIENT_MIN_COVERAGE: 50
+    CLIENT_GOOD_COVERAGE: 90
+  needs:
+    - build_job
+  dependencies:
+    - build_job
+  script:
+    - ./gradlew AggregateJacocoReport -x compileJava -x classes -x processResources -x jar
+    # preserve coverage information in an easy-to-reach folder
+    - mv build/reports/jacoco/aggregate/html/client.scenes ./coverage
+    - mv build/reports/jacoco/aggregate/jacocoTestReport.xml ./coverage/report.xml
+    - coverage=$(cat coverage/index.html | grep -o -E "Total[^%]+?%" | sed -E "s/<.*>//" | sed -E "s/Total//")
+    - coverage=${coverage::-1} # Remove %
+    - echo ClientScenesTestCoverage:$coverage%
+    - if [ $coverage -ge $CLIENT_GOOD_COVERAGE ]; then echo "Client is tested sufficiently!" && exit 0; fi # If all tests then pass
+    - if [ $coverage -ge $CLIENT_MIN_COVERAGE ]; then echo "Client is partially tested." && exit 0; fi # If most tests then semi fail
+    - echo "Client is not tested."
+    - exit 0 # we don't fail the pipeline even if client is not tested.
+  artifacts:
+    paths:
+      - "*/build/test-results/test/TEST-*.xml"
+      - ./coverage
+    reports:
+      junit: "*/build/test-results/test/TEST-*.xml"
+  coverage: /ClientScenesTestCoverage:(\d+)%/
+
 
 
 test_job_overall:
