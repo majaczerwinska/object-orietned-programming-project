@@ -34,8 +34,5 @@ public class BoardControllerTest {
         con.addBoard(board);
         con.deleteBoard(board.getId());
         assertFalse(repo.existsById(board.getId()));
-
     }
-
-
 }

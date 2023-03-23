@@ -24,16 +24,18 @@ public class BoardServiceTest {
     public void saveTest(){
         Board board = new Board("title");
         ser.save(board);
+        System.out.println(repo.findById(board.getId()));
+        System.out.println(board.getId());
         assertTrue(repo.existsById(board.getId()));
-
     }
 
     @Test
     public void getByIdTest(){
-        Board board = new Board("title");
-        ser.save(board);
-        assertEquals(ser.getById(board.getId()), board);
-
+        Board board = new Board("title--");
+        System.out.println("saving board: \n"+ser.save(board));
+        System.out.println("board id : " + board.id);
+        System.out.println("getter output: "+ser.getById(board.id));
+        assertEquals(board, ser.getById(board.id));
     }
 
     @Test

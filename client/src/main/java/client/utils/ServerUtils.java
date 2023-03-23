@@ -26,8 +26,12 @@ import java.util.List;
 import commons.Board;
 import commons.Card;
 import commons.CardList;
+import jakarta.ws.rs.ProcessingException;
+import jakarta.ws.rs.client.Client;
+import commons.Task;
 import jakarta.ws.rs.core.GenericType;
 import commons.Tag;
+import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 
 //import commons.Quote;
@@ -44,7 +48,7 @@ import jakarta.ws.rs.client.Entity;
 
 public class ServerUtils {
 
-    private static final String SERVER = "http://localhost:8080/";
+    public static String SERVER = "http://localhost:8080/";
 
 //    /**
 //     *
@@ -203,6 +207,20 @@ public class ServerUtils {
     }
 
     /**
+     * Adds a task to the database
+     * @param task the task to be added
+     * @param cardId the id from the card where the task needs to be added
+     * @return the added task
+     */
+    public Task addTask(Task task, int cardId) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/tasks/" + cardId) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(task, APPLICATION_JSON), Task.class);
+    }
+
+    /**
      * Deletes a tag (calls the delete method in the controller)
      * @param tag the tag to be deleted
      * @param boardId the boardId from where the tag is coming from
@@ -236,11 +254,41 @@ public class ServerUtils {
      * @param list - a new list
      * @return - list
      */
-    public CardList createList(int boardId, CardList list){
+    public CardList createList(int boardId, CardList list) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/lists/"+boardId)
+                .target(SERVER).path("api/lists/" + boardId)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(list, APPLICATION_JSON), CardList.class);
+    }
+
+    /**
+     * send a request to an ip and await a response, making sure that
+     * a connection can be established with a talio server
+     * @param ip address to test connection to
+     * @return status code (-1: timeout, -2: response received, but address is not a talio server)
+     */
+    public int testConnection(String ip) {
+        try {
+            Client client = ClientBuilder.newClient();
+            Response response = client.target(ip)
+                    .request()
+                    .get();
+            String body = response.readEntity(String.class);
+            System.out.println("Response: " + body);
+            response.close();
+            if (response.getStatus() == 200) {
+                if (body.contains("talio")) {
+                    return response.getStatus();
+                } else {
+                    return -2;
+                }
+            } else {
+                return response.getStatus();
+            }
+        } catch (ProcessingException e) {
+            System.out.println("Connection timed out: " + e.getMessage());
+            return -1;
+        }
     }
 }

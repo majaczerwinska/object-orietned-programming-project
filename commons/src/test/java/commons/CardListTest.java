@@ -61,6 +61,6 @@ class CardListTest {
     @Test
     public void toStringTest(){
         CardList t = new CardList("t");
-        assertEquals(t.toString(), "List #" + t.getId()+ ", " + t.getName()+ ", "+t.getColor());
+        assertEquals(t.toString(), "List #" + t.getId() + "\n name: " + t.getName() + "\n color: " + t.getColor() + "\nthis list has no cards");
     }
 }

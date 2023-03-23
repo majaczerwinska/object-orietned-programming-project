@@ -76,6 +76,9 @@ public class TaskRepositoryTest implements TaskRepository{
 
     @Override
     public Optional<Task> findById(Integer integer) {
+        for(Task task : list){
+            if(task.getId()==integer) return Optional.of(task);
+        }
         return Optional.empty();
     }
 
