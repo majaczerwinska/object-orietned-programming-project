@@ -75,8 +75,10 @@ public class Main extends Application {
 
             var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
             var tagManager = FXML.load(TagManagerCtrl.class, "client", "scenes", "TagManager.fxml");
-            var taskCreator = FXML.load(TaskCreatorCtrl.class, "client", "scenes", "TaskCreator.fxml");
-            mainCtrl.initialize(primaryStage, landing, card, publicBoard, selectBoard, popupJoin, tagManager, taskCreator);
+            var taskCreator = FXML.load(TaskCreatorCtrl.class,
+                    "client", "scenes", "TaskCreator.fxml");
+            mainCtrl.initialize(primaryStage, landing, card, publicBoard,
+                    selectBoard, popupJoin, tagManager, taskCreator);
         } catch (Exception e) {
             System.out.println("very sad exception :(\nin start method of client.main..");
             e.printStackTrace();

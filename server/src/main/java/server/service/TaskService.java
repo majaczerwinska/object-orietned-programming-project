@@ -91,6 +91,11 @@ public final class TaskService {
         repo.save(task);
     }
 
+    /**
+     * Finds a task by id
+     * @param id the id of the task
+     * @return an optional of the task
+     */
     public Optional<Task> findById(int id){
         return repo.findById(id);
     }
