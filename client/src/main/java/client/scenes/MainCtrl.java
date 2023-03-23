@@ -41,6 +41,9 @@ public class MainCtrl {
 
     private TagManagerCtrl tagManagerCtrl;
     private Scene tagManager;
+    private TaskCreatorCtrl taskCreatorCtrl;
+    private Scene taskCreator;
+
 
     /**
      *
@@ -51,6 +54,7 @@ public class MainCtrl {
      * @param boardSelect
      * @param popup
      * @param tagManager
+     * @param taskCreator
      */
 
     public void initialize(Stage primaryStage,
@@ -59,7 +63,8 @@ public class MainCtrl {
                            Pair<PublicBoardCtrl, Parent> publicBoard,
                            Pair<BoardSelectCtrl, Parent> boardSelect,
                            Pair<PopupJoinCtrl, Parent> popup,
-                           Pair<TagManagerCtrl, Parent> tagManager) {
+                           Pair<TagManagerCtrl, Parent> tagManager,
+                           Pair<TaskCreatorCtrl, Parent> taskCreator) {
         this.primaryStage = primaryStage;
         this.landingCtrl = landing.getKey();
         this.landing = new Scene(landing.getValue());
@@ -78,6 +83,8 @@ public class MainCtrl {
 
         this.tagManagerCtrl = tagManager.getKey();
         this.tagManager = new Scene(tagManager.getValue());
+        this.taskCreatorCtrl = taskCreator.getKey();
+        this.taskCreator = new Scene(taskCreator.getValue());
 
         showLanding();
         primaryStage.show();
@@ -130,4 +137,12 @@ public class MainCtrl {
             primaryStage.show();
 //            tagManagerCtrl.refresh();
         }
+    /**
+     * Shows the task creator scene
+     */
+    public void showTaskCreator() {
+        primaryStage.setTitle("Task creator :)");
+        primaryStage.setScene(taskCreator);
+        primaryStage.show();
+    }
     }

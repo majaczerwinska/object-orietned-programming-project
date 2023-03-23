@@ -123,5 +123,20 @@ public class TagService {
             return tag;
     }
 
+    /**
+     * removes the tag from the card
+     * @param cardId the card
+     * @param tagId the tag
+     * @return return the card
+     */
+    public Tag removeTagFromCard(int cardId, int tagId){
+        if(!cr.existsById(cardId)) return null;
+        Tag tag = repo.getById(tagId);
+        Card card = cr.getById(cardId);
+        card.getTags().remove(tag);
+        tag.getCards().remove(card);
+        return tag;
+    }
+
 
 }

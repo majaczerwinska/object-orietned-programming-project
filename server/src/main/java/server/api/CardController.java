@@ -1,10 +1,13 @@
 package server.api;
 
 import commons.Card;
+import commons.Task;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import server.service.CardService;
+
+import java.util.List;
 
 //import java.util.Random;
 //import server.VisitCounterService;
@@ -84,5 +87,17 @@ public class CardController {
         if(id < 0 || !acs.existsById(id)) return ResponseEntity.badRequest().body(null);
         Card c =acs.findById(id).get();
         return ResponseEntity.ok(c);
+    }
+    /**
+     * Gets the task from a card
+     * @param id the id of the card we need to get tke tasks from
+     * @return a response entity with the list of tasks
+     */
+    @GetMapping("/{id}/tasks")
+    public ResponseEntity<List<Task>> getTasks(@PathVariable("id") int id) {
+        if(id < 0 || !acs.existsById(id)) return ResponseEntity.badRequest().body(null);
+        Card c =acs.findById(id).get();
+        List<Task> tasks = c.getTasks();
+        return ResponseEntity.ok(tasks);
     }
 }
