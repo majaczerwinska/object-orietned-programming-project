@@ -75,11 +75,10 @@ public class Main extends Application {
             var listCreate = FXML.load(ListCreationCtrl.class, "client", "scenes", "ListCreate.fxml");
             var tagManager = FXML.load(TagManagerCtrl.class, "client", "scenes", "TagManager.fxml");
             var serverSelect = FXML.load(ServerSelectCtrl.class, "client", "scenes", "ServerSelect.fxml");
+            var taskCreator = FXML.load(TaskCreatorCtrl.class, "client", "scenes", "TaskCreator.fxml");
 
 
             var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-            var taskCreator = FXML.load(TaskCreatorCtrl.class,
-                    "client", "scenes", "TaskCreator.fxml");
 
 
             mainCtrl.initialize(

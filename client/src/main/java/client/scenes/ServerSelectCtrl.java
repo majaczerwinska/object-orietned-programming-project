@@ -29,6 +29,8 @@ public class ServerSelectCtrl {
     // the key for the CSV String saved in preferences.
     private final String ipID = "savedIPs";
 
+    public String serverAddress = "http://localhost:8080";
+
     @FXML
     private TextField ipField;
 
@@ -85,6 +87,17 @@ public class ServerSelectCtrl {
      */
     public void refresh() {
         servers.setItems(getAddressList());
+    }
+
+    /**
+     * updates public variable address
+     * @param ip address
+     * @return same address
+     */
+    public String updateAddress(String ip) {
+        selectedServer.setText(ip);
+        serverAddress = ip;
+        return ip;
     }
 
     /**
@@ -146,10 +159,10 @@ public class ServerSelectCtrl {
      */
     public void changeSelectedServer(){
         String address = servers.getSelectionModel().getSelectedItem();
+        System.out.println("selected address "+address);
         if(address!=null){
-            selectedServer.setText(address);
-            setConnectionStatus(0);
-            onTestConnection();
+            updateAddress(address);
+            setConnectionStatus(1);
         }
         System.out.println("Server "+address+" selected");
     }
@@ -188,6 +201,10 @@ public class ServerSelectCtrl {
 
     private void setConnectionStatus(int status) {
         switch (status) {
+            case 1: // unknown
+                connectionStatus.setText("Unknown");
+                connectionStatus.setFill(Color.BLACK);
+                break;
             case 0: // loading
                 connectionStatus.setText("Loading...");
                 connectionStatus.setFill(Color.BLACK);
@@ -219,7 +236,7 @@ public class ServerSelectCtrl {
      * Event handler for the test connection button
      */
     public void onTestConnection() {
-        String ip = ipField.getText();
+        String ip = serverAddress;
         System.out.println("testing connection to server "+ip);
         setConnectionStatus(0);
         int res = server.testConnection(ip);
