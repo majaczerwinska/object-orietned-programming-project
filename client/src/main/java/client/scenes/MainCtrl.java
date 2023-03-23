@@ -28,7 +28,7 @@ public class MainCtrl {
     private Scene landing;
 
     private CardCtrl cardCtrl;
-    private Scene cardCreator;
+    private Scene card;
 
     private PublicBoardCtrl publicBoardCtrl;
     private Scene publicBoard;
@@ -43,8 +43,10 @@ public class MainCtrl {
     private Scene tagManager;
     private TaskCreatorCtrl taskCreatorCtrl;
     private Scene taskCreator;
-
-
+    private BoardOverviewCtrl boardOverviewCtrl;
+    private Scene boardOverwiew;
+    private BoardCreationCtrl boardCreationCtrl;
+    private Scene boardCreation;
 
     private ServerSelectCtrl serverSelectCtrl;
     private Scene serverSelect;
@@ -61,8 +63,9 @@ public class MainCtrl {
      * @param tagManager
      * @param select
      * @param taskCreator
+     * @param boardOverview
+     * @param boardCreation
      */
-
     public void initialize(Stage primaryStage,
                            Pair<LandingCtrl, Parent> landing,
                            Pair<CardCtrl, Parent> card,
@@ -71,13 +74,15 @@ public class MainCtrl {
                            Pair<PopupJoinCtrl, Parent> popup,
                            Pair<TagManagerCtrl, Parent> tagManager,
                            Pair<ServerSelectCtrl, Parent> select,
+                           Pair<BoardOverviewCtrl, Parent> boardOverview,
+                           Pair<BoardCreationCtrl, Parent> boardCreation,
                            Pair<TaskCreatorCtrl, Parent> taskCreator) {
         this.primaryStage = primaryStage;
         this.landingCtrl = landing.getKey();
         this.landing = new Scene(landing.getValue());
 
         this.cardCtrl = card.getKey();
-        this.cardCreator = new Scene(card.getValue());
+        this.card = new Scene(card.getValue());
 
         this.publicBoardCtrl = publicBoard.getKey();
         this.publicBoard = new Scene(publicBoard.getValue());
@@ -96,6 +101,12 @@ public class MainCtrl {
 
         this.serverSelectCtrl = select.getKey();
         this.serverSelect = new Scene(select.getValue());
+
+        this.boardOverviewCtrl = boardOverview.getKey();
+        this.boardOverwiew = new Scene(boardOverview.getValue());
+
+        this.boardCreationCtrl = boardCreation.getKey();
+        this.boardCreation = new Scene(boardCreation.getValue());
 
 //        showLanding();
         showServerSelect();
@@ -158,7 +169,6 @@ public class MainCtrl {
         primaryStage.setTitle("Tag Manager :)");
         primaryStage.setScene(tagManager);
         primaryStage.show();
-//            tagManagerCtrl.refresh();
     }
 
 
@@ -171,4 +181,30 @@ public class MainCtrl {
         primaryStage.show();
     }
 
+    /**
+     * Shows board overview
+     */
+    public  void showBoardOverwiew(){
+        primaryStage.setTitle("Board overview :)");
+        primaryStage.setScene(boardOverwiew);
+        primaryStage.show();
+    }
+
+    /**
+     * Shows card overview
+     */
+    public  void showCard(){
+        primaryStage.setTitle("Card overview :)");
+        primaryStage.setScene(card);
+        primaryStage.show();
+    }
+
+    /**
+     * Shows board creation scene
+     */
+    public void showBoardCreation(){
+        primaryStage.setTitle("Board creation overview :)");
+        primaryStage.setScene(boardCreation);
+        primaryStage.show();
+    }
 }

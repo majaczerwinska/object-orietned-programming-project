@@ -69,12 +69,13 @@ public class Main extends Application {
 
             var landing = FXML.load(LandingCtrl.class, "client", "scenes", "Landing.fxml");
             var publicBoard = FXML.load(PublicBoardCtrl.class, "client", "scenes", "PublicBoard.fxml");
-            var card = FXML.load(CardCtrl.class, "client", "scenes", "CardCreator.fxml");
+            var card = FXML.load(CardCtrl.class, "client", "scenes", "Card.fxml");
             var selectBoard = FXML.load(BoardSelectCtrl.class, "client", "scenes", "BoardSelect.fxml");
             var popupJoin = FXML.load(PopupJoinCtrl.class, "client", "scenes", "popupJoin.fxml");
             var tagManager = FXML.load(TagManagerCtrl.class, "client", "scenes", "TagManager.fxml");
             var serverSelect = FXML.load(ServerSelectCtrl.class, "client", "scenes", "ServerSelect.fxml");
-
+            var boardOverview = FXML.load(BoardOverviewCtrl.class, "client", "scenes", "BoardOverview.fxml");
+            var boardCreation = FXML.load(BoardCreationCtrl.class, "client", "scenes", "BoardCreation.fxml");
 
             var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
             var taskCreator = FXML.load(TaskCreatorCtrl.class,
@@ -90,6 +91,8 @@ public class Main extends Application {
                     popupJoin,
                     tagManager,
                     serverSelect,
+                    boardOverview,
+                    boardCreation,
                     taskCreator
             );
 

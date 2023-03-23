@@ -204,4 +204,12 @@ public class CardCtrl {
             }
         }
     }
+
+    /**
+     * Shows task creator
+     * @param actionEvent the event of clicking the button
+     */
+    public void showTask(javafx.event.ActionEvent actionEvent) {
+        mainCtrl.showTaskCreator();
+    }
 }

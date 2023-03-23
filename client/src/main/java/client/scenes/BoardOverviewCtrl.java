@@ -16,6 +16,9 @@ public class BoardOverviewCtrl implements Initializable {
     @FXML
     private Button btnTagManager;
 
+    @FXML
+    private Button backbtn;
+
 
     /**
      *
@@ -28,6 +31,16 @@ public class BoardOverviewCtrl implements Initializable {
         this.server = server;
     }
 
+    /**
+     *
+     * @param location
+     * The location used to resolve relative paths for the root object, or
+     * {@code null} if the location is not known.
+     *
+     * @param resources
+     * The resources used to localize the root object, or {@code null} if
+     * the root object was not localized.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -40,5 +53,23 @@ public class BoardOverviewCtrl implements Initializable {
     public void showTagManager(ActionEvent actionEvent){
         System.out.println("showTagManger!!!");
         mainCtrl.showTagManager();
+    }
+
+    /**
+     * Goes back to previous scene
+     * @param actionEvent the event when clicking the back button
+     */
+    public void back(ActionEvent actionEvent){
+        System.out.println("going back");
+        mainCtrl.showLanding();
+    }
+
+    /**
+     * Shows card creation scene
+     * @param actionEvent the event of clicking on a button
+     */
+    public void showCardAdd(ActionEvent actionEvent){
+        System.out.println("card");
+        mainCtrl.showCard();
     }
 }

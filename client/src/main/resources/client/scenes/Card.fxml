@@ -24,7 +24,7 @@
             <VBox fx:id="vbox" layoutX="33.0" layoutY="82.0" prefHeight="194.0" prefWidth="174.0" />
             <TextArea fx:id="newTask" layoutX="27.0" layoutY="315.0" prefHeight="70.0" prefWidth="185.0" />
             <Label layoutX="72.0" layoutY="297.0" text="Add task" />
-            <Button layoutX="130.0" layoutY="284.0" mnemonicParsing="false" onAction="#addTask" text="+" />
+            <Button layoutX="130.0" layoutY="284.0" mnemonicParsing="false" onAction="#showTask" text="+" />
          </children>
       </AnchorPane>
    </left>

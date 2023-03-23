@@ -11,6 +11,9 @@ public class SubTaskComponent extends HBox {
     @FXML
     private Label labelTitle;
 
+    /**
+     * The constuctor for the component
+     */
     public SubTaskComponent() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/components/SubTaskComponent.fxml"));
         fxmlLoader.setRoot(this);
@@ -25,10 +28,18 @@ public class SubTaskComponent extends HBox {
 
     private String title;
 
+    /**
+     * Getter for title
+     * @return the title
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Setter for title subtask
+     * @param title the title
+     */
     public void setTitle(String title) {
         this.title = title;
         labelTitle.setText(this.title);
