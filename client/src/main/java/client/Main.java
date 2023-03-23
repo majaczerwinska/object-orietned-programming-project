@@ -72,6 +72,7 @@ public class Main extends Application {
             var card = FXML.load(CardCtrl.class, "client", "scenes", "Card.fxml");
             var selectBoard = FXML.load(BoardSelectCtrl.class, "client", "scenes", "BoardSelect.fxml");
             var popupJoin = FXML.load(PopupJoinCtrl.class, "client", "scenes", "popupJoin.fxml");
+            var listCreate = FXML.load(ListCreationCtrl.class, "client", "scenes", "ListCreate.fxml");
             var tagManager = FXML.load(TagManagerCtrl.class, "client", "scenes", "TagManager.fxml");
             var serverSelect = FXML.load(ServerSelectCtrl.class, "client", "scenes", "ServerSelect.fxml");
             var boardOverview = FXML.load(BoardOverviewCtrl.class, "client", "scenes", "BoardOverview.fxml");
@@ -90,6 +91,7 @@ public class Main extends Application {
                     selectBoard,
                     popupJoin,
                     tagManager,
+                    listCreate,
                     serverSelect,
                     boardOverview,
                     boardCreation,

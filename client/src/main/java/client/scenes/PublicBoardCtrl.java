@@ -4,6 +4,7 @@ import client.utils.ServerUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import javax.inject.Inject;
@@ -48,5 +49,15 @@ public class PublicBoardCtrl {
      */
     public void refresh() {
 
+    }
+
+    /**
+     * takes you to the list creation scene
+     * @param mouseEvent
+     */
+
+    @FXML
+    public void addNewList(MouseEvent mouseEvent){
+        mainCtrl.showListCreate();
     }
 }

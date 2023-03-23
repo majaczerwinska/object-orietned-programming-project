@@ -9,6 +9,7 @@ import server.database.BoardRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -42,22 +43,30 @@ public class BoardService {
      * @param board to delete
      */
     public void delete(Board board){
-        repo.delete(board);
-
+        if(repo.existsById(board.getId())){
+            repo.delete(board);
+        }
     }
 
     /**
      * return board instance given its id
+     *
      * @param id board id
      * @return board object
      */
     public Board getById(int id){
-        System.out.println("board get by id called");
-        System.out.println("all boards: "+repo.findAll());
-        if (repo.findById(id).isEmpty()) {
-            return null;
-        }
-        return repo.findById(id).get();
+        return repo.getById(id);
+    }
+
+    /**
+     * return board instance given its id
+     *
+     * @param id board id
+     * @return board object
+     */
+    public Optional<Board> findById(int id){
+        return repo.findById(id);
+
     }
 
     /**
