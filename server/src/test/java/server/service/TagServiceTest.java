@@ -135,5 +135,22 @@ public class TagServiceTest {
         assertEquals(tag.getColor(), 1);
     }
 
+    @Test
+    public void removeTagFromCardTest(){
+        Card card = new Card("title");
+        cr.save(card);
+        Board board = new Board("br");
+        br.save(board);
+        Tag tag = new Tag("tag");
+        ser.save(tag, board.getId());
+        ser.addTagToCard(board.getId(), card.getId(), tag.getId());
+        ser.removeTagFromCard(card.getId(),tag.getId());
+        assertFalse(card.getTags().contains(tag));
+        assertFalse(tag.getCards().contains(card));
+
+
+
+    }
+
 
 }
