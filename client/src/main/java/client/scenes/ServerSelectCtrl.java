@@ -136,6 +136,7 @@ public class ServerSelectCtrl {
      */
     public void onDeleteAddress() {
         String ip = selectedServer.getText();
+        System.out.println("removing address : " + ip);
         removeIP(ip);
         refresh();
     }
@@ -143,11 +144,12 @@ public class ServerSelectCtrl {
     /**
      * Selects a server from the list
      */
-    public void showSelectedItem(){
+    public void changeSelectedServer(){
         String address = servers.getSelectionModel().getSelectedItem();
         if(address!=null){
             selectedServer.setText(address);
             setConnectionStatus(0);
+            onTestConnection();
         }
         System.out.println("Server "+address+" selected");
     }
@@ -162,7 +164,14 @@ public class ServerSelectCtrl {
             return;
         }
         String ips = prefs.get(ipID, "http://localhost:8080");
+        if (!ips.contains(",")) {
+            prefs.put(ipID, "http://localhost:8080");
+            return;
+        }
+        System.out.println("removing ip. before: " + ips);
+        ips = ips.replace(ip+",", "");
         ips = ips.replace(","+ip, "");
+        System.out.println("after: " + ips);
         prefs.put(ipID, ips);
     }
 
@@ -211,6 +220,7 @@ public class ServerSelectCtrl {
      */
     public void onTestConnection() {
         String ip = ipField.getText();
+        System.out.println("testing connection to server "+ip);
         setConnectionStatus(0);
         int res = server.testConnection(ip);
         System.out.println("Server responded with status code : "+res);
