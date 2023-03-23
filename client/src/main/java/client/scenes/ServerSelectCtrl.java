@@ -2,15 +2,14 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-//import commons.Tag;
 import javafx.application.Platform;
 //import javafx.collections.FXCollections;
 //import javafx.collections.ObservableList;
 //import javafx.event.ActionEvent;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-//import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-//import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -33,7 +32,8 @@ public class ServerSelectCtrl {
     @FXML
     private TextField ipField;
 
-
+    @FXML
+    private Text ipFieldHeader;
     @FXML
     private Text connectionStatus;
 
@@ -51,6 +51,9 @@ public class ServerSelectCtrl {
 
     @FXML
     private Button exitBtn;
+
+    @FXML
+    private Button removeServer;
 
     @FXML
     private ListView<String> servers;
@@ -81,9 +84,37 @@ public class ServerSelectCtrl {
      * load the saved servers from a file
      */
     public void refresh() {
-
+        servers.setItems(getAddressList());
     }
 
+    /**
+     * get observableList instance for address list
+     * @return ObservableList<IP Address Strings>
+     */
+    public ObservableList<String> getAddressList(){
+        List<String> ips = getIPs();
+        ObservableList<String> addressList = FXCollections.observableList(ips);
+        return addressList;
+    }
+
+    /**
+     * Event handler
+     * Adds the address from the ipField to the list of known addresses
+     */
+    public void addIP(){
+        String address = ipField.getText();
+        List<String> knownIPs = getIPs();
+        if (knownIPs.contains(address)) {
+            ipFieldHeader.setText("That address is already saved!");
+            ipFieldHeader.setFill(Color.YELLOWGREEN);
+            refresh();
+            return;
+        }
+        saveIP(address);
+        ipField.setText("");
+        ipFieldHeader.setText("Enter domain or IP address");
+        refresh();
+    }
 
     /**
      * save another ip to the list of known servers
@@ -96,6 +127,42 @@ public class ServerSelectCtrl {
         }
         String ips = prefs.get(ipID, "http://localhost:8080");
         ips += "," + ip;
+        prefs.put(ipID, ips);
+    }
+
+
+    /**
+     * event handler for the remove address button
+     */
+    public void onDeleteAddress() {
+        String ip = selectedServer.getText();
+        removeIP(ip);
+        refresh();
+    }
+
+    /**
+     * Selects a server from the list
+     */
+    public void showSelectedItem(){
+        String address = servers.getSelectionModel().getSelectedItem();
+        if(address!=null){
+            selectedServer.setText(address);
+            setConnectionStatus(0);
+        }
+        System.out.println("Server "+address+" selected");
+    }
+
+    /**
+     * removes the ip from the list of known addresses
+     * @param ip the address to remove
+     */
+    public void removeIP(String ip) {
+        if (ip == null || ip.length() < 1) {
+            System.out.println("Invalid ip removal");
+            return;
+        }
+        String ips = prefs.get(ipID, "http://localhost:8080");
+        ips = ips.replace(","+ip, "");
         prefs.put(ipID, ips);
     }
 
