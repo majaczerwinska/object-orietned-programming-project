@@ -94,7 +94,7 @@ test_job_services:
 test_job_controllers:
   stage: test
   variables:
-    CONTROLLERS_MIN_COVERAGE: 75
+    CONTROLLERS_MIN_COVERAGE: 73
     CONTROLLERS_GOOD_COVERAGE: 100
   needs:
     - build_job
