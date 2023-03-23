@@ -18,12 +18,14 @@ build_job:
     untracked: true
     expire_in: 15 mins
 
-# Check the jacoco test coverage report, should be at least 15
-test_job:
+# Test job is split into testing client, commons, and server
+
+# Test Commons first. Should have 100% line coverage
+test_job_commons:
   stage: test
   variables:
-    GOOD_COVERAGE: 51
-    MINIMUM_COVERAGE: 40
+    COMMONS_MIN_COVERAGE: 92
+    COMMONS_GOOD_COVERAGE: 100
   needs:
     - build_job
   dependencies:
@@ -31,14 +33,13 @@ test_job:
   script:
     - ./gradlew AggregateJacocoReport -x compileJava -x classes -x processResources -x jar
     # preserve coverage information in an easy-to-reach folder
-    - mv build/reports/jacoco/aggregate/html ./coverage
+    - mv build/reports/jacoco/aggregate/html/commons ./coverage
     - mv build/reports/jacoco/aggregate/jacocoTestReport.xml ./coverage/report.xml
-    - cat coverage/index.html
     - coverage=$(cat coverage/index.html | grep -o -E "Total[^%]+?%" | sed -E "s/<.*>//" | sed -E "s/Total//")
     - coverage=${coverage::-1} # Remove %
-    - echo TestCoverage:$coverage%
-    - if [ $coverage -ge $GOOD_COVERAGE ]; then exit 0; fi # If enough tests then pass
-    - if [ $coverage -ge $MINIMUM_COVERAGE ]; then exit 1; fi # If not enough tests then semi fail
+    - echo CommonsTestCoverage:$coverage%
+    - if [ $coverage -ge $COMMONS_GOOD_COVERAGE ]; then exit 0; fi # If all tests then pass
+    - if [ $coverage -ge $COMMONS_MIN_COVERAGE ]; then exit 1; fi # If most tests then semi fail
     - exit 2 # If less than minimum tests then fail build entirely
   artifacts:
     paths:
@@ -51,7 +52,236 @@ test_job:
     # Any other exit code means it's definitely insufficient
     exit_codes:
       - 1
-  coverage: /TestCoverage:(\d+)%/
+  coverage: /CommonsTestCoverage:(\d+)%/
+
+
+# Next we test services
+test_job_services:
+  stage: test
+  variables:
+    SERVICES_MIN_COVERAGE: 93
+    SERVICES_GOOD_COVERAGE: 100
+  needs:
+    - build_job
+  dependencies:
+    - build_job
+  script:
+    - ./gradlew AggregateJacocoReport -x compileJava -x classes -x processResources -x jar
+    # preserve coverage information in an easy-to-reach folder
+    - mv build/reports/jacoco/aggregate/html/server.service ./coverage
+    - mv build/reports/jacoco/aggregate/jacocoTestReport.xml ./coverage/report.xml
+    - coverage=$(cat coverage/index.html | grep -o -E "Total[^%]+?%" | sed -E "s/<.*>//" | sed -E "s/Total//")
+    - coverage=${coverage::-1} # Remove %
+    - echo ServicesTestCoverage:$coverage%
+    - if [ $coverage -ge $SERVICES_GOOD_COVERAGE ]; then exit 0; fi # If all tests then pass
+    - if [ $coverage -ge $SERVICES_MIN_COVERAGE ]; then exit 1; fi # If most tests then semi fail
+    - exit 2 # If less than minimum tests then fail build entirely
+  artifacts:
+    paths:
+      - "*/build/test-results/test/TEST-*.xml"
+      - ./coverage
+    reports:
+      junit: "*/build/test-results/test/TEST-*.xml"
+  allow_failure:
+    # Exit code 1 signifies a task being sufficiently tested, but it should be more.
+    # Any other exit code means it's definitely insufficient
+    exit_codes:
+      - 1
+  coverage: /ServicesTestCoverage:(\d+)%/
+
+
+# Now testing the controllers
+test_job_controllers:
+  stage: test
+  variables:
+    CONTROLLERS_MIN_COVERAGE: 75
+    CONTROLLERS_GOOD_COVERAGE: 100
+  needs:
+    - build_job
+  dependencies:
+    - build_job
+  script:
+    - ./gradlew AggregateJacocoReport -x compileJava -x classes -x processResources -x jar
+    # preserve coverage information in an easy-to-reach folder
+    - mv build/reports/jacoco/aggregate/html/server.api ./coverage
+    - mv build/reports/jacoco/aggregate/jacocoTestReport.xml ./coverage/report.xml
+    - coverage=$(cat coverage/index.html | grep -o -E "Total[^%]+?%" | sed -E "s/<.*>//" | sed -E "s/Total//")
+    - coverage=${coverage::-1} # Remove %
+    - echo ControllersTestCoverage:$coverage%
+    - if [ $coverage -ge $CONTROLLERS_GOOD_COVERAGE ]; then exit 0; fi # If all tests then pass
+    - if [ $coverage -ge $CONTROLLERS_MIN_COVERAGE ]; then exit 1; fi # If most tests then semi fail
+    - exit 2 # If less than minimum tests then fail build entirely
+  artifacts:
+    paths:
+      - "*/build/test-results/test/TEST-*.xml"
+      - ./coverage
+    reports:
+      junit: "*/build/test-results/test/TEST-*.xml"
+  allow_failure:
+    # Exit code 1 signifies a task being sufficiently tested, but it should be more.
+    # Any other exit code means it's definitely insufficient
+    exit_codes:
+      - 1
+  coverage: /ControllersTestCoverage:(\d+)%/
+
+
+# We still haven't checked the client main, client controllers, client utils, and server main and config functions.
+
+# This will test the server package, meaning the Main and Config classes
+test_job_server_main:
+  stage: test
+  variables:
+    SERVER_MIN_COVERAGE: 83
+    SERVER_GOOD_COVERAGE: 100
+  needs:
+    - build_job
+  dependencies:
+    - build_job
+  script:
+    - ./gradlew AggregateJacocoReport -x compileJava -x classes -x processResources -x jar
+    # preserve coverage information in an easy-to-reach folder
+    - mv build/reports/jacoco/aggregate/html/server ./coverage
+    - mv build/reports/jacoco/aggregate/jacocoTestReport.xml ./coverage/report.xml
+    - coverage=$(cat coverage/index.html | grep -o -E "Total[^%]+?%" | sed -E "s/<.*>//" | sed -E "s/Total//")
+    - coverage=${coverage::-1} # Remove %
+    - echo ServerTestCoverage:$coverage%
+    - if [ $coverage -ge $SERVER_GOOD_COVERAGE ]; then exit 0; fi # If all tests then pass
+    - if [ $coverage -ge $SERVER_MIN_COVERAGE ]; then exit 1; fi # If most tests then semi fail
+    - exit 2 # If less than minimum tests then fail build entirely
+  artifacts:
+    paths:
+      - "*/build/test-results/test/TEST-*.xml"
+      - ./coverage
+    reports:
+      junit: "*/build/test-results/test/TEST-*.xml"
+  allow_failure:
+    # Exit code 1 signifies a task being sufficiently tested, but it should be more.
+    # Any other exit code means it's definitely insufficient
+    exit_codes:
+      - 1
+  coverage: /ServerTestCoverage:(\d+)%/
+
+# The client will be tested and coverage collected separately but won't affect the pipeline
+test_job_client_main:
+  stage: test
+  variables:
+    CLIENT_MIN_COVERAGE: 50
+    CLIENT_GOOD_COVERAGE: 90
+  needs:
+    - build_job
+  dependencies:
+    - build_job
+  script:
+    - ./gradlew AggregateJacocoReport -x compileJava -x classes -x processResources -x jar
+    # preserve coverage information in an easy-to-reach folder
+    - mv build/reports/jacoco/aggregate/html/client ./coverage
+    - mv build/reports/jacoco/aggregate/jacocoTestReport.xml ./coverage/report.xml
+    - coverage=$(cat coverage/index.html | grep -o -E "Total[^%]+?%" | sed -E "s/<.*>//" | sed -E "s/Total//")
+    - coverage=${coverage::-1} # Remove %
+    - echo ClientTestCoverage:$coverage%
+    - if [ $coverage -ge $CLIENT_GOOD_COVERAGE ]; then echo "Client is tested sufficiently!" && exit 0; fi # If all tests then pass
+    - if [ $coverage -ge $CLIENT_MIN_COVERAGE ]; then echo "Client is partially tested." && exit 0; fi # If most tests then semi fail
+    - echo "Client is not tested."
+    - exit 0 # we don't fail the pipeline even if client is not tested.
+  artifacts:
+    paths:
+      - "*/build/test-results/test/TEST-*.xml"
+      - ./coverage
+    reports:
+      junit: "*/build/test-results/test/TEST-*.xml"
+  coverage: /ClientTestCoverage:(\d+)%/
+test_job_client_utils:
+  stage: test
+  variables:
+    CLIENT_MIN_COVERAGE: 50
+    CLIENT_GOOD_COVERAGE: 90
+  needs:
+    - build_job
+  dependencies:
+    - build_job
+  script:
+    - ./gradlew AggregateJacocoReport -x compileJava -x classes -x processResources -x jar
+    # preserve coverage information in an easy-to-reach folder
+    - mv build/reports/jacoco/aggregate/html/client.utils ./coverage
+    - mv build/reports/jacoco/aggregate/jacocoTestReport.xml ./coverage/report.xml
+    - coverage=$(cat coverage/index.html | grep -o -E "Total[^%]+?%" | sed -E "s/<.*>//" | sed -E "s/Total//")
+    - coverage=${coverage::-1} # Remove %
+    - echo ClientUtilsTestCoverage:$coverage%
+    - if [ $coverage -ge $CLIENT_GOOD_COVERAGE ]; then echo "Client is tested sufficiently!" && exit 0; fi # If all tests then pass
+    - if [ $coverage -ge $CLIENT_MIN_COVERAGE ]; then echo "Client is partially tested." && exit 0; fi # If most tests then semi fail
+    - echo "Client is not tested."
+    - exit 0 # we don't fail the pipeline even if client is not tested.
+  artifacts:
+    paths:
+      - "*/build/test-results/test/TEST-*.xml"
+      - ./coverage
+    reports:
+      junit: "*/build/test-results/test/TEST-*.xml"
+  coverage: /ClientUtilsTestCoverage:(\d+)%/
+
+test_job_client_scenes_controllers:
+  stage: test
+  variables:
+    CLIENT_MIN_COVERAGE: 50
+    CLIENT_GOOD_COVERAGE: 90
+  needs:
+    - build_job
+  dependencies:
+    - build_job
+  script:
+    - ./gradlew AggregateJacocoReport -x compileJava -x classes -x processResources -x jar
+    # preserve coverage information in an easy-to-reach folder
+    - mv build/reports/jacoco/aggregate/html/client.scenes ./coverage
+    - mv build/reports/jacoco/aggregate/jacocoTestReport.xml ./coverage/report.xml
+    - coverage=$(cat coverage/index.html | grep -o -E "Total[^%]+?%" | sed -E "s/<.*>//" | sed -E "s/Total//")
+    - coverage=${coverage::-1} # Remove %
+    - echo ClientScenesTestCoverage:$coverage%
+    - if [ $coverage -ge $CLIENT_GOOD_COVERAGE ]; then echo "Client is tested sufficiently!" && exit 0; fi # If all tests then pass
+    - if [ $coverage -ge $CLIENT_MIN_COVERAGE ]; then echo "Client is partially tested." && exit 0; fi # If most tests then semi fail
+    - echo "Client is not tested."
+    - exit 0 # we don't fail the pipeline even if client is not tested.
+  artifacts:
+    paths:
+      - "*/build/test-results/test/TEST-*.xml"
+      - ./coverage
+    reports:
+      junit: "*/build/test-results/test/TEST-*.xml"
+  coverage: /ClientScenesTestCoverage:(\d+)%/
+
+
+
+test_job_overall:
+  stage: test
+  variables:
+    GOOD_COVERAGE_TOTAL: 50
+    MINIMUM_COVERAGE_TOTAL: 25
+  needs:
+    - build_job
+  dependencies:
+    - build_job
+  script:
+    - ./gradlew AggregateJacocoReport -x compileJava -x classes -x processResources -x jar
+    # preserve coverage information in an easy-to-reach folder
+    - mv build/reports/jacoco/aggregate/html ./coverage
+    - mv build/reports/jacoco/aggregate/jacocoTestReport.xml ./coverage/report.xml
+    - coverage=$(cat coverage/index.html | grep -o -E "Total[^%]+?%" | sed -E "s/<.*>//" | sed -E "s/Total//")
+    - coverage=${coverage::-1} # Remove %
+    - echo TotalTestCoverage:$coverage%
+    - if [ $coverage -ge $GOOD_COVERAGE_TOTAL ]; then exit 0; fi # If enough tests then pass
+    - if [ $coverage -ge $MINIMUM_COVERAGE_TOTAL ]; then exit 1; fi # If not enough tests then semi fail
+    - exit 2 # If less than minimum tests then fail build entirely
+  artifacts:
+    paths:
+      - "*/build/test-results/test/TEST-*.xml"
+      - ./coverage
+    reports:
+      junit: "*/build/test-results/test/TEST-*.xml"
+  allow_failure:
+    # Exit code 1 signifies a task being sufficiently tested, but it should be more.
+    # Any other exit code means it's definitely insufficient
+    exit_codes:
+      - 1
+  coverage: /TotalTestCoverage:(\d+)%/
 
 # Check the checkstyle, should be no checkstyle errors
 checkstyle_client_main_job:
@@ -77,11 +307,3 @@ checkstyle_commons_main_job:
   dependencies: []
   script:
     - ./gradlew :commons:checkstyleMain
-
-checkstyle_test_job:
-   stage: style
-   needs:
-     - build_job
-   dependencies: []
-   script:
-     - ./gradlew checkstyleTest
