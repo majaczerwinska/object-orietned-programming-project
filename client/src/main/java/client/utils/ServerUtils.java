@@ -294,8 +294,8 @@ public class ServerUtils {
     
     /**
      * adds a board to the database
-     * @param board
-     * @return
+     * @param board board that will be added to the database
+     * @return board to be added
      */
     public Board addBoard(Board board) {
         return ClientBuilder.newClient(new ClientConfig()) //
