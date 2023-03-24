@@ -1,18 +1,27 @@
 package client.scenes;
 
+import client.components.CardComponent;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Card;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class BoardOverviewCtrl implements Initializable {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    private int listId = 1; //hardcoded for now
+
+    @FXML
+    private VBox vboxList1;
+
     @FXML
     private Button btnTagManager;
 
@@ -43,7 +52,7 @@ public class BoardOverviewCtrl implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        displayCards();
     }
 
     /**
@@ -71,5 +80,15 @@ public class BoardOverviewCtrl implements Initializable {
     public void showCardAdd(ActionEvent actionEvent){
         System.out.println("card");
         mainCtrl.showCard();
+    }
+
+    public void displayCards(){
+        List<Card> cards = server.getCardsFromList(listId);
+
+        for (Card card : cards) {
+            CardComponent cardComponent = new CardComponent();
+            cardComponent.setData(card);
+            vboxList1.getChildren().add(cardComponent);
+        }
     }
 }

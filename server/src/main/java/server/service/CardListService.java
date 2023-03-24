@@ -2,6 +2,7 @@ package server.service;
 
 
 import commons.Board;
+import commons.Card;
 import commons.CardList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
 import server.database.BoardRepository;
 import server.database.CardListRepository;
 
-
+import java.util.List;
 
 
 @Service
@@ -89,6 +90,16 @@ public final class CardListService {
     public void updateTaskListName(CardList list, String newName) {
         list.setName(newName);
         repo.save(list);
+    }
+
+    /**
+     * Gets all cards from a list
+     * @param listId the id of the list we need to get the cards from
+     * @return list of cards
+     */
+    public List<Card> getCardsFromList(int listId){
+        CardList cardList = repo.getById(listId);
+        return cardList.getCards();
     }
 
 

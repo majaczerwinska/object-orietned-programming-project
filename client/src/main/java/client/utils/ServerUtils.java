@@ -179,7 +179,8 @@ public class ServerUtils {
         }
         return null;
     }
-        /**
+
+    /**
      * Gets a list of all tags from a board
      * @param boardId the id from the board we need the tags from
      * @return the list with tags from the board
@@ -260,6 +261,19 @@ public class ServerUtils {
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(list, APPLICATION_JSON), CardList.class);
+    }
+
+    /**
+     * Gets a list of all cards from a list
+     * @param listId the id from the list we need the cards from
+     * @return the list with cards from the list
+     */
+    public List<Card> getCardsFromList(int listId) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/lists/" + listId) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<Card>>() {});
     }
 
     /**

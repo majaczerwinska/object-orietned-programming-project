@@ -1,10 +1,13 @@
 package server.api;
 
+import commons.Card;
 import commons.CardList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.service.CardListService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/lists")
@@ -65,5 +68,17 @@ public class CardListController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Gets all cards form a specific list
+     * @param listId the id of the list we need to get the cards from
+     * @return a response entity with the list of cards from the list
+     */
+    @GetMapping("/{listId}")
+    public ResponseEntity<List<Card>> getCardsFromList(@PathVariable("listId") int listId) {
+        if (listId < 0 || !als.existsById(listId)) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(als.getCardsFromList(listId));
+    }
 
 }
