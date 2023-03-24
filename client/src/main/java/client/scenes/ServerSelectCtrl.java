@@ -251,6 +251,7 @@ public class ServerSelectCtrl {
      */
     public void enterServer(ActionEvent actionEvent){
         System.out.println("entering server");
+        setServer(serverAddress);
         mainCtrl.showLanding();
     }
 
