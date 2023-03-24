@@ -111,7 +111,7 @@ public class BoardCreationCtrl {
             String passwordValue = passwordTextField.getText();
             newBoard.setPassword(passwordValue);
         }
-        //server.addBoard(newBoard);
+        server.addBoard(newBoard);
     }
 
     /**

@@ -291,4 +291,17 @@ public class ServerUtils {
             return -1;
         }
     }
+    
+    /**
+     * adds a board to the database
+     * @param board board that will be added to the database
+     * @return board to be added
+     */
+    public Board addBoard(Board board) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/boards/") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(board, APPLICATION_JSON), Board.class);
+    }
 }

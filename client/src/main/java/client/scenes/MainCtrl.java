@@ -202,7 +202,7 @@ public class MainCtrl {
 <<<<<<< HEAD
      * Shows board overview
      */
-    public  void showBoardOverwiew(){
+    public void showBoardOverwiew(){
         primaryStage.setTitle("Board overview :)");
         primaryStage.setScene(boardOverwiew);
         primaryStage.show();
