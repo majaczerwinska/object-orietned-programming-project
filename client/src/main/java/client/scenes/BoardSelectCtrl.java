@@ -64,7 +64,7 @@ public class BoardSelectCtrl{
             System.out.println("Invalid key saved");
             return;
         }
-        String keys = prefs.get(saveID, "http://localhost:8080");
+        String keys = prefs.get(saveID, "public");
         keys += "," + key;
         prefs.put(saveID, keys);
     }
