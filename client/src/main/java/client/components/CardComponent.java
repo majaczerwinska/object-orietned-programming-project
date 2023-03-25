@@ -4,9 +4,9 @@ import commons.Card;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
 
 import java.io.IOException;
@@ -18,7 +18,7 @@ public class CardComponent extends HBox{
     private TextField tfTitle;
 
     @FXML
-    private TextArea taDescription;
+    private TextField tfDescription;
 
     @FXML
     private HBox hboxTags;
@@ -45,6 +45,11 @@ public class CardComponent extends HBox{
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+
+        setOnMouseEntered(event ->
+            {tfTitle.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-alignment: center");});
+        setOnMouseExited(event ->
+            {tfTitle.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-alignment: center");});
     }
 
 
@@ -55,9 +60,9 @@ public class CardComponent extends HBox{
     public void setData(Card card){
         tfTitle.setText(card.getTitle());
         if(card.hasDescription()){
-            taDescription.setText("Has description");
+            tfDescription.setText("Has description");
         } else{
-            taDescription.setText("No description");
+            tfDescription.setText("No description");
         }
     }
 }
