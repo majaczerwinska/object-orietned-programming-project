@@ -123,6 +123,26 @@ public class ServerUtils {
                 });
     }
 
+
+    /**
+     * Returns a board from the database, searched by key
+     * @param key boardkey
+     * @return the board element, if not found returns null
+     */
+    public Board getBoardByKey(String key) {
+        try{
+            return ClientBuilder.newClient(new ClientConfig())
+                    .target(SERVER).path("api/boards/key/"+key)
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .get(new GenericType<>() {
+                    });
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
     /**
      * returns the board from the database with the given id
      * @param id - id of the board
@@ -317,5 +337,18 @@ public class ServerUtils {
             System.out.println("Connection timed out: " + e.getMessage());
             return -1;
         }
+    }
+    
+    /**
+     * adds a board to the database
+     * @param board board that will be added to the database
+     * @return board to be added
+     */
+    public Board addBoard(Board board) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/boards/") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(board, APPLICATION_JSON), Board.class);
     }
 }

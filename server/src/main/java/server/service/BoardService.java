@@ -96,4 +96,18 @@ public class BoardService {
     }
 
 
+    /**
+     * searches for a board by key
+     * @param key board key
+     * @return the board element, if not found null
+     */
+    public Board findByKey(String key) {
+        List<Board> l = repo.findAll();
+        for (Board b : l) {
+            if (b.getBoardkey() == key) {
+                return b;
+            }
+        }
+        return null;
+    }
 }

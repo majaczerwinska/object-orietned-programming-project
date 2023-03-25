@@ -20,8 +20,7 @@ import java.util.List;
 public class BoardOverviewCtrl /*implements Initializable*/ {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
-    private int boardId = 0;
-//    private int listId = 1; //hardcoded for now
+    public int boardID = 0;
 
     @FXML
     private VBox vboxList1;
@@ -80,7 +79,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      */
     public void back(ActionEvent actionEvent){
         System.out.println("going back");
-        mainCtrl.showLanding();
+        mainCtrl.showSelect();
     }
 
     /**
@@ -110,7 +109,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * displays cards in vboxes
      */
     public void displayLists(){
-        List<CardList> cardLists = server.getCardListsFromBoard(boardId);
+        List<CardList> cardLists = server.getCardListsFromBoard(boardID);
 
         for (CardList cardList : cardLists) {
             CardListComponent cardListComponent = new CardListComponent();

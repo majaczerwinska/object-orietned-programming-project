@@ -65,6 +65,16 @@ public class BoardController {
     }
 
     /**
+     * Get mapping to fetch a board by its key
+     * @param key the board key to search
+     * @return the board element if found, else null
+     */
+    @GetMapping("/key/{key}")
+    public Board getBoardByKey(String key){
+        return abs.findByKey(key);
+    }
+
+    /**
      * gets a board from database with provided id
      * @param id - id of the board
      * @return - the board

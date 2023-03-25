@@ -9,18 +9,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-//import javafx.scene.text.Text;
-
-//import java.net.URL;
 import java.util.List;
-//import java.util.ResourceBundle;
+
 
 
 public class TagManagerCtrl /*implements Initializable*/ {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
-    private int boardId = 0; //hardcoded for now
+    public int boardId = 0; //hardcoded for now
     @FXML
     private Label labelBoard;
     @FXML
@@ -173,6 +170,6 @@ public class TagManagerCtrl /*implements Initializable*/ {
      */
     public void backButton(ActionEvent actionEvent){
         System.out.println("going back");
-        mainCtrl.showBoardOverwiew();
+        mainCtrl.showBoardOverview(boardId);
     }
 }
