@@ -171,7 +171,7 @@ public class MainCtrl {
 
     /**
      * Shows the tag manager scene
-     *
+     * @param boardID the board id for which to show the tag manager
      */
     public void showTagManager(int boardID) {
         primaryStage.setTitle("Tag Manager :)");
@@ -229,6 +229,10 @@ public class MainCtrl {
         primaryStage.show();
     }
 
+    /**
+     * call the select ctrl savekey method to update after creating a board
+     * @param boardkey the board key to be saved to the client
+     */
     public void saveBoardByKey(String boardkey) {
         boardSelectCtrl.saveBoardKey(boardkey);
         boardSelectCtrl.refresh();
