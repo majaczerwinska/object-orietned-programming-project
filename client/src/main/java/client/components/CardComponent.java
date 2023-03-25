@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 
 import java.io.IOException;
@@ -13,10 +15,10 @@ import java.io.IOException;
 public class CardComponent extends HBox{
 
     @FXML
-    private Label labelTitle;
+    private TextField tfTitle;
 
     @FXML
-    private Label labelHasDescription;
+    private TextArea taDescription;
 
     @FXML
     private HBox hboxTags;
@@ -51,11 +53,11 @@ public class CardComponent extends HBox{
      * @param card new card data
      */
     public void setData(Card card){
-        labelTitle.setText(card.getTitle());
+        tfTitle.setText(card.getTitle());
         if(card.hasDescription()){
-            labelHasDescription.setText("Has description");
+            taDescription.setText("Has description");
         } else{
-            labelHasDescription.setText("No description");
+            taDescription.setText("No description");
         }
     }
 }

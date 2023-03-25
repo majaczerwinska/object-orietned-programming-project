@@ -18,12 +18,12 @@
       </CheckBox>
       <VBox alignment="TOP_CENTER" prefHeight="103.0" prefWidth="141.0">
          <children>
-            <TextField prefHeight="18.0" prefWidth="141.0" text="Card Title">
+            <TextField fx:id="tfTitle" prefHeight="18.0" prefWidth="141.0" style="-fx-alignment: center;" text="Card Title">
                <padding>
                   <Insets bottom="1.0" />
                </padding>
             </TextField>
-            <TextArea prefHeight="42.0" prefWidth="134.0" text="Card Description&#10;" wrapText="true">
+            <TextArea fx:id="taDescription" prefHeight="42.0" prefWidth="134.0" text="Card Description&#10;" wrapText="true">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
