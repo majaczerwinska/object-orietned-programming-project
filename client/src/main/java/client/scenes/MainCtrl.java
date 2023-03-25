@@ -206,6 +206,7 @@ public class MainCtrl {
         primaryStage.setTitle("Board overview :)");
         primaryStage.setScene(boardOverwiew);
         primaryStage.show();
+        boardOverviewCtrl.displayLists();
     }
 
     /**

@@ -277,6 +277,19 @@ public class ServerUtils {
     }
 
     /**
+     * Gets a list of all cardlists from a board
+     * @param boardId the id from the board we need the lists from
+     * @return the list with cardlists from the board
+     */
+    public List<CardList> getCardListsFromBoard(int boardId) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/boards/lists/" + boardId) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<CardList>>() {});
+    }
+
+    /**
      * send a request to an ip and await a response, making sure that
      * a connection can be established with a talio server
      * @param ip address to test connection to
