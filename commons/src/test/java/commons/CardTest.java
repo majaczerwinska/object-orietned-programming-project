@@ -15,14 +15,12 @@
  */
 package commons;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CardTest {
 
@@ -144,5 +142,11 @@ public class CardTest {
         Card c = new Card("test");
         List<Task> task = new ArrayList<>();
         assertEquals(task, c.getTasks());
+    }
+
+    @Test
+    void hasDescriptionTest() {
+        Card c = new Card("a");
+        assertFalse(c.hasDescription());
     }
 }

@@ -1,22 +1,33 @@
 package server.service;
 
 import commons.Board;
+import commons.Card;
+import commons.CardList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import server.database.BoardRepositoryTest;
+import server.database.CardListRepositoryTest;
 import server.service.BoardService;
 
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BoardServiceTest {
     private BoardRepositoryTest repo;
     private BoardService ser;
+    private CardListRepositoryTest cl;
+    private CardListService cardListService;
 
     @BeforeEach
     public void setup() {
         repo = new BoardRepositoryTest();
         ser = new BoardService(repo);
+        cl = new CardListRepositoryTest();
+        cardListService = new CardListService(cl, repo);
     }
 
 
@@ -63,4 +74,32 @@ public class BoardServiceTest {
 
     }
 
+    @Test
+    void findById() {
+        Board b = new Board("a");
+        ser.save(b);
+
+        assertEquals(ser.findById(0), Optional.of(b));
+    }
+
+    @Test
+    void findAll() {
+        Board b = new Board("a");
+        ser.save(b);
+        List<Board> bl = new ArrayList<>();
+        bl.add(b);
+        assertEquals(ser.findAll(), bl);
+
+    }
+
+    @Test
+    public void getCardsFromListTest(){
+        Board board = new Board("board");
+        CardList list = new CardList("c");
+        int listId = list.getId();
+        ser.save(board);
+        cardListService.save(list, board.getId());
+        List<CardList> cardLists = List.of(list);
+        assertEquals(ser.getCardListsFromBoard(listId), cardLists);
+    }
 }

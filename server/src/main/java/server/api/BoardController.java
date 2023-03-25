@@ -3,6 +3,7 @@ package server.api;
 import commons.Board;
 
 
+import commons.CardList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -64,6 +65,19 @@ public class BoardController {
     }
 
     /**
+     * Get mapping to fetch a board by its key
+     * @param key the board key to search
+     * @return the board element if found, else null
+     */
+    @GetMapping("/key/{key}")
+    public Board getBoardByKey(@PathVariable("key") String key){
+        System.out.println("Received get request at /api/boards/key/"+key);
+        Board res = abs.findByKey(key);
+        System.out.println("result of find by key = "+res);
+        return res;
+    }
+
+    /**
      * gets a board from database with provided id
      * @param id - id of the board
      * @return - the board
@@ -73,5 +87,18 @@ public class BoardController {
         if(id < 0 || !abs.existsById(id)) return ResponseEntity.badRequest().body(null);
 
         return ResponseEntity.ok(abs.findById(id).get());
+    }
+
+    /**
+     * Gets all lists form a specific board
+     * @param boardId the id of the board we need to get the lists from
+     * @return a response entity with the list of cardlists from the board
+     */
+    @GetMapping("/lists/{boardId}")
+    public ResponseEntity<List<CardList>> getCardListsFromBoard(@PathVariable("boardId") int boardId) {
+        if (boardId < 0 || !abs.existsById(boardId)) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(abs.getCardListsFromBoard(boardId));
     }
 }

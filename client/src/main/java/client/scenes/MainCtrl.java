@@ -58,7 +58,6 @@ public class MainCtrl {
     /**
      *
      * @param primaryStage
-     * @param landing
      * @param card
      * @param publicBoard
      * @param boardSelect
@@ -71,7 +70,7 @@ public class MainCtrl {
      * @param boardCreation
      */
     public void initialize(Stage primaryStage,
-                           Pair<LandingCtrl, Parent> landing,
+                           //Pair<LandingCtrl, Parent> landing,
                            Pair<CardCtrl, Parent> card,
                            Pair<PublicBoardCtrl, Parent> publicBoard,
                            Pair<BoardSelectCtrl, Parent> boardSelect,
@@ -83,8 +82,8 @@ public class MainCtrl {
                            Pair<BoardCreationCtrl, Parent> boardCreation,
                            Pair<TaskCreatorCtrl, Parent> taskCreator) {
         this.primaryStage = primaryStage;
-        this.landingCtrl = landing.getKey();
-        this.landing = new Scene(landing.getValue());
+        //this.landingCtrl = landing.getKey();
+        //this.landing = new Scene(landing.getValue());
 
         this.cardCtrl = card.getKey();
         this.card = new Scene(card.getValue());
@@ -172,10 +171,12 @@ public class MainCtrl {
 
     /**
      * Shows the tag manager scene
+     * @param boardID the board id for which to show the tag manager
      */
-    public void showTagManager() {
+    public void showTagManager(int boardID) {
         primaryStage.setTitle("Tag Manager :)");
         primaryStage.setScene(tagManager);
+        tagManagerCtrl.boardId = boardID;
         primaryStage.show();
     }
 
@@ -199,13 +200,15 @@ public class MainCtrl {
     }
 
     /**
-<<<<<<< HEAD
      * Shows board overview
+     * @param boardID the id of the board to join
      */
-    public void showBoardOverwiew(){
+    public void showBoardOverview(int boardID){
         primaryStage.setTitle("Board overview :)");
         primaryStage.setScene(boardOverwiew);
+        boardOverviewCtrl.boardID = boardID;
         primaryStage.show();
+        boardOverviewCtrl.displayLists();
     }
 
     /**
@@ -224,5 +227,14 @@ public class MainCtrl {
         primaryStage.setTitle("Board creation overview :)");
         primaryStage.setScene(boardCreation);
         primaryStage.show();
+    }
+
+    /**
+     * call the select ctrl savekey method to update after creating a board
+     * @param boardkey the board key to be saved to the client
+     */
+    public void saveBoardByKey(String boardkey) {
+        boardSelectCtrl.saveBoardKey(boardkey);
+        boardSelectCtrl.refresh();
     }
 }

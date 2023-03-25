@@ -123,6 +123,28 @@ public class ServerUtils {
                 });
     }
 
+
+    /**
+     * Returns a board from the database, searched by key
+     * @param key boardkey
+     * @return the board element, if not found returns null
+     */
+    public Board getBoardByKey(String key) {
+        try{
+            System.out.println("sending a request to api/boards/key/"+key);
+            return ClientBuilder.newClient(new ClientConfig())
+                    .target(SERVER).path("api/boards/key/"+key)
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .get(new GenericType<Board>() {});
+        }catch(Exception e){
+            System.out.println("Exception raised in getBoardByKey() in server utils for key "+key);
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     /**
      * returns the board from the database with the given id
      * @param id - id of the board
@@ -170,7 +192,7 @@ public class ServerUtils {
     public Card editCard(int id, Card card) {
         try {
             return ClientBuilder.newClient(new ClientConfig())
-                    .target(SERVER).path("api/cards" + id)
+                    .target(SERVER).path("api/cards/" + id)
                     .request(APPLICATION_JSON)
                     .accept(APPLICATION_JSON)
                     .put(Entity.entity(card, APPLICATION_JSON), Card.class);
@@ -179,7 +201,8 @@ public class ServerUtils {
         }
         return null;
     }
-        /**
+
+    /**
      * Gets a list of all tags from a board
      * @param boardId the id from the board we need the tags from
      * @return the list with tags from the board
@@ -260,6 +283,32 @@ public class ServerUtils {
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(list, APPLICATION_JSON), CardList.class);
+    }
+
+    /**
+     * Gets a list of all cards from a list
+     * @param listId the id from the list we need the cards from
+     * @return the list with cards from the list
+     */
+    public List<Card> getCardsFromList(int listId) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/lists/" + listId) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<Card>>() {});
+    }
+
+    /**
+     * Gets a list of all cardlists from a board
+     * @param boardId the id from the board we need the lists from
+     * @return the list with cardlists from the board
+     */
+    public List<CardList> getCardListsFromBoard(int boardId) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/boards/lists/" + boardId) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<CardList>>() {});
     }
 
     /**

@@ -10,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-//import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.List;
@@ -21,7 +20,7 @@ public class TagManagerCtrl implements Initializable {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
-    private int boardId = 0; //hardcoded for now
+    public int boardId = 0; //hardcoded for now
     @FXML
     private Label labelBoard;
     @FXML
@@ -58,7 +57,11 @@ public class TagManagerCtrl implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        labelBoard.setText("Tags for board: " + Integer.toString(boardId));
+        if (server.testConnection(ServerUtils.SERVER) != 200) {
+            System.out.println("No server to connect to, halting tag init function");
+            return;
+        }
+        labelBoard.setText("Tags for board: " + boardId);
         refresh();
     }
 
@@ -78,6 +81,7 @@ public class TagManagerCtrl implements Initializable {
      */
     public void refresh(){
         tagListView.setItems(getTagList(boardId)); //hardcoded for now
+        labelBoard.setText("Tag Manager for board #"+boardId);
         tagListView.setCellFactory(param -> new ListCell<Tag>() {
             @Override
             protected void updateItem(Tag tag, boolean empty) {
@@ -170,6 +174,6 @@ public class TagManagerCtrl implements Initializable {
      */
     public void backButton(ActionEvent actionEvent){
         System.out.println("going back");
-        mainCtrl.showBoardOverwiew();
+        mainCtrl.showBoardOverview(boardId);
     }
 }

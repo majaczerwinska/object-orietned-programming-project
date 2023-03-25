@@ -1,12 +1,14 @@
 package server.service;
 
 import commons.Board;
+import commons.Card;
 import commons.CardList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import server.database.BoardRepositoryTest;
 import server.database.CardListRepositoryTest;
-import server.service.CardListService;
+import server.database.CardRepositoryTest;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,12 +17,16 @@ public class CardListServiceTest {
     private CardListRepositoryTest repo;
     private BoardRepositoryTest br;
     private CardListService ser;
+    private CardRepositoryTest cr;
+    private CardService cardService;
 
     @BeforeEach
     public void setup() {
         repo = new CardListRepositoryTest();
         br  = new BoardRepositoryTest();
         ser = new CardListService(repo, br);
+        cr = new CardRepositoryTest();
+        cardService = new CardService(cr, repo);
     }
 
 
@@ -78,5 +84,17 @@ public class CardListServiceTest {
 
     }
 
+    @Test
+    public void getCardsFromListTest(){
+        Board board = new Board("board");
+        CardList list = new CardList("c");
+        Card card = new Card("title");
+        int listId = list.getId();
+        br.save(board);
+        ser.save(list, board.getId());
+        cardService.save(card, listId);
+        List<Card> cardList = List.of(card);
+        assertEquals(ser.getCardsFromList(listId), cardList);
+    }
 
 }

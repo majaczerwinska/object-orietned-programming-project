@@ -2,6 +2,7 @@ package server.service;
 
 import commons.Board;
 
+import commons.CardList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,15 @@ public class BoardService {
     }
 
 
+    /**
+     * Gets all lists from a board
+     * @param boardId the id of the board we need to get the lists from
+     * @return list of cardlists
+     */
+    public List<CardList> getCardListsFromBoard(int boardId){
+        Board board = repo.getById(boardId);
+        return board.getLists();
+    }
 
     /**
      * save a board to the database
@@ -66,7 +76,6 @@ public class BoardService {
      */
     public Optional<Board> findById(int id){
         return repo.findById(id);
-
     }
 
     /**
@@ -87,4 +96,20 @@ public class BoardService {
     }
 
 
+    /**
+     * searches for a board by key
+     * @param key board key
+     * @return the board element, if not found null
+     */
+    public Board findByKey(String key) {
+        System.out.println("Board service findByKey called for key = "+key);
+        List<Board> l = repo.findAll();
+        System.out.println("Repo answered findAll with "+l);
+        for (Board b : l) {
+            if (b.getBoardkey().equals(key)) {
+                return b;
+            }
+        }
+        return null;
+    }
 }

@@ -38,7 +38,7 @@ public class PopupJoinCtrl {
      */
     @FXML
     public void back(MouseEvent mouseEvent){
-        System.out.println("test here");
+        System.out.println("Returning from JoinBoard error Popup");
         mainCtrl.showSelect();
     }
 

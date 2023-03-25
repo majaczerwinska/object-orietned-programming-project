@@ -7,10 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 
 public class BoardRepositoryTest implements BoardRepository {
@@ -18,7 +15,9 @@ public class BoardRepositoryTest implements BoardRepository {
 
     @Override
     public List<Board> findAll() {
-        return null;
+        List<Board> l = new ArrayList<>();
+        l.addAll(boards);
+        return l;
     }
 
     @Override

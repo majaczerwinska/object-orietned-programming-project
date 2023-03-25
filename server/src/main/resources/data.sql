@@ -7,4 +7,4 @@ CREATE TABLE IF NOT EXISTS BOARDS (
 );
 DELETE FROM BOARDS WHERE id = 0;
 INSERT INTO BOARDS (id, name, boardkey, color, password) VALUES
-    (0, 'PublicBoard','main', 0, '');
+    (0, 'Public Board','public', 0, '');

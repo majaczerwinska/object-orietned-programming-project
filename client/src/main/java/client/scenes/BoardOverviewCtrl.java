@@ -1,18 +1,32 @@
 package client.scenes;
 
+import client.components.CardComponent;
+import client.components.CardListComponent;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Card;
+import commons.CardList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+//import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+//import java.net.URL;
+import java.util.List;
+//import java.util.ResourceBundle;
 
-public class BoardOverviewCtrl implements Initializable {
+public class BoardOverviewCtrl /*implements Initializable*/ {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    public int boardID = 0;
+
+    @FXML
+    private VBox vboxList1;
+
+    @FXML
+    private HBox hboxCardLists;
     @FXML
     private Button btnTagManager;
 
@@ -31,20 +45,24 @@ public class BoardOverviewCtrl implements Initializable {
         this.server = server;
     }
 
-    /**
-     *
-     * @param location
-     * The location used to resolve relative paths for the root object, or
-     * {@code null} if the location is not known.
-     *
-     * @param resources
-     * The resources used to localize the root object, or {@code null} if
-     * the root object was not localized.
-     */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-    }
+//    /**
+//     *
+//     * @param location
+//     * The location used to resolve relative paths for the root object, or
+//     * {@code null} if the location is not known.
+//     *
+//     * @param resources
+//     * The resources used to localize the root object, or {@code null} if
+//     * the root object was not localized.
+//     */
+//    @Override
+//    public void initialize(URL location, ResourceBundle resources) {
+//        if (server.testConnection(ServerUtils.SERVER) != 200) {
+//            System.out.println("No server to connect to, halting tag init function");
+//            return;
+//        }
+//        displayCards();
+//    }
 
     /**
      * Shows the tag manager scene
@@ -52,7 +70,7 @@ public class BoardOverviewCtrl implements Initializable {
      */
     public void showTagManager(ActionEvent actionEvent){
         System.out.println("showTagManger!!!");
-        mainCtrl.showTagManager();
+        mainCtrl.showTagManager(boardID);
     }
 
     /**
@@ -61,7 +79,7 @@ public class BoardOverviewCtrl implements Initializable {
      */
     public void back(ActionEvent actionEvent){
         System.out.println("going back");
-        mainCtrl.showLanding();
+        mainCtrl.showSelect();
     }
 
     /**
@@ -71,5 +89,33 @@ public class BoardOverviewCtrl implements Initializable {
     public void showCardAdd(ActionEvent actionEvent){
         System.out.println("card");
         mainCtrl.showCard();
+    }
+    /**
+     * displays cards in vboxes
+     * @param vbox the vbox in the list where the cards need to be showed
+     * @param listId the list we need to populate with cards
+     */
+    public void displayCards(VBox vbox, int listId){
+        List<Card> cards = server.getCardsFromList(listId);
+
+        for (Card card : cards) {
+            CardComponent cardComponent = new CardComponent();
+            cardComponent.setData(card);
+            vbox.getChildren().add(cardComponent);
+        }
+    }
+
+    /**
+     * displays cards in vboxes
+     */
+    public void displayLists(){
+        List<CardList> cardLists = server.getCardListsFromBoard(boardID);
+
+        for (CardList cardList : cardLists) {
+            CardListComponent cardListComponent = new CardListComponent();
+            cardListComponent.setTitle(cardList.getName());
+            hboxCardLists.getChildren().add(cardListComponent);
+            displayCards(cardListComponent.getVboxCards(), cardList.getId());
+        }
     }
 }

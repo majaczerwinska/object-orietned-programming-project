@@ -176,6 +176,14 @@ public class Card {
     }
 
     /**
+     * Checks if card has description
+     * @return true if it has description, otherwise false
+     */
+    public boolean hasDescription(){
+        return !(description==null || description=="");
+    }
+
+    /**
      *checks if two cards are equal
      * @param o - the other object
      * @return - true iff they are

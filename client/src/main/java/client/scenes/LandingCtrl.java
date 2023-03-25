@@ -24,21 +24,12 @@ public class LandingCtrl {
     }
 
     /**
-     *
-     * @param mouseEvent mouse info, automatic
-     */
-    public void onPublicClickEvent(MouseEvent mouseEvent) {
-        System.out.println("public button was clicked!!!");
-        mainCtrl.showPublicBoard();
-    }
-
-    /**
      * Shows the tag manager scene
      * @param actionEvent the event when clicking the "tag manager" button
      */
     public void showTagManager(ActionEvent actionEvent){
         System.out.println("showTagManger!!!");
-        mainCtrl.showTagManager();
+        mainCtrl.showTagManager(0);
     }
 
     /**
@@ -56,7 +47,7 @@ public class LandingCtrl {
      */
     public void showBoardOverview(ActionEvent actionEvent){
         System.out.println("show board overview");
-        mainCtrl.showBoardOverwiew();
+        mainCtrl.showBoardOverview(0);
     }
 
     /**

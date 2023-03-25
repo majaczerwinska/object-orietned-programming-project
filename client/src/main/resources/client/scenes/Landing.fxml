@@ -45,7 +45,7 @@
                   </Text>
                   <HBox alignment="CENTER" prefHeight="105.0" prefWidth="624.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#showBoardOverview" onMouseClicked="#onPublicClickEvent" text="Public">
+                        <Button mnemonicParsing="false" onAction="#showBoardOverview" text="Public">
                            <HBox.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </HBox.margin>
