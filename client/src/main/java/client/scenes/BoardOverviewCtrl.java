@@ -6,15 +6,15 @@ import com.google.inject.Inject;
 import commons.Card;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+//import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
-import java.net.URL;
+//import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
+//import java.util.ResourceBundle;
 
-public class BoardOverviewCtrl implements Initializable {
+public class BoardOverviewCtrl /*implements Initializable*/ {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private int listId = 1; //hardcoded for now
@@ -40,20 +40,24 @@ public class BoardOverviewCtrl implements Initializable {
         this.server = server;
     }
 
-    /**
-     *
-     * @param location
-     * The location used to resolve relative paths for the root object, or
-     * {@code null} if the location is not known.
-     *
-     * @param resources
-     * The resources used to localize the root object, or {@code null} if
-     * the root object was not localized.
-     */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        displayCards();
-    }
+//    /**
+//     *
+//     * @param location
+//     * The location used to resolve relative paths for the root object, or
+//     * {@code null} if the location is not known.
+//     *
+//     * @param resources
+//     * The resources used to localize the root object, or {@code null} if
+//     * the root object was not localized.
+//     */
+//    @Override
+//    public void initialize(URL location, ResourceBundle resources) {
+//        if (server.testConnection(ServerUtils.SERVER) != 200) {
+//            System.out.println("No server to connect to, halting tag init function");
+//            return;
+//        }
+//        displayCards();
+//    }
 
     /**
      * Shows the tag manager scene

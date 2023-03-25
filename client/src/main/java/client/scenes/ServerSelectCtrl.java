@@ -38,7 +38,7 @@ public class ServerSelectCtrl {
     @FXML
     private Text ipFieldHeader;
     @FXML
-    private Text connectionStatus;
+    public Text connectionStatus;
 
     @FXML
     private Text selectedServer;
@@ -250,6 +250,12 @@ public class ServerSelectCtrl {
      * @param actionEvent the event when clicking the "Enter server" button
      */
     public void enterServer(ActionEvent actionEvent){
+        onTestConnection();
+        if (!connectionStatus.textProperty().get().equals("200 Successful")) {
+            System.out.println(connectionStatus.textProperty().get());
+            System.out.println("Tried to enter invalid server ("+serverAddress+"), aborting");
+            return;
+        }
         System.out.println("entering server");
         mainCtrl.showLanding();
     }
