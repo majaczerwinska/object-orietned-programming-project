@@ -3,6 +3,7 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Board;
+import commons.Tag;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -83,6 +84,23 @@ public class BoardSelectCtrl{
 
 
     /**
+     * Get board instances from database using saved board keys
+     * @return the list of board elements that exist in the database
+     */
+    public List<Board> getBoards() {
+        List<Board> b = new ArrayList<>();
+        List<String> keys = getBoardKeys();
+        for (String key : keys) {
+            Board res = server.getBoardByKey(key);
+            if (res != null) {
+                b.add(res);
+            }
+        }
+        return b;
+    }
+
+
+    /**
      * Remove a board key from the save
      * @param key key to remove
      */
@@ -109,16 +127,17 @@ public class BoardSelectCtrl{
      */
     public void refresh() {
         list.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-            try{
-                items.clear();
-                List<Board> boards = server.getBoards();
-                for(int i = 0; i<boards.size(); i++){
-                    items.add(boards.get(i));
-                }
-            }catch (Exception e){
-                System.out.println(e.getMessage());
-            }
-        list.setItems(items);
+//            try{
+//                items.clear();
+//                List<Board> boards = server.getBoards();
+//                for(int i = 0; i<boards.size(); i++){
+//                    items.add(boards.get(i));
+//                }
+//            }catch (Exception e){
+//                System.out.println(e.getMessage());
+//            }
+        ObservableList<Board> boardList = FXCollections.observableList(getBoards());
+        list.setItems(boardList);
     }
 
 //    @FXML

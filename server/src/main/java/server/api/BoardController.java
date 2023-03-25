@@ -63,6 +63,11 @@ public class BoardController {
         return abs.findAll();
     }
 
+    /**
+     * Get mapping to fetch a board by its key
+     * @param key the board key to search
+     * @return the board element if found, else null
+     */
     @GetMapping("/key/{key}")
     public Board getBoardByKey(String key){
         return abs.findByKey(key);
