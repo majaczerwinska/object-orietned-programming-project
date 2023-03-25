@@ -153,7 +153,7 @@ public class BoardSelectCtrl{
      * @param mouseEvent - click
      */
     @FXML
-    public void join(MouseEvent mouseEvent){
+    public void saveBoardButton(MouseEvent mouseEvent){
         String key = boardKey.getText();
         try {
             Board board = server.getBoardByKey(key);
@@ -169,6 +169,7 @@ public class BoardSelectCtrl{
             e.printStackTrace();
             mainCtrl.showPopup();
         }
+        refresh();
     }
 
     /**
@@ -195,6 +196,7 @@ public class BoardSelectCtrl{
      */
     @FXML
     public void onListElementClick(MouseEvent event) {
+        refresh();
         if (event.getClickCount() == 2) {
             joinBoard();
         }

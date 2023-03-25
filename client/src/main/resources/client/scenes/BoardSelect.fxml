@@ -63,7 +63,7 @@
                                     <Insets right="14.0" top="2.0" />
                                  </HBox.margin>
                               </TextField>
-                              <Button fx:id="join" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#join" prefHeight="26.0" prefWidth="51.0" text="Save">
+                              <Button fx:id="join" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#saveBoardButton" prefHeight="26.0" prefWidth="51.0" text="Save">
                                  <HBox.margin>
                                     <Insets left="18.0" right="-8.0" />
                                  </HBox.margin>

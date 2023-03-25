@@ -106,12 +106,14 @@ public class BoardCreationCtrl {
 //                newBoard.setColor(hashHexCode(colorValue));
 //            }
 //        }
-        if(passwordRequiredRadioButton.isSelected())
-        {
-            String passwordValue = passwordTextField.getText();
-            newBoard.setPassword(passwordValue);
-        }
+        newBoard.setColor(Integer.parseInt(colorValue, 16));
+//        if(passwordRequiredRadioButton.isSelected())
+//        {
+//            String passwordValue = passwordTextField.getText();
+//            newBoard.setPassword(passwordValue);
+//        }
         server.addBoard(newBoard);
+        mainCtrl.showSelect();
     }
 
     /**

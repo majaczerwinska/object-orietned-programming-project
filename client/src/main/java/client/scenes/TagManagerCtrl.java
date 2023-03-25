@@ -7,13 +7,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+
+import java.net.URL;
 import java.util.List;
+import java.util.ResourceBundle;
 
 
-
-public class TagManagerCtrl /*implements Initializable*/ {
+public class TagManagerCtrl implements Initializable {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
@@ -42,25 +45,25 @@ public class TagManagerCtrl /*implements Initializable*/ {
 
     }
 
-//    /**
-//     *
-//     * @param location
-//     * The location used to resolve relative paths for the root object, or
-//     * {@code null} if the location is not known.
-//     *
-//     * @param resources
-//     * The resources used to localize the root object, or {@code null} if
-//     * the root object was not localized.
-//     */
-//    @Override
-//    public void initialize(URL location, ResourceBundle resources) {
-//        if (server.testConnection(ServerUtils.SERVER) != 200) {
-//            System.out.println("No server to connect to, halting tag init function");
-//            return;
-//        }
-//        labelBoard.setText("Tags for board: " + Integer.toString(boardId));
-//        refresh();
-//    }
+    /**
+     *
+     * @param location
+     * The location used to resolve relative paths for the root object, or
+     * {@code null} if the location is not known.
+     *
+     * @param resources
+     * The resources used to localize the root object, or {@code null} if
+     * the root object was not localized.
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        if (server.testConnection(ServerUtils.SERVER) != 200) {
+            System.out.println("No server to connect to, halting tag init function");
+            return;
+        }
+        labelBoard.setText("Tags for board: " + Integer.toString(boardId));
+        refresh();
+    }
 
     /**
      * Creates an observable list with all tags
