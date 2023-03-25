@@ -111,7 +111,7 @@
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="createBoardButton" mnemonicParsing="false" text="Create Board">
+                  <Button fx:id="createBoardButton" mnemonicParsing="false" onAction="#createBoardButtonClickHandler" text="Create Board">
                      <font>
                         <Font size="18.0" />
                      </font>
