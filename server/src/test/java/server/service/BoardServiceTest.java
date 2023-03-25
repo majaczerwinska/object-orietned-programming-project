@@ -7,6 +7,10 @@ import server.database.BoardRepositoryTest;
 import server.service.BoardService;
 
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BoardServiceTest {
@@ -63,4 +67,21 @@ public class BoardServiceTest {
 
     }
 
+    @Test
+    void findById() {
+        Board b = new Board("a");
+        ser.save(b);
+
+        assertEquals(ser.findById(0), Optional.of(b));
+    }
+
+    @Test
+    void findAll() {
+        Board b = new Board("a");
+        ser.save(b);
+        List<Board> bl = new ArrayList<>();
+        bl.add(b);
+        assertEquals(ser.findAll(), bl);
+
+    }
 }

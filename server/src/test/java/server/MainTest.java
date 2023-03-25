@@ -6,6 +6,8 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 @SpringBootTest
 public class MainTest {
 
@@ -22,10 +24,12 @@ public class MainTest {
 
     @Test
     public void mainMethodTest() {
-        try {
-            Main.main(new String[]{});
-        } catch (Exception e) {
-            Assertions.fail("Exception thrown: " + e.getMessage());
-        }
+        assertDoesNotThrow(() -> Main.main(new String[]{}));
+        System.exit(0);
+//        try {
+//            Main.main(new String[]{});
+//        } catch (Exception e) {
+//            Assertions.fail("Exception thrown: " + e.getMessage());
+//        }
     }
 }

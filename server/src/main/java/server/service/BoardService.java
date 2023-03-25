@@ -66,7 +66,6 @@ public class BoardService {
      */
     public Optional<Board> findById(int id){
         return repo.findById(id);
-
     }
 
     /**

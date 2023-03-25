@@ -86,6 +86,9 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         mainCtrl.showCard();
     }
 
+    /**
+     * displays cards in vboxes
+     */
     public void displayCards(){
         List<Card> cards = server.getCardsFromList(listId);
 

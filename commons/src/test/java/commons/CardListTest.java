@@ -59,8 +59,17 @@ class CardListTest {
     }
 
     @Test
-    public void toStringTest(){
+    public void toStringEmptyTest(){
         CardList t = new CardList("t");
         assertEquals(t.toString(), "List #" + t.getId() + "\n name: " + t.getName() + "\n color: " + t.getColor() + "\nthis list has no cards");
+    }
+
+    @Test
+    public void toStringTest() {
+        CardList t = new CardList("t");
+        List<Card> c = new ArrayList<>();
+        c.add(new Card("a"));
+        t.setCards(c);
+        assertEquals(t.toString(), "List #" + t.getId() + "\n name: " + t.getName() + "\n color: " + t.getColor() + "\nCards:\nCard #0\n title: a\n description: \n color: 16777215");
     }
 }

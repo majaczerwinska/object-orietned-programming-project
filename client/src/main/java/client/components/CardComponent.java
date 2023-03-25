@@ -46,7 +46,10 @@ public class CardComponent extends HBox{
     }
 
 
-
+    /**
+     * updates card
+     * @param card new card data
+     */
     public void setData(Card card){
         labelTitle.setText(card.getTitle());
         if(card.hasDescription()){

@@ -110,4 +110,16 @@ public class BoardTest {
         Board c = new Board();
     }
 
+    @Test
+    void getPassword() {
+        Board b = new Board();
+        assertNull(b.getPassword());
+    }
+
+    @Test
+    void setPassword() {
+        Board b = new Board();
+        b.setPassword("a");
+        assertEquals("a", b.getPassword());
+    }
 }
