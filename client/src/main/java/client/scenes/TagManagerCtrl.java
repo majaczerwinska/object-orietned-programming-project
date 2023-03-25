@@ -61,7 +61,7 @@ public class TagManagerCtrl implements Initializable {
             System.out.println("No server to connect to, halting tag init function");
             return;
         }
-        labelBoard.setText("Tags for board: " + Integer.toString(boardId));
+        labelBoard.setText("Tags for board: " + boardId);
         refresh();
     }
 
@@ -81,6 +81,7 @@ public class TagManagerCtrl implements Initializable {
      */
     public void refresh(){
         tagListView.setItems(getTagList(boardId)); //hardcoded for now
+        labelBoard.setText("Tag Manager for board #"+boardId);
         tagListView.setCellFactory(param -> new ListCell<Tag>() {
             @Override
             protected void updateItem(Tag tag, boolean empty) {

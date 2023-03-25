@@ -89,7 +89,9 @@ public class BoardSelectCtrl{
     public List<Board> getBoards() {
         List<Board> b = new ArrayList<>();
         List<String> keys = getBoardKeys();
+        System.out.println("Getting board keys from save, results = "+keys);
         for (String key : keys) {
+            System.out.println("Getting board instance from server for key="+key);
             Board res = server.getBoardByKey(key);
             if (res != null) {
                 b.add(res);

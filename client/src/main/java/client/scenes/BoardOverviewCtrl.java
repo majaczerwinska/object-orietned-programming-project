@@ -70,7 +70,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      */
     public void showTagManager(ActionEvent actionEvent){
         System.out.println("showTagManger!!!");
-        mainCtrl.showTagManager();
+        mainCtrl.showTagManager(boardID);
     }
 
     /**

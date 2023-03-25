@@ -29,7 +29,7 @@ public class LandingCtrl {
      */
     public void showTagManager(ActionEvent actionEvent){
         System.out.println("showTagManger!!!");
-        mainCtrl.showTagManager();
+        mainCtrl.showTagManager(0);
     }
 
     /**

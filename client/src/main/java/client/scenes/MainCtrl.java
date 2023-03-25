@@ -171,10 +171,12 @@ public class MainCtrl {
 
     /**
      * Shows the tag manager scene
+     *
      */
-    public void showTagManager() {
+    public void showTagManager(int boardID) {
         primaryStage.setTitle("Tag Manager :)");
         primaryStage.setScene(tagManager);
+        tagManagerCtrl.boardId = boardID;
         primaryStage.show();
     }
 
@@ -225,5 +227,10 @@ public class MainCtrl {
         primaryStage.setTitle("Board creation overview :)");
         primaryStage.setScene(boardCreation);
         primaryStage.show();
+    }
+
+    public void saveBoardByKey(String boardkey) {
+        boardSelectCtrl.saveBoardKey(boardkey);
+        boardSelectCtrl.refresh();
     }
 }

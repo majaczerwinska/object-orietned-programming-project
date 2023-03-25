@@ -113,6 +113,7 @@ public class BoardCreationCtrl {
 //            newBoard.setPassword(passwordValue);
 //        }
         server.addBoard(newBoard);
+        mainCtrl.saveBoardByKey(newBoard.getBoardkey());
         mainCtrl.showSelect();
     }
 
