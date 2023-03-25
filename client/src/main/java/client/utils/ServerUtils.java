@@ -192,7 +192,7 @@ public class ServerUtils {
     public Card editCard(int id, Card card) {
         try {
             return ClientBuilder.newClient(new ClientConfig())
-                    .target(SERVER).path("api/cards" + id)
+                    .target(SERVER).path("api/cards/" + id)
                     .request(APPLICATION_JSON)
                     .accept(APPLICATION_JSON)
                     .put(Entity.entity(card, APPLICATION_JSON), Card.class);

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<fx:root alignment="CENTER" prefHeight="81.0" prefWidth="208.0" style="-fx-border-width: 1; -fx-border-color: black;" type="HBox" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="cardFrame" alignment="CENTER" prefHeight="81.0" prefWidth="208.0" style="-fx-border-width: 1; -fx-border-color: black;" type="HBox" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
     <children>
       <CheckBox mnemonicParsing="false">
          <HBox.margin>
