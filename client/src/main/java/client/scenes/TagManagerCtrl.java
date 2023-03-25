@@ -9,11 +9,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-//import javafx.scene.text.Text;
-
-//import java.net.URL;
 import java.util.List;
-//import java.util.ResourceBundle;
+
 
 
 public class TagManagerCtrl /*implements Initializable*/ {
