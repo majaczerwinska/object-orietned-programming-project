@@ -33,6 +33,14 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     @FXML
     private Button backbtn;
 
+    @FXML
+    private Button addListButton;
+
+    @FXML
+    private Button refreshButton;
+
+    @FXML Button editBoardButton;
+
 
     /**
      *
@@ -100,7 +108,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
         for (Card card : cards) {
             CardComponent cardComponent = new CardComponent();
-            cardComponent.setData(card);
+            cardComponent.setData(card, listId);
             vbox.getChildren().add(cardComponent);
         }
     }
@@ -115,6 +123,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             CardListComponent cardListComponent = new CardListComponent();
             cardListComponent.setTitle(cardList.getName());
             hboxCardLists.getChildren().add(cardListComponent);
+            cardListComponent.setData(cardList);
             displayCards(cardListComponent.getVboxCards(), cardList.getId());
         }
     }
@@ -124,5 +133,21 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      */
     public void clearBoard(){
         hboxCardLists.getChildren().clear();
+    }
+
+
+    /**
+     * Refresh scene from database
+     */
+    public void refresh() {
+        System.out.println("Refreshing board overview");
+        clearBoard();
+        displayLists();
+    }
+
+    public void createTestCard() {
+        Card c = new Card("test card ..");
+        System.out.println("creating test card "+c);
+        server.addCard(c, 0);
     }
 }

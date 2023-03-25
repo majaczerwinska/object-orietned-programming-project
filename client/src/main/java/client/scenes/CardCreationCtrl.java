@@ -54,15 +54,7 @@ public class CardCreationCtrl {
         this.server = server;
     }
     
-    /**
-     *
-     */
-    @FXML
-    protected void doit() {
-        String title = text.getText();
-        Card card = new Card(title);
-        server.addCard(card);
-    }
+
 
     /**
      * Start the scene and prepare the listview with all current tags.
@@ -141,7 +133,7 @@ public class CardCreationCtrl {
             alert.showAndWait();
         }
         else {
-            server.addCard(card);
+//            server.addCard(card);
         }
         exitButton(); // Exits the scene
     }

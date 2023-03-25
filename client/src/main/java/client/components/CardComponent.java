@@ -1,5 +1,6 @@
 package client.components;
 
+import client.scenes.MainCtrl;
 import client.utils.ServerUtils;
 import commons.Card;
 import javafx.fxml.FXML;
@@ -16,7 +17,11 @@ public class CardComponent extends HBox{
 
     private ServerUtils serverUtils;
 
+    private MainCtrl mainCtrl;
+
     private int cardID;
+
+    private int cardListID;
 
     private Card self;
 
@@ -44,6 +49,7 @@ public class CardComponent extends HBox{
     public CardComponent() {
         super();
         serverUtils = new ServerUtils();
+        mainCtrl = new MainCtrl();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/components/CardComponent.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(CardComponent.this);
@@ -78,16 +84,25 @@ public class CardComponent extends HBox{
 
     /**
      * updates card
-     * @param card new card data
+     *
+     * @param card   new card data
+     * @param listId the cards parent list
      */
-    public void setData(Card card){
+    public void setData(Card card, int listId){
         tfTitle.setText(card.getTitle());
         cardID = card.getId();
         self = card;
+        cardListID = listId;
         if(card.hasDescription()){
             tfDescription.setText("Has description");
         } else{
             tfDescription.setText("No description");
         }
+    }
+
+    public void deleteCard() {
+        System.out.println("deleting card (CardComponent.deleteCard(self)) " + self);
+        serverUtils.deleteCard(self, cardListID);
+        mainCtrl.refreshBoardOverview();
     }
 }

@@ -238,4 +238,8 @@ public class MainCtrl {
         boardSelectCtrl.saveBoardKey(boardkey);
         boardSelectCtrl.refresh();
     }
+
+    public void refreshBoardOverview()  {
+        boardOverviewCtrl.refresh();
+    }
 }

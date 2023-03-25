@@ -1,5 +1,7 @@
 package client.components;
 
+import commons.Card;
+import commons.CardList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -9,6 +11,10 @@ import java.io.IOException;
 
 //TODO
 public class CardListComponent extends VBox{
+
+    private int listID;
+
+    private CardList self;
 
     @FXML
     private VBox vboxCards;
@@ -48,5 +54,15 @@ public class CardListComponent extends VBox{
      */
     public void setTitle(String title){
         labelTitle.setText(title);
+    }
+
+    /**
+     * updates list
+     * @param cardList new cardlist data
+     */
+    public void setData(CardList cardList){
+        labelTitle.setText(cardList.getName());
+        listID = cardList.getId();
+        self = cardList;
     }
 }

@@ -65,16 +65,6 @@ public class CardCtrl {
         this.mainCtrl = mainCtrl;
         this.server = server;
     }
-    
-    /**
-     *
-     */
-    @FXML
-    protected void doit() {
-        String title = text.getText();
-        Card card = new Card(title);
-        server.addCard(card);
-    }
 
     /**
      * Prepares the scene with the right tags to chose out of and the current name and description.
