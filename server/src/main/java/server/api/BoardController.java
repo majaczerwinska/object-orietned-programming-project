@@ -3,6 +3,7 @@ package server.api;
 import commons.Board;
 
 
+import commons.CardList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -86,5 +87,18 @@ public class BoardController {
         if(id < 0 || !abs.existsById(id)) return ResponseEntity.badRequest().body(null);
 
         return ResponseEntity.ok(abs.findById(id).get());
+    }
+
+    /**
+     * Gets all lists form a specific board
+     * @param boardId the id of the board we need to get the lists from
+     * @return a response entity with the list of cardlists from the board
+     */
+    @GetMapping("/lists/{boardId}")
+    public ResponseEntity<List<CardList>> getCardListsFromBoard(@PathVariable("boardId") int boardId) {
+        if (boardId < 0 || !abs.existsById(boardId)) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(abs.getCardListsFromBoard(boardId));
     }
 }
