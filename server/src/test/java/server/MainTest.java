@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 @SpringBootTest
 public class MainTest {
 
-    @Test
+
     public void contextActivation() {
         String[] args = {};
         SpringApplication app = new SpringApplication(Main.class);

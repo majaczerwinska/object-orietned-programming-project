@@ -208,6 +208,7 @@ public class MainCtrl {
         primaryStage.setScene(boardOverwiew);
         boardOverviewCtrl.boardID = boardID;
         primaryStage.show();
+        boardOverviewCtrl.clearBoard();
         boardOverviewCtrl.displayLists();
     }
 

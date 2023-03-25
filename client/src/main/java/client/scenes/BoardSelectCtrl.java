@@ -32,6 +32,8 @@ public class BoardSelectCtrl{
     private Button create;
 
     @FXML
+    private Button btnRemove;
+    @FXML
     private TextField boardKey;
     @FXML
     private Button join;
@@ -65,6 +67,10 @@ public class BoardSelectCtrl{
             return;
         }
         String keys = prefs.get(saveID, "public");
+        if(keys.contains(key)){
+            System.out.println(key + "this key is already saved");
+            return;
+        }
         keys += "," + key;
         prefs.put(saveID, keys);
     }
@@ -216,5 +222,14 @@ public class BoardSelectCtrl{
         System.out.println("joining board #" + selection.id);
         System.out.println(selection);
         mainCtrl.showBoardOverview(selection.id);
+    }
+
+    /**
+     * Removes a board
+     */
+    public void removeBoard(){
+        String boardKey = list.getSelectionModel().getSelectedItem().getBoardkey();
+        removeBoardKey(boardKey);
+        refresh();
     }
 }

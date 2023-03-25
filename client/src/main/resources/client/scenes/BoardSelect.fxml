@@ -75,7 +75,7 @@
                         <Insets top="50.0" />
                      </padding>
                   </VBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
                         <Label prefHeight="31.0" prefWidth="76.0" text="Or you can">
                            <padding>
@@ -86,6 +86,11 @@
                            </HBox.margin>
                         </Label>
                         <Button fx:id="create" mnemonicParsing="false" onMouseClicked="#goCreate" prefHeight="26.0" prefWidth="146.0" text="Create a new board" />
+                        <Button fx:id="btnRemove" mnemonicParsing="false" onAction="#removeBoard" text="Remove" textFill="#fc0505">
+                           <HBox.margin>
+                              <Insets left="40.0" />
+                           </HBox.margin>
+                        </Button>
                      </children>
                      <VBox.margin>
                         <Insets />

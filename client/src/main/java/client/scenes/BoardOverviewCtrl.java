@@ -118,4 +118,11 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             displayCards(cardListComponent.getVboxCards(), cardList.getId());
         }
     }
+
+    /**
+     * Clears the board overview
+     */
+    public void clearBoard(){
+        hboxCardLists.getChildren().clear();
+    }
 }
