@@ -147,17 +147,28 @@ public class BoardSelectCtrl{
 //    }
 
     /**
-     * !not finished!
-     * checks if the board you want to join exists
+     * !not tested!
+     * checks if the board you want to join exists, if yes saves and joins it,
+     * otherwise throws exception and popup window
      * @param mouseEvent - click
      */
     @FXML
     public void join(MouseEvent mouseEvent){
-       Board board = server.getBoardByKey(boardKey.getText());
-       if(board == null){
+        String key = boardKey.getText();
+        try {
+            Board board = server.getBoardByKey(key);
+            if (board == null) {
+                System.out.println("Tried to add & join board with key '"+key+"' but server returned null");
+                mainCtrl.showPopup();
+                return;
+            }
+            saveBoardKey(board.getBoardkey());
+            System.out.println("saved board key " + key + " and entering board. details:\n"+board);
+//            mainCtrl.showBoardOverview(board.id);
+        } catch (Exception e) {
+            e.printStackTrace();
             mainCtrl.showPopup();
-       }
-
+        }
     }
 
     /**
@@ -179,8 +190,8 @@ public class BoardSelectCtrl{
     }
 
     /**
-     *
-     * @param event
+     * event handler for clicking
+     * @param event click details
      */
     @FXML
     public void onListElementClick(MouseEvent event) {
@@ -193,7 +204,13 @@ public class BoardSelectCtrl{
      * joins the board on double click
      */
     public void joinBoard() {
-        var selection = list.getSelectionModel().getSelectedItems();
-        System.out.println("joining board");
+        Board selection = list.getSelectionModel().getSelectedItem();
+        if (selection==null) {
+            System.out.println("selected board appears to be null, in joinBoard() of BoardSelectCtrl");
+            return;
+        }
+        System.out.println("joining board #" + selection.id);
+        System.out.println(selection);
+        mainCtrl.showBoardOverview(selection.id);
     }
 }

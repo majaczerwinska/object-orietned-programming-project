@@ -77,35 +77,35 @@ public class BoardCreationCtrl {
         String boardKey = boardKeyTextField.getText();
         newBoard.setBoardkey(boardKey);
         String colorValue = colorTextField.getText();
-        if(colorValue.length() == 0)
-        {
-            // color gets defaulted to white
-            colorValue = "ffffff";
-        }
-        if(colorValue.length() != 6 && colorValue.length() != 0)
-        {
-            // show error
-            errorLabel.setText("The hexcode has the wrong amount of digits.");
-        }
-        else {
-            boolean okay = true;
-            for(int i = 0; i < 6; i++)
-            {
-                if(!(colorValue.charAt(i) <= 102 && 
-                    colorValue.charAt(i) >= 97) || 
-                    (colorValue.charAt(i) <= 57 && 
-                    colorValue.charAt(i) >= 48))
-                {
-                    errorLabel.setText("The hexcode has the wrong format.");
-                    okay = false;
-                }
-            }
-            if(okay == true) 
-            {
-                // color assigned to the board
-                newBoard.setColor(hashHexCode(colorValue));
-            }
-        }
+//        if(colorValue.length() == 0)
+//        {
+//            // color gets defaulted to white
+//            colorValue = "ffffff";
+//        }
+//        if(colorValue.length() != 6 && colorValue.length() != 0)
+//        {
+//            // show error
+//            errorLabel.setText("The hexcode has the wrong amount of digits.");
+//        }
+//        else {
+//            boolean okay = true;
+//            for(int i = 0; i < 6; i++)
+//            {
+//                if(!(colorValue.charAt(i) <= 102 &&
+//                    colorValue.charAt(i) >= 97) ||
+//                    (colorValue.charAt(i) <= 57 &&
+//                    colorValue.charAt(i) >= 48))
+//                {
+//                    errorLabel.setText("The hexcode has the wrong format.");
+//                    okay = false;
+//                }
+//            }
+//            if(okay == true)
+//            {
+//                // color assigned to the board
+//                newBoard.setColor(hashHexCode(colorValue));
+//            }
+//        }
         if(passwordRequiredRadioButton.isSelected())
         {
             String passwordValue = passwordTextField.getText();

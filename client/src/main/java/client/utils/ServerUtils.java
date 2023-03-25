@@ -131,14 +131,16 @@ public class ServerUtils {
      */
     public Board getBoardByKey(String key) {
         try{
+            System.out.println("sending a request to api/boards/key/"+key);
             return ClientBuilder.newClient(new ClientConfig())
                     .target(SERVER).path("api/boards/key/"+key)
                     .request(APPLICATION_JSON)
                     .accept(APPLICATION_JSON)
-                    .get(new GenericType<>() {
-                    });
+                    .get(new GenericType<Board>() {});
         }catch(Exception e){
+            System.out.println("Exception raised in getBoardByKey() in server utils for key "+key);
             System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return null;
     }

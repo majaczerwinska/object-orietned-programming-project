@@ -256,7 +256,7 @@ public class ServerSelectCtrl {
             System.out.println("Tried to enter invalid server ("+serverAddress+"), aborting");
             return;
         }
-        System.out.println("entering server");
+        System.out.println("entering server " + serverAddress);
         setServer(serverAddress);
         mainCtrl.showSelect();
     }

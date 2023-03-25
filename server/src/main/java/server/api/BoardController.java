@@ -69,8 +69,11 @@ public class BoardController {
      * @return the board element if found, else null
      */
     @GetMapping("/key/{key}")
-    public Board getBoardByKey(String key){
-        return abs.findByKey(key);
+    public Board getBoardByKey(@PathVariable("key") String key){
+        System.out.println("Received get request at /api/boards/key/"+key);
+        Board res = abs.findByKey(key);
+        System.out.println("result of find by key = "+res);
+        return res;
     }
 
     /**

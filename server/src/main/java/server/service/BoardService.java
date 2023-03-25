@@ -92,9 +92,11 @@ public class BoardService {
      * @return the board element, if not found null
      */
     public Board findByKey(String key) {
+        System.out.println("Board service findByKey called for key = "+key);
         List<Board> l = repo.findAll();
+        System.out.println("Repo answered findAll with "+l);
         for (Board b : l) {
-            if (b.getBoardkey() == key) {
+            if (b.getBoardkey().equals(key)) {
                 return b;
             }
         }
