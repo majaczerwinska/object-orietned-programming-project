@@ -123,6 +123,26 @@ public class ServerUtils {
                 });
     }
 
+
+    /**
+     * Returns a board from the database, searched by key
+     * @param key boardkey
+     * @return the board element, if not found returns null
+     */
+    public Board getBoardByKey(String key) {
+        try{
+            return ClientBuilder.newClient(new ClientConfig())
+                    .target(SERVER).path("api/boards/key/"+key)
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .get(new GenericType<>() {
+                    });
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
     /**
      * returns the board from the database with the given id
      * @param id - id of the board

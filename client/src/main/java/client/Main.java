@@ -67,7 +67,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
         try {
 
-            var landing = FXML.load(LandingCtrl.class, "client", "scenes", "Landing.fxml");
+            //var landing = FXML.load(LandingCtrl.class, "client", "scenes", "Landing.fxml");
             var publicBoard = FXML.load(PublicBoardCtrl.class, "client", "scenes", "PublicBoard.fxml");
             var card = FXML.load(CardCtrl.class, "client", "scenes", "Card.fxml");
             var selectBoard = FXML.load(BoardSelectCtrl.class, "client", "scenes", "BoardSelect.fxml");
@@ -84,7 +84,7 @@ public class Main extends Application {
 
             mainCtrl.initialize(
                     primaryStage,
-                    landing,
+                    //landing,
                     card,
                     publicBoard,
                     selectBoard,

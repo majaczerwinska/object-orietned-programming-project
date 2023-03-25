@@ -17,7 +17,7 @@ public class TagManagerCtrl /*implements Initializable*/ {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
-    private int boardId = 0; //hardcoded for now
+    public int boardId = 0; //hardcoded for now
     @FXML
     private Label labelBoard;
     @FXML
@@ -170,6 +170,6 @@ public class TagManagerCtrl /*implements Initializable*/ {
      */
     public void backButton(ActionEvent actionEvent){
         System.out.println("going back");
-        mainCtrl.showBoardOverwiew();
+        mainCtrl.showBoardOverview(boardId);
     }
 }

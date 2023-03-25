@@ -63,6 +63,11 @@ public class BoardController {
         return abs.findAll();
     }
 
+    @GetMapping("/key/{key}")
+    public Board getBoardByKey(String key){
+        return abs.findByKey(key);
+    }
+
     /**
      * gets a board from database with provided id
      * @param id - id of the board

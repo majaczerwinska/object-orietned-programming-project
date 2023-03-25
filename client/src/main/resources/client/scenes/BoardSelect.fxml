@@ -8,19 +8,26 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-
+<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.BoardSelectCtrl">
    <children>
       <HBox prefHeight="400.0" prefWidth="600.0">
          <children>
-            <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="170.0">
+            <VBox alignment="TOP_CENTER" prefHeight="380.0" prefWidth="291.0">
                <opaqueInsets>
                   <Insets right="20.0" />
                </opaqueInsets>
                <children>
-                  <Label text="Enter one of your boards" />
-                  <ListView fx:id="list" prefHeight="373.0" prefWidth="170.0" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Double click to enter one of your boards" textAlignment="CENTER" wrappingWidth="123.525390625">
+                     <VBox.margin>
+                        <Insets bottom="6.0" top="-9.0" />
+                     </VBox.margin>
+                  </Text>
+                  <ListView fx:id="list" onMouseClicked="#onListElementClick" prefHeight="354.0" prefWidth="218.0">
+                     <VBox.margin>
+                        <Insets top="2.0" />
+                     </VBox.margin></ListView>
                </children>
                <padding>
                   <Insets top="10.0" />
@@ -28,57 +35,72 @@
             </VBox>
             <VBox prefHeight="400.0" prefWidth="436.0">
                <children>
-                  <VBox prefHeight="200.0" prefWidth="403.0">
+                  <VBox prefHeight="73.0" prefWidth="343.0">
                      <children>
-                        <Label text="Join an already exisiting board">
+                        <Label prefHeight="19.0" prefWidth="164.0" text="Join an already exisiting board">
                            <padding>
-                              <Insets bottom="10.0" />
+                              <Insets bottom="2.0" />
                            </padding>
+                           <VBox.margin>
+                              <Insets top="-61.0" />
+                           </VBox.margin>
                         </Label>
-                        <HBox prefHeight="35.0" prefWidth="403.0">
-                           <children>
-                              <Label prefWidth="187.0" text="Enter the key">
-                                 <padding>
-                                    <Insets left="10.0" right="10.0" />
-                                 </padding>
-                              </Label>
-                              <TextField fx:id="boardKey" prefHeight="25.0" prefWidth="400.0" />
-                           </children>
+                        <Label prefWidth="187.0" text="Enter the key">
+                           <padding>
+                              <Insets bottom="3.0" right="10.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets top="2.0" />
+                           </VBox.margin>
+                        </Label>
+                        <HBox prefHeight="35.0" prefWidth="417.0">
                            <padding>
                               <Insets right="10.0" />
                            </padding>
+                           <children>
+                              <TextField fx:id="boardKey" prefHeight="26.0" prefWidth="269.0">
+                                 <HBox.margin>
+                                    <Insets right="14.0" top="2.0" />
+                                 </HBox.margin>
+                              </TextField>
+                              <Button fx:id="join" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#join" text="Join">
+                                 <HBox.margin>
+                                    <Insets left="18.0" right="-8.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
                         </HBox>
-                        <Button fx:id="join" mnemonicParsing="false" onMouseClicked="#join" text="Join">
-                           <VBox.margin>
-                              <Insets left="355.0" />
-                           </VBox.margin>
-                        </Button>
                      </children>
                      <padding>
                         <Insets top="50.0" />
                      </padding>
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="69.0">
+                  <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Label prefWidth="149.0" text="Or">
+                        <Label prefHeight="31.0" prefWidth="76.0" text="Or you can">
                            <padding>
-                              <Insets bottom="10.0" />
+                              <Insets bottom="10.0" top="4.0" />
                            </padding>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
                         </Label>
-                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Button fx:id="create" mnemonicParsing="false" onMouseClicked="#goCreate" prefHeight="25.0" prefWidth="228.0" text="Create a new board">
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </Button>
-                           </children>
-                        </VBox>
+                        <Button fx:id="create" mnemonicParsing="false" onMouseClicked="#goCreate" prefHeight="26.0" prefWidth="146.0" text="Create a new board" />
                      </children>
-                  </VBox>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets top="14.0" />
+                     </padding>
+                  </HBox>
+                  <VBox prefHeight="200.0" prefWidth="69.0" />
                   <VBox alignment="TOP_RIGHT" prefHeight="55.0" prefWidth="403.0">
                      <children>
-                        <Button mnemonicParsing="false" onMouseClicked="#back" text="Back" />
+                        <Button mnemonicParsing="false" onMouseClicked="#back" text="Back">
+                           <VBox.margin>
+                              <Insets right="2.0" top="10.0" />
+                           </VBox.margin></Button>
                      </children>
                   </VBox>
                </children>

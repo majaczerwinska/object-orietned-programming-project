@@ -3,13 +3,13 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<fx:root alignment="CENTER" prefHeight="65.0" style="-fx-border-width: 1; -fx-border-color: black;" type="HBox" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root alignment="CENTER" prefHeight="81.0" prefWidth="208.0" style="-fx-border-width: 1; -fx-border-color: black;" type="HBox" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
     <children>
       <CheckBox mnemonicParsing="false">
          <HBox.margin>
@@ -18,39 +18,46 @@
       </CheckBox>
       <VBox alignment="TOP_CENTER" prefHeight="103.0" prefWidth="141.0">
          <children>
-            <Label fx:id="labelTitle" alignment="CENTER" prefHeight="26.0" prefWidth="162.0" text="Title">
-               <font>
-                  <Font size="14.0" />
-               </font>
+            <TextField prefHeight="18.0" prefWidth="141.0" text="Card Title">
                <padding>
-                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                  <Insets bottom="1.0" />
                </padding>
-            </Label>
-            <Label fx:id="labelHasDescription" alignment="CENTER" prefHeight="52.0" prefWidth="157.0" text="Has/No description">
+            </TextField>
+            <TextArea prefHeight="42.0" prefWidth="134.0" text="Card Description&#10;" wrapText="true">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets top="-1.0" />
+               </padding>
                <font>
-                  <Font size="10.0" />
+                  <Font size="7.0" />
                </font>
-            </Label>
-            <Button fx:id="btnEdit" mnemonicParsing="false" prefHeight="17.0" prefWidth="34.0" text="Edit">
-               <font>
-                  <Font size="10.0" />
-               </font>
-            </Button>
+            </TextArea>
          </children>
+         <HBox.margin>
+            <Insets top="3.0" />
+         </HBox.margin>
+         <padding>
+            <Insets left="5.0" right="2.0" />
+         </padding>
       </VBox>
       <VBox alignment="CENTER_RIGHT" prefHeight="86.0" prefWidth="34.0">
          <children>
-            <Button fx:id="btnDelete" mnemonicParsing="false" prefHeight="0.0" prefWidth="0.0" text="x">
+            <Button fx:id="btnDelete" mnemonicParsing="false" prefHeight="12.0" prefWidth="13.0" text="x">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <padding>
+                  <Insets left="-1.0" right="-1.0" top="-1.0" />
+               </padding>
+            </Button>
+            <HBox fx:id="hboxTags" alignment="CENTER_RIGHT" prefHeight="66.0" prefWidth="19.0" />
+            <Button fx:id="btnEdit" mnemonicParsing="false" prefHeight="20.0" prefWidth="31.0" text="Edit">
                <font>
                   <Font size="10.0" />
                </font>
             </Button>
-            <HBox fx:id="hboxTags" alignment="CENTER_RIGHT" prefHeight="66.0" prefWidth="19.0">
-               <children>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#3aff1f" height="64.0" stroke="BLACK" strokeType="INSIDE" width="8.0" />
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="64.0" layoutX="36.0" layoutY="11.0" stroke="BLACK" strokeType="INSIDE" width="8.0" />
-               </children>
-            </HBox>
          </children>
       </VBox>
     </children>
@@ -58,6 +65,6 @@
         <Insets />
     </opaqueInsets>
    <padding>
-      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+      <Insets bottom="5.0" left="1.0" right="5.0" top="5.0" />
    </padding>
 </fx:root>

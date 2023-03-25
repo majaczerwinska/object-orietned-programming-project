@@ -47,7 +47,7 @@ public class LandingCtrl {
      */
     public void showBoardOverview(ActionEvent actionEvent){
         System.out.println("show board overview");
-        mainCtrl.showBoardOverwiew();
+        mainCtrl.showBoardOverview(0);
     }
 
     /**

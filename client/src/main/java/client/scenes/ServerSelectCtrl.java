@@ -257,7 +257,7 @@ public class ServerSelectCtrl {
             return;
         }
         System.out.println("entering server");
-        mainCtrl.showLanding();
+        mainCtrl.showSelect();
     }
 
     /**
