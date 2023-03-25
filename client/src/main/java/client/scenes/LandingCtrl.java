@@ -24,15 +24,6 @@ public class LandingCtrl {
     }
 
     /**
-     *
-     * @param mouseEvent mouse info, automatic
-     */
-    public void onPublicClickEvent(MouseEvent mouseEvent) {
-        System.out.println("public button was clicked!!!");
-        mainCtrl.showPublicBoard();
-    }
-
-    /**
      * Shows the tag manager scene
      * @param actionEvent the event when clicking the "tag manager" button
      */
