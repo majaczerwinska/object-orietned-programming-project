@@ -50,11 +50,12 @@ public class TaskControllerTest {
     @Test
     public void editTaskTest(){
         Task task1 = new Task("title1");
+        Task task2 = new Task("title2");
         Card card = new Card("title");
         cr.save(card);
         con.addTaskToCard(card.getId(), task1);
-        con.editTask(task1.getId(), "t");
-        assertEquals(task1.getName(), "t");
+        con.editTask(task1.getId(), task2);
+        assertEquals(task1.getName(), "title2");
 
     }
 

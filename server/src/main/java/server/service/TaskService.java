@@ -81,14 +81,12 @@ public final class TaskService {
         return repo.existsById(id);
     }
 
-    /**
-     * Updates the name of a task
-     * @param task - the updated task
-     * @param newName - the new name for the task
-     */
-    public void updateTask(Task task, String newName) {
-        task.setName(newName);
+
+    public Task updateTask(Task task, Task newTask) {
+        task.setName(newTask.getName());
+        task.setChecked(newTask.isChecked());
         repo.save(task);
+        return task;
     }
 
     /**

@@ -214,13 +214,15 @@ public class MainCtrl {
         boardOverviewCtrl.displayLists(boardOverviewCtrl.getCardListsFromServer());
     }
 
-    /**
-     * Shows card overview
-     */
-    public  void showCard(){
+
+    public  void showCard(int cardID, int boardID){
         primaryStage.setTitle("Card overview :)");
         primaryStage.setScene(card);
+        cardCtrl.cardID = cardID;
+        cardCtrl.boardID = boardID;
         primaryStage.show();
+        cardCtrl.clearCard();
+        cardCtrl.displayTasks();
     }
 
     /**

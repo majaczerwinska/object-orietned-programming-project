@@ -91,6 +91,7 @@ public class ServerUtils {
 
     /**
      * @param card -
+     * @param listID the list id
      * @return -
      */
     public Card addCard(Card card, int listID) {
@@ -203,6 +204,26 @@ public class ServerUtils {
     }
 
     /**
+     * Edit task with id
+     * @param id the id of the task to edit
+     * @param task the new task the old task is replaced by
+     * @return return the task edited
+     */
+    public Task editTask(int id, Task task) {
+        try{
+            return ClientBuilder.newClient(new ClientConfig())
+                    .target(SERVER).path("api/tasks/" + id)
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .put(Entity.entity(task, APPLICATION_JSON), Task.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return null;
+    }
+
+    /**
      * Gets a list of all tags from a board
      * @param boardId the id from the board we need the tags from
      * @return the list with tags from the board
@@ -213,6 +234,19 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<List<Tag>>() {});
+    }
+
+    /**
+     * Gets a list of all tasks from a card
+     * @param cardId the id from the card we need the tasks from
+     * @return the list with tasks from the card
+     */
+    public List<Task> getTasksFromCard(int cardId) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/cards/" + cardId + "/tasks") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<Task>>() {});
     }
 
     /**
@@ -256,6 +290,21 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .delete(Tag.class);
     }
+
+    /**
+     * Deletes a task (calls the delete method in the controller)
+     * @param taskId the id of the task to be deleted
+     * @param cardId the cardId from where the tag is coming from
+     * @return the deleted task
+     */
+    public Task deleteTask(int taskId, int cardId) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/tasks/" + cardId + "/" + taskId) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .delete(Task.class);
+    }
+
 
     /**
      * Edits a tag in the database (calls the edit method from the controller)

@@ -1,5 +1,6 @@
 package client.components;
 
+
 import client.scenes.MainCtrl;
 import client.utils.ServerUtils;
 import commons.Card;
@@ -11,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
@@ -23,12 +25,13 @@ public class CardComponent extends HBox implements Initializable {
 
 
     private ServerUtils serverUtils;
-
     private MainCtrl mainCtrl;
 
 
 
+
     private int cardID;
+    public int boardID;
 
     private int cardListID;
 
@@ -36,9 +39,6 @@ public class CardComponent extends HBox implements Initializable {
 
     @FXML
     private TextField tfTitle;
-
-    @FXML
-    private TextField tfDescription;
 
 
     @FXML
@@ -61,7 +61,7 @@ public class CardComponent extends HBox implements Initializable {
 
     /**
      * The constructor for the component
-     * @param mainCtrl the one instance of main controller
+     * @param mainCtrl the main controller instance
      */
     public CardComponent(MainCtrl mainCtrl) {
         super();
@@ -119,11 +119,35 @@ public class CardComponent extends HBox implements Initializable {
 //        setOnMouseExited(event -> {
 //            toggleTextFieldToText(tfTitle);
 //        });
+        //tfDescription.setOnKeyTyped(event -> updateCard());
+        setOnMouseEntered(event ->
+            {tfTitle.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-alignment: center");});
+        setOnMouseExited(event ->
+            {tfTitle.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; " +
+                    "-fx-alignment: center");});
+        setOnMouseClicked(event -> onElementClick(event));
+    }
+
+    @FXML
+    public void onElementClick(MouseEvent event) {
+        if (event.getClickCount() == 2) {
+            joinCard();
+        }
+    }
+
+
+    public void joinCard() {
+        if (self==null) {
+            System.out.println("selected card appears to be null, in joiCoard() of CardComponentCtrl");
+            return;
+        }
+        System.out.println("joining card #" + cardID);
+        System.out.println(self);
+        mainCtrl.showCard(cardID, boardID);
     }
 
     /**
      * Update card if any text field is updated
-     * //todo, still not verified that it works
      */
     public void updateCard() {
         System.out.println("Text update card" + self);
