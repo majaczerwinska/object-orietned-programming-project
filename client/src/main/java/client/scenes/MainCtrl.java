@@ -211,7 +211,7 @@ public class MainCtrl {
         boardOverviewCtrl.boardID = boardID;
         primaryStage.show();
         boardOverviewCtrl.clearBoard();
-        boardOverviewCtrl.displayLists();
+        boardOverviewCtrl.displayLists(boardOverviewCtrl.getCardListsFromServer());
     }
 
     /**

@@ -120,11 +120,14 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         }
     }
 
+    public List<CardList> getCardListsFromServer() {
+        return server.getCardListsFromBoard(boardID);
+    }
+
     /**
      * displays cards in vboxes
      */
-    public void displayLists(){
-        List<CardList> cardLists = server.getCardListsFromBoard(boardID);
+    public void displayLists(List<CardList> cardLists){
 
         for (CardList cardList : cardLists) {
             CardListComponent cardListComponent = new CardListComponent(mainCtrl);
@@ -150,7 +153,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public void refresh() {
         System.out.println("Refreshing board overview");
         clearBoard();
-        displayLists();
+        displayLists(getCardListsFromServer());
     }
 
     public void createTestCard() {
@@ -166,7 +169,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         System.out.println("creating new card "+c+" in list id="+listID);
         server.addCard(c, listID);
         refresh();
-        mainCtrl.timeoutBoardRefresh();
+//        mainCtrl.timeoutBoardRefresh();
     }
 
     @FXML
