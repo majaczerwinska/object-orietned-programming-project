@@ -4,6 +4,8 @@ package client.components;
 import client.scenes.MainCtrl;
 import client.utils.ServerUtils;
 import commons.Card;
+import commons.Tag;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -13,11 +15,14 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 //TODO
@@ -139,6 +144,28 @@ public class CardComponent extends HBox implements Initializable {
     }
 
 
+
+    public void addtesttagtocard() {
+        serverUtils.addTagToCard(boardID,0,cardID);
+    }
+
+
+    public void getTagColors() {
+        List<Tag> tags = serverUtils.getTagsForCard(cardID);
+        System.out.println(tags);
+    }
+    public void setMulticolouredBorder(Pane pane, List<Color> colors) {
+        BorderStrokeStyle style = BorderStrokeStyle.SOLID;
+        double borderWidth = 3;
+
+        List<BorderStroke> borders = new ArrayList<>();
+        for (int i = 0; i < pane.getChildren().size(); i++) {
+            borders.add(new BorderStroke(colors.get(i % colors.size()), style, null, new BorderWidths(borderWidth)));
+        }
+
+        pane.setBorder(new Border((BorderStroke) borders));
+    }
+
     /**
      *
      * @return the cards title text field
@@ -194,11 +221,17 @@ public class CardComponent extends HBox implements Initializable {
     }
 
     public void deleteCard() {
-        System.out.println("deleting card (CardComponent.deleteCard(self)) " + self);
-        serverUtils.deleteCard(self, cardListID);
-        mainCtrl.refreshBoardOverview();
-        mainCtrl.timeoutBoardRefresh(400);
-        mainCtrl.timeoutBoardRefresh(700);
+        Platform.runLater(() -> {
+            // UI update code here
+            System.out.println("deleting card (CardComponent.deleteCard(self)) " + self);
+            serverUtils.deleteCard(self, cardListID);
+            Platform.runLater(() -> {
+                mainCtrl.refreshBoardOverview();
+            });
+            mainCtrl.timeoutBoardRefresh(400);
+            mainCtrl.timeoutBoardRefresh(700);
+        });
+
     }
 
 

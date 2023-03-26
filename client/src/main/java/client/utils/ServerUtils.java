@@ -237,6 +237,32 @@ public class ServerUtils {
     }
 
     /**
+     * Gets a list of all tags for a card
+     * @param cardId the card id
+     * @return the list with tags
+     */
+    public List<Tag> getTagsForCard(int cardId) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/cards/" + cardId + "/tags") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<Tag>>() {});
+    }
+
+    /**
+     * add tag to card
+     * @param boardid board's id
+     * @param tagid tag's id
+     * @param cardid card's id
+     */
+    public void addTagToCard(int boardid, int tagid, int cardid) {
+        ClientBuilder.newClient(new ClientConfig()) // /{boardId}/{cardId}/{tagId}
+                .target(SERVER).path("api/tags/" + boardid + "/" + cardid + "/"+tagid) //
+                .request() //
+                .put(Entity.text(""));
+    }
+
+    /**
      * Gets a list of all tasks from a card
      * @param cardId the id from the card we need the tasks from
      * @return the list with tasks from the card
