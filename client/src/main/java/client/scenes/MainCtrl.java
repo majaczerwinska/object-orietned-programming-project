@@ -177,6 +177,7 @@ public class MainCtrl {
         primaryStage.setTitle("Tag Manager :)");
         primaryStage.setScene(tagManager);
         tagManagerCtrl.boardId = boardID;
+        //Later combine these methods into one refresh method
         tagManagerCtrl.setLabelBoard();
         tagManagerCtrl.clearTextFields();
         tagManagerCtrl.refresh();
@@ -211,7 +212,9 @@ public class MainCtrl {
         primaryStage.setScene(boardOverwiew);
         boardOverviewCtrl.boardID = boardID;
         primaryStage.show();
+        //We later have to combine all these methods we call into one refresh method in boardOverviewCtrl
         boardOverviewCtrl.setBoardName();
+        boardOverviewCtrl.refreshListViewTags();
         boardOverviewCtrl.clearBoard();
         boardOverviewCtrl.displayLists();
     }

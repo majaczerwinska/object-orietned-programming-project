@@ -7,11 +7,15 @@ import com.google.inject.Inject;
 import commons.Board;
 import commons.Card;
 import commons.CardList;
+import commons.Tag;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 //import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -34,7 +38,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     private Button btnTagManager;
 
     @FXML
-    private ListView listViewTags;
+    private ListView<Tag> listViewTags;
 
     @FXML
     private Button backbtn;
@@ -133,6 +137,36 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             hboxCardLists.getChildren().add(cardListComponent);
             displayCards(cardListComponent.getVboxCards(), cardList.getId());
         }
+    }
+
+    /**
+     * Creates an observable list with all tags
+     * @param boardID the board id we are in
+     * @return an observable list with all tags
+     */
+    public ObservableList<Tag> getTagList(int boardID){
+        List<Tag> tags = server.getTagsFromBoard(boardID);
+        ObservableList<Tag> tagList = FXCollections.observableList(tags);
+        return tagList;
+    }
+
+    /**
+     * Refreshes the list overview with the tags
+     */
+    public void refreshListViewTags(){
+        listViewTags.setItems(getTagList(boardID));
+        listViewTags.setCellFactory(param -> new ListCell<Tag>() {
+            @Override
+            protected void updateItem(Tag tag, boolean empty) {
+                super.updateItem(tag, empty);
+
+                if (empty || tag == null || tag.getTitle() == null) {
+                    setText(null);
+                } else {
+                    setText(tag.getTitle());
+                }
+            }
+        });
     }
 
     /**
