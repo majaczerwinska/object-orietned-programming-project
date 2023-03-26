@@ -4,6 +4,7 @@ import client.components.CardComponent;
 import client.components.CardListComponent;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Board;
 import commons.Card;
 import commons.CardList;
 import javafx.event.ActionEvent;
@@ -15,6 +16,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 //import java.net.URL;
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.util.List;
 //import java.util.ResourceBundle;
 
@@ -36,6 +40,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
     @FXML
     private Label boardName;
+    @FXML
+    private Label boardKey;
 
 
     /**
@@ -153,6 +159,25 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      */
     @FXML
     public void refresh(int boardID){
-        boardName.setText(server.getBoard(boardID).getName());
+        Board b = server.getBoard(boardID);
+        boardName.setText(b.getName());
+        boardKey.setText(b.getBoardkey());
+        boardKey.setVisible(false);
     }
+
+    /**
+     * display and copy to clipboard the boardKey
+     */
+    public void getBoardKey(){
+        if(boardKey.isVisible()){
+            boardKey.setVisible(false);
+        }
+        else{
+            boardKey.setVisible(true);
+            StringSelection selection = new StringSelection(boardKey.getText());
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(selection, selection);
+        }
+    }
+
 }
