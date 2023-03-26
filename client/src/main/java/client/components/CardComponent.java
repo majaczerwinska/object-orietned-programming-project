@@ -105,4 +105,6 @@ public class CardComponent extends HBox{
         serverUtils.deleteCard(self, cardListID);
         mainCtrl.refreshBoardOverview();
     }
+
+
 }

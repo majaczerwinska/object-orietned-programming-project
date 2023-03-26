@@ -1,5 +1,6 @@
 package client.components;
 
+import client.scenes.MainCtrl;
 import commons.Card;
 import commons.CardList;
 import javafx.fxml.FXML;
@@ -16,6 +17,7 @@ public class CardListComponent extends VBox{
 
     private CardList self;
 
+    private MainCtrl mainCtrl;
     @FXML
     private VBox vboxCards;
 
@@ -29,6 +31,7 @@ public class CardListComponent extends VBox{
      */
     public CardListComponent() {
         super();
+        mainCtrl = new MainCtrl();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/components/CardListComponent.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(CardListComponent.this);
@@ -64,5 +67,10 @@ public class CardListComponent extends VBox{
         labelTitle.setText(cardList.getName());
         listID = cardList.getId();
         self = cardList;
+    }
+
+    @FXML
+    public void addEnterKeyListener() {
+        mainCtrl.addEnterKeyListener();
     }
 }

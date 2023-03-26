@@ -242,4 +242,8 @@ public class MainCtrl {
     public void refreshBoardOverview()  {
         boardOverviewCtrl.refresh();
     }
+
+    public void addEnterKeyListener() {
+        boardOverviewCtrl.addEnterKeyListener();
+    }
 }

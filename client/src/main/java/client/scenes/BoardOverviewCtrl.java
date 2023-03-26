@@ -10,6 +10,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 //import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -149,5 +151,17 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         Card c = new Card("test card ..");
         System.out.println("creating test card "+c);
         server.addCard(c, 0);
+    }
+
+    @FXML
+    public void onEnterKeyPressed(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            // when the user presses the enter button
+            createTestCard();
+        }
+    }
+
+    public void addEnterKeyListener() {
+        hboxCardLists.setOnKeyPressed(this::onEnterKeyPressed);
     }
 }
