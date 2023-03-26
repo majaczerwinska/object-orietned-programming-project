@@ -15,8 +15,6 @@ public class Tag {
     private int id;
     @Column(name = "tag_name")
     private String title;
-    @Column(name = "tag_description")
-    private String description;
     @Column(name = "tag_color")
     private int color;
     @ManyToMany(mappedBy = "tags")
@@ -31,19 +29,6 @@ public class Tag {
      */
     public Tag(String title) {
         this.title = title;
-        this.description = "";
-        this.color = 0xffffff;
-        this.cards = new ArrayList<>();
-    }
-
-    /**
-     * Constructor with title and description
-     * @param title the title of the tag
-     * @param description the description of the tag
-     */
-    public Tag(String title, String description) {
-        this.title = title;
-        this.description = description;
         this.color = 0xffffff;
         this.cards = new ArrayList<>();
     }
@@ -52,12 +37,10 @@ public class Tag {
     /**
      * Constructor with title and description
      * @param title the title of the tag
-     * @param description the description of the tag
      * @param color the color of the tag
      */
-    public Tag(String title, String description, int color) {
+    public Tag(String title, int color) {
         this.title = title;
-        this.description = description;
         this.color = color;
         this.cards = new ArrayList<>();
     }
@@ -104,14 +87,6 @@ public class Tag {
         this.title = title;
     }
 
-    /**
-     * Description setter method
-     * 
-     * @param description - the new description of the tag
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     /**
      * Color setter method
@@ -149,14 +124,6 @@ public class Tag {
         return color;
     }
 
-    /**
-     * Description getter method
-     * 
-     * @return - the description
-     */
-    public String getDescription() {
-        return description;
-    }
 
     /**
      * Equals method
@@ -192,6 +159,6 @@ public class Tag {
      */
     @Override
     public String toString() {
-        return "Tag #" + id + "\n title: " + title + "\n description: " + description + "\n color: " + color;
+        return "Tag #" + id + "\n title: " + title + "\n color: " + color;
     }
 }

@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import server.database.BoardRepositoryTest;
 import server.database.CardRepositoryTest;
 import server.database.TagRepositoryTest;
-import server.service.TagService;
+//import server.service.TagService;
 
 import java.util.List;
 
@@ -129,9 +129,8 @@ public class TagServiceTest {
         Board b = new Board("b");
         br.save(b);
         ser.save(tag, b.getId());
-        ser.editTag(tag, new Tag("t", "hi", 1));
+        ser.editTag(tag, new Tag("t", 1));
         assertEquals(tag.getTitle(), "t");
-        assertEquals(tag.getDescription(), "hi");
         assertEquals(tag.getColor(), 1);
     }
 
