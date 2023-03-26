@@ -1,5 +1,6 @@
 package client.components;
 
+import client.scenes.CardCtrl;
 import client.scenes.MainCtrl;
 import client.utils.ServerUtils;
 import commons.Task;
@@ -7,16 +8,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
+
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 
-import java.awt.event.ActionEvent;
+
 import java.io.IOException;
 
 public class SubTaskComponent extends HBox {
     private int taskId;
     private int cardId;
+    private CardCtrl cardCtrl;
     private Task self;
     @FXML
     private CheckBox checkbox;
@@ -27,8 +29,9 @@ public class SubTaskComponent extends HBox {
     private ServerUtils server;
     private MainCtrl mainCtrl;
 
-    public SubTaskComponent(int cardId) {
+    public SubTaskComponent(int cardId, CardCtrl cardCtrl) {
         super();
+        this.cardCtrl = cardCtrl;
         server = new ServerUtils();
         mainCtrl = new MainCtrl();
         this.cardId = cardId;
@@ -45,11 +48,9 @@ public class SubTaskComponent extends HBox {
         textField.setOnKeyTyped(event -> updateTask());
         checkbox.setOnAction(event -> updateTask());
         delete.setOnAction(event -> delete());
-        setOnMouseEntered(event ->
-        {textField.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-alignment: center");});
-        setOnMouseExited(event ->
-        {textField.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; " +
-                "-fx-alignment: center");});
+
+        textField.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; " +
+                "-fx-alignment: center");
 
     }
 
@@ -77,6 +78,7 @@ public class SubTaskComponent extends HBox {
         System.out.println(taskId);
         System.out.println(cardId);
         server.deleteTask(taskId, cardId);
+        cardCtrl.refresh();
     }
 
 
