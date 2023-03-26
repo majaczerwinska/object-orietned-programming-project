@@ -69,7 +69,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
     @FXML Button editBoardButton;
 
-
+    @FXML
     private Label labelBoardTitle;
 
 
