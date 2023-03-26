@@ -3,6 +3,7 @@ package client.scenes;
 import client.utils.ServerUtils;
 import javafx.event.ActionEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.application.Platform;
 
 import javax.inject.Inject;
 
@@ -87,6 +88,13 @@ public class LandingCtrl {
     public void onSelectClickEvent(MouseEvent mouseEvent) {
         System.out.println("Select was clicked");
         mainCtrl.showSelect();
+    }
+
+    /**
+     * exit app button handler
+     */
+    public void exitApp() {
+        Platform.exit();
     }
 
 
