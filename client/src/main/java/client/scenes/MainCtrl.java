@@ -17,6 +17,7 @@ package client.scenes;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -179,9 +180,33 @@ public class MainCtrl {
         tagManagerCtrl.boardId = boardID;
         //Later combine these methods into one refresh method
         tagManagerCtrl.setLabelBoard();
-        tagManagerCtrl.clearTextFields();
         tagManagerCtrl.refresh();
         primaryStage.show();
+    }
+
+    /**
+     * Method that parses fxColor to int
+     *
+     * @param fxColor the color to be parsed
+     * @return return the color awtColor
+     */
+    public static int colorParseToInt(Color fxColor){
+        return ((int)(fxColor.getRed() * 255) << 16)
+                | ((int)(fxColor.getGreen() * 255) << 8)
+                | (int)(fxColor.getBlue() * 255);
+    }
+
+    /**
+     * Method that parses int to fxColor
+     * @param intColor the color to be parsed
+     * @return return the color fxColor
+     */
+    public static Color colorParseToFXColor(int intColor){
+        return Color.rgb(
+                (intColor >> 16) & 0xFF, // red component
+                (intColor >> 8) & 0xFF, // green component
+                intColor & 0xFF // blue component
+        );
     }
 
     /**

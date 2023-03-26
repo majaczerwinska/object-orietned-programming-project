@@ -11,10 +11,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import static client.scenes.MainCtrl.colorParseToFXColor;
+import static client.scenes.MainCtrl.colorParseToInt;
 
 
 public class TagManagerCtrl implements Initializable {
@@ -29,9 +33,7 @@ public class TagManagerCtrl implements Initializable {
     @FXML
     private TextField tfTitle;
     @FXML
-    private TextArea taDescription;
-    @FXML
-    private TextField tfColor;
+    private ColorPicker colorPicker;
 
 
     /**
@@ -92,6 +94,8 @@ public class TagManagerCtrl implements Initializable {
                     setText(null);
                 } else {
                     setText(tag.getTitle());
+                    String hexColor = String.format("#%06X", (0xFFFFFF & tag.getColor()));
+                    setStyle("-fx-control-inner-background: " + hexColor);
                 }
             }
         });
@@ -112,9 +116,9 @@ public class TagManagerCtrl implements Initializable {
      */
     public void addTag(ActionEvent actionEvent){
         String title = tfTitle.getText();
-        String description = taDescription.getText();
-        int color = tryColorParse(tfColor.getText());
-        Tag tag = new Tag(title, description, color);
+        Color fxColor = colorPicker.getValue();
+        int intColor = colorParseToInt(fxColor);
+        Tag tag = new Tag(title, intColor);
         server.addTag(tag, boardId);
         refresh();
     }
@@ -140,28 +144,24 @@ public class TagManagerCtrl implements Initializable {
     public void editTag(ActionEvent actionEvent){
         Tag oldTag = tagListView.getSelectionModel().getSelectedItem();
         String title = tfTitle.getText();
-        String description = taDescription.getText();
-        int color = tryColorParse(tfColor.getText());
-        Tag newTag = new Tag(title, description, color);
-        server.editTag(oldTag, newTag);
-        refresh();
+        Color fxColor = colorPicker.getValue();
+        int intColor = colorParseToInt(fxColor);
+        Tag newTag = new Tag(title, intColor);
+        if(oldTag!=null){
+            server.editTag(oldTag, newTag);
+            refresh();
+        }
+
     }
 
     /**
-     * Method that tries to parse the color into an int
-     * @param color the color retrieved from the text field
-     * @return return the color as an int or the default color if it wasn't able to parse
+     * Shows the selected tag in the text field/area
      */
-    public static int tryColorParse(String color){
-        try {
-            return Integer.parseInt(color);
-        } catch (NumberFormatException e){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Wrong Format");
-            alert.setHeaderText("Color field must be a number");
-            alert.setContentText("Setting the color to default");
-            alert.showAndWait();
-            return 0xffffff;
+    public void showSelectedItem(){
+        Tag tag = tagListView.getSelectionModel().getSelectedItem();
+        if(tag!=null){
+            tfTitle.setText(tag.getTitle());
+            colorPicker.setValue(colorParseToFXColor(tag.getColor()));
         }
     }
 
@@ -173,19 +173,10 @@ public class TagManagerCtrl implements Initializable {
         Tag tag = tagListView.getSelectionModel().getSelectedItem();
         if(tag!=null){
             tfTitle.setText(tag.getTitle());
-            taDescription.setText(tag.getDescription());
-            tfColor.setText(Integer.toString(tag.getColor()));
+            colorPicker.setValue(colorParseToFXColor(tag.getColor()));
         }
     }
 
-    /**
-     * Clears all text fields
-     */
-    public void clearTextFields(){
-        tfTitle.clear();
-        taDescription.clear();
-        tfColor.clear();
-    }
 
     /**
      * Goes back to previous scene

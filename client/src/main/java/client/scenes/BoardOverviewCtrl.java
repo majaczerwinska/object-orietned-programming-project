@@ -164,6 +164,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
                     setText(null);
                 } else {
                     setText(tag.getTitle());
+                    String hexColor = String.format("#%06X", (0xFFFFFF & tag.getColor()));
+                    setStyle("-fx-control-inner-background: " + hexColor);
                 }
             }
         });
