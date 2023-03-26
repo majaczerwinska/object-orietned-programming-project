@@ -5,16 +5,31 @@ import client.components.CardListComponent;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 
+
 import commons.Card;
 import commons.CardList;
+
+
+import commons.Board;
+import commons.Card;
+import commons.CardList;
+import commons.Tag;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 //import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -40,15 +55,22 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     private Button btnTagManager;
 
     @FXML
+    private ListView<Tag> listViewTags;
+
+    @FXML
     private Button backbtn;
 
     @FXML
+
     private Button addListButton;
 
     @FXML
     private Button refreshButton;
 
     @FXML Button editBoardButton;
+
+
+    private Label labelBoardTitle;
 
 
     /**
@@ -82,11 +104,19 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 //    }
 
     /**
+     * Sets board name in the overview
+     */
+    public void setBoardName(){
+        Board board = server.getBoard(boardID);
+        labelBoardTitle.setText(board.getName());
+    }
+
+    /**
      * Shows the tag manager scene
      * @param actionEvent the event when clicking the "tag manager" button
      */
     public void showTagManager(ActionEvent actionEvent){
-        System.out.println("showTagManger!!!");
+        System.out.println("showTagManger with id #" + boardID);
         mainCtrl.showTagManager(boardID);
     }
 
@@ -144,6 +174,38 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     }
 
 
+
+    /**
+     * Creates an observable list with all tags
+     * @param boardID the board id we are in
+     * @return an observable list with all tags
+     */
+    public ObservableList<Tag> getTagList(int boardID){
+        List<Tag> tags = server.getTagsFromBoard(boardID);
+        ObservableList<Tag> tagList = FXCollections.observableList(tags);
+        return tagList;
+    }
+
+    /**
+     * Refreshes the list overview with the tags
+     */
+    public void refreshListViewTags(){
+        listViewTags.setItems(getTagList(boardID));
+        listViewTags.setCellFactory(param -> new ListCell<Tag>() {
+            @Override
+            protected void updateItem(Tag tag, boolean empty) {
+                super.updateItem(tag, empty);
+
+                if (empty || tag == null || tag.getTitle() == null) {
+                    setText(null);
+                } else {
+                    setText(tag.getTitle());
+                    String hexColor = String.format("#%06X", (0xFFFFFF & tag.getColor()));
+                    setStyle("-fx-control-inner-background: " + hexColor);
+                }
+            }
+        });
+    }
 
     /**
      * Clears the board overview
