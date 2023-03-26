@@ -179,7 +179,6 @@ test_job_client_main:
     - coverage=$(cat coverage/index.html | grep -o -E "Total[^%]+?%" | sed -E "s/<.*>//" | sed -E "s/Total//")
     - coverage=${coverage::-1} # Remove %
     - echo ClientTestCoverage:$coverage%
-    - exit 0
     - if [ $coverage -ge $CLIENT_GOOD_COVERAGE ]; then echo "Client is tested sufficiently!" && exit 0; fi # If all tests then pass
     - if [ $coverage -ge $CLIENT_MIN_COVERAGE ]; then echo "Client is partially tested." && exit 0; fi # If most tests then semi fail
     - echo "Client is not tested."
@@ -190,6 +189,9 @@ test_job_client_main:
       - ./coverage
     reports:
       junit: "*/build/test-results/test/TEST-*.xml"
+  allow_failure:
+    exit_codes:
+      - 1
   coverage: /ClientTestCoverage:(\d+)%/
 test_job_client_utils:
   stage: test
@@ -208,7 +210,6 @@ test_job_client_utils:
     - coverage=$(cat coverage/index.html | grep -o -E "Total[^%]+?%" | sed -E "s/<.*>//" | sed -E "s/Total//")
     - coverage=${coverage::-1} # Remove %
     - echo ClientUtilsTestCoverage:$coverage%
-    - exit 0
     - if [ $coverage -ge $CLIENT_GOOD_COVERAGE ]; then echo "Client is tested sufficiently!" && exit 0; fi # If all tests then pass
     - if [ $coverage -ge $CLIENT_MIN_COVERAGE ]; then echo "Client is partially tested." && exit 0; fi # If most tests then semi fail
     - echo "Client is not tested."
@@ -219,6 +220,9 @@ test_job_client_utils:
       - ./coverage
     reports:
       junit: "*/build/test-results/test/TEST-*.xml"
+  allow_failure:
+    exit_codes:
+      - 1
   coverage: /ClientUtilsTestCoverage:(\d+)%/
 
 test_job_client_scenes_controllers:
@@ -238,7 +242,6 @@ test_job_client_scenes_controllers:
     - coverage=$(cat coverage/index.html | grep -o -E "Total[^%]+?%" | sed -E "s/<.*>//" | sed -E "s/Total//")
     - coverage=${coverage::-1} # Remove %
     - echo ClientScenesTestCoverage:$coverage%
-    - exit 0
     - if [ $coverage -ge $CLIENT_GOOD_COVERAGE ]; then echo "Client is tested sufficiently!" && exit 0; fi # If all tests then pass
     - if [ $coverage -ge $CLIENT_MIN_COVERAGE ]; then echo "Client is partially tested." && exit 0; fi # If most tests then semi fail
     - echo "Client is not tested."
@@ -249,6 +252,9 @@ test_job_client_scenes_controllers:
       - ./coverage
     reports:
       junit: "*/build/test-results/test/TEST-*.xml"
+  allow_failure:
+    exit_codes:
+      - 1
   coverage: /ClientScenesTestCoverage:(\d+)%/
 
 
