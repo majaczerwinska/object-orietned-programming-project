@@ -1,6 +1,7 @@
 package client.components;
 
 import client.scenes.MainCtrl;
+import commons.Card;
 import commons.CardList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

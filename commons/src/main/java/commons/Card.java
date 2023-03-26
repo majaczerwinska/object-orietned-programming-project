@@ -215,4 +215,14 @@ public class Card {
     public String toString() {
         return "Card #" + id + "\n title: " + title + "\n description: " + description + "\n color: " + color;
     }
+
+
+    public boolean softEquals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Card)) return false;
+        Card card = (Card) o;
+        return Objects.equals(title, card.title)
+                && Objects.equals(description, card.description)
+                && Objects.equals(color, card.color);
+    }
 }

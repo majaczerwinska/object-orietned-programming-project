@@ -113,6 +113,16 @@ public class CardComponent extends HBox implements Initializable {
         descriptionLabel.setOnMouseExited(event -> {
             descriptionLabel.setStyle("-fx-underline: false");
         });
+        tfTitle.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                // TextField has received focus
+                tfTitle.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-alignment: center");
+            } else {
+                // TextField has lost focus
+                tfTitle.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; " +
+                        "-fx-alignment: center");
+            }
+        });
 //        setOnMouseEntered(event -> {
 //            toggleTextFieldToText(tfTitle);
 //        });
@@ -125,9 +135,17 @@ public class CardComponent extends HBox implements Initializable {
         setOnMouseExited(event ->
             {tfTitle.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; " +
                     "-fx-alignment: center");});
-        setOnMouseClicked(event -> onElementClick(event));
+        setOnMouseClicked(this::onElementClick);
     }
 
+
+    /**
+     *
+     * @return the cards title text field
+     */
+    public TextField getTfTitle() {
+        return this.tfTitle;
+    }
     @FXML
     public void onElementClick(MouseEvent event) {
         if (event.getClickCount() == 2) {
@@ -184,28 +202,28 @@ public class CardComponent extends HBox implements Initializable {
     }
 
 
-    public void toggleTextFieldToText(Node node) {
-        if (node instanceof TextField) {
-            System.out.println("toggling from textfield to text");
-            TextField textField = (TextField) node;
-            Text text = new Text(textField.getText());
-            text.setFont(textField.getFont());
-            text.setStyle(textField.getStyle());
-            text.setLayoutX(textField.getLayoutX());
-            text.setLayoutY(textField.getLayoutY());
-            textField.getParent().getChildrenUnmodifiable().set(textField.getParent().getChildrenUnmodifiable().indexOf(textField), text);
-        } else if (node instanceof Text) {
-            System.out.println("toggling from text to textfield");
-            Text text = (Text) node;
-            TextField textField = new TextField(text.getText());
-            textField.setFont(text.getFont());
-            textField.setStyle(text.getStyle());
-            textField.setLayoutX(text.getLayoutX());
-            textField.setLayoutY(text.getLayoutY());
-            text.getParent().getChildrenUnmodifiable().set(text.getParent().getChildrenUnmodifiable().indexOf(text), textField);
-            textField.requestFocus();
-        }
-    }
+//    public void toggleTextFieldToText(Node node) {
+//        if (node instanceof TextField) {
+//            System.out.println("toggling from textfield to text");
+//            TextField textField = (TextField) node;
+//            Text text = new Text(textField.getText());
+//            text.setFont(textField.getFont());
+//            text.setStyle(textField.getStyle());
+//            text.setLayoutX(textField.getLayoutX());
+//            text.setLayoutY(textField.getLayoutY());
+//            textField.getParent().getChildrenUnmodifiable().set(textField.getParent().getChildrenUnmodifiable().indexOf(textField), text);
+//        } else if (node instanceof Text) {
+//            System.out.println("toggling from text to textfield");
+//            Text text = (Text) node;
+//            TextField textField = new TextField(text.getText());
+//            textField.setFont(text.getFont());
+//            textField.setStyle(text.getStyle());
+//            textField.setLayoutX(text.getLayoutX());
+//            textField.setLayoutY(text.getLayoutY());
+//            text.getParent().getChildrenUnmodifiable().set(text.getParent().getChildrenUnmodifiable().indexOf(text), textField);
+//            textField.requestFocus();
+//        }
+//    }
 
 
     public void markAsCompleted() {
@@ -217,5 +235,9 @@ public class CardComponent extends HBox implements Initializable {
     public void unMarkCompleted() {
         //tfTitle.setStyle("-fx-strikethrough: false");
         descriptionLabel.setStyle("-fx-strikethrough: false");
+    }
+
+    public void setFocusToTitleField() {
+        tfTitle.requestFocus();
     }
 }

@@ -47,7 +47,7 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </VBox>
-      <ScrollPane fx:id="scrollPaneOverview" fitToHeight="true" prefHeight="494.0" prefWidth="607.0">
+      <ScrollPane fx:id="scrollPaneOverview" fitToHeight="true" onKeyReleased="#onEnterKeyReleased" prefHeight="494.0" prefWidth="607.0">
          <content>
             <HBox fx:id="hboxCardLists" spacing="10.0">
                <padding>

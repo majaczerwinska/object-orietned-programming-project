@@ -27,6 +27,9 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     private final MainCtrl mainCtrl;
     public int boardID = 0;
 
+    private boolean isCreatingCard = false;
+
+
     @FXML
     private VBox vboxList1;
 
@@ -124,12 +127,36 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         }
     }
 
+//    /**
+//     * displays cards in vboxes
+//     * @param vbox the vbox in the list where the cards need to be showed
+//     * @param listId the list we need to populate with cards
+//     * @param focusCard f
+//     */
+//    public void displayCardsWithFocus(VBox vbox, int listId, Card focusCard){
+//        List<Card> cards = server.getCardsFromList(listId);
+//
+//        for (Card card : cards) {
+//            CardComponent cardComponent = new CardComponent(mainCtrl);
+//            System.out.println(card +"<=card, focuscard=>" + focusCard);
+//            System.out.println(card.softEquals(focusCard));
+//            if (card.softEquals(focusCard)) {
+//                System.out.println("Card is getting focus");
+//                cardComponent.getTfTitle().requestFocus();
+//            }
+//            cardComponent.boardID = boardID;
+//            cardComponent.setData(card, listId);
+//            vbox.getChildren().add(cardComponent);
+//        }
+//    }
+
     public List<CardList> getCardListsFromServer() {
         return server.getCardListsFromBoard(boardID);
     }
 
     /**
      * displays cards in vboxes
+     * @param cardLists card lists
      */
     public void displayLists(List<CardList> cardLists){
 
@@ -142,6 +169,23 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             displayCards(cardListComponent.getVboxCards(), cardList.getId());
         }
     }
+
+
+//    /**
+//     * displays cards in vboxes
+//     * @param cardLists card lists
+//     * @param focusCard f
+//     */
+//    public void displayListsWithFocus(List<CardList> cardLists, Card focusCard){
+//        for (CardList cardList : cardLists) {
+//            CardListComponent cardListComponent = new CardListComponent(mainCtrl);
+//            cardListComponent.setTitle(cardList.getName());
+//            cardListComponent.setOnMouseEntered(event -> addEnterKeyListener(cardList.getId()));
+//            hboxCardLists.getChildren().add(cardListComponent);
+//            cardListComponent.setData(cardList);
+//            displayCardsWithFocus(cardListComponent.getVboxCards(), cardList.getId(), focusCard);
+//        }
+//    }
 
 
 
@@ -162,6 +206,17 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         displayLists(getCardListsFromServer());
     }
 
+
+//    /**
+//     * Refresh scene from database
+//     * @param focusCard the card
+//     */
+//    public void refresh(Card focusCard) {
+//        System.out.println("Refreshing board overview");
+//        clearBoard();
+//        displayListsWithFocus(getCardListsFromServer(), focusCard);
+//    }
+
     public void createTestCard() {
         Card c = new Card("test card ..");
         System.out.println("creating test card "+c);
@@ -170,20 +225,29 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         mainCtrl.timeoutBoardRefresh();
     }
 
-    public void createCard(int listID) {
+    public Card createCard(int listID) {
         Card c = new Card("title..");
         System.out.println("creating new card "+c+" in list id="+listID);
         server.addCard(c, listID);
         refresh();
+        return c;
 //        mainCtrl.timeoutBoardRefresh();
     }
 
     @FXML
     public void onEnterKeyPressed(KeyEvent event, int listID) {
         System.out.println("On enter key pressed called in boardoverviewcontroller with event "+event);
-        if (event.getCode() == KeyCode.ENTER) {
+        if (event.getCode() == KeyCode.ENTER && !isCreatingCard) {
+            isCreatingCard = true;
             // when the user presses the enter button
-            createCard(listID);
+            Card createdCardElement = createCard(listID);
+        }
+    }
+
+    @FXML
+    public void onEnterKeyReleased(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER && isCreatingCard) {
+            isCreatingCard = false;
         }
     }
 
