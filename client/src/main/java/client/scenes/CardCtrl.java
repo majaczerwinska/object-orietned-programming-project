@@ -117,8 +117,7 @@ public class CardCtrl {
     public void setInfo(){
 
         text.setText( server.getCard(cardID).getTitle());
-
-
+        palette.setValue(MainCtrl.colorParseToFXColor(server.getCard(cardID).getColor()));
         area.setText(server.getCard(cardID).getDescription());
 
     }
@@ -127,6 +126,7 @@ public class CardCtrl {
         if(!text.getText().equals("")){
             Card card= new Card(text.getText());
             card.setDescription(area.getText());
+            card.setColor(MainCtrl.colorParseToInt(palette.getValue()));
             server.editCard(cardID,card);
             warning.setText("");
         }

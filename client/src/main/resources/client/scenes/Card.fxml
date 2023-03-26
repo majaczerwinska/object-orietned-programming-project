@@ -42,7 +42,7 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <ColorPicker fx:id="palette" layoutX="316.0" layoutY="218.0" prefHeight="26.0" prefWidth="200.0" />
+      <ColorPicker fx:id="palette" layoutX="316.0" layoutY="218.0" onAction="#updateCard" prefHeight="26.0" prefWidth="200.0" />
       <Label fx:id="warning" layoutX="316.0" layoutY="56.0" textFill="#e13232">
          <font>
             <Font size="10.0" />
