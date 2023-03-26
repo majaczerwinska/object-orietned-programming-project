@@ -245,8 +245,8 @@ public class MainCtrl {
         boardOverviewCtrl.refresh();
     }
 
-    public void addEnterKeyListener() {
-        boardOverviewCtrl.addEnterKeyListener();
+    public void addEnterKeyListener(int listID) {
+        boardOverviewCtrl.addEnterKeyListener(listID);
     }
 
     public void timeoutBoardRefresh() {
@@ -256,6 +256,23 @@ public class MainCtrl {
         });
         try {
             future.get(200, TimeUnit.MILLISECONDS); // set a timeout of 5 seconds
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            future.cancel(true); // cancel the task if it takes too long
+            // handle the timeout exception here
+            e.printStackTrace();
+            System.out.println("time out exception in main controller");
+        }
+        executor.shutdown();
+    }
+
+
+    public void timeoutBoardRefresh(int mil) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Future<?> future = executor.submit(() -> {
+            boardOverviewCtrl.refresh();
+        });
+        try {
+            future.get(mil, TimeUnit.MILLISECONDS); // set a timeout of 5 seconds
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             future.cancel(true); // cancel the task if it takes too long
             // handle the timeout exception here

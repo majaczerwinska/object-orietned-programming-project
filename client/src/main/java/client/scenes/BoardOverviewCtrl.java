@@ -114,7 +114,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         List<Card> cards = server.getCardsFromList(listId);
 
         for (Card card : cards) {
-            CardComponent cardComponent = new CardComponent();
+            CardComponent cardComponent = new CardComponent(mainCtrl);
             cardComponent.setData(card, listId);
             vbox.getChildren().add(cardComponent);
         }
@@ -129,7 +129,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         for (CardList cardList : cardLists) {
             CardListComponent cardListComponent = new CardListComponent(mainCtrl);
             cardListComponent.setTitle(cardList.getName());
-            cardListComponent.setOnMouseEntered(event -> addEnterKeyListener());
+            cardListComponent.setOnMouseEntered(event -> addEnterKeyListener(cardList.getId()));
             hboxCardLists.getChildren().add(cardListComponent);
             cardListComponent.setData(cardList);
             displayCards(cardListComponent.getVboxCards(), cardList.getId());
@@ -161,17 +161,25 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         mainCtrl.timeoutBoardRefresh();
     }
 
+    public void createCard(int listID) {
+        Card c = new Card("title..");
+        System.out.println("creating new card "+c+" in list id="+listID);
+        server.addCard(c, listID);
+        refresh();
+        mainCtrl.timeoutBoardRefresh();
+    }
+
     @FXML
-    public void onEnterKeyPressed(KeyEvent event) {
+    public void onEnterKeyPressed(KeyEvent event, int listID) {
         System.out.println("On enter key pressed called in boardoverviewcontroller with event "+event);
         if (event.getCode() == KeyCode.ENTER) {
             // when the user presses the enter button
-            createTestCard();
+            createCard(listID);
         }
     }
 
-    public void addEnterKeyListener() {
+    public void addEnterKeyListener(int listID) {
         System.out.println("add enter key listener called in Board Overview Controller");
-        scrollPaneOverview.setOnKeyPressed(this::onEnterKeyPressed);
+        scrollPaneOverview.setOnKeyPressed(event -> onEnterKeyPressed(event, listID));
     }
 }

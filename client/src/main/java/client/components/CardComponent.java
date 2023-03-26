@@ -1,5 +1,6 @@
 package client.components;
 
+import client.Main;
 import client.scenes.MainCtrl;
 import client.utils.ServerUtils;
 import commons.Card;
@@ -18,6 +19,8 @@ public class CardComponent extends HBox{
     private ServerUtils serverUtils;
 
     private MainCtrl mainCtrl;
+
+
 
     private int cardID;
 
@@ -46,10 +49,11 @@ public class CardComponent extends HBox{
     /**
      * The constructor for the component
      */
-    public CardComponent() {
+    public CardComponent(MainCtrl mainCtrl) {
         super();
         serverUtils = new ServerUtils();
-        mainCtrl = new MainCtrl();
+        this.mainCtrl = mainCtrl;
+
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/components/CardComponent.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(CardComponent.this);
@@ -61,6 +65,10 @@ public class CardComponent extends HBox{
         }
 
 //        setOnKeyPressed(event -> updateCard());
+
+        TextField titleTextField = (TextField) lookup("#tfTitle");
+        titleTextField.requestFocus();
+
         tfTitle.setOnKeyTyped(event -> updateCard());
         tfDescription.setOnKeyTyped(event -> updateCard());
         setOnMouseEntered(event ->
@@ -104,6 +112,8 @@ public class CardComponent extends HBox{
         System.out.println("deleting card (CardComponent.deleteCard(self)) " + self);
         serverUtils.deleteCard(self, cardListID);
         mainCtrl.refreshBoardOverview();
+        mainCtrl.timeoutBoardRefresh(400);
+        mainCtrl.timeoutBoardRefresh(700);
     }
 
 

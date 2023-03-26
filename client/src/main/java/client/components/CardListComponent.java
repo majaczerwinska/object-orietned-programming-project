@@ -76,6 +76,6 @@ public class CardListComponent extends VBox{
     @FXML
     public void addEnterKeyListener() {
         System.out.println("add key listener called in card list component");
-        mainCtrl.addEnterKeyListener();
+        mainCtrl.addEnterKeyListener(listID);
     }
 }
