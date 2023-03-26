@@ -81,12 +81,13 @@ public class TaskServiceTest {
     @Test
     public void updateTaskTest(){
         Task task = new Task("title");
+
         Card card = new Card("title");
         cr.save(card);
         ser.save(task, card.getId());
         Task task2 = new Task("title2");
 
-        ser.updateTask(task, task2.getName());
+        ser.updateTask(task, task2);
         assertEquals(task.getName(), task2.getName());
 
     }

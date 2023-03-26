@@ -4,12 +4,15 @@ import client.components.CardComponent;
 import client.components.CardListComponent;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+
 import commons.Card;
 import commons.CardList;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 //import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -82,14 +85,14 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         mainCtrl.showSelect();
     }
 
-    /**
-     * Shows card creation scene
-     * @param actionEvent the event of clicking on a button
-     */
-    public void showCardAdd(ActionEvent actionEvent){
-        System.out.println("card");
-        mainCtrl.showCard();
-    }
+//    /**
+//     * Shows card creation scene
+//     * @param actionEvent the event of clicking on a button
+//     */
+//    public void showCardAdd(ActionEvent actionEvent){
+//        System.out.println("card");
+//        mainCtrl.showCard();
+//    }
     /**
      * displays cards in vboxes
      * @param vbox the vbox in the list where the cards need to be showed
@@ -99,8 +102,9 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         List<Card> cards = server.getCardsFromList(listId);
 
         for (Card card : cards) {
-            CardComponent cardComponent = new CardComponent();
+            CardComponent cardComponent = new CardComponent(mainCtrl);
             cardComponent.setData(card);
+            cardComponent.boardID = boardID;
             vbox.getChildren().add(cardComponent);
         }
     }
@@ -118,6 +122,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             displayCards(cardListComponent.getVboxCards(), cardList.getId());
         }
     }
+
+
 
     /**
      * Clears the board overview
