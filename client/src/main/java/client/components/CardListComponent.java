@@ -28,10 +28,11 @@ public class CardListComponent extends VBox{
 
     /**
      * The constructor for the component
+     * @param mainCtrl the instance of maincontroller
      */
-    public CardListComponent() {
+    public CardListComponent(MainCtrl mainCtrl) {
         super();
-        mainCtrl = new MainCtrl();
+        this.mainCtrl = mainCtrl;
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/components/CardListComponent.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(CardListComponent.this);
@@ -69,8 +70,12 @@ public class CardListComponent extends VBox{
         self = cardList;
     }
 
+    /**
+     * add event listener for enter key typed when mouse enters
+     */
     @FXML
     public void addEnterKeyListener() {
+        System.out.println("add key listener called in card list component");
         mainCtrl.addEnterKeyListener();
     }
 }

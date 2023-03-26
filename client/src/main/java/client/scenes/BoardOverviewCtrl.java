@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 //import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
@@ -26,6 +27,10 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
     @FXML
     private VBox vboxList1;
+
+
+    @FXML
+    private ScrollPane scrollPaneOverview;
 
     @FXML
     private HBox hboxCardLists;
@@ -122,8 +127,9 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         List<CardList> cardLists = server.getCardListsFromBoard(boardID);
 
         for (CardList cardList : cardLists) {
-            CardListComponent cardListComponent = new CardListComponent();
+            CardListComponent cardListComponent = new CardListComponent(mainCtrl);
             cardListComponent.setTitle(cardList.getName());
+            cardListComponent.setOnMouseEntered(event -> addEnterKeyListener());
             hboxCardLists.getChildren().add(cardListComponent);
             cardListComponent.setData(cardList);
             displayCards(cardListComponent.getVboxCards(), cardList.getId());
@@ -151,10 +157,13 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         Card c = new Card("test card ..");
         System.out.println("creating test card "+c);
         server.addCard(c, 0);
+        refresh();
+        mainCtrl.timeoutBoardRefresh();
     }
 
     @FXML
     public void onEnterKeyPressed(KeyEvent event) {
+        System.out.println("On enter key pressed called in boardoverviewcontroller with event "+event);
         if (event.getCode() == KeyCode.ENTER) {
             // when the user presses the enter button
             createTestCard();
@@ -162,6 +171,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     }
 
     public void addEnterKeyListener() {
-        hboxCardLists.setOnKeyPressed(this::onEnterKeyPressed);
+        System.out.println("add enter key listener called in Board Overview Controller");
+        scrollPaneOverview.setOnKeyPressed(this::onEnterKeyPressed);
     }
 }

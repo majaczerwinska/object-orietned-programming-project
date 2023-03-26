@@ -20,6 +20,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.util.concurrent.*;
+
 public class MainCtrl {
 
     private Stage primaryStage;
@@ -245,5 +247,21 @@ public class MainCtrl {
 
     public void addEnterKeyListener() {
         boardOverviewCtrl.addEnterKeyListener();
+    }
+
+    public void timeoutBoardRefresh() {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Future<?> future = executor.submit(() -> {
+            boardOverviewCtrl.refresh();
+        });
+        try {
+            future.get(200, TimeUnit.MILLISECONDS); // set a timeout of 5 seconds
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            future.cancel(true); // cancel the task if it takes too long
+            // handle the timeout exception here
+            e.printStackTrace();
+            System.out.println("time out exception in main controller");
+        }
+        executor.shutdown();
     }
 }
