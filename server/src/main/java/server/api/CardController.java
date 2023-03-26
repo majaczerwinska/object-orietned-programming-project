@@ -1,6 +1,7 @@
 package server.api;
 
 import commons.Card;
+
 import commons.Task;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.stereotype.Controller;
@@ -52,6 +53,7 @@ public class CardController {
      */
     @DeleteMapping("/{listId}/{id}")
     public ResponseEntity<Card> deleteCard(@PathVariable("listId") int listId, @PathVariable("id") int id) {
+        System.out.println("Received DELETE request for listID="+listId+" card id="+id);
         if(!acs.existsById(id)) return ResponseEntity.badRequest().build();
         Card card = acs.delete(acs.getById(id), listId);
 
@@ -74,7 +76,7 @@ public class CardController {
         }
         card.setId(id);
         acs.setCardInfo(card);
-        return ResponseEntity.ok(card);
+        return ResponseEntity.ok().build();
     }
 
     /**

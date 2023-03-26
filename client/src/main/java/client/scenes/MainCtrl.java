@@ -21,6 +21,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.util.concurrent.*;
+
 public class MainCtrl {
 
     private Stage primaryStage;
@@ -241,16 +243,26 @@ public class MainCtrl {
         boardOverviewCtrl.setBoardName();
         boardOverviewCtrl.refreshListViewTags();
         boardOverviewCtrl.clearBoard();
-        boardOverviewCtrl.displayLists();
+        boardOverviewCtrl.displayLists(boardOverviewCtrl.getCardListsFromServer());
     }
 
+
     /**
-     * Shows card overview
+     * show card overview
+     * @param cardID card id
+     * @param boardID board id
      */
-    public  void showCard(){
+    public  void showCard(int cardID, int boardID){
         primaryStage.setTitle("Card overview :)");
         primaryStage.setScene(card);
+        cardCtrl.cardID = cardID;
+        cardCtrl.boardID = boardID;
+
         primaryStage.show();
+        cardCtrl.setInfo();
+        cardCtrl.clearCard();
+        cardCtrl.displayTasks();
+
     }
 
     /**
@@ -269,5 +281,61 @@ public class MainCtrl {
     public void saveBoardByKey(String boardkey) {
         boardSelectCtrl.saveBoardKey(boardkey);
         boardSelectCtrl.refresh();
+    }
+
+    /**
+     * refresh board overview scene with newly polled data from the database
+     */
+    public void refreshBoardOverview()  {
+        boardOverviewCtrl.refresh();
+    }
+
+    /**
+     * add event listener for the enter key, intermediate function
+     * @param listID the list mouse is currently in
+     */
+    public void addEnterKeyListener(int listID) {
+        boardOverviewCtrl.addEnterKeyListener(listID);
+    }
+
+    /**
+     * refresh board after 200 milliseconds
+     * waits for database to update before pulling data again and showing in client
+     */
+    public void timeoutBoardRefresh() {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Future<?> future = executor.submit(() -> {
+            boardOverviewCtrl.refresh();
+        });
+        try {
+            future.get(200, TimeUnit.MILLISECONDS); // set a timeout of 5 seconds
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            future.cancel(true); // cancel the task if it takes too long
+            // handle the timeout exception here
+            e.printStackTrace();
+            System.out.println("time out exception in main controller");
+        }
+        executor.shutdown();
+    }
+
+
+    /**
+     * refresh board overview after custom timeout
+     * @param mil the timeout in milliseconds
+     */
+    public void timeoutBoardRefresh(int mil) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Future<?> future = executor.submit(() -> {
+            boardOverviewCtrl.refresh();
+        });
+        try {
+            future.get(mil, TimeUnit.MILLISECONDS); // set a timeout of 5 seconds
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            future.cancel(true); // cancel the task if it takes too long
+            // handle the timeout exception here
+            e.printStackTrace();
+            System.out.println("time out exception in main controller");
+        }
+        executor.shutdown();
     }
 }

@@ -8,9 +8,9 @@ import javafx.application.Platform;
 //import javafx.event.ActionEvent;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -247,9 +247,8 @@ public class ServerSelectCtrl {
 
     /**
      * Enters the server (goes to select board scene)
-     * @param actionEvent the event when clicking the "Enter server" button
      */
-    public void enterServer(ActionEvent actionEvent){
+    public void enterServer(){
         onTestConnection();
         if (!connectionStatus.textProperty().get().equals("200 Successful")) {
             System.out.println(connectionStatus.textProperty().get());
@@ -259,6 +258,28 @@ public class ServerSelectCtrl {
         System.out.println("entering server " + serverAddress);
         setServer(serverAddress);
         mainCtrl.showSelect();
+    }
+
+    /**
+     * general event listener, calls subsequent action functions
+     * @param event mouse event
+     */
+    @FXML
+    public void handleListClick(MouseEvent event) {
+        changeSelectedServer();
+        onListElementClick(event);
+    }
+
+    /**
+     * event handler for clicking
+     * @param event click details
+     */
+    @FXML
+    public void onListElementClick(MouseEvent event) {
+        refresh();
+        if (event.getClickCount() == 2) {
+            enterServer();
+        }
     }
 
     /**

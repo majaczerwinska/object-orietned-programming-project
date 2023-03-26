@@ -215,4 +215,24 @@ public class Card {
     public String toString() {
         return "Card #" + id + "\n title: " + title + "\n description: " + description + "\n color: " + color;
     }
+
+
+    /**
+     * compare content of two cards, ignoring id. used in frontend for occasions where the card is
+     * supposed to be the same but because its a different instance its a different id.
+     * for the client side .equals effectively works as == because for the id to be the same
+     * the two cards need to be from the same instance
+     * this method bypasses that allowing for comparisons with effectively identical cards that just happened to have
+     * veen initialised in different places.
+     * @param o card object to compare to
+     * @return true/false
+     */
+    public boolean softEquals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Card)) return false;
+        Card card = (Card) o;
+        return Objects.equals(title, card.title)
+                && Objects.equals(description, card.description)
+                && Objects.equals(color, card.color);
+    }
 }
