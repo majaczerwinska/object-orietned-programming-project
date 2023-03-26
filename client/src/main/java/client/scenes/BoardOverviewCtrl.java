@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 //import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -33,6 +34,9 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     @FXML
     private Button backbtn;
 
+    @FXML
+    private Label boardName;
+
 
     /**
      *
@@ -43,6 +47,14 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public BoardOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
+//        Board board = this.server.getBoard(boardID);
+//        String title = board.getName();
+//        if(title == null){
+//            boardName.setText("Board: " + board.getId());
+//        }
+//        else{
+//            boardName.setText(board.getName());
+//        }
     }
 
 //    /**
@@ -133,5 +145,14 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public void addList(ActionEvent actionEvent){
         System.out.println("going to list creation for board "+boardID);
         mainCtrl.showListCreate(boardID);
+    }
+
+    /**
+     * refreshes the board's name field
+     * @param boardID
+     */
+    @FXML
+    public void refresh(int boardID){
+        boardName.setText(server.getBoard(boardID).getName());
     }
 }

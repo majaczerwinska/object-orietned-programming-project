@@ -14,7 +14,7 @@
   <items>
       <VBox alignment="TOP_CENTER" prefHeight="493.0" prefWidth="200.0" spacing="10.0">
          <children>
-            <Label text="Board: ...">
+            <Label fx:id="boardName" text="Board: ...">
                <font>
                   <Font size="20.0" />
                </font>
