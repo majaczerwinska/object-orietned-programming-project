@@ -173,7 +173,7 @@ public class ServerUtils {
     public Card getCard(int id) {
         try {
             return ClientBuilder.newClient(new ClientConfig())
-                    .target(SERVER).path("api/cards" + id)
+                    .target(SERVER).path("api/cards/" + id)
                     .request(APPLICATION_JSON)
                     .accept(APPLICATION_JSON)
                     .get(new GenericType<Card>() {

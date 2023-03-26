@@ -220,9 +220,12 @@ public class MainCtrl {
         primaryStage.setScene(card);
         cardCtrl.cardID = cardID;
         cardCtrl.boardID = boardID;
+
         primaryStage.show();
+        cardCtrl.setInfo();
         cardCtrl.clearCard();
         cardCtrl.displayTasks();
+
     }
 
     /**
@@ -266,6 +269,8 @@ public class MainCtrl {
         }
         executor.shutdown();
     }
+
+
 
 
     public void timeoutBoardRefresh(int mil) {

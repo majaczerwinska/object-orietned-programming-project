@@ -75,7 +75,7 @@ public class CardController {
         }
         card.setId(id);
         acs.setCardInfo(card);
-        return ResponseEntity.ok(card);
+        return ResponseEntity.ok().build();
     }
 
     /**
