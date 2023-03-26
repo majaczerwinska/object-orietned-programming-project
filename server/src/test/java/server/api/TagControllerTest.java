@@ -2,7 +2,7 @@ package server.api;
 
 import commons.Board;
 import commons.Card;
-import commons.CardList;
+//import commons.CardList;
 import commons.Tag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -88,18 +88,6 @@ public class TagControllerTest {
 
     }
 
-//    @Test
-//    public void editTagTest(){
-//        Tag tag= new Tag("title");
-//        Board b = new Board("t");
-//        br.save(b);
-//        con.addTag(b.getId(),tag);
-//        con.editTag(tag.getId(),"t", "hi", 1);
-//        assertEquals(tag.getTitle(), "t");
-//        assertEquals(tag.getDescription(), "hi");
-//        assertEquals(tag.getColor(), 1);
-//
-//    }
 
     @Test
     public void editTagTest(){
@@ -107,9 +95,8 @@ public class TagControllerTest {
         Board b = new Board("t");
         br.save(b);
         con.addTag(b.getId(),tag);
-        con.editTag(tag.getId(), new Tag("t", "hi", 1));
+        con.editTag(tag.getId(), new Tag("t", 1));
         assertEquals(tag.getTitle(), "t");
-        assertEquals(tag.getDescription(), "hi");
         assertEquals(tag.getColor(), 1);
 
     }
@@ -123,7 +110,7 @@ public class TagControllerTest {
         br.save(b);
         con.addTag(b.getId(),tag);
         con.addTagToCard(b.getId(), c.getId(), tag.getId());
-        assertEquals(con.removeTagFromCard(c.getId(), 500),ResponseEntity.badRequest().build());;
+        assertEquals(con.removeTagFromCard(c.getId(), 500),ResponseEntity.badRequest().build());
 
     }
 }

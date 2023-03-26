@@ -118,6 +118,7 @@ public class CardCtrl {
 
         text.setText( server.getCard(cardID).getTitle());
 
+
         area.setText(server.getCard(cardID).getDescription());
 
     }

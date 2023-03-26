@@ -16,18 +16,11 @@ public class TagTest {
         assertEquals(q.getTitle(), "hi");
     }
 
-    @Test
-    public void checkConstructorTitleDescription() {
-        var q = new Tag("hi", "desc");
-        assertEquals(q.getTitle(), "hi");
-        assertEquals(q.getDescription(), "desc");
-    }
 
     @Test
     public void checkConstructorTitleDescriptionColor() {
-        var q = new Tag("hi", "desc", 1);
+        var q = new Tag("hi", 1);
         assertEquals(q.getTitle(), "hi");
-        assertEquals(q.getDescription(), "desc");
         assertEquals(q.getColor(), 1);
     }
 
@@ -88,12 +81,6 @@ public class TagTest {
         assertEquals(c.getTitle(), "b");
     }
 
-    @Test
-    void setDescription() {
-        Tag c = new Tag("a");
-        c.setDescription("b");
-        assertEquals(c.getDescription(), "b");
-    }
 
     @Test
     void setColor() {
@@ -131,12 +118,6 @@ public class TagTest {
         assertEquals(c.getColor(), 1);
     }
 
-    @Test
-    void getDescription() {
-        Tag c = new Tag("a");
-        c.setDescription("b");
-        assertEquals(c.getDescription(), "b");
-    }
 
     @Test
     void emptyConstructor() {

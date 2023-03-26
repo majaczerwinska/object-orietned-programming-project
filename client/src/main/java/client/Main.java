@@ -66,7 +66,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         try {
-
+            System.out.println("Loading all scenes");
             //var landing = FXML.load(LandingCtrl.class, "client", "scenes", "Landing.fxml");
             var publicBoard = FXML.load(PublicBoardCtrl.class, "client", "scenes", "PublicBoard.fxml");
             var card = FXML.load(CardCtrl.class, "client", "scenes", "Card.fxml");
@@ -78,7 +78,7 @@ public class Main extends Application {
             var boardOverview = FXML.load(BoardOverviewCtrl.class, "client", "scenes", "BoardOverview.fxml");
             var taskCreator = FXML.load(TaskCreatorCtrl.class, "client", "scenes", "TaskCreator.fxml");
             var boardCreation = FXML.load(BoardCreationCtrl.class, "client", "scenes", "BoardCreation.fxml");
-
+            System.out.println("Done with loading scenes");
             var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
 
 

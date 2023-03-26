@@ -118,7 +118,6 @@ public class TagService {
     @Transactional
     public Tag editTag(Tag tag, Tag newTag) {
             tag.setTitle(newTag.getTitle());
-            tag.setDescription(newTag.getDescription());
             tag.setColor(newTag.getColor());
             return tag;
     }
