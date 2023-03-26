@@ -220,9 +220,12 @@ public class MainCtrl {
         primaryStage.setScene(card);
         cardCtrl.cardID = cardID;
         cardCtrl.boardID = boardID;
+
         primaryStage.show();
+        cardCtrl.setInfo();
         cardCtrl.clearCard();
         cardCtrl.displayTasks();
+
     }
 
     /**

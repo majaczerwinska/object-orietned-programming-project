@@ -58,9 +58,13 @@ public class SubTaskComponent extends HBox {
      * updates a task
      */
     public void updateTask(){
-        self.setName(textField.getText());
-        self.setChecked(checkbox.isSelected());
-        server.editTask(taskId,self);
+        if(textField.getText().equals("")) return;
+            self.setName(textField.getText());
+            self.setChecked(checkbox.isSelected());
+            server.editTask(taskId,self);
+
+
+
     }
 
     /**

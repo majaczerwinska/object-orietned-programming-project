@@ -6,6 +6,7 @@ import client.components.SubTaskComponent;
 import client.utils.*;
 import com.google.inject.Inject;
 
+import commons.Card;
 import commons.Task;
 
 import javafx.fxml.FXML;
@@ -14,8 +15,8 @@ import javafx.scene.control.*;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 import javafx.scene.control.TextField;
@@ -33,7 +34,19 @@ public class CardCtrl {
     @FXML
     private Label label;
     @FXML
+    private Label warning;
+    @FXML
     private Button exit;
+    @FXML
+    private Label name;
+    @FXML
+    private Label description;
+    @FXML
+    private ColorPicker palette;
+    @FXML
+    private TextField text;
+    @FXML
+    private TextArea area;
     @FXML
     private VBox vbox;
 
@@ -53,6 +66,7 @@ public class CardCtrl {
     public CardCtrl(ServerUtils server, MainCtrl mainCtrl){
         this.mainCtrl = mainCtrl;
         this.server = server;
+
     }
 
     /**
@@ -100,6 +114,35 @@ public class CardCtrl {
         clearCard();
         displayTasks();
     }
+    public void setInfo(){
+
+        text.setText( server.getCard(cardID).getTitle());
+
+        area.setText(server.getCard(cardID).getDescription());
+
+    }
+
+    public void updateCard(){
+        if(!text.getText().equals("")){
+            Card card= new Card(text.getText());
+            card.setDescription(area.getText());
+            server.editCard(cardID,card);
+            warning.setText("");
+        }
+
+    }
+
+    public void checkforNullName(){
+        if(text.getText().equals("")){
+            warning.setText("Name required!");
+        }
+        else{
+            warning.setText("");
+        }
+    }
+
+
+
 
 
 
