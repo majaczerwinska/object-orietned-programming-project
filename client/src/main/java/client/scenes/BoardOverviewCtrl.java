@@ -4,12 +4,15 @@ import client.components.CardComponent;
 import client.components.CardListComponent;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Board;
 import commons.Card;
 import commons.CardList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 //import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -31,8 +34,13 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     private Button btnTagManager;
 
     @FXML
+    private ListView listViewTags;
+
+    @FXML
     private Button backbtn;
 
+    @FXML
+    private Label labelBoardTitle;
 
     /**
      *
@@ -65,11 +73,19 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 //    }
 
     /**
+     * Sets board name in the overview
+     */
+    public void setBoardName(){
+        Board board = server.getBoard(boardID);
+        labelBoardTitle.setText(board.getName());
+    }
+
+    /**
      * Shows the tag manager scene
      * @param actionEvent the event when clicking the "tag manager" button
      */
     public void showTagManager(ActionEvent actionEvent){
-        System.out.println("showTagManger!!!");
+        System.out.println("showTagManger with id #" + boardID);
         mainCtrl.showTagManager(boardID);
     }
 

@@ -177,6 +177,9 @@ public class MainCtrl {
         primaryStage.setTitle("Tag Manager :)");
         primaryStage.setScene(tagManager);
         tagManagerCtrl.boardId = boardID;
+        tagManagerCtrl.setLabelBoard();
+        tagManagerCtrl.clearTextFields();
+        tagManagerCtrl.refresh();
         primaryStage.show();
     }
 
@@ -208,6 +211,7 @@ public class MainCtrl {
         primaryStage.setScene(boardOverwiew);
         boardOverviewCtrl.boardID = boardID;
         primaryStage.show();
+        boardOverviewCtrl.setBoardName();
         boardOverviewCtrl.clearBoard();
         boardOverviewCtrl.displayLists();
     }

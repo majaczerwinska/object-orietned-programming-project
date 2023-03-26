@@ -2,6 +2,7 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Board;
 import commons.Tag;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,7 +21,7 @@ public class TagManagerCtrl implements Initializable {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
-    public int boardId = 0; //hardcoded for now
+    public int boardId = 0;
     @FXML
     private Label labelBoard;
     @FXML
@@ -61,7 +62,8 @@ public class TagManagerCtrl implements Initializable {
             System.out.println("No server to connect to, halting tag init function");
             return;
         }
-        labelBoard.setText("Tags for board: " + boardId);
+        System.out.println("Initialize called");
+        setLabelBoard();
         refresh();
     }
 
@@ -80,8 +82,7 @@ public class TagManagerCtrl implements Initializable {
      * Refreshes the list overview
      */
     public void refresh(){
-        tagListView.setItems(getTagList(boardId)); //hardcoded for now
-        labelBoard.setText("Tag Manager for board #"+boardId);
+        tagListView.setItems(getTagList(boardId));
         tagListView.setCellFactory(param -> new ListCell<Tag>() {
             @Override
             protected void updateItem(Tag tag, boolean empty) {
@@ -94,6 +95,15 @@ public class TagManagerCtrl implements Initializable {
                 }
             }
         });
+    }
+
+    /**
+     * Sets label to show the board you are currently viewing with tag manager
+     */
+    public void setLabelBoard(){
+        System.out.println("Setting board label in tag manager with board #" + boardId);
+        Board board = server.getBoard(boardId);
+        labelBoard.setText("Tags for " + board.getName());
     }
 
     /**
@@ -169,11 +179,20 @@ public class TagManagerCtrl implements Initializable {
     }
 
     /**
+     * Clears all text fields
+     */
+    public void clearTextFields(){
+        tfTitle.clear();
+        taDescription.clear();
+        tfColor.clear();
+    }
+
+    /**
      * Goes back to previous scene
      * @param actionEvent the event when clicking the back button
      */
     public void backButton(ActionEvent actionEvent){
-        System.out.println("going back");
+        System.out.println("going back to board with id #"+boardId);
         mainCtrl.showBoardOverview(boardId);
     }
 }
