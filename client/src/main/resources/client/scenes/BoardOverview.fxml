@@ -22,7 +22,7 @@
             <VBox alignment="TOP_CENTER" prefHeight="250.0" prefWidth="121.0" spacing="5.0" style="-fx-border-color: black;">
                <children>
                   <Label text="Tags" />
-                  <ListView prefHeight="190.0" prefWidth="125.0" />
+                  <ListView fx:id="list" prefHeight="190.0" prefWidth="125.0" />
                   <Button fx:id="btnTagManager" mnemonicParsing="false" onAction="#showTagManager" text="Tag manager" />
                </children>
                <padding>

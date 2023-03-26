@@ -7,11 +7,16 @@ import com.google.inject.Inject;
 import commons.Board;
 import commons.Card;
 import commons.CardList;
+import commons.Tag;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 //import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -31,6 +36,9 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     private VBox vboxList1;
 
     @FXML
+    private VBox vboxTags;
+
+    @FXML
     private HBox hboxCardLists;
     @FXML
     private Button btnTagManager;
@@ -42,6 +50,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     private Label boardName;
     @FXML
     private Label boardKey;
+    @FXML
+    private ListView<Tag> list;
 
 
     /**
@@ -137,6 +147,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         }
     }
 
+
     /**
      * Clears the board overview
      */
@@ -163,6 +174,19 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         boardName.setText(b.getName());
         boardKey.setText(b.getBoardkey());
         boardKey.setVisible(false);
+
+        list.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+//            try{
+//                items.clear();
+//                List<Board> boards = server.getBoards();
+//                for(int i = 0; i<boards.size(); i++){
+//                    items.add(boards.get(i));
+//                }
+//            }catch (Exception e){
+//                System.out.println(e.getMessage());
+//            }
+        ObservableList<Tag> tagList = FXCollections.observableList(server.getTagsFromBoard(boardID));
+        list.setItems(tagList);
     }
 
     /**
