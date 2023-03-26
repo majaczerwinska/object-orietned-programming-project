@@ -12,7 +12,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 //import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-
+import javafx.scene.control.ScrollPane;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -28,6 +30,10 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     @FXML
     private VBox vboxList1;
 
+
+    @FXML
+    private ScrollPane scrollPaneOverview;
+
     @FXML
     private HBox hboxCardLists;
     @FXML
@@ -35,6 +41,14 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
     @FXML
     private Button backbtn;
+
+    @FXML
+    private Button addListButton;
+
+    @FXML
+    private Button refreshButton;
+
+    @FXML Button editBoardButton;
 
 
     /**
@@ -103,8 +117,9 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
         for (Card card : cards) {
             CardComponent cardComponent = new CardComponent(mainCtrl);
-            cardComponent.setData(card);
+
             cardComponent.boardID = boardID;
+            cardComponent.setData(card, listId);
             vbox.getChildren().add(cardComponent);
         }
     }
@@ -116,9 +131,11 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         List<CardList> cardLists = server.getCardListsFromBoard(boardID);
 
         for (CardList cardList : cardLists) {
-            CardListComponent cardListComponent = new CardListComponent();
+            CardListComponent cardListComponent = new CardListComponent(mainCtrl);
             cardListComponent.setTitle(cardList.getName());
+            cardListComponent.setOnMouseEntered(event -> addEnterKeyListener(cardList.getId()));
             hboxCardLists.getChildren().add(cardListComponent);
+            cardListComponent.setData(cardList);
             displayCards(cardListComponent.getVboxCards(), cardList.getId());
         }
     }
@@ -130,5 +147,45 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      */
     public void clearBoard(){
         hboxCardLists.getChildren().clear();
+    }
+
+
+    /**
+     * Refresh scene from database
+     */
+    public void refresh() {
+        System.out.println("Refreshing board overview");
+        clearBoard();
+        displayLists();
+    }
+
+    public void createTestCard() {
+        Card c = new Card("test card ..");
+        System.out.println("creating test card "+c);
+        server.addCard(c, 0);
+        refresh();
+        mainCtrl.timeoutBoardRefresh();
+    }
+
+    public void createCard(int listID) {
+        Card c = new Card("title..");
+        System.out.println("creating new card "+c+" in list id="+listID);
+        server.addCard(c, listID);
+        refresh();
+        mainCtrl.timeoutBoardRefresh();
+    }
+
+    @FXML
+    public void onEnterKeyPressed(KeyEvent event, int listID) {
+        System.out.println("On enter key pressed called in boardoverviewcontroller with event "+event);
+        if (event.getCode() == KeyCode.ENTER) {
+            // when the user presses the enter button
+            createCard(listID);
+        }
+    }
+
+    public void addEnterKeyListener(int listID) {
+        System.out.println("add enter key listener called in Board Overview Controller");
+        scrollPaneOverview.setOnKeyPressed(event -> onEnterKeyPressed(event, listID));
     }
 }

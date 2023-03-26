@@ -82,6 +82,7 @@ public class CardCtrl {
     public void exit(){
         mainCtrl.showBoardOverview(boardID);
 
+
     }
 
 

@@ -1,19 +1,15 @@
 package client.components;
 
+
 import client.scenes.MainCtrl;
 import client.utils.ServerUtils;
-import commons.Board;
 import commons.Card;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
-import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
@@ -24,8 +20,13 @@ public class CardComponent extends HBox{
     private ServerUtils serverUtils;
     private MainCtrl mainCtrl;
 
+
+
+
     private int cardID;
     public int boardID;
+
+    private int cardListID;
 
     private Card self;
 
@@ -48,10 +49,15 @@ public class CardComponent extends HBox{
     private HBox cardFrame;
 
 
+    /**
+     * The constructor for the component
+     * @param mainCtrl the main controller instance
+     */
     public CardComponent(MainCtrl mainCtrl) {
         super();
         serverUtils = new ServerUtils();
         this.mainCtrl = mainCtrl;
+
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/components/CardComponent.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(CardComponent.this);
@@ -63,6 +69,10 @@ public class CardComponent extends HBox{
         }
 
 //        setOnKeyPressed(event -> updateCard());
+
+        TextField titleTextField = (TextField) lookup("#tfTitle");
+        titleTextField.requestFocus();
+
         tfTitle.setOnKeyTyped(event -> updateCard());
         tfDescription.setOnKeyTyped(event -> updateCard());
         setOnMouseEntered(event ->
@@ -104,16 +114,29 @@ public class CardComponent extends HBox{
 
     /**
      * updates card
-     * @param card new card data
+     *
+     * @param card   new card data
+     * @param listId the cards parent list
      */
-    public void setData(Card card){
+    public void setData(Card card, int listId){
         tfTitle.setText(card.getTitle());
         cardID = card.getId();
         self = card;
+        cardListID = listId;
         if(card.hasDescription()){
             tfDescription.setText("Has description");
         } else{
             tfDescription.setText("No description");
         }
     }
+
+    public void deleteCard() {
+        System.out.println("deleting card (CardComponent.deleteCard(self)) " + self);
+        serverUtils.deleteCard(self, cardListID);
+        mainCtrl.refreshBoardOverview();
+        mainCtrl.timeoutBoardRefresh(400);
+        mainCtrl.timeoutBoardRefresh(700);
+    }
+
+
 }

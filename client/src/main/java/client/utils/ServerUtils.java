@@ -91,11 +91,12 @@ public class ServerUtils {
 
     /**
      * @param card -
+     * @param listID the list id
      * @return -
      */
-    public Card addCard(Card card) {
+    public Card addCard(Card card, int listID) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/cards") //
+                .target(SERVER).path("api/cards/" + listID) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(card, APPLICATION_JSON), Card.class);
@@ -400,5 +401,14 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(board, APPLICATION_JSON), Board.class);
+    }
+
+    public Card deleteCard(Card c, int listID) {
+        System.out.println("Sending DELETE request to api/cards/"+listID+"/"+c.getId()+"\nCard for card element "+c);
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/cards/" + listID + "/" + c.getId()) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .delete(Card.class);
     }
 }

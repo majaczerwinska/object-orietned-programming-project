@@ -17,3 +17,7 @@ INSERT INTO BOARDS (id, name, boardkey, color, password) VALUES
 DELETE FROM LISTS WHERE list_id = 0;
 INSERT INTO LISTS (list_id,  list_name, list_color, board_id) VALUES
     (0,'list1', 1, 0);
+
+DELETE FROM LISTS WHERE list_id = 1;
+INSERT INTO LISTS (list_id,  list_name, list_color, board_id) VALUES
+    (1,'list2', 1, 0);
