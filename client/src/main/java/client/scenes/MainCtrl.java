@@ -247,6 +247,11 @@ public class MainCtrl {
     }
 
 
+    /**
+     * show card overview
+     * @param cardID card id
+     * @param boardID board id
+     */
     public  void showCard(int cardID, int boardID){
         primaryStage.setTitle("Card overview :)");
         primaryStage.setScene(card);
@@ -278,14 +283,25 @@ public class MainCtrl {
         boardSelectCtrl.refresh();
     }
 
+    /**
+     * refresh board overview scene with newly polled data from the database
+     */
     public void refreshBoardOverview()  {
         boardOverviewCtrl.refresh();
     }
 
+    /**
+     * add event listener for the enter key, intermediate function
+     * @param listID the list mouse is currently in
+     */
     public void addEnterKeyListener(int listID) {
         boardOverviewCtrl.addEnterKeyListener(listID);
     }
 
+    /**
+     * refresh board after 200 milliseconds
+     * waits for database to update before pulling data again and showing in client
+     */
     public void timeoutBoardRefresh() {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Future<?> future = executor.submit(() -> {
@@ -303,8 +319,10 @@ public class MainCtrl {
     }
 
 
-
-
+    /**
+     * refresh board overview after custom timeout
+     * @param mil the timeout in milliseconds
+     */
     public void timeoutBoardRefresh(int mil) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Future<?> future = executor.submit(() -> {

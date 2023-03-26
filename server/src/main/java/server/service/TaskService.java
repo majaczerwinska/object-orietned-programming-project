@@ -82,6 +82,12 @@ public final class TaskService {
     }
 
 
+    /**
+     * update task util
+     * @param task the task instance
+     * @param newTask the updated task element, attributes will be pulled from this
+     * @return the updated task element, same instance as the original with new values
+     */
     public Task updateTask(Task task, Task newTask) {
         task.setName(newTask.getName());
         task.setChecked(newTask.isChecked());

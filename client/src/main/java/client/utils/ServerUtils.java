@@ -429,6 +429,12 @@ public class ServerUtils {
                 .post(Entity.entity(board, APPLICATION_JSON), Board.class);
     }
 
+    /**
+     * send a delete request for a card
+     * @param c the card instance
+     * @param listID the list the card is in
+     * @return the deleted card response
+     */
     public Card deleteCard(Card c, int listID) {
         System.out.println("Sending DELETE request to api/cards/"+listID+"/"+c.getId()+"\nCard for card element "+c);
         return ClientBuilder.newClient(new ClientConfig()) //

@@ -260,6 +260,10 @@ public class ServerSelectCtrl {
         mainCtrl.showSelect();
     }
 
+    /**
+     * general event listener, calls subsequent action functions
+     * @param event mouse event
+     */
     @FXML
     public void handleListClick(MouseEvent event) {
         changeSelectedServer();

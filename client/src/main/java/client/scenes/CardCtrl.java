@@ -16,7 +16,6 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 import javafx.scene.control.TextField;
@@ -89,11 +88,18 @@ public class CardCtrl {
     public void clearCard(){
         vbox.getChildren().clear();
     }
-    
+
+    /**
+     * exit card overview back to board overview
+     */
     public void exit(){
         mainCtrl.showBoardOverview(boardID);
     }
 
+    /**
+     * create a new task in the cardoverview
+     * @param event the keyboard event for [enter] key, tasks are added by pressing enter
+     */
     public void createTask(KeyEvent event){
         if (event.getCode() == KeyCode.ENTER) {
             if(newTask.getText().equals("")){
@@ -110,10 +116,17 @@ public class CardCtrl {
         }
     }
 
+    /**
+     * refresh task list
+     */
     public void refresh(){
         clearCard();
         displayTasks();
     }
+
+    /**
+     * launch card overview scene util
+     */
     public void setInfo(){
 
         text.setText( server.getCard(cardID).getTitle());
@@ -122,6 +135,9 @@ public class CardCtrl {
 
     }
 
+    /**
+     * update method for when card info is changed
+     */
     public void updateCard(){
         if(!text.getText().equals("")){
             Card card= new Card(text.getText());
@@ -133,6 +149,9 @@ public class CardCtrl {
 
     }
 
+    /**
+     * make sure name field is not null before saving
+     */
     public void checkforNullName(){
         if(text.getText().equals("")){
             warning.setText("Name required!");

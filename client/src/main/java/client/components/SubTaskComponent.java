@@ -29,6 +29,11 @@ public class SubTaskComponent extends HBox {
     private ServerUtils server;
     private MainCtrl mainCtrl;
 
+    /**
+     * constructor for a subtask component
+     * @param cardId the card id the tasks are for
+     * @param cardCtrl the controller instance
+     */
     public SubTaskComponent(int cardId, CardCtrl cardCtrl) {
         super();
         this.cardCtrl = cardCtrl;
@@ -78,6 +83,9 @@ public class SubTaskComponent extends HBox {
         checkbox.setSelected(task.isChecked());
     }
 
+    /**
+     * delete a subtask
+     */
     public void delete(){
         System.out.println(taskId);
         System.out.println(cardId);

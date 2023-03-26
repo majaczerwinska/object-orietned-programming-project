@@ -180,6 +180,10 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 //        }
 //    }
 
+    /**
+     * gets the list of cardlists with serverutils
+     * @return list of cardlists for a specific board
+     */
     public List<CardList> getCardListsFromServer() {
         return server.getCardListsFromBoard(boardID);
     }
@@ -279,6 +283,9 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 //        displayListsWithFocus(getCardListsFromServer(), focusCard);
 //    }
 
+    /**
+     * test method
+     */
     public void createTestCard() {
         Card c = new Card("test card ..");
         System.out.println("creating test card "+c);
@@ -287,6 +294,11 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         mainCtrl.timeoutBoardRefresh();
     }
 
+    /**
+     * create a new card in a list
+     * @param listID the id of the list to create the card in
+     * @return the card element
+     */
     public Card createCard(int listID) {
         Card c = new Card("title..");
         System.out.println("creating new card "+c+" in list id="+listID);
@@ -296,6 +308,12 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 //        mainCtrl.timeoutBoardRefresh();
     }
 
+    /**
+     * event listener of the scrollpane in boardoverview for any key presses
+     * checks if the key is the enter key and if it is it adds a card
+     * @param event keyboard event
+     * @param listID the list currently in
+     */
     @FXML
     public void onEnterKeyPressed(KeyEvent event, int listID) {
         System.out.println("On enter key pressed called in boardoverviewcontroller with event "+event);
@@ -306,6 +324,12 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         }
     }
 
+    /**
+     * event listener for enter key up,
+     * allows for cards to be created once more.
+     * used to prevent spamming cards
+     * @param event keyboard event
+     */
     @FXML
     public void onEnterKeyReleased(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER && isCreatingCard) {
@@ -313,6 +337,10 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         }
     }
 
+    /**
+     * add the event listener to the scroll pane, specifying which list was last hovered over
+     * @param listID the lists id
+     */
     public void addEnterKeyListener(int listID) {
         System.out.println("add enter key listener called in Board Overview Controller");
         scrollPaneOverview.setOnKeyPressed(event -> onEnterKeyPressed(event, listID));

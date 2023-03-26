@@ -9,7 +9,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -17,7 +16,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URL;
@@ -99,6 +97,16 @@ public class CardComponent extends HBox implements Initializable {
         });
     }
 
+    /**
+     *
+     * @param url
+     * The location used to resolve relative paths for the root object, or
+     * {@code null} if the location is not known.
+     *
+     * @param rb
+     * The resources used to localize the root object, or {@code null} if
+     * the root object was not localized.
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         tfTitle.requestFocus();
@@ -144,16 +152,28 @@ public class CardComponent extends HBox implements Initializable {
     }
 
 
-
+    /**
+     * test method
+     */
     public void addtesttagtocard() {
         serverUtils.addTagToCard(boardID,0,cardID);
     }
 
 
+    /**
+     * get list of colors for a specific tag
+     * //todo here
+     */
     public void getTagColors() {
         List<Tag> tags = serverUtils.getTagsForCard(cardID);
         System.out.println(tags);
     }
+
+    /**
+     * //todo make this set the border to every color of the tags in this card
+     * @param pane the cards hbox
+     * @param colors the list of javafx color elements
+     */
     public void setMulticolouredBorder(Pane pane, List<Color> colors) {
         BorderStrokeStyle style = BorderStrokeStyle.SOLID;
         double borderWidth = 3;
@@ -173,6 +193,11 @@ public class CardComponent extends HBox implements Initializable {
     public TextField getTfTitle() {
         return this.tfTitle;
     }
+
+    /**
+     * double clicking a card sends to cardoverview
+     * @param event mouse event
+     */
     @FXML
     public void onElementClick(MouseEvent event) {
         if (event.getClickCount() == 2) {
@@ -181,6 +206,9 @@ public class CardComponent extends HBox implements Initializable {
     }
 
 
+    /**
+     * open card overview
+     */
     public void joinCard() {
         if (self==null) {
             System.out.println("selected card appears to be null, in joiCoard() of CardComponentCtrl");
@@ -220,6 +248,10 @@ public class CardComponent extends HBox implements Initializable {
         }
     }
 
+    /**
+     * delete a card from a list
+     * listener for the [x] button in each card in board overview
+     */
     public void deleteCard() {
         Platform.runLater(() -> {
             // UI update code here
@@ -244,7 +276,8 @@ public class CardComponent extends HBox implements Initializable {
 //            text.setStyle(textField.getStyle());
 //            text.setLayoutX(textField.getLayoutX());
 //            text.setLayoutY(textField.getLayoutY());
-//            textField.getParent().getChildrenUnmodifiable().set(textField.getParent().getChildrenUnmodifiable().indexOf(textField), text);
+//            textField.getParent().getChildrenUnmodifiable().set(textField.getParent()
+//            .getChildrenUnmodifiable().indexOf(textField), text);
 //        } else if (node instanceof Text) {
 //            System.out.println("toggling from text to textfield");
 //            Text text = (Text) node;
@@ -253,23 +286,38 @@ public class CardComponent extends HBox implements Initializable {
 //            textField.setStyle(text.getStyle());
 //            textField.setLayoutX(text.getLayoutX());
 //            textField.setLayoutY(text.getLayoutY());
-//            text.getParent().getChildrenUnmodifiable().set(text.getParent().getChildrenUnmodifiable().indexOf(text), textField);
+//            text.getParent().getChildrenUnmodifiable().set(text.getParent()
+//            .getChildrenUnmodifiable().indexOf(text), textField);
 //            textField.requestFocus();
 //        }
 //    }
 
 
+    /**
+     * mark a card as completed
+     * listener for the checkbox
+     * //todo make it work
+     */
     public void markAsCompleted() {
         //tfTitle.setStyle("-fx-strikethrough: true");
 
         descriptionLabel.setStyle("-fx-strikethrough: true");
     }
 
+    /**
+     * unmark a card as completed
+     * listener for the checkbox
+     * //todo make it work
+     */
     public void unMarkCompleted() {
         //tfTitle.setStyle("-fx-strikethrough: false");
         descriptionLabel.setStyle("-fx-strikethrough: false");
     }
 
+    /**
+     * set caret to title field of card
+     * todo make it work
+     */
     public void setFocusToTitleField() {
         tfTitle.requestFocus();
     }
