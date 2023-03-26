@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<fx:root fx:id="cardFrame" alignment="CENTER" prefHeight="100.0" prefWidth="223.0" style="-fx-border-width: 1; -fx-border-color: black;" type="HBox" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="cardFrame" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="58.0" prefWidth="210.0" style="-fx-border-width: 1; -fx-border-color: black;" type="HBox" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
     <children>
       <CheckBox fx:id="checkMark" mnemonicParsing="false" prefHeight="18.0" prefWidth="27.0">
          <HBox.margin>
@@ -22,10 +22,13 @@
                <padding>
                   <Insets bottom="1.0" />
                </padding>
+               <font>
+                  <Font size="12.0" />
+               </font>
             </TextField>
             <Label fx:id="descriptionLabel" text="View Description...">
                <VBox.margin>
-                  <Insets top="17.0" />
+                  <Insets top="6.0" />
                </VBox.margin>
                <font>
                   <Font size="8.0" />
