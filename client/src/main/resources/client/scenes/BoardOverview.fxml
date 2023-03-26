@@ -34,7 +34,7 @@
                <children>
                   <Button fx:id="backbtn" mnemonicParsing="false" onAction="#back" text="Back" />
                   <Button mnemonicParsing="false" text="Edit board" />
-                  <Button alignment="CENTER" mnemonicParsing="false" text="Add list" />
+                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#addList" text="Add list" />
                </children>
             </HBox>
          </children>

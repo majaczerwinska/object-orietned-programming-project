@@ -353,4 +353,18 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(board, APPLICATION_JSON), Board.class);
     }
+
+    /**
+     * renames your list
+     * @param listId - id of the list to be renamed
+     * @param newName - new name
+     * @return - edited list
+     */
+    public CardList editList(int listId, String newName){
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/lists/"+listId)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .put(Entity.entity(newName, APPLICATION_JSON), CardList.class);
+    }
 }

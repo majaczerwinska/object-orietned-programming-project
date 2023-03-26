@@ -112,7 +112,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         List<CardList> cardLists = server.getCardListsFromBoard(boardID);
 
         for (CardList cardList : cardLists) {
-            CardListComponent cardListComponent = new CardListComponent();
+            CardListComponent cardListComponent = new CardListComponent(cardList.getId(),boardID,server,mainCtrl);
             cardListComponent.setTitle(cardList.getName());
             hboxCardLists.getChildren().add(cardListComponent);
             displayCards(cardListComponent.getVboxCards(), cardList.getId());
@@ -124,5 +124,14 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      */
     public void clearBoard(){
         hboxCardLists.getChildren().clear();
+    }
+
+    /**
+     * takes you to a scene to create a new list for the board
+     * @param actionEvent - click
+     */
+    public void addList(ActionEvent actionEvent){
+        System.out.println("going to list creation for board "+boardID);
+        mainCtrl.showListCreate(boardID);
     }
 }
