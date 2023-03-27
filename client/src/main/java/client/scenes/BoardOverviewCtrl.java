@@ -35,7 +35,6 @@ import javafx.scene.layout.VBox;
 
 //import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 //import java.util.ResourceBundle;
@@ -147,6 +146,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * displays cards in vboxes
      * @param vbox the vbox in the list where the cards need to be showed
      * @param listId the list we need to populate with cards
+     * @param cards the list of cards
      */
     public void displayCards(VBox vbox, int listId, List<Card> cards){
         //List<Card> cards = server.getCardsFromList(listId);
@@ -275,6 +275,11 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         displayLists(cardLists, allCards);
     }
 
+    /**
+     * refresh a specific list
+     * @param listID the list id
+     * @param listComponent the frontend component
+     */
     public void refreshList(int listID, CardListComponent listComponent) {
         System.out.println("Refreshing list #"+listID);
         listComponent.getVboxCards().getChildren().clear();

@@ -254,6 +254,8 @@ public class ServerUtils {
      * @param boardid board's id
      * @param tagid tag's id
      * @param cardid card's id
+     * @param tag the tag to add
+     * @return the tag element
      */
     public Tag addTagToCard(int boardid, int tagid, int cardid, Tag tag) {
         return ClientBuilder.newClient(new ClientConfig()) // /{boardId}/{cardId}/{tagId}

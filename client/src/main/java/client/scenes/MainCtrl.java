@@ -340,6 +340,11 @@ public class MainCtrl {
     }
 
 
+    /**
+     * refresh a specific list
+     * @param listID the lists id
+     * @param component the cardlist component
+     */
     public void refreshListView(int listID, CardListComponent component) {
         boardOverviewCtrl.refreshList(listID, component);
     }
