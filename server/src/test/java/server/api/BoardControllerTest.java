@@ -65,4 +65,13 @@ public class BoardControllerTest {
         assertEquals(con.getCardListsFromBoard(board.getId()), ResponseEntity.badRequest().build());
     }
 
+    @Test
+    public void editBoardTest(){
+        Board b = new Board("title");
+        Board b2 = new Board("title2");
+        con.addBoard(b);
+        con.editBoard(b2.getId(), b2);
+        assertEquals(b, b2);
+
+    }
 }

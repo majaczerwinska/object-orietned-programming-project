@@ -273,12 +273,15 @@ public class ServerUtils {
      * @param boardid board's id
      * @param tagid tag's id
      * @param cardid card's id
+     * @param tag the tag to add
+     * @return the tag element
      */
-    public void addTagToCard(int boardid, int tagid, int cardid) {
-        ClientBuilder.newClient(new ClientConfig()) // /{boardId}/{cardId}/{tagId}
+    public Tag addTagToCard(int boardid, int tagid, int cardid, Tag tag) {
+        return ClientBuilder.newClient(new ClientConfig()) // /{boardId}/{cardId}/{tagId}
                 .target(SERVER).path("api/tags/" + boardid + "/" + cardid + "/"+tagid) //
-                .request() //
-                .put(Entity.text(""));
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .put(Entity.entity(tag, APPLICATION_JSON), Tag.class);
     }
 
     /**
@@ -366,6 +369,20 @@ public class ServerUtils {
     }
 
     /**
+     * set a lists size
+     * @param listId the list id
+     * @param newSize the new size
+     * @return int size
+     */
+    public Integer setListSize(int listId, int newSize) {
+        // /{listId}/size/{size}
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/lists/" + listId + "/size/"+ newSize) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .put(Entity.entity(newSize, APPLICATION_JSON), Integer.class);
+    }
+    /**
      * creates new list and assigns it to a board
      * @param boardId - board to add the list to
      * @param list - a new list
@@ -390,6 +407,19 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<List<Card>>() {});
+    }
+
+    /**
+     * get the size of a list
+     * @param listID the lists id
+     * @return int size
+     */
+    public Integer getListSize(int listID) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/lists/"+listID+"/size")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(new GenericType<Integer>() {});
     }
 
     /**
@@ -461,5 +491,43 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .delete(Card.class);
+    }
+
+    /**
+     * Edit board with id to the new board
+     * @param id the id of the board to edit
+     * @param board the new board the old card is replaced by
+     * @return return the board edited
+     */
+    public Board editBoard(int id, Board board) {
+        try {
+            return ClientBuilder.newClient(new ClientConfig())
+                    .target(SERVER).path("api/boards/" + id)
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .put(Entity.entity(board, APPLICATION_JSON), Board.class);
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    /**
+    * get a tag by its id
+     * @param tagID its id
+     * @return the tag element
+     */
+    public Tag getTag(int tagID){
+        try {
+            return ClientBuilder.newClient(new ClientConfig())
+                    .target(SERVER).path("api/tags/" + tagID)
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .get(new GenericType<Tag>() {
+                    });
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 }

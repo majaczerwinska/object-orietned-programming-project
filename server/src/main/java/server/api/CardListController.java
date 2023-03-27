@@ -81,4 +81,30 @@ public class CardListController {
         return ResponseEntity.ok(als.getCardsFromList(listId));
     }
 
+    /**
+     * get a lists size
+     * @param listId the list id
+     * @return int size
+     */
+    @GetMapping("/{listId}/size")
+    public ResponseEntity<Integer> getListSize(@PathVariable("listId") int listId) {
+        if (listId < 0 || !als.existsById(listId)) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(als.getListSize(listId));
+    }
+
+    /**
+     * set a lists lastposition index
+     * @param listId list id
+     * @param size new index
+     * @return new size
+     */
+    @PutMapping("/{listId}/size/{size}")
+    public ResponseEntity<Integer> setListSize(@PathVariable("listId") int listId, @PathVariable("size") int size) {
+        if (listId < 0 || !als.existsById(listId)) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(als.setListSize(listId, size));
+    }
 }
