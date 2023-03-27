@@ -34,7 +34,7 @@
                <children>
                   <Button fx:id="backbtn" mnemonicParsing="false" onAction="#back" text="Back" />
                   <Button fx:id="editBoardButton" mnemonicParsing="false" text="Edit board" />
-                  <Button fx:id="addListButton" alignment="CENTER" mnemonicParsing="false" onAction="#createTestCard" text="Add list" />
+                  <Button fx:id="addListButton" alignment="CENTER" mnemonicParsing="false" onAction="#addListScene" text="Add list" />
                </children>
             </HBox>
             <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#refresh" text="refresh">

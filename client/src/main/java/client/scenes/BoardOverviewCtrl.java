@@ -17,6 +17,7 @@ import commons.Tag;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import javafx.css.converter.ColorConverter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 //import javafx.fxml.Initializable;
@@ -32,8 +33,10 @@ import javafx.scene.control.ListView;
 
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 //import java.net.URL;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -156,9 +159,17 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
             cardComponent.boardID = boardID;
             cardComponent.setData(card, listId);
+
+            cardComponent.setStyle("-fx-background-color: " + String.format("rgb(%d, %d, %d)", (card.getColor() >> 16) & 0xFF,
+                    (card.getColor() >> 8) & 0xFF, card.getColor()& 0xFF)+";" );
+
             vbox.getChildren().add(cardComponent);
         }
     }
+
+
+
+
 
 //    /**
 //     * displays cards in vboxes
@@ -209,8 +220,11 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public void displayLists(List<CardList> cardLists, List<List<Card>> allCards){
         int i = 0;
         for (CardList cardList : cardLists) {
-            CardListComponent cardListComponent = new CardListComponent(mainCtrl);
+            CardListComponent cardListComponent = new CardListComponent(mainCtrl, boardID);
             cardListComponent.setTitle(cardList.getName());
+            cardListComponent.setStyle("-fx-background-color: " + String.format("rgb(%d, %d, %d)",
+                    (cardList.getColor() >> 16) & 0xFF,
+                    (cardList.getColor() >> 8) & 0xFF, cardList.getColor()& 0xFF)+";" );
             cardListComponent.setOnMouseEntered(event -> addEnterKeyListener(cardList.getId()));
             hboxCardLists.getChildren().add(cardListComponent);
             cardListComponent.setData(cardList);
@@ -315,7 +329,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         Card c = new Card("title..");
         System.out.println("creating new card "+c+" in list id="+listID);
         c.setPosition(server.getListSize(listID) + 1);
-        server.addCard(c, listID);
+        c = server.addCard(c, listID);
         refresh();
         return c;
 //        mainCtrl.timeoutBoardRefresh();
@@ -358,6 +372,11 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         System.out.println("add enter key listener called in Board Overview Controller");
         scrollPaneOverview.setOnKeyPressed(event -> onEnterKeyPressed(event, listID));
     }
+
+    public void addListScene(ActionEvent event){
+        mainCtrl.showListCreate(boardID);
+    }
+
 
 
 }

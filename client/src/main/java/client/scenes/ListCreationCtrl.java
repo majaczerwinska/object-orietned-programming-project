@@ -3,22 +3,35 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.CardList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
+
 
 public class ListCreationCtrl {
 
     @FXML
     private TextField name;
+    @FXML
+    private Label warning;
+    @FXML
+    private Button createbutton;
+    @FXML
+    private Button backbutton;
+    @FXML
+    private ColorPicker palette;
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    public int boardID;
 
     /**
-     *
-     * @param server
-     * @param mainCtrl
+     *Creates a list
+     * @param server the server
+     * @param mainCtrl the controller
      */
     @Inject
     public ListCreationCtrl(ServerUtils server, MainCtrl mainCtrl){
@@ -26,20 +39,24 @@ public class ListCreationCtrl {
         this.server = server;
     }
 
-    /**
-     * Creates a new cardList with a given title and adds it to the public board
-     * @param mouseEvent - click
-     */
-    public void create(MouseEvent mouseEvent){
-        CardList list = new CardList(name.getText());
-        server.createList(0, list);
+
+    public void create(ActionEvent event){
+        if(name.getText().equals("")) {
+            warning.setText("Required field!");
+        }
+        else{
+            CardList list = new CardList(name.getText());
+            list.setColor(MainCtrl.colorParseToInt(palette.getValue()));
+            server.createList(boardID, list);
+            mainCtrl.showBoardOverview(boardID);
+        }
+
     }
 
-    /**
-     * takes you back to the overview
-     * @param mouseEvent - click
-     */
-    public void cancel(MouseEvent mouseEvent){
-        mainCtrl.showPublicBoard();
+
+    public void cancel(ActionEvent event){
+        mainCtrl.showBoardOverview(boardID);
     }
+
+
 }

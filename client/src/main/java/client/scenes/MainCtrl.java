@@ -16,6 +16,7 @@
 package client.scenes;
 
 import client.components.CardListComponent;
+import commons.Card;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
@@ -215,9 +216,10 @@ public class MainCtrl {
     /**
      * shows a scene where you can create a new list and add it to the public board
      */
-    public void showListCreate(){
+    public void showListCreate(int boardID){
         primaryStage.setTitle("List creation");
         primaryStage.setScene(listCreate);
+        listCreationCtrl.boardID = boardID;
         primaryStage.show();
     }
 
@@ -339,12 +341,9 @@ public class MainCtrl {
         executor.shutdown();
     }
 
-    /**
-     * Creates a card
-     * @param listID the id of the list
-     */
-    public void createCard(int listID) {
-        boardOverviewCtrl.createCard(listID);
+
+    public Card createCard(int listID) {
+        return boardOverviewCtrl.createCard(listID);
     }
     /**
      * refresh a specific list

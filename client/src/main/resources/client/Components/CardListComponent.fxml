@@ -19,7 +19,7 @@
                   <Insets right="-23.0" />
                </padding>
                     </Label>
-                    <Button mnemonicParsing="false" prefHeight="18.0" prefWidth="12.0" text="X" />
+                    <Button fx:id="deletebutton" mnemonicParsing="false" onAction="#delete" prefHeight="18.0" prefWidth="12.0" text="X" />
                 </children>
             </HBox>
       <VBox fx:id="vboxCards" maxWidth="-Infinity" spacing="10.0" />

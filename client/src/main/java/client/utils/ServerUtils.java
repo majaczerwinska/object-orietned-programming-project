@@ -273,15 +273,14 @@ public class ServerUtils {
      * @param boardid board's id
      * @param tagid tag's id
      * @param cardid card's id
-     * @param tag the tag to add
      * @return the tag element
      */
-    public Tag addTagToCard(int boardid, int tagid, int cardid, Tag tag) {
+    public Tag addTagToCard(int boardid, int tagid, int cardid) {
         return ClientBuilder.newClient(new ClientConfig()) // /{boardId}/{cardId}/{tagId}
                 .target(SERVER).path("api/tags/" + boardid + "/" + cardid + "/"+tagid) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .put(Entity.entity(tag, APPLICATION_JSON), Tag.class);
+                .put(Entity.entity("", APPLICATION_JSON), Tag.class);
     }
 
     /**
@@ -492,6 +491,20 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .delete(Card.class);
     }
+    /**
+     * send a delete request for a cardlist
+     * @param c the cardlist instance
+     * @param boardID the board the cardlist is in
+     * @return the deleted cardlist response
+     */
+    public CardList deleteCardList(CardList c, int boardID) {
+        System.out.println("Sending DELETE request to api/lists/"+boardID+"/"+c.getId()+"\nCardlist for cardlist element "+c);
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/lists/" + boardID + "/" + c.getId()) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .delete(CardList.class);
+    }
 
     /**
      * Edit board with id to the new board
@@ -524,6 +537,25 @@ public class ServerUtils {
                     .request(APPLICATION_JSON)
                     .accept(APPLICATION_JSON)
                     .get(new GenericType<Tag>() {
+                    });
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    /**
+     * get a cardlist by its id
+     * @param listID its id
+     * @return the cardlist element
+     */
+    public CardList getCardList(int listID){
+        try {
+            return ClientBuilder.newClient(new ClientConfig())
+                    .target(SERVER).path("api/lists/" + listID)
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .get(new GenericType<CardList>() {
                     });
         } catch (Exception e) {
             System.out.println(e.getMessage());
