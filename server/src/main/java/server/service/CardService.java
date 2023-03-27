@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import server.database.CardListRepository;
 import server.database.CardRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -102,6 +103,31 @@ public final class CardService {
         c.setColor(card.getColor());
         repo.save(c);
     }
+
+    public CardList getListForCard(Card card){
+        if(card==null) return null;
+
+        for(CardList list: cl.findAll()){
+            if(list.getCards().contains(card)) return list;
+        }
+        return null;
+    }
+
+    public Card changeListOfCard(Card card, int listID){
+        CardList oldlist = getListForCard(card);
+
+        oldlist.getCards().remove(card);
+        cl.save(oldlist);
+        cl.getById(listID).getCards().add(card);
+        cl.save(cl.getById(listID));
+
+
+        System.out.println(cl.getById(listID));
+        System.out.println(oldlist);
+        return card;
+    }
+
+
 
 
 

@@ -78,6 +78,20 @@ public class CardController {
         acs.setCardInfo(card);
         return ResponseEntity.ok().build();
     }
+    @PutMapping("/{id}/{listid}")
+    public ResponseEntity<Card> changeListforCard(@PathVariable("id") int id, @PathVariable("listid") int listid, @RequestBody Card card) {
+        card.setId(id);
+        System.out.println(card);
+        System.out.println(acs.getListForCard(card));
+
+        if(!acs.existsById(id) || card.getTitle() == null || acs.getListForCard(card)==null){
+            return ResponseEntity.badRequest().build();
+        }
+
+        Card newcard = acs.changeListOfCard(card, listid);
+
+        return ResponseEntity.ok().build();
+    }
 
     /**
      * Gets the card from its id

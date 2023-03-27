@@ -13,7 +13,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
@@ -149,6 +152,24 @@ public class CardComponent extends HBox implements Initializable {
             {tfTitle.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; " +
                     "-fx-alignment: center");});
         setOnMouseClicked(this::onElementClick);
+        setOnDragDetected(event-> {
+                Dragboard db = this.startDragAndDrop(TransferMode.ANY);
+                ClipboardContent content = new ClipboardContent();
+                content.putString(String.valueOf(cardID));
+                db.setContent(content);
+                event.consume();
+
+        });
+        setOnDragDone(event ->  {
+
+                if (event.getTransferMode() == TransferMode.MOVE) {
+
+
+                    System.out.println("successfull dropping said by cardcomponent");;
+                }
+                event.consume();
+
+        });
     }
 
 
