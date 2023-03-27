@@ -21,4 +21,10 @@ public class HelpCtrl {
     public void goBackButtonHandler() {
         mainCtrl.showLanding();
     }
+
+    /**
+     * refresh method
+     */
+    public void refresh() {
+    }
 }
