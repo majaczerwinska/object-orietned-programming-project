@@ -30,7 +30,7 @@ import java.util.ResourceBundle;
 public class CardComponent extends HBox implements Initializable {
 
 
-    private ServerUtils serverUtils;
+    private ServerUtils server;
     private MainCtrl mainCtrl;
 
 
@@ -71,7 +71,7 @@ public class CardComponent extends HBox implements Initializable {
      */
     public CardComponent(MainCtrl mainCtrl) {
         super();
-        serverUtils = new ServerUtils();
+        server = new ServerUtils();
         this.mainCtrl = mainCtrl;
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/components/CardComponent.fxml"));
@@ -139,37 +139,15 @@ public class CardComponent extends HBox implements Initializable {
                         "-fx-alignment: center");
             }
         });
-//        setOnMouseEntered(event -> {
-//            toggleTextFieldToText(tfTitle);
-//        });
-//        setOnMouseExited(event -> {
-//            toggleTextFieldToText(tfTitle);
-//        });
-        //tfDescription.setOnKeyTyped(event -> updateCard());
+
         setOnMouseEntered(event ->
             {tfTitle.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-alignment: center");});
         setOnMouseExited(event ->
             {tfTitle.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; " +
                     "-fx-alignment: center");});
         setOnMouseClicked(this::onElementClick);
-        setOnDragDetected(event-> {
-                Dragboard db = this.startDragAndDrop(TransferMode.ANY);
-                ClipboardContent content = new ClipboardContent();
-                content.putString(String.valueOf(cardID));
-                db.setContent(content);
-                event.consume();
+        dragging();
 
-        });
-        setOnDragDone(event ->  {
-
-                if (event.getTransferMode() == TransferMode.MOVE) {
-
-
-                    System.out.println("successfull dropping said by cardcomponent");;
-                }
-                event.consume();
-
-        });
     }
 
 
@@ -177,16 +155,83 @@ public class CardComponent extends HBox implements Initializable {
      * test method
      */
     public void addtesttagtocard() {
-        serverUtils.addTagToCard(boardID,0,cardID);
+        server.addTagToCard(boardID,0,cardID);
     }
 
+    /**
+     * Method for all the dragging
+     */
+    public void dragging(){
+        setOnDragDetected(event-> {
+            Dragboard db = this.startDragAndDrop(TransferMode.ANY);
+            ClipboardContent content = new ClipboardContent();
+            content.putString(String.valueOf(cardID));
+            db.setContent(content);
+            event.consume();
+
+        });
+        setOnDragDone(event ->  {
+
+            if (event.getTransferMode() == TransferMode.MOVE) {
+
+
+                System.out.println("successfull dropping said by cardcomponent");;
+            }
+            event.consume();
+
+        });
+        setOnDragOver(event ->{
+
+            if (event.getGestureSource() != this &&
+                    event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            }
+
+            event.consume();
+
+        });
+        setOnDragEntered(event -> {
+            if (event.getGestureSource() != this &&
+                    event.getDragboard().hasString()) {
+                this.setStyle("-fx-background-color: green");
+            }
+            event.consume();
+
+        });
+        setOnDragExited(event -> {
+
+            this.setStyle("-fx-background-color: white");
+            event.consume();
+
+        });
+        setOnDragDropped(event -> {
+
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+            if (db.hasString()) {
+                Card c = server.getCard(Integer.parseInt(db.getString()));
+                System.out.println(c);
+                System.out.println(cardListID);
+                server.changeListOfCard(cardListID,c);
+                success = true;
+            }
+            event.setDropCompleted(success);
+            Platform.runLater(()->{
+                mainCtrl.refreshBoardOverview();
+            });
+
+            event.consume();
+
+        });
+
+    }
 
     /**
      * get list of colors for a specific tag
      * //todo here
      */
     public void getTagColors() {
-        List<Tag> tags = serverUtils.getTagsForCard(cardID);
+        List<Tag> tags = server.getTagsForCard(cardID);
         System.out.println(tags);
     }
 
@@ -247,7 +292,7 @@ public class CardComponent extends HBox implements Initializable {
         System.out.println("Text update card" + self);
         self.setTitle(tfTitle.getText());
         //self.setDescription(tfDescription.getText());
-        serverUtils.editCard(cardID,self);
+        server.editCard(cardID,self);
         System.out.println("exits method"+ self);
     }
 
@@ -277,7 +322,7 @@ public class CardComponent extends HBox implements Initializable {
         Platform.runLater(() -> {
             // UI update code here
             System.out.println("deleting card (CardComponent.deleteCard(self)) " + self);
-            serverUtils.deleteCard(self, cardListID);
+            server.deleteCard(self, cardListID);
             Platform.runLater(() -> {
                 mainCtrl.refreshBoardOverview();
             });

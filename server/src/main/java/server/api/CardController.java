@@ -78,8 +78,17 @@ public class CardController {
         acs.setCardInfo(card);
         return ResponseEntity.ok().build();
     }
+
+    /**
+     * Chanhges the list to which the card belongs to
+     * @param id the id of the card
+     * @param listid the id of the new list
+     * @param card the card
+     * @return the card
+     */
     @PutMapping("/{id}/{listid}")
-    public ResponseEntity<Card> changeListforCard(@PathVariable("id") int id, @PathVariable("listid") int listid, @RequestBody Card card) {
+    public ResponseEntity<Card> changeListforCard(@PathVariable("id") int id, @PathVariable("listid") int listid,
+                                                  @RequestBody Card card) {
         card.setId(id);
         System.out.println(card);
         System.out.println(acs.getListForCard(card));

@@ -203,6 +203,12 @@ public class ServerUtils {
         return null;
     }
 
+    /**
+     * Changes to which list the card belongs
+     * @param listid the new list
+     * @param card the card
+     * @return the card
+     */
     public Card changeListOfCard(int listid, Card card) {
         try {
             return ClientBuilder.newClient(new ClientConfig())

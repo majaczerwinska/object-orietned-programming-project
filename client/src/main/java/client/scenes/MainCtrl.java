@@ -338,4 +338,12 @@ public class MainCtrl {
         }
         executor.shutdown();
     }
+
+    /**
+     * Creates a card
+     * @param listID the id of the list
+     */
+    public void createCard(int listID) {
+        boardOverviewCtrl.createCard(listID);
+    }
 }
