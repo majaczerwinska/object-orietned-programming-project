@@ -34,6 +34,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 //import java.net.URL;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 //import java.util.ResourceBundle;
 
@@ -144,10 +146,11 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * displays cards in vboxes
      * @param vbox the vbox in the list where the cards need to be showed
      * @param listId the list we need to populate with cards
+     * @param cards the list of cards
      */
-    public void displayCards(VBox vbox, int listId){
-        List<Card> cards = server.getCardsFromList(listId);
-
+    public void displayCards(VBox vbox, int listId, List<Card> cards){
+        //List<Card> cards = server.getCardsFromList(listId);
+        cards.sort(Comparator.comparing(Card::getPosition));
         for (Card card : cards) {
             CardComponent cardComponent = new CardComponent(mainCtrl);
 
@@ -189,37 +192,32 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     }
 
     /**
+     * get cards for list
+     * @param listId the parent list id
+     * @return list of card elements
+     */
+    public List<Card> getCardsOfListFromServer(int listId) {
+        return server.getCardsFromList(listId);
+    }
+
+
+    /**
      * displays cards in vboxes
      * @param cardLists card lists
+     * @param allCards list of lists of cards
      */
-    public void displayLists(List<CardList> cardLists){
-
+    public void displayLists(List<CardList> cardLists, List<List<Card>> allCards){
+        int i = 0;
         for (CardList cardList : cardLists) {
             CardListComponent cardListComponent = new CardListComponent(mainCtrl);
             cardListComponent.setTitle(cardList.getName());
             cardListComponent.setOnMouseEntered(event -> addEnterKeyListener(cardList.getId()));
             hboxCardLists.getChildren().add(cardListComponent);
             cardListComponent.setData(cardList);
-            displayCards(cardListComponent.getVboxCards(), cardList.getId());
+            displayCards(cardListComponent.getVboxCards(), cardList.getId(), allCards.get(i));
+            i++;
         }
     }
-
-
-//    /**
-//     * displays cards in vboxes
-//     * @param cardLists card lists
-//     * @param focusCard f
-//     */
-//    public void displayListsWithFocus(List<CardList> cardLists, Card focusCard){
-//        for (CardList cardList : cardLists) {
-//            CardListComponent cardListComponent = new CardListComponent(mainCtrl);
-//            cardListComponent.setTitle(cardList.getName());
-//            cardListComponent.setOnMouseEntered(event -> addEnterKeyListener(cardList.getId()));
-//            hboxCardLists.getChildren().add(cardListComponent);
-//            cardListComponent.setData(cardList);
-//            displayCardsWithFocus(cardListComponent.getVboxCards(), cardList.getId(), focusCard);
-//        }
-//    }
 
 
 
@@ -268,10 +266,24 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      */
     public void refresh() {
         System.out.println("Refreshing board overview");
+        List<CardList> cardLists = getCardListsFromServer();
+        List<List<Card>> allCards = new ArrayList<>();
+        for (CardList cl : cardLists) {
+            allCards.add(getCardsOfListFromServer(cl.getId()));
+        }
         clearBoard();
-        displayLists(getCardListsFromServer());
+        displayLists(cardLists, allCards);
     }
 
+    /**
+     * refresh a specific list
+     * @param listID the list id
+     * @param listComponent the frontend component
+     */
+    public void refreshList(int listID, CardListComponent listComponent) {
+        System.out.println("Refreshing list #"+listID);
+        listComponent.getVboxCards().getChildren().clear();
+    }
 
 //    /**
 //     * Refresh scene from database
@@ -302,6 +314,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public Card createCard(int listID) {
         Card c = new Card("title..");
         System.out.println("creating new card "+c+" in list id="+listID);
+        c.setPosition(server.getListSize(listID) + 1);
         server.addCard(c, listID);
         refresh();
         return c;
@@ -345,4 +358,6 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         System.out.println("add enter key listener called in Board Overview Controller");
         scrollPaneOverview.setOnKeyPressed(event -> onEnterKeyPressed(event, listID));
     }
+
+
 }
