@@ -443,4 +443,23 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .delete(Card.class);
     }
+
+    /**
+     * Edit board with id to the new board
+     * @param id the id of the board to edit
+     * @param board the new board the old card is replaced by
+     * @return return the board edited
+     */
+    public Board editBoard(int id, Board board) {
+        try {
+            return ClientBuilder.newClient(new ClientConfig())
+                    .target(SERVER).path("api/boards/" + id)
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .put(Entity.entity(board, APPLICATION_JSON), Board.class);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
 }
