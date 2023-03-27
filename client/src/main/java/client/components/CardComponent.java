@@ -156,7 +156,7 @@ public class CardComponent extends HBox implements Initializable {
      * test method
      */
     public void addtesttagtocard() {
-        serverUtils.addTagToCard(boardID,0,cardID);
+        serverUtils.addTagToCard(boardID,0,cardID, serverUtils.getTag(0));
     }
 
 
@@ -257,6 +257,7 @@ public class CardComponent extends HBox implements Initializable {
             // UI update code here
             System.out.println("deleting card (CardComponent.deleteCard(self)) " + self);
             serverUtils.deleteCard(self, cardListID);
+            serverUtils.setListSize(cardListID, serverUtils.getListSize(cardListID) - 1);
             Platform.runLater(() -> {
                 mainCtrl.refreshBoardOverview();
             });

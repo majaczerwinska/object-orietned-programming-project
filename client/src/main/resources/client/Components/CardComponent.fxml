@@ -26,7 +26,7 @@
                   <Font size="12.0" />
                </font>
             </TextField>
-            <Label fx:id="descriptionLabel" text="View Description...">
+            <Label fx:id="descriptionLabel" onMouseClicked="#joinCard" text="View Description...">
                <VBox.margin>
                   <Insets top="6.0" />
                </VBox.margin>
