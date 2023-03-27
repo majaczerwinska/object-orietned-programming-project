@@ -17,6 +17,9 @@ public class CardList {
     @Column(name = "list_color")
     private int color;
 
+    @Column(name = "list_height")
+    public int lastPosition;
+
     @OneToMany( targetEntity = Card.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "list_id")
     private List<Card> cards;

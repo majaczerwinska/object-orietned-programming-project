@@ -103,4 +103,24 @@ public final class CardListService {
     }
 
 
+    /**
+     * get a lists size
+     * @param listId the list id
+     * @return int size
+     */
+    public Integer getListSize(int listId) {
+//        CardList cardList = repo.getById(listId);
+        return repo.getById(listId).lastPosition;
+    }
+
+    /**
+     * set a lists last position index
+     * @param listId list id
+     * @param size the new lp index
+     * @return new lp index
+     */
+    public Integer setListSize(int listId, int size) {
+        repo.getById(listId).lastPosition = size;
+        return size;
+    }
 }

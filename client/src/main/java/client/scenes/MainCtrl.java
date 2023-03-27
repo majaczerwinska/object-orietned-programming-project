@@ -15,6 +15,7 @@
  */
 package client.scenes;
 
+import client.components.CardListComponent;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
@@ -242,8 +243,7 @@ public class MainCtrl {
         //We later have to combine all these methods we call into one refresh method in boardOverviewCtrl
         boardOverviewCtrl.setBoardName();
         boardOverviewCtrl.refreshListViewTags();
-        boardOverviewCtrl.clearBoard();
-        boardOverviewCtrl.displayLists(boardOverviewCtrl.getCardListsFromServer());
+        boardOverviewCtrl.refresh();
     }
 
 
@@ -337,5 +337,10 @@ public class MainCtrl {
             System.out.println("time out exception in main controller");
         }
         executor.shutdown();
+    }
+
+
+    public void refreshListView(int listID, CardListComponent component) {
+        boardOverviewCtrl.refreshList(listID, component);
     }
 }
