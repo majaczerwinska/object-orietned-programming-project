@@ -339,7 +339,13 @@ public class MainCtrl {
         executor.shutdown();
     }
 
-
+    /**
+     * Creates a card
+     * @param listID the id of the list
+     */
+    public void createCard(int listID) {
+        boardOverviewCtrl.createCard(listID);
+    }
     /**
      * refresh a specific list
      * @param listID the lists id
@@ -348,4 +354,5 @@ public class MainCtrl {
     public void refreshListView(int listID, CardListComponent component) {
         boardOverviewCtrl.refreshList(listID, component);
     }
+
 }

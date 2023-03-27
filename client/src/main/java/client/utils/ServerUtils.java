@@ -204,6 +204,25 @@ public class ServerUtils {
     }
 
     /**
+     * Changes to which list the card belongs
+     * @param listid the new list
+     * @param card the card
+     * @return the card
+     */
+    public Card changeListOfCard(int listid, Card card) {
+        try {
+            return ClientBuilder.newClient(new ClientConfig())
+                    .target(SERVER).path("api/cards/" + card.getId()+"/"+listid)
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .put(Entity.entity(card, APPLICATION_JSON), Card.class);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    /**
      * Edit task with id
      * @param id the id of the task to edit
      * @param task the new task the old task is replaced by

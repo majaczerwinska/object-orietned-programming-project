@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<fx:root alignment="TOP_CENTER" minWidth="-Infinity" prefHeight="107.0" prefWidth="231.0" spacing="10.0" type="VBox" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="vboxscene" alignment="TOP_CENTER" minWidth="-Infinity" prefHeight="107.0" prefWidth="231.0" spacing="10.0" type="VBox" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
         <children>
             <HBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="212.0">
                 <children>
@@ -26,7 +26,7 @@
             <HBox alignment="CENTER" prefHeight="4.0" spacing="5.0">
                 <children>
                     <Button mnemonicParsing="false" text="Edit list" />
-                    <Button alignment="CENTER" mnemonicParsing="false" text="Add card" />
+                    <Button alignment="CENTER" mnemonicParsing="false" onAction="#addCard" text="Add card" />
                 </children>
             </HBox>
         </children>
