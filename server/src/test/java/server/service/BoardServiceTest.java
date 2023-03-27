@@ -102,4 +102,15 @@ public class BoardServiceTest {
         List<CardList> cardLists = List.of(list);
         assertEquals(ser.getCardListsFromBoard(listId), cardLists);
     }
+
+    @Test
+    public void setBoardInfoTest(){
+        Board board = new Board("title");
+        ser.save(board);
+        Board board2 = new Board("title2");
+        board2.setId(board.getId());
+        ser.setBoardInfo(board2);
+        assertEquals(board.getName(), board2.getName());
+
+    }
 }

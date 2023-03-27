@@ -475,11 +475,30 @@ public class ServerUtils {
     }
 
     /**
-     * get a tag by its id
+     * Edit board with id to the new board
+     * @param id the id of the board to edit
+     * @param board the new board the old card is replaced by
+     * @return return the board edited
+     */
+    public Board editBoard(int id, Board board) {
+        try {
+            return ClientBuilder.newClient(new ClientConfig())
+                    .target(SERVER).path("api/boards/" + id)
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .put(Entity.entity(board, APPLICATION_JSON), Board.class);
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    /**
+    * get a tag by its id
      * @param tagID its id
      * @return the tag element
      */
-    public Tag getTag(int tagID) {
+    public Tag getTag(int tagID){
         try {
             return ClientBuilder.newClient(new ClientConfig())
                     .target(SERVER).path("api/tags/" + tagID)
@@ -487,7 +506,7 @@ public class ServerUtils {
                     .accept(APPLICATION_JSON)
                     .get(new GenericType<Tag>() {
                     });
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return null;

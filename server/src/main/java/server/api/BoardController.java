@@ -3,6 +3,7 @@ package server.api;
 import commons.Board;
 
 
+//import commons.Card;
 import commons.CardList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -100,5 +101,22 @@ public class BoardController {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(abs.getCardListsFromBoard(boardId));
+    }
+
+    /**
+     * edits board name and color
+     * @param id board's id
+     * @param board board with updated information
+     * @return a response entity with the card object
+     */
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Board> editBoard(@PathVariable("id") int id, @RequestBody Board board) {
+        if(!abs.existsById(id) || board.getName() == null){
+            return ResponseEntity.badRequest().build();
+        }
+        board.setId(id);
+        abs.setBoardInfo(board);
+        return ResponseEntity.ok().build();
     }
 }

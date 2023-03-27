@@ -2,6 +2,7 @@ package server.service;
 
 import commons.Board;
 
+//import commons.Card;
 import commons.CardList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -111,5 +112,17 @@ public class BoardService {
             }
         }
         return null;
+    }
+
+    /**
+     * set board information
+     * @param board with updated information
+     */
+
+    public void setBoardInfo(Board board){
+        Board b = repo.getById(board.getId());
+        b.setName(board.getName());
+        b.setColor(board.getColor());
+        repo.save(b);
     }
 }
