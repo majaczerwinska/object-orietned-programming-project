@@ -33,19 +33,19 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </VBox.margin>
                   </Text>
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="What kind of board do you">
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="The board manager for your tasks">
                      <font>
                         <Font name="Andale Mono" size="24.0" />
                      </font>
                   </Text>
-                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="want to enter?">
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="What do you want to do?">
                      <font>
                         <Font size="36.0" />
                      </font>
                   </Text>
                   <HBox alignment="CENTER" prefHeight="105.0" prefWidth="624.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#showBoardOverview" text="Public">
+                        <Button mnemonicParsing="false" onAction="#exitApp" text="Exit the app">
                            <HBox.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </HBox.margin>
@@ -56,10 +56,7 @@
                               <Font size="18.0" />
                            </font>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#onTeamActionEvent" text="Team">
-                           <HBox.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </HBox.margin>
+                        <Button mnemonicParsing="false" onAction="#exitApp" text="Help me">
                            <padding>
                               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                            </padding>
@@ -67,7 +64,7 @@
                               <Font size="18.0" />
                            </font>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#showBoardSelect" text="Private">
+                        <Button mnemonicParsing="false" onAction="#showBoardSelect" text="Select the Server">
 <!--                        <Button mnemonicParsing="false" onAction="#onPrivateClickEvent" text="Private">-->
                            <HBox.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
