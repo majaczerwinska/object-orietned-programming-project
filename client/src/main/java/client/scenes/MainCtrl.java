@@ -132,6 +132,9 @@ public class MainCtrl {
         this.editBoardCtrl = editBoard.getKey();
         this.editBoard = new Scene(editBoard.getValue());
 
+        this.helpCtrl = help.getKey();
+        this.helpScene = new Scene(help.getValue());
+
 //        showLanding();
         showServerSelect();
         primaryStage.show();
@@ -296,6 +299,15 @@ public class MainCtrl {
     public void showBoardCreation(){
         primaryStage.setTitle("Board creation overview :)");
         primaryStage.setScene(boardCreation);
+        primaryStage.show();
+    }
+
+    /**
+     * Shows the help page
+     */
+    public void showHelpPage() {
+        primaryStage.setTitle("Help Page");
+        primaryStage.setScene(helpScene);
         primaryStage.show();
     }
 
