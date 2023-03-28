@@ -2,13 +2,14 @@ package client.components;
 
 import client.scenes.MainCtrl;
 import client.utils.ServerUtils;
-
-import commons.CardList;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
-
+import javafx.scene.input.MouseEvent;
+import commons.CardList;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -30,16 +31,23 @@ public class CardListComponent extends VBox{
     @FXML
     private Label labelTitle;
 
+    private int listId;
+    private int boardId;
 
 
     /**
-     * The constructor for the component
-     * @param mainCtrl the instance of maincontroller
+     * constructor for cardListComponent
+     * @param listId
+     * @param boardId
+     * @param mainCtrl
      */
-    public CardListComponent(MainCtrl mainCtrl) {
+    public CardListComponent(MainCtrl mainCtrl, int boardId, int listId) {
         super();
         server = new ServerUtils();
+        this.listId=listId;
+        this.boardId=boardId;
         this.mainCtrl = mainCtrl;
+
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/components/CardListComponent.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(CardListComponent.this);
@@ -120,6 +128,14 @@ public class CardListComponent extends VBox{
      */
     public void setTitle(String title){
         labelTitle.setText(title);
+    }
+
+    /**
+     * takes you to scene for editing the list's name
+     * @param mouseEvent - click
+     */
+    public void editTitle(MouseEvent mouseEvent) {
+        mainCtrl.showListEdit(listId, boardId);
     }
 
     /**

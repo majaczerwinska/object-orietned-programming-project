@@ -27,14 +27,14 @@ public class CardListController {
     /**
      * Renames the tasklist
      * @param id the id of the list
-     * @param newName the new name of the list
+     * @param name the new name of the list
      * @return a string showing the id of the renamed list and the new name
      */
     @PutMapping("/{id}")
-    public ResponseEntity<CardList> renameList(@PathVariable("id") int id, String newName){
+    public ResponseEntity<CardList> renameList(@PathVariable("id") int id,@RequestBody String name){
         if(!als.existsById(id)) return ResponseEntity.badRequest().build();
-        als.updateTaskListName(als.getById(id), newName);
-        return ResponseEntity.ok(als.getById(id));
+        als.updateTaskListName(als.getById(id), name);
+        return ResponseEntity.ok().build();
     }
 
 

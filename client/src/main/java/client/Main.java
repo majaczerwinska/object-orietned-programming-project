@@ -78,6 +78,7 @@ public class Main extends Application {
             var boardOverview = FXML.load(BoardOverviewCtrl.class, "client", "scenes", "BoardOverview.fxml");
             var taskCreator = FXML.load(TaskCreatorCtrl.class, "client", "scenes", "TaskCreator.fxml");
             var boardCreation = FXML.load(BoardCreationCtrl.class, "client", "scenes", "BoardCreation.fxml");
+            var listEdit = FXML.load(ListEditCtrl.class, "client", "scenes", "ListEdit.fxml");
             var editBoard = FXML.load(EditBoardCtrl.class, "client", "scenes", "EditBoard.fxml");
             System.out.println("Done with loading scenes");
             var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
@@ -95,9 +96,9 @@ public class Main extends Application {
                     serverSelect,
                     boardOverview,
                     boardCreation,
-                    editBoard,
-                    taskCreator
-            );
+                    taskCreator,
+                    listEdit,
+                    editBoard);
 
         } catch (Exception e) {
             System.out.println("very sad exception :(\nin start method of client.main..");
