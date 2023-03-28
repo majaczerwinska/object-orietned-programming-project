@@ -119,7 +119,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     }
     public void setColor(){
         Board board = server.getBoard(boardID);
-        scrollPaneOverview.setStyle("-fx-background-color: " + String.format("rgb(%d, %d, %d)",
+        scrollPaneOverview.setStyle("-fx-background: " + String.format("rgb(%d, %d, %d)",
                 (board.getColor() >> 16) & 0xFF,
                 (board.getColor() >> 8) & 0xFF, board.getColor()& 0xFF)+";");
         vboxList1.setStyle("-fx-background-color: " + String.format("rgb(%d, %d, %d)",

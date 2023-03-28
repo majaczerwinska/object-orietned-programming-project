@@ -30,6 +30,8 @@ public class CardListComponent extends VBox{
     @FXML
     private VBox vboxCards;
     @FXML
+    private Button editlist;
+    @FXML
     private VBox vboxscene;
     @FXML
     private Button deletebutton;
@@ -162,4 +164,11 @@ public class CardListComponent extends VBox{
         System.out.println("add key listener called in card list component");
         mainCtrl.addEnterKeyListener(listID);
     }
+
+    public void addTagToACard(){
+        server.addTagToCard(0,102,52);
+        mainCtrl.refreshBoardOverview();
+
+    }
+
 }

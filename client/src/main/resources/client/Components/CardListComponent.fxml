@@ -25,7 +25,7 @@
       <VBox fx:id="vboxCards" maxWidth="-Infinity" spacing="10.0" />
             <HBox alignment="CENTER" prefHeight="4.0" spacing="5.0">
                 <children>
-                    <Button mnemonicParsing="false" text="Edit list" />
+                    <Button fx:id="editlist" mnemonicParsing="false" onAction="#addTagToACard" text="Edit list" />
                     <Button fx:id="addcard" alignment="CENTER" mnemonicParsing="false" onAction="#addCard" text="Add card" />
                 </children>
             </HBox>
