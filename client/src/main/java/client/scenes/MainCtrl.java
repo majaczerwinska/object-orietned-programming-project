@@ -61,8 +61,12 @@ public class MainCtrl {
     private ListCreationCtrl listCreationCtrl;
     private Scene listCreate;
 
+    private HelpCtrl helpCtrl;
+    private Scene helpScene;
+
     /**
-     *
+     * 
+     * @param landing
      * @param primaryStage
      * @param card
      * @param publicBoard
@@ -75,9 +79,10 @@ public class MainCtrl {
      * @param boardOverview
      * @param editBoard
      * @param boardCreation
+     * @param help
      */
     public void initialize(Stage primaryStage,
-                           //Pair<LandingCtrl, Parent> landing,
+                           Pair<LandingCtrl, Parent> landing,
                            Pair<CardCtrl, Parent> card,
                            Pair<PublicBoardCtrl, Parent> publicBoard,
                            Pair<BoardSelectCtrl, Parent> boardSelect,
@@ -88,10 +93,11 @@ public class MainCtrl {
                            Pair<BoardOverviewCtrl, Parent> boardOverview,
                            Pair<BoardCreationCtrl, Parent> boardCreation,
                            Pair<EditBoardCtrl, Parent> editBoard,
-                           Pair<TaskCreatorCtrl, Parent> taskCreator) {
+                           Pair<TaskCreatorCtrl, Parent> taskCreator,
+                           Pair<HelpCtrl, Parent> help) {
         this.primaryStage = primaryStage;
-        //this.landingCtrl = landing.getKey();
-        //this.landing = new Scene(landing.getValue());
+        this.landingCtrl = landing.getKey();
+        this.landing = new Scene(landing.getValue());
 
         this.cardCtrl = card.getKey();
         this.card = new Scene(card.getValue());
