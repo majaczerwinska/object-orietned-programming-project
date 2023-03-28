@@ -1,6 +1,10 @@
 package client.scenes;
 
 import javax.inject.Inject;
+import client.utils.*;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+
 
 public class HelpCtrl {
     private final MainCtrl mainCtrl;
@@ -16,8 +20,9 @@ public class HelpCtrl {
      * @param mainCtrl main controller
      */
     @Inject
-    public HelpCtrl(MainCtrl mainCtrl) {
+    public HelpCtrl(MainCtrl mainCtrl, ServerUtils server) {
         this.mainCtrl = mainCtrl;
+        this.server = server;
     }
 
     /**
