@@ -4,6 +4,11 @@ import javax.inject.Inject;
 
 public class HelpCtrl {
     private final MainCtrl mainCtrl;
+    private final ServerUtils server;
+
+    @FXML
+    private Label title;
+    // title of the help page
 
 
     /**
