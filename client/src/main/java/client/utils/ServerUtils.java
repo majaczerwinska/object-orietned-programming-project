@@ -479,6 +479,19 @@ public class ServerUtils {
     }
 
     /**
+     * renames your list
+     * @param listId - id of the list to be renamed
+     * @param newName - new name
+     * @return - edited list
+     */
+    public CardList editList(int listId, String newName) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/lists/" + listId)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .put(Entity.entity(newName, APPLICATION_JSON), CardList.class);
+    }
+    /**
      * send a delete request for a card
      * @param c the card instance
      * @param listID the list the card is in

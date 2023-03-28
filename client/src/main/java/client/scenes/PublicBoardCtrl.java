@@ -58,6 +58,6 @@ public class PublicBoardCtrl {
 
     @FXML
     public void addNewList(MouseEvent mouseEvent){
-        mainCtrl.showListCreate();
+        mainCtrl.showListCreate(0);
     }
 }

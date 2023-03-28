@@ -78,6 +78,7 @@ public class Main extends Application {
             var boardOverview = FXML.load(BoardOverviewCtrl.class, "client", "scenes", "BoardOverview.fxml");
             var taskCreator = FXML.load(TaskCreatorCtrl.class, "client", "scenes", "TaskCreator.fxml");
             var boardCreation = FXML.load(BoardCreationCtrl.class, "client", "scenes", "BoardCreation.fxml");
+            var listEdit = FXML.load(ListEditCtrl.class, "client", "scenes", "ListEdit.fxml");
             var editBoard = FXML.load(EditBoardCtrl.class, "client", "scenes", "EditBoard.fxml");
             var help = FXML.load(HelpCtrl.class, "client", "scenes", "HelpPage.fxml");
             System.out.println("Done with loading scenes");
@@ -96,10 +97,10 @@ public class Main extends Application {
                     serverSelect,
                     boardOverview,
                     boardCreation,
-                    editBoard,
                     taskCreator,
-                    help
-            );
+                    listEdit,
+                    editBoard,
+                    help);
 
         } catch (Exception e) {
             System.out.println("very sad exception :(\nin start method of client.main..");

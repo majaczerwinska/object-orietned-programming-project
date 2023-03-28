@@ -2,14 +2,15 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.CardList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
-public class ListCreationCtrl {
+public class ListEditCtrl {
 
     public int boardId;
+    public int listId;
+
 
     @FXML
     private TextField name;
@@ -23,26 +24,28 @@ public class ListCreationCtrl {
      * @param mainCtrl
      */
     @Inject
-    public ListCreationCtrl(ServerUtils server, MainCtrl mainCtrl){
+    public ListEditCtrl(ServerUtils server, MainCtrl mainCtrl){
         this.mainCtrl = mainCtrl;
         this.server = server;
     }
 
     /**
-     * Creates a new cardList with a given title and adds it to the public board
+     * renames your list
      * @param mouseEvent - click
      */
-    public void create(MouseEvent mouseEvent){
-        CardList list = new CardList(name.getText());
-        server.createList(boardId, list);
+    public void rename(MouseEvent mouseEvent){
+        String newName = name.getText();
+        server.editList(listId, newName);
         mainCtrl.showBoardOverview(boardId);
     }
 
     /**
-     * takes you back to the overview
-     * @param mouseEvent - click
+     * takes you back to the board overview
+     * @param mouseEvent
      */
     public void cancel(MouseEvent mouseEvent){
         mainCtrl.showBoardOverview(boardId);
     }
+
+
 }

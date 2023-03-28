@@ -64,6 +64,10 @@ public class MainCtrl {
     private HelpCtrl helpCtrl;
     private Scene helpScene;
 
+    private ListEditCtrl listEditCtrl;
+    private Scene listEdit;
+
+
     /**
      * 
      * @param landing
@@ -75,11 +79,12 @@ public class MainCtrl {
      * @param tagManager
      * @param listCreate
      * @param select
-     * @param taskCreator
      * @param boardOverview
      * @param editBoard
      * @param boardCreation
      * @param help
+     * @param taskCreator
+     * @param listEdit
      */
     public void initialize(Stage primaryStage,
                            Pair<LandingCtrl, Parent> landing,
@@ -92,9 +97,11 @@ public class MainCtrl {
                            Pair<ServerSelectCtrl, Parent> select,
                            Pair<BoardOverviewCtrl, Parent> boardOverview,
                            Pair<BoardCreationCtrl, Parent> boardCreation,
-                           Pair<EditBoardCtrl, Parent> editBoard,
                            Pair<TaskCreatorCtrl, Parent> taskCreator,
-                           Pair<HelpCtrl, Parent> help) {
+                           Pair<ListEditCtrl, Parent> listEdit,
+                           Pair<EditBoardCtrl, Parent> editBoard,
+                           Pair<HelpCtrl, Parent> help
+                           ) {
         this.primaryStage = primaryStage;
         this.landingCtrl = landing.getKey();
         this.landing = new Scene(landing.getValue());
@@ -129,9 +136,12 @@ public class MainCtrl {
         this.boardCreationCtrl = boardCreation.getKey();
         this.boardCreation = new Scene(boardCreation.getValue());
 
+        this.listEditCtrl = listEdit.getKey();
+        this.listEdit = new Scene(listEdit.getValue());
+
         this.editBoardCtrl = editBoard.getKey();
         this.editBoard = new Scene(editBoard.getValue());
-
+        
         this.helpCtrl = help.getKey();
         this.helpScene = new Scene(help.getValue());
 
@@ -230,10 +240,12 @@ public class MainCtrl {
 
     /**
      * shows a scene where you can create a new list and add it to the public board
+     * @param boardId - board id
      */
-    public void showListCreate(){
+    public void showListCreate(int boardId){
         primaryStage.setTitle("List creation");
         primaryStage.setScene(listCreate);
+        listCreationCtrl.boardId = boardId;
         primaryStage.show();
     }
 
@@ -265,8 +277,9 @@ public class MainCtrl {
      */
     public void showBoardOverview(int boardID){
         primaryStage.setTitle("Board overview :)");
-        primaryStage.setScene(boardOverwiew);
         boardOverviewCtrl.boardID = boardID;
+        primaryStage.setScene(boardOverwiew);
+        boardOverviewCtrl.refreshName(boardID);
         primaryStage.show();
         //We later have to combine all these methods we call into one refresh method in boardOverviewCtrl
         boardOverviewCtrl.setBoardName();
@@ -321,6 +334,18 @@ public class MainCtrl {
     }
 
     /**
+     * shows scene for editing the list
+     * @param listId
+     * @param boardId
+     */
+    public void showListEdit(int listId, int boardId){
+        primaryStage.setTitle("List edit");
+        primaryStage.setScene(listEdit);
+        listEditCtrl.listId = listId;
+        listEditCtrl.boardId = boardId;
+        primaryStage.show();
+    }
+        /**
      * refresh board overview scene with newly polled data from the database
      */
     public void refreshBoardOverview()  {

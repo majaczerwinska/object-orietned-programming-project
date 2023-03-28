@@ -4,6 +4,12 @@ import client.components.CardComponent;
 import client.components.CardListComponent;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Board;
+import commons.Card;
+import commons.CardList;
+import commons.Tag;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 
 import commons.Card;
@@ -16,12 +22,12 @@ import commons.CardList;
 import commons.Tag;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 //import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -29,11 +35,13 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 //import java.net.URL;
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -55,6 +63,9 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     private ScrollPane scrollPaneOverview;
 
     @FXML
+    private VBox vboxTags;
+
+    @FXML
     private HBox hboxCardLists;
     @FXML
     private Button btnTagManager;
@@ -66,7 +77,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     private Button backbtn;
 
     @FXML
-
+    private Label boardKey;
+    @FXML
     private Button addListButton;
 
     @FXML
@@ -87,6 +99,14 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public BoardOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
+//        Board board = this.server.getBoard(boardID);
+//        String title = board.getName();
+//        if(title == null){
+//            boardName.setText("Board: " + board.getId());
+//        }
+//        else{
+//            boardName.setText(board.getName());
+//        }
     }
 
 //    /**
@@ -218,7 +238,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public void displayLists(List<CardList> cardLists, List<List<Card>> allCards){
         int i = 0;
         for (CardList cardList : cardLists) {
-            CardListComponent cardListComponent = new CardListComponent(mainCtrl);
+            CardListComponent cardListComponent = new CardListComponent(mainCtrl, cardList.getId(),boardID);
             cardListComponent.setTitle(cardList.getName());
             cardListComponent.setOnMouseEntered(event -> addEnterKeyListener(cardList.getId()));
             hboxCardLists.getChildren().add(cardListComponent);
@@ -227,7 +247,6 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             i++;
         }
     }
-
 
 
     /**
@@ -267,6 +286,46 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      */
     public void clearBoard(){
         hboxCardLists.getChildren().clear();
+    }
+
+    /**
+     * takes you to a scene to create a new list for the board
+     * @param actionEvent - click
+     */
+    public void addList(ActionEvent actionEvent){
+        System.out.println("going to list creation for board "+boardID);
+        mainCtrl.showListCreate(boardID);
+    }
+
+    /**
+     * refreshes the board's name field, board's key and tag list view
+     * @param boardID
+     */
+    @FXML
+    public void refreshName(int boardID){
+        Board b = server.getBoard(boardID);
+        //boardName.setText(b.getName());
+        boardKey.setText(b.getBoardkey());
+        boardKey.setVisible(false);
+
+//        list.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+//        ObservableList<Tag> tagList = FXCollections.observableList(server.getTagsFromBoard(boardID));
+//        list.setItems(tagList);
+    }
+
+    /**
+     * display and copy to clipboard the boardKey
+     */
+    public void getBoardKey(){
+        if(boardKey.isVisible()){
+            boardKey.setVisible(false);
+        }
+        else{
+            boardKey.setVisible(true);
+            StringSelection selection = new StringSelection(boardKey.getText());
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(selection, selection);
+        }
     }
 
 
@@ -367,6 +426,4 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         System.out.println("add enter key listener called in Board Overview Controller");
         scrollPaneOverview.setOnKeyPressed(event -> onEnterKeyPressed(event, listID));
     }
-
-
 }
