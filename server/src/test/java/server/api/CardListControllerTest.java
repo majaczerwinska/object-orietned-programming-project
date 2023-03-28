@@ -14,6 +14,7 @@ import server.database.BoardRepositoryTest;
 import server.database.CardListRepositoryTest;
 import server.service.CardService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -87,6 +88,35 @@ public class CardListControllerTest {
         int listId = list.getId();
         assertEquals(con.getCardsFromList(listId), ResponseEntity.badRequest().build());
     }
+
+    @Test
+    public void setListSizeTest(){
+        CardList list = new CardList("c");
+        int listId = list.getId();
+        assertEquals(con.getCardsFromList(listId), ResponseEntity.badRequest().build());
+    }
+
+//    @Test
+//    public void getListSizeTest(){
+//        Board board = new Board("board");
+//        CardList list = new CardList("c");
+//        Card card = new Card("title");
+//        Card card2 = new Card("title2");
+//        Card card3 = new Card("title3");
+//        List<Card> cards = new ArrayList<>();
+//        cards.add(card);
+//        cards.add(card2);
+//        cards.add(card3);
+//        list.setCards(cards);
+//        int listId = list.getId();
+//        br.save(board);
+//        ser.save(list, board.getId());
+//        cardService.save(card, listId);
+//        cardService.save(card2, listId);
+//        cardService.save(card3, listId);
+//        ResponseEntity<Integer>  size = ResponseEntity.ok(3);
+//        assertEquals(con.getListSize(listId), size);
+//    }
 
 
 }

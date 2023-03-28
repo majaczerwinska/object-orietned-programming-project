@@ -11,6 +11,7 @@ import server.service.BoardService;
 import server.database.BoardRepositoryTest;
 import server.service.CardListService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,7 +34,7 @@ public class BoardControllerTest {
     }
 
     @Test
-    public void addCardTest(){
+    public void addBoardTest(){
         Board board = new Board("title");
         con.addBoard(board);
         assertTrue(repo.existsById(board.getId()));
@@ -41,7 +42,7 @@ public class BoardControllerTest {
     }
 
     @Test
-    public void deleteTest(){
+    public void deleteBoardTest(){
         Board board = new Board("title");
         con.addBoard(board);
         con.deleteBoard(board.getId());
@@ -74,4 +75,38 @@ public class BoardControllerTest {
         assertEquals(b, b2);
 
     }
+
+    @Test
+    public void getBoardTest(){
+        Board board = new Board("title");
+        con.addBoard(board);
+        ResponseEntity<Board> boardResponseEntity = ResponseEntity.ok(board);
+        assertEquals(con.getBoard(board.getId()), boardResponseEntity);
+    }
+
+    @Test
+    public void getBoardByKeyTest(){
+        Board board = new Board("title");
+        board.setBoardkey("abc");
+        con.addBoard(board);
+        ResponseEntity<Board> boardResponseEntity = ResponseEntity.ok(board);
+        assertEquals(con.getBoardByKey(board.getBoardkey()), board);
+    }
+
+//    @Test
+//    public void getBoardsTest(){
+//        Board b1 = new Board("title");
+//        Board b2 = new Board("title");
+//        Board b3 = new Board("title");
+//        List<Board> boardList = new ArrayList<>();
+//        boardList.add(b1);
+//        boardList.add(b2);
+//        boardList.add(b3);
+//        con.addBoard(b1);
+//        con.addBoard(b2);
+//        con.addBoard(b3);
+//        //ResponseEntity<List<Board>> boardResponseEntity = ResponseEntity.ok(boardList);
+//        assertEquals(con.getBoards(), boardList);
+//    }
+
 }
