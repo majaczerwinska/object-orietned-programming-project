@@ -213,9 +213,7 @@ public class MainCtrl {
         );
     }
 
-    /**
-     * shows a scene where you can create a new list and add it to the public board
-     */
+
     public void showListCreate(int boardID){
         primaryStage.setTitle("List creation");
         primaryStage.setScene(listCreate);
@@ -241,6 +239,8 @@ public class MainCtrl {
         primaryStage.setTitle("Board overview :)");
         primaryStage.setScene(boardOverwiew);
         boardOverviewCtrl.boardID = boardID;
+        boardOverviewCtrl.setColor();
+
         primaryStage.show();
         //We later have to combine all these methods we call into one refresh method in boardOverviewCtrl
         boardOverviewCtrl.setBoardName();

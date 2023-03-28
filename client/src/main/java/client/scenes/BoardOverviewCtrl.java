@@ -17,19 +17,14 @@ import commons.Tag;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import javafx.css.converter.ColorConverter;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 //import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 
-import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -52,6 +47,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
     @FXML
     private VBox vboxList1;
+    @FXML
+    private SplitPane splitpane;
 
 
     @FXML
@@ -90,6 +87,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public BoardOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
+
+
     }
 
 //    /**
@@ -118,6 +117,19 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         Board board = server.getBoard(boardID);
         labelBoardTitle.setText(board.getName());
     }
+    public void setColor(){
+        Board board = server.getBoard(boardID);
+        scrollPaneOverview.setStyle("-fx-background-color: " + String.format("rgb(%d, %d, %d)",
+                (board.getColor() >> 16) & 0xFF,
+                (board.getColor() >> 8) & 0xFF, board.getColor()& 0xFF)+";");
+        vboxList1.setStyle("-fx-background-color: " + String.format("rgb(%d, %d, %d)",
+                (board.getColor() >> 16) & 0xFF,
+                (board.getColor() >> 8) & 0xFF, board.getColor()& 0xFF)+";");
+
+    }
+
+
+
 
     /**
      * Shows the tag manager scene
