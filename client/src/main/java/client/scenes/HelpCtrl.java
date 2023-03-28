@@ -18,6 +18,7 @@ public class HelpCtrl {
     /**
      * help controller constructor method
      * @param mainCtrl main controller
+     * @param server server utils functions
      */
     @Inject
     public HelpCtrl(MainCtrl mainCtrl, ServerUtils server) {
