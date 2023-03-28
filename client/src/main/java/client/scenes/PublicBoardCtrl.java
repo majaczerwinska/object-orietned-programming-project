@@ -52,5 +52,13 @@ public class PublicBoardCtrl {
     }
 
 
+    /**
+     *
+     * @param mouseEvent
+     */
+    @FXML
+    public void addNewList(MouseEvent mouseEvent){
+        mainCtrl.showListCreate(0);
+    }
 
 }

@@ -278,6 +278,7 @@ public class CardComponent extends HBox implements Initializable {
      * open card overview
      */
     public void joinCard() {
+        System.out.println(boardID + "joinCard cardComponent");
         if (self==null) {
             System.out.println("selected card appears to be null, in joiCoard() of CardComponentCtrl");
             return;

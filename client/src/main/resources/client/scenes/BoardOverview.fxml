@@ -19,7 +19,24 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <VBox alignment="TOP_CENTER" prefHeight="250.0" prefWidth="121.0" spacing="5.0" style="-fx-border-color: black; -fx-background-color: white;">
+
+            <HBox prefHeight="31.0" prefWidth="179.0" spacing="10.0">
+               <children>
+                  <Label text="Board's key: ">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Label>
+                   <Label fx:id="boardKey" text="Label">
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Label>
+                   <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onMouseClicked="#getBoardKey" text="Copy" />
+               </children>
+            </HBox>
+            <VBox alignment="TOP_CENTER" prefHeight="250.0" prefWidth="121.0" spacing="5.0" style="-fx-border-color: black;">
+
                <children>
                   <Label text="Tags" />
                   <ListView fx:id="listViewTags" prefHeight="190.0" prefWidth="125.0" />
@@ -33,8 +50,10 @@
             <HBox alignment="CENTER" prefHeight="38.0" prefWidth="120.0" spacing="5.0">
                <children>
                   <Button fx:id="backbtn" mnemonicParsing="false" onAction="#back" text="Back" />
-                  <Button fx:id="editBoardButton" mnemonicParsing="false" text="Edit board" />
+
+                  <Button fx:id="editBoardButton" mnemonicParsing="false" onAction="#showEditBoard" text="Edit board" />
                   <Button fx:id="addListButton" alignment="CENTER" mnemonicParsing="false" onAction="#addListScene" text="Add list" />
+
                </children>
             </HBox>
             <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#refresh" text="refresh">

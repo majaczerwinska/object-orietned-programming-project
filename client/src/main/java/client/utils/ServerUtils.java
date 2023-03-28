@@ -153,17 +153,14 @@ public class ServerUtils {
      * @return - the board
      */
     public Board getBoard(int id){
-        try{
+        System.out.println(id);
             return ClientBuilder.newClient(new ClientConfig())
                     .target(SERVER).path("api/boards/"+id)
                     .request(APPLICATION_JSON)
                     .accept(APPLICATION_JSON)
-                    .get(new GenericType<>() {
+                    .get(new GenericType<Board>() {
                     });
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-        return null;
+
     }
 
     /**
@@ -478,6 +475,19 @@ public class ServerUtils {
                 .post(Entity.entity(board, APPLICATION_JSON), Board.class);
     }
 
+    /**
+     * renames your list
+     * @param listId - id of the list to be renamed
+     * @param newName - new name
+     * @return - edited list
+     */
+    public CardList editList(int listId, String newName) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/lists/" + listId)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .put(Entity.entity(newName, APPLICATION_JSON), CardList.class);
+    }
     /**
      * send a delete request for a card
      * @param c the card instance

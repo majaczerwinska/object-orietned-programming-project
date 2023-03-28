@@ -3,14 +3,18 @@ package client.components;
 import client.scenes.MainCtrl;
 import client.utils.ServerUtils;
 
+
 import commons.Card;
 import commons.CardList;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-
+import javafx.scene.input.MouseEvent;
+import commons.CardList;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
 
@@ -19,7 +23,7 @@ import java.io.IOException;
 //TODO
 public class CardListComponent extends VBox{
 
-    private int listID;
+   // private int listID;
 
     private CardList self;
 
@@ -39,17 +43,32 @@ public class CardListComponent extends VBox{
     @FXML
     private Label labelTitle;
 
-    private int boardID;
 
 
 
-    public CardListComponent(MainCtrl mainCtrl, int boardID, int listID) {
+
+
+
+    private int listId;
+    private int boardId;
+
+
+    /**
+     * constructor for cardListComponent
+     * @param listId
+     * @param boardId
+     * @param mainCtrl
+     */
+    public CardListComponent(MainCtrl mainCtrl, int boardId, int listId) {
 
         super();
-        this.boardID = boardID;
-        this.listID = listID;
+        this.boardId = boardId;
+       // this.listID = listID;
         server = new ServerUtils();
+        this.listId=listId;
+        this.boardId=boardId;
         this.mainCtrl = mainCtrl;
+
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/components/CardListComponent.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(CardListComponent.this);
@@ -88,20 +107,24 @@ public class CardListComponent extends VBox{
 
     }
 
-
+    /**
+     * Adding a card
+     */
     public void addCard() {
 
 
-         Card c = mainCtrl.createCard(listID);
-
-         mainCtrl.showCard(c.getId(), boardID);
+         Card c = mainCtrl.createCard(listId);
+        System.out.println(boardId + "carlistcomp");
+         mainCtrl.showCard(c.getId(), boardId);
     }
 
-
+    /**
+     * Deleting a list
+     */
     public void delete(){
 
 
-        server.deleteCardList(listID,boardID);
+        server.deleteCardList(listId,boardId);
         mainCtrl.refreshBoardOverview();
     }
 
@@ -145,12 +168,20 @@ public class CardListComponent extends VBox{
     }
 
     /**
+     * takes you to scene for editing the list's name
+     * @param mouseEvent - click
+     */
+    public void editTitle(MouseEvent mouseEvent) {
+        mainCtrl.showListEdit(listId, boardId);
+    }
+
+    /**
      * updates list
      * @param cardList new cardlist data
      */
     public void setData(CardList cardList){
         labelTitle.setText(cardList.getName());
-        listID = cardList.getId();
+        listId = cardList.getId();
         self = cardList;
     }
 
@@ -160,7 +191,7 @@ public class CardListComponent extends VBox{
     @FXML
     public void addEnterKeyListener() {
         System.out.println("add key listener called in card list component");
-        mainCtrl.addEnterKeyListener(listID);
+        mainCtrl.addEnterKeyListener(listId);
     }
 
 }

@@ -13,6 +13,8 @@ import javafx.scene.control.TextField;
 
 public class ListCreationCtrl {
 
+    //public int boardId;
+
     @FXML
     private TextField name;
     @FXML
@@ -40,6 +42,10 @@ public class ListCreationCtrl {
     }
 
 
+    /**
+     * Creates a new cardList with a given title and adds it to the public board
+     * @param event - click
+     */
     public void create(ActionEvent event){
         if(name.getText().equals("")) {
             warning.setText("Required field!");
@@ -53,9 +59,14 @@ public class ListCreationCtrl {
 
     }
 
-
+    /**
+     * takes you back to the overview
+     * @param event - click
+     */
     public void cancel(ActionEvent event){
         mainCtrl.showBoardOverview(boardID);
+
+
     }
 
 
