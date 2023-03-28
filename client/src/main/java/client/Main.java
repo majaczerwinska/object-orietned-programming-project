@@ -78,8 +78,12 @@ public class Main extends Application {
             var boardOverview = FXML.load(BoardOverviewCtrl.class, "client", "scenes", "BoardOverview.fxml");
             var taskCreator = FXML.load(TaskCreatorCtrl.class, "client", "scenes", "TaskCreator.fxml");
             var boardCreation = FXML.load(BoardCreationCtrl.class, "client", "scenes", "BoardCreation.fxml");
+<<<<<<< HEAD
             var listEdit = FXML.load(ListEditCtrl.class, "client", "scenes", "ListEdit.fxml");
 
+=======
+            var editBoard = FXML.load(EditBoardCtrl.class, "client", "scenes", "EditBoard.fxml");
+>>>>>>> 283333c600ae8b26dcfc3df93ae5650f8a727817
             System.out.println("Done with loading scenes");
             var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
 
@@ -96,8 +100,13 @@ public class Main extends Application {
                     serverSelect,
                     boardOverview,
                     boardCreation,
+<<<<<<< HEAD
                     taskCreator,
                     listEdit
+=======
+                    editBoard,
+                    taskCreator
+>>>>>>> 283333c600ae8b26dcfc3df93ae5650f8a727817
             );
 
         } catch (Exception e) {

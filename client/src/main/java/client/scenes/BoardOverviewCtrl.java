@@ -146,6 +146,15 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     }
 
     /**
+     * Shows the edit board scene
+     * @param actionEvent the event when clicking the "edit board" button
+     */
+    public void showEditBoard(ActionEvent actionEvent){
+        System.out.println("showEditBoard with id #" + boardID);
+        mainCtrl.showEditBoard(boardID);
+    }
+
+    /**
      * Goes back to previous scene
      * @param actionEvent the event when clicking the back button
      */

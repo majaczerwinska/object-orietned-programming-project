@@ -48,7 +48,7 @@
             <HBox alignment="CENTER" prefHeight="38.0" prefWidth="120.0" spacing="5.0">
                <children>
                   <Button fx:id="backbtn" mnemonicParsing="false" onAction="#back" text="Back" />
-                  <Button fx:id="editBoardButton" mnemonicParsing="false" text="Edit board" />
+                  <Button fx:id="editBoardButton" mnemonicParsing="false" onAction="#showEditBoard" text="Edit board" />
                   <Button fx:id="addListButton" alignment="CENTER" mnemonicParsing="false" onAction="#createTestCard" text="Add list" />
                </children>
             </HBox>
