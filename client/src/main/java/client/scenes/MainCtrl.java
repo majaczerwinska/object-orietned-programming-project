@@ -61,12 +61,16 @@ public class MainCtrl {
     private ListCreationCtrl listCreationCtrl;
     private Scene listCreate;
 
+    private HelpCtrl helpCtrl;
+    private Scene helpScene;
+
     private ListEditCtrl listEditCtrl;
     private Scene listEdit;
 
 
     /**
-     *
+     * 
+     * @param landing
      * @param primaryStage
      * @param card
      * @param publicBoard
@@ -78,11 +82,12 @@ public class MainCtrl {
      * @param boardOverview
      * @param editBoard
      * @param boardCreation
+     * @param help
      * @param taskCreator
      * @param listEdit
      */
     public void initialize(Stage primaryStage,
-                           //Pair<LandingCtrl, Parent> landing,
+                           Pair<LandingCtrl, Parent> landing,
                            Pair<CardCtrl, Parent> card,
                            Pair<PublicBoardCtrl, Parent> publicBoard,
                            Pair<BoardSelectCtrl, Parent> boardSelect,
@@ -94,12 +99,12 @@ public class MainCtrl {
                            Pair<BoardCreationCtrl, Parent> boardCreation,
                            Pair<TaskCreatorCtrl, Parent> taskCreator,
                            Pair<ListEditCtrl, Parent> listEdit,
-                           Pair<EditBoardCtrl, Parent> editBoard
+                           Pair<EditBoardCtrl, Parent> editBoard,
+                           Pair<HelpCtrl, Parent> help
                            ) {
-
         this.primaryStage = primaryStage;
-        //this.landingCtrl = landing.getKey();
-        //this.landing = new Scene(landing.getValue());
+        this.landingCtrl = landing.getKey();
+        this.landing = new Scene(landing.getValue());
 
         this.cardCtrl = card.getKey();
         this.card = new Scene(card.getValue());
@@ -136,7 +141,9 @@ public class MainCtrl {
 
         this.editBoardCtrl = editBoard.getKey();
         this.editBoard = new Scene(editBoard.getValue());
-
+        
+        this.helpCtrl = help.getKey();
+        this.helpScene = new Scene(help.getValue());
 
 //        showLanding();
         showServerSelect();
@@ -305,6 +312,15 @@ public class MainCtrl {
     public void showBoardCreation(){
         primaryStage.setTitle("Board creation overview :)");
         primaryStage.setScene(boardCreation);
+        primaryStage.show();
+    }
+
+    /**
+     * Shows the help page
+     */
+    public void showHelpPage() {
+        primaryStage.setTitle("Help Page");
+        primaryStage.setScene(helpScene);
         primaryStage.show();
     }
 
