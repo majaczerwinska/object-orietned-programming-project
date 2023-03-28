@@ -55,6 +55,8 @@ public class MainCtrl {
     private ServerSelectCtrl serverSelectCtrl;
     private Scene serverSelect;
 
+    private EditBoardCtrl editBoardCtrl;
+    private Scene editBoard;
 
     private ListCreationCtrl listCreationCtrl;
     private Scene listCreate;
@@ -71,6 +73,7 @@ public class MainCtrl {
      * @param select
      * @param taskCreator
      * @param boardOverview
+     * @param editBoard
      * @param boardCreation
      */
     public void initialize(Stage primaryStage,
@@ -84,6 +87,7 @@ public class MainCtrl {
                            Pair<ServerSelectCtrl, Parent> select,
                            Pair<BoardOverviewCtrl, Parent> boardOverview,
                            Pair<BoardCreationCtrl, Parent> boardCreation,
+                           Pair<EditBoardCtrl, Parent> editBoard,
                            Pair<TaskCreatorCtrl, Parent> taskCreator) {
         this.primaryStage = primaryStage;
         //this.landingCtrl = landing.getKey();
@@ -118,6 +122,9 @@ public class MainCtrl {
 
         this.boardCreationCtrl = boardCreation.getKey();
         this.boardCreation = new Scene(boardCreation.getValue());
+
+        this.editBoardCtrl = editBoard.getKey();
+        this.editBoard = new Scene(editBoard.getValue());
 
 //        showLanding();
         showServerSelect();
@@ -229,6 +236,18 @@ public class MainCtrl {
         primaryStage.setTitle("Task creator :)");
         primaryStage.setScene(taskCreator);
         primaryStage.show();
+    }
+
+    /**
+     * Edit board with given boardID
+     * @param boardID the boardID of the board
+     */
+    public void showEditBoard(int boardID) {
+        primaryStage.setTitle("Show edit board :)");
+        primaryStage.setScene(editBoard);
+        editBoardCtrl.boardId = boardID;
+        primaryStage.show();
+        editBoardCtrl.openScene(boardID);
     }
 
     /**
