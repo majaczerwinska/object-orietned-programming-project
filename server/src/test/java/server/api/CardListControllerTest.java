@@ -89,34 +89,53 @@ public class CardListControllerTest {
         assertEquals(con.getCardsFromList(listId), ResponseEntity.badRequest().build());
     }
 
+
+
     @Test
-    public void setListSizeTest(){
+    public void getListSizeTest(){
+        Board board = new Board("board");
         CardList list = new CardList("c");
+        Card card = new Card("title");
+        Card card2 = new Card("title2");
+        Card card3 = new Card("title3");
+        List<Card> cards = new ArrayList<>();
+        cards.add(card);
+        cards.add(card2);
+        cards.add(card3);
+        list.setCards(cards);
+        list.lastPosition = 9;
         int listId = list.getId();
-        assertEquals(con.getCardsFromList(listId), ResponseEntity.badRequest().build());
+        br.save(board);
+        ser.save(list, board.getId());
+        cardService.save(card, listId);
+        cardService.save(card2, listId);
+        cardService.save(card3, listId);
+        ResponseEntity<Integer>  size = ResponseEntity.ok(9);
+        assertEquals(con.getListSize(listId), size);
     }
 
-//    @Test
-//    public void getListSizeTest(){
-//        Board board = new Board("board");
-//        CardList list = new CardList("c");
-//        Card card = new Card("title");
-//        Card card2 = new Card("title2");
-//        Card card3 = new Card("title3");
-//        List<Card> cards = new ArrayList<>();
-//        cards.add(card);
-//        cards.add(card2);
-//        cards.add(card3);
-//        list.setCards(cards);
-//        int listId = list.getId();
-//        br.save(board);
-//        ser.save(list, board.getId());
-//        cardService.save(card, listId);
-//        cardService.save(card2, listId);
-//        cardService.save(card3, listId);
-//        ResponseEntity<Integer>  size = ResponseEntity.ok(3);
-//        assertEquals(con.getListSize(listId), size);
-//    }
+    @Test
+    public void setListSizeTest(){
+        Board board = new Board("board");
+        CardList list = new CardList("c");
+        Card card = new Card("title");
+        Card card2 = new Card("title2");
+        Card card3 = new Card("title3");
+        List<Card> cards = new ArrayList<>();
+        cards.add(card);
+        cards.add(card2);
+        cards.add(card3);
+        list.setCards(cards);
+        list.lastPosition = 9;
+        int listId = list.getId();
+        br.save(board);
+        ser.save(list, board.getId());
+        cardService.save(card, listId);
+        cardService.save(card2, listId);
+        cardService.save(card3, listId);
+        ResponseEntity<Integer>  size = ResponseEntity.ok(12);
+        assertEquals(con.setListSize(listId, 12), size);
+    }
 
 
 }

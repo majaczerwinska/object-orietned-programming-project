@@ -93,20 +93,20 @@ public class BoardControllerTest {
         assertEquals(con.getBoardByKey(board.getBoardkey()), board);
     }
 
-//    @Test
-//    public void getBoardsTest(){
-//        Board b1 = new Board("title");
-//        Board b2 = new Board("title");
-//        Board b3 = new Board("title");
-//        List<Board> boardList = new ArrayList<>();
-//        boardList.add(b1);
-//        boardList.add(b2);
-//        boardList.add(b3);
-//        con.addBoard(b1);
-//        con.addBoard(b2);
-//        con.addBoard(b3);
-//        //ResponseEntity<List<Board>> boardResponseEntity = ResponseEntity.ok(boardList);
-//        assertEquals(con.getBoards(), boardList);
-//    }
+    @Test
+    public void getBoardsTest(){
+        Board b1 = new Board("title");
+        Board b2 = new Board("title2");
+        List<Board> boardList = new ArrayList<>();
+
+        boardList.add(b2);
+        boardList.add(b1);
+        repo.save(b1);
+        repo.save(b2);
+        //ResponseEntity<List<Board>> boardResponseEntity = ResponseEntity.ok(boardList);
+        assertEquals(con.getBoards(), boardList);
+    }
+
+
 
 }
