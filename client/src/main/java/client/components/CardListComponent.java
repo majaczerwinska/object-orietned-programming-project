@@ -33,6 +33,8 @@ public class CardListComponent extends VBox{
     private VBox vboxscene;
     @FXML
     private Button deletebutton;
+    @FXML
+    private Button addcard;
 
     @FXML
     private Label labelTitle;
@@ -41,10 +43,11 @@ public class CardListComponent extends VBox{
 
 
 
-    public CardListComponent(MainCtrl mainCtrl, int boardID) {
+    public CardListComponent(MainCtrl mainCtrl, int boardID, int listID) {
 
         super();
         this.boardID = boardID;
+        this.listID = listID;
         server = new ServerUtils();
         this.mainCtrl = mainCtrl;
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/components/CardListComponent.fxml"));
@@ -86,7 +89,7 @@ public class CardListComponent extends VBox{
     }
 
 
-    public void addCard(ActionEvent event) {
+    public void addCard() {
 
 
          Card c = mainCtrl.createCard(listID);
@@ -96,7 +99,9 @@ public class CardListComponent extends VBox{
 
 
     public void delete(){
-        server.deleteCardList(server.getCardList(listID),boardID);
+
+
+        server.deleteCardList(listID,boardID);
         mainCtrl.refreshBoardOverview();
     }
 

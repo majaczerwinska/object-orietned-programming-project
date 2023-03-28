@@ -493,14 +493,14 @@ public class ServerUtils {
     }
     /**
      * send a delete request for a cardlist
-     * @param c the cardlist instance
+     * @param listID the cardlist instance
      * @param boardID the board the cardlist is in
      * @return the deleted cardlist response
      */
-    public CardList deleteCardList(CardList c, int boardID) {
-        System.out.println("Sending DELETE request to api/lists/"+boardID+"/"+c.getId()+"\nCardlist for cardlist element "+c);
+    public CardList deleteCardList(int listID, int boardID) {
+
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/lists/" + boardID + "/" + c.getId()) //
+                .target(SERVER).path("api/lists/" + boardID + "/" + listID) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .delete(CardList.class);
@@ -550,16 +550,13 @@ public class ServerUtils {
      * @return the cardlist element
      */
     public CardList getCardList(int listID){
-        try {
+
             return ClientBuilder.newClient(new ClientConfig())
                     .target(SERVER).path("api/lists/" + listID)
                     .request(APPLICATION_JSON)
                     .accept(APPLICATION_JSON)
                     .get(new GenericType<CardList>() {
                     });
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
+
     }
 }

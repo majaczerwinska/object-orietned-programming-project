@@ -33,14 +33,14 @@ import javafx.scene.control.ListView;
 
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 
-//import java.net.URL;
-import java.awt.*;
+
+
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-//import java.util.ResourceBundle;
+
 
 public class BoardOverviewCtrl /*implements Initializable*/ {
     private final ServerUtils server;
@@ -220,7 +220,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public void displayLists(List<CardList> cardLists, List<List<Card>> allCards){
         int i = 0;
         for (CardList cardList : cardLists) {
-            CardListComponent cardListComponent = new CardListComponent(mainCtrl, boardID);
+            CardListComponent cardListComponent = new CardListComponent(mainCtrl, boardID, cardList.getId());
             cardListComponent.setTitle(cardList.getName());
             cardListComponent.setStyle("-fx-background-color: " + String.format("rgb(%d, %d, %d)",
                     (cardList.getColor() >> 16) & 0xFF,
