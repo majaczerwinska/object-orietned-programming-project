@@ -16,6 +16,7 @@
 package client.scenes;
 
 import client.components.CardListComponent;
+import commons.Card;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
@@ -165,7 +166,7 @@ public class MainCtrl {
     public void showLanding() {
         primaryStage.setTitle("Landing page!!");
         primaryStage.setScene(landing);
-        landingCtrl.refresh();
+
     }
 
     /**
@@ -238,6 +239,7 @@ public class MainCtrl {
         );
     }
 
+
     /**
      * shows a scene where you can create a new list and add it to the public board
      * @param boardId - board id
@@ -245,7 +247,7 @@ public class MainCtrl {
     public void showListCreate(int boardId){
         primaryStage.setTitle("List creation");
         primaryStage.setScene(listCreate);
-        listCreationCtrl.boardId = boardId;
+        listCreationCtrl.boardID = boardId;
         primaryStage.show();
     }
 
@@ -279,10 +281,12 @@ public class MainCtrl {
         primaryStage.setTitle("Board overview :)");
         boardOverviewCtrl.boardID = boardID;
         primaryStage.setScene(boardOverwiew);
-        boardOverviewCtrl.refreshName(boardID);
+//        boardOverviewCtrl.refreshName(boardID);
+
         primaryStage.show();
         //We later have to combine all these methods we call into one refresh method in boardOverviewCtrl
         boardOverviewCtrl.setBoardName();
+        boardOverviewCtrl.setColor();
         boardOverviewCtrl.refreshListViewTags();
         boardOverviewCtrl.refresh();
     }
@@ -403,10 +407,11 @@ public class MainCtrl {
 
     /**
      * Creates a card
-     * @param listID the id of the list
+     * @param listID the id of the list the card is added to
+     * @return the card that was created
      */
-    public void createCard(int listID) {
-        boardOverviewCtrl.createCard(listID);
+    public Card createCard(int listID) {
+        return boardOverviewCtrl.createCard(listID);
     }
     /**
      * refresh a specific list

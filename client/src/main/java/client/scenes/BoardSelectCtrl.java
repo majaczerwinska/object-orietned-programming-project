@@ -147,6 +147,8 @@ public class BoardSelectCtrl{
 //            }
         ObservableList<Board> boardList = FXCollections.observableList(getBoards());
         list.setItems(boardList);
+
+
     }
 
 //    @FXML

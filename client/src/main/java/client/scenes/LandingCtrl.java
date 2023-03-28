@@ -25,16 +25,11 @@ public class LandingCtrl {
     /**
      * server selection button handler
      */
-    @Inject
-    public void showServerSelectionButtonHandler() {
+    public void showServerSelect() {
         mainCtrl.showServerSelect();
     }
 
-    /**
-     *
-     */
-    public void refresh() {
-    }
+
 
     /**
      * exit app button handler
