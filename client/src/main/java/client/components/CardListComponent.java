@@ -13,9 +13,7 @@ import javafx.scene.control.Label;
 
 import javafx.scene.layout.VBox;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
+
 import java.io.IOException;
 
 //TODO
@@ -163,12 +161,6 @@ public class CardListComponent extends VBox{
     public void addEnterKeyListener() {
         System.out.println("add key listener called in card list component");
         mainCtrl.addEnterKeyListener(listID);
-    }
-
-    public void addTagToACard(){
-        server.addTagToCard(0,102,52);
-        mainCtrl.refreshBoardOverview();
-
     }
 
 }

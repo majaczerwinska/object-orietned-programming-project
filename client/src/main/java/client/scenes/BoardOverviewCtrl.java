@@ -35,6 +35,7 @@ import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 
 public class BoardOverviewCtrl /*implements Initializable*/ {
@@ -253,8 +254,12 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * @return an observable list with all tags
      */
     public ObservableList<Tag> getTagList(int boardID){
-        List<Tag> tags = server.getTagsFromBoard(boardID);
-        ObservableList<Tag> tagList = FXCollections.observableList(tags);
+        Set<Tag> t = server.getTagsFromBoard(boardID);
+        List<Tag> tags= new ArrayList<>();
+        for(Tag tag : t){
+            tags.add(tag);
+        }
+        ObservableList<Tag> tagList = (ObservableList<Tag>) FXCollections.observableList(tags);
         return tagList;
     }
 

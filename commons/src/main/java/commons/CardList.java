@@ -1,5 +1,8 @@
 package commons;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +11,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "lists")
+@JsonIdentityInfo(
+        scope = CardList.class,
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class CardList {
     @Id
     @Column(name = "list_id")

@@ -1,12 +1,17 @@
 package commons;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "cards")
+@JsonIdentityInfo(
+        scope = Card.class,
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Card {
     @Id
     @Column(name = "card_id")
@@ -28,7 +33,7 @@ public class Card {
             name = "cards_tags",
             joinColumns = @JoinColumn(name = "card_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    private List<Tag> tags;
+    private Set<Tag> tags;
 
     @OneToMany(targetEntity = Task.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "card_id")
@@ -45,7 +50,7 @@ public class Card {
         this.description = "";
         this.color = 0xffffff;
         this.tasks = new ArrayList<>();
-        this.tags = new ArrayList<>();
+        this.tags = new HashSet<>();
     }
 
 
@@ -163,7 +168,7 @@ public class Card {
      * Gets the tags of the card
      * @return a list of tags
      */
-    public List<Tag> getTags() {
+    public Set<Tag> getTags() {
         return tags;
     }
 
@@ -171,7 +176,7 @@ public class Card {
      * Sets the list of tags for the card
      * @param tags the tags belonging to the card
      */
-    public void setTags(List<Tag> tags) {
+    public void setTags(Set<Tag> tags) {
         this.tags = tags;
     }
 

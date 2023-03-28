@@ -22,6 +22,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 //import java.io.InputStreamReader;
 //import java.net.URL;
 import java.util.List;
+import java.util.Set;
 
 import commons.Board;
 import commons.Card;
@@ -247,12 +248,12 @@ public class ServerUtils {
      * @param boardId the id from the board we need the tags from
      * @return the list with tags from the board
      */
-    public List<Tag> getTagsFromBoard(int boardId) {
+    public Set<Tag> getTagsFromBoard(int boardId) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/tags/" + boardId) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<Tag>>() {});
+                .get(new GenericType<Set<Tag>>() {});
     }
 
     /**
