@@ -85,6 +85,7 @@ public class BoardController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<Board> getBoard(@PathVariable("id") int id){
+        System.out.println(id);
         if(id < 0 || !abs.existsById(id)) return ResponseEntity.badRequest().body(null);
 
         return ResponseEntity.ok(abs.findById(id).get());

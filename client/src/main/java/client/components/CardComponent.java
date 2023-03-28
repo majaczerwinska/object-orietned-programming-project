@@ -98,6 +98,7 @@ public class CardComponent extends HBox implements Initializable {
             tfTitle.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; " +
                     "-fx-alignment: center");
         });
+
     }
 
     /**
@@ -148,6 +149,7 @@ public class CardComponent extends HBox implements Initializable {
         setOnMouseClicked(this::onElementClick);
         dragging();
 
+
     }
 
 
@@ -155,7 +157,7 @@ public class CardComponent extends HBox implements Initializable {
      * test method
      */
     public void addtesttagtocard() {
-        server.addTagToCard(boardID,0,cardID, server.getTag(0));
+        server.addTagToCard(boardID,0,cardID);
     }
 
     /**
@@ -276,6 +278,7 @@ public class CardComponent extends HBox implements Initializable {
      * open card overview
      */
     public void joinCard() {
+        System.out.println(boardID + "joinCard cardComponent");
         if (self==null) {
             System.out.println("selected card appears to be null, in joiCoard() of CardComponentCtrl");
             return;

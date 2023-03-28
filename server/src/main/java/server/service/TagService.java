@@ -10,7 +10,8 @@ import server.database.BoardRepository;
 import server.database.CardRepository;
 import server.database.TagRepository;
 
-import java.util.ArrayList;
+
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -69,7 +70,7 @@ public class TagService {
     public Tag delete(Tag tag, int boardId){
         if(!br.existsById(boardId)) return null;
         tag.getCards().forEach(card -> card.getTags().remove(tag));
-        tag.setCards(new ArrayList<>());
+        tag.setCards(new HashSet<>());
         repo.delete(tag);
         return tag;
     }

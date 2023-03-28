@@ -93,6 +93,7 @@ public class CardCtrl {
      * exit card overview back to board overview
      */
     public void exit(){
+        System.out.println(boardID + "cardexit");
         mainCtrl.showBoardOverview(boardID);
     }
 

@@ -16,6 +16,7 @@
 package client.scenes;
 
 import client.components.CardListComponent;
+import commons.Card;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
@@ -61,12 +62,16 @@ public class MainCtrl {
     private ListCreationCtrl listCreationCtrl;
     private Scene listCreate;
 
+    private HelpCtrl helpCtrl;
+    private Scene helpScene;
+
     private ListEditCtrl listEditCtrl;
     private Scene listEdit;
 
 
     /**
-     *
+     * 
+     * @param landing
      * @param primaryStage
      * @param card
      * @param publicBoard
@@ -78,11 +83,12 @@ public class MainCtrl {
      * @param boardOverview
      * @param editBoard
      * @param boardCreation
+     * @param help
      * @param taskCreator
      * @param listEdit
      */
     public void initialize(Stage primaryStage,
-                           //Pair<LandingCtrl, Parent> landing,
+                           Pair<LandingCtrl, Parent> landing,
                            Pair<CardCtrl, Parent> card,
                            Pair<PublicBoardCtrl, Parent> publicBoard,
                            Pair<BoardSelectCtrl, Parent> boardSelect,
@@ -94,12 +100,12 @@ public class MainCtrl {
                            Pair<BoardCreationCtrl, Parent> boardCreation,
                            Pair<TaskCreatorCtrl, Parent> taskCreator,
                            Pair<ListEditCtrl, Parent> listEdit,
-                           Pair<EditBoardCtrl, Parent> editBoard
+                           Pair<EditBoardCtrl, Parent> editBoard,
+                           Pair<HelpCtrl, Parent> help
                            ) {
-
         this.primaryStage = primaryStage;
-        //this.landingCtrl = landing.getKey();
-        //this.landing = new Scene(landing.getValue());
+        this.landingCtrl = landing.getKey();
+        this.landing = new Scene(landing.getValue());
 
         this.cardCtrl = card.getKey();
         this.card = new Scene(card.getValue());
@@ -136,7 +142,9 @@ public class MainCtrl {
 
         this.editBoardCtrl = editBoard.getKey();
         this.editBoard = new Scene(editBoard.getValue());
-
+        
+        this.helpCtrl = help.getKey();
+        this.helpScene = new Scene(help.getValue());
 
 //        showLanding();
         showServerSelect();
@@ -158,7 +166,7 @@ public class MainCtrl {
     public void showLanding() {
         primaryStage.setTitle("Landing page!!");
         primaryStage.setScene(landing);
-        landingCtrl.refresh();
+
     }
 
     /**
@@ -231,6 +239,7 @@ public class MainCtrl {
         );
     }
 
+
     /**
      * shows a scene where you can create a new list and add it to the public board
      * @param boardId - board id
@@ -238,7 +247,7 @@ public class MainCtrl {
     public void showListCreate(int boardId){
         primaryStage.setTitle("List creation");
         primaryStage.setScene(listCreate);
-        listCreationCtrl.boardId = boardId;
+        listCreationCtrl.boardID = boardId;
         primaryStage.show();
     }
 
@@ -272,10 +281,12 @@ public class MainCtrl {
         primaryStage.setTitle("Board overview :)");
         boardOverviewCtrl.boardID = boardID;
         primaryStage.setScene(boardOverwiew);
-        boardOverviewCtrl.refreshName(boardID);
+//        boardOverviewCtrl.refreshName(boardID);
+
         primaryStage.show();
         //We later have to combine all these methods we call into one refresh method in boardOverviewCtrl
         boardOverviewCtrl.setBoardName();
+        boardOverviewCtrl.setColor();
         boardOverviewCtrl.refreshListViewTags();
         boardOverviewCtrl.refresh();
     }
@@ -305,6 +316,15 @@ public class MainCtrl {
     public void showBoardCreation(){
         primaryStage.setTitle("Board creation overview :)");
         primaryStage.setScene(boardCreation);
+        primaryStage.show();
+    }
+
+    /**
+     * Shows the help page
+     */
+    public void showHelpPage() {
+        primaryStage.setTitle("Help Page");
+        primaryStage.setScene(helpScene);
         primaryStage.show();
     }
 
@@ -387,10 +407,11 @@ public class MainCtrl {
 
     /**
      * Creates a card
-     * @param listID the id of the list
+     * @param listID the id of the list the card is added to
+     * @return the card that was created
      */
-    public void createCard(int listID) {
-        boardOverviewCtrl.createCard(listID);
+    public Card createCard(int listID) {
+        return boardOverviewCtrl.createCard(listID);
     }
     /**
      * refresh a specific list

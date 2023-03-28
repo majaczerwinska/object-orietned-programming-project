@@ -1,9 +1,16 @@
 package commons;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "tasks")
+@JsonIdentityInfo(
+        scope = Task.class,
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Task {
 
     @Id

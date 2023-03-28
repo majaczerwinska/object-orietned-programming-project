@@ -1,12 +1,17 @@
 package commons;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "tags")
+@JsonIdentityInfo(
+        scope = Tag.class,
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Tag {
     @Id
     @Column(name = "tag_id")
@@ -18,7 +23,7 @@ public class Tag {
     @Column(name = "tag_color")
     private int color;
     @ManyToMany(mappedBy = "tags")
-    private List<Card> cards;
+    private Set<Card> cards;
 
 
 
@@ -30,7 +35,7 @@ public class Tag {
     public Tag(String title) {
         this.title = title;
         this.color = 0xffffff;
-        this.cards = new ArrayList<>();
+        this.cards = new HashSet<>();
     }
 
 
@@ -42,7 +47,7 @@ public class Tag {
     public Tag(String title, int color) {
         this.title = title;
         this.color = color;
-        this.cards = new ArrayList<>();
+        this.cards = new HashSet<>();
     }
 
 
@@ -57,7 +62,7 @@ public class Tag {
      * Gets the cards that are assigned to this tag
      * @return a list of cards
      */
-    public List<Card> getCards() {
+    public Set<Card> getCards() {
         return cards;
     }
 
@@ -65,7 +70,7 @@ public class Tag {
      * Sets the list of cards to this tag
      * @param cards the list which match this tag
      */
-    public void setCards(List<Card> cards) {
+    public void setCards(Set<Card> cards) {
         this.cards = cards;
     }
 
