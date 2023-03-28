@@ -4,6 +4,7 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Board;
 import commons.Tag;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,6 +27,7 @@ public class TagManagerCtrl implements Initializable {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     public int boardId = 0;
+    private ObservableList<Tag> tagList;
     @FXML
     private Label labelBoard;
     @FXML
@@ -64,6 +66,7 @@ public class TagManagerCtrl implements Initializable {
             System.out.println("No server to connect to, halting tag init function");
             return;
         }
+        server.registerForMessages("/topic/tags/"+boardId, Tag.class, tag -> tagList.add(tag));
         System.out.println("Initialize called");
         setLabelBoard();
         refresh();
@@ -76,7 +79,7 @@ public class TagManagerCtrl implements Initializable {
      */
     public ObservableList<Tag> getTagList(int boardId){
         List<Tag> tags = server.getTagsFromBoard(boardId);
-        ObservableList<Tag> tagList = FXCollections.observableList(tags);
+        tagList = FXCollections.observableList(tags);
         return tagList;
     }
 
@@ -93,9 +96,14 @@ public class TagManagerCtrl implements Initializable {
                 if (empty || tag == null || tag.getTitle() == null) {
                     setText(null);
                 } else {
-                    setText(tag.getTitle());
-                    String hexColor = String.format("#%06X", (0xFFFFFF & tag.getColor()));
-                    setStyle("-fx-control-inner-background: " + hexColor);
+                    Platform.runLater(new Runnable() {
+                        @Override public void run() {
+                            setText(tag.getTitle());
+                            String hexColor = String.format("#%06X", (0xFFFFFF & tag.getColor()));
+                            setStyle("-fx-control-inner-background: " + hexColor);
+                        }
+                    });
+
                 }
             }
         });
@@ -119,7 +127,8 @@ public class TagManagerCtrl implements Initializable {
         Color fxColor = colorPicker.getValue();
         int intColor = colorParseToInt(fxColor);
         Tag tag = new Tag(title, intColor);
-        server.addTag(tag, boardId);
+//        server.addTag(tag, boardId);
+        server.sendMessage("/app/tags/"+boardId, tag);
         refresh();
     }
 

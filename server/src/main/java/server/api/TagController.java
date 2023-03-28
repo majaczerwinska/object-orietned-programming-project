@@ -4,6 +4,9 @@ package server.api;
 import commons.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 import server.service.BoardService;
 import server.service.TagService;
@@ -25,6 +28,13 @@ public class TagController {
     public TagController(TagService ser, BoardService boardService){
         this.ser = ser;
         this.boardService = boardService;
+    }
+
+    @MessageMapping("/tags/{boardId}")
+    @SendTo("/topic/tags/{boardId}")
+    public Tag addMessage(@DestinationVariable("boardId") int boardID, Tag tag){
+        addTag(boardID, tag);
+        return tag;
     }
 
     /**

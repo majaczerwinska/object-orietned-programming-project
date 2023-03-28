@@ -15,6 +15,7 @@ import java.util.List;
 
 
 @Service
+@Transactional
 public class TagService {
     private final TagRepository repo;
     private final BoardRepository br;
@@ -115,7 +116,6 @@ public class TagService {
      * @param newTag the new tag with the right attributes
      * @return the edited tag
      */
-    @Transactional
     public Tag editTag(Tag tag, Tag newTag) {
             tag.setTitle(newTag.getTitle());
             tag.setColor(newTag.getColor());
