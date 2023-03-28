@@ -66,10 +66,10 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         try {
-
+            System.out.println("Loading all scenes");
             //var landing = FXML.load(LandingCtrl.class, "client", "scenes", "Landing.fxml");
             var publicBoard = FXML.load(PublicBoardCtrl.class, "client", "scenes", "PublicBoard.fxml");
-            var card = FXML.load(CardCtrl.class, "client", "scenes", "Card.fxml");
+            var card = FXML.load(CardCtrl.class, "client", "scenes", "CardOverview.fxml");
             var selectBoard = FXML.load(BoardSelectCtrl.class, "client", "scenes", "BoardSelect.fxml");
             var popupJoin = FXML.load(PopupJoinCtrl.class, "client", "scenes", "popupJoin.fxml");
             var listCreate = FXML.load(ListCreationCtrl.class, "client", "scenes", "ListCreate.fxml");
@@ -80,6 +80,7 @@ public class Main extends Application {
             var boardCreation = FXML.load(BoardCreationCtrl.class, "client", "scenes", "BoardCreation.fxml");
             var listEdit = FXML.load(ListEditCtrl.class, "client", "scenes", "ListEdit.fxml");
 
+            System.out.println("Done with loading scenes");
             var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
 
 
@@ -106,7 +107,7 @@ public class Main extends Application {
 
 //        var overview = FXML.load(QuoteOverviewCtrl.class, "client", "scenes", "QuoteOverview.fxml");
 //        var add = FXML.load(AddQuoteCtrl.class, "client", "scenes", "AddQuote.fxml");
-//        var card = FXML.load(CardCtrl.class, "client", "scenes", "Card.fxml");
+//        var card = FXML.load(CardCtrl.class, "client", "scenes", "CardOverview.fxml");
 //
 
     }

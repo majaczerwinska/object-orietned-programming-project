@@ -3,25 +3,22 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.Card;
-import commons.Tag;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import commons.Board;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.List;
 //import javafx.scene.shape.Circle;
 
 
-public class CardCreationCtrl {
+public class EditBoardCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     @FXML
     private TextField name;
+    @FXML
+    private TextField color;
     @FXML
     private Button save;
     @FXML
@@ -49,7 +46,7 @@ public class CardCreationCtrl {
      * @param mainCtrl -
      */
     @Inject
-    public CardCreationCtrl(ServerUtils server, MainCtrl mainCtrl){
+    public EditBoardCtrl(ServerUtils server, MainCtrl mainCtrl){
         this.mainCtrl = mainCtrl;
         this.server = server;
     }
@@ -63,19 +60,10 @@ public class CardCreationCtrl {
     @FXML
     private void openScene(int boardId) {
         this.boardId = boardId;
-        List<Tag> allTags = server.getTagsFromBoard(this.boardId);
+        Board board = server.getBoard(this.boardId);
 
-
-        // Make listview ready
-        tags.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        ObservableList<String> items = FXCollections.observableArrayList();
-        MultipleSelectionModel<String> selectionModel = tags.getSelectionModel();
-
-
-        for (Tag allTag : allTags) {
-            items.add(allTag.getTitle());
-        }
-        tags.setItems(items);
+        name.setText(board.getName());
+        color.setText(String.valueOf(board.getColor()));
     }
 
     /**
@@ -106,34 +94,23 @@ public class CardCreationCtrl {
      * Saves the card and all changes made to it to the database.
      */
     @FXML
-    private void addCard() {
+    private void editBoard() {
         String name = this.name.getText();
-        String description = this.description.getText();
-        ObservableList<String> tags = this.tags.getSelectionModel().getSelectedItems();
-        List<Tag> tagList = new ArrayList<>();
-        List<Tag> allTags = server.getTagsFromBoard(boardId);
+        int boardColor = Integer.parseInt(this.color.getText());
 
 
-        for (Tag t : allTags) {
-            if (tags.contains(t.getTitle())) {
-                tagList.add(t);
-            }
-        }
+        Board board = new Board(name);
+        board.setId(boardId);
+        board.setColor(boardColor);
 
-
-
-        Card card = new Card(name);
-        card.setDescription(description);
-        card.setTags(tagList);
-
-        if (name.isEmpty() || description.isEmpty()) {
+        if (name.isEmpty() || color.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
-            alert.setContentText("Please enter a name and description");
+            alert.setContentText("Please enter a name and a color");
             alert.showAndWait();
         }
         else {
-//            server.addCard(card);
+           server.editBoard(this.boardId, board);
         }
         exitButton(); // Exits the scene
     }

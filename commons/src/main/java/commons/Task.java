@@ -13,6 +13,8 @@ public class Task {
     private int id;
     @Column(name = "task_name")
     private String name;
+    @Column(name = "task_checked")
+    private boolean checked;
 
 
     /**
@@ -26,9 +28,24 @@ public class Task {
      */
     public Task(String name) {
         this.name = name;
+        checked = false;
     }
 
+    /**
+     * Gets the state of the task
+     * @return true iff it is checked
+     */
+    public boolean isChecked() {
+        return checked;
+    }
 
+    /**
+     * Sets the state of the task
+     * @param checked the state
+     */
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
 
     /**
      * Returns the id of a task
@@ -67,7 +84,7 @@ public class Task {
      * @return a text representation
      */
     public  String toString(){
-        return "Task #" +id +", name: " + name;
+        return "Task #" +id +", name: " + name + ", checked: " + checked;
     }
 
 }

@@ -109,27 +109,24 @@
                   </TextField>
                </children>
             </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="BASELINE_CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
+                  <Button fx:id="stopCreatingBoardButton" mnemonicParsing="false" onAction="#stopCreatingBoardButtonHandler" text="Cancel">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+                     </HBox.margin>
+                  </Button>
                   <Button fx:id="createBoardButton" mnemonicParsing="false" onAction="#createBoardButtonClickHandler" text="Create Board">
                      <font>
                         <Font size="18.0" />
                      </font>
                      <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Label fx:id="errorLabel" textAlignment="CENTER">
-                     <font>
-                        <Font size="10.0" />
-                     </font>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </HBox.margin>
-                  </Label>
                </children>
             </HBox>
          </children>

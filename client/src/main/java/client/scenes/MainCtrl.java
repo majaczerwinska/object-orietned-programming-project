@@ -15,10 +15,14 @@
  */
 package client.scenes;
 
+import client.components.CardListComponent;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+
+import java.util.concurrent.*;
 
 public class MainCtrl {
 
@@ -186,7 +190,35 @@ public class MainCtrl {
         primaryStage.setTitle("Tag Manager :)");
         primaryStage.setScene(tagManager);
         tagManagerCtrl.boardId = boardID;
+        //Later combine these methods into one refresh method
+        tagManagerCtrl.setLabelBoard();
+        tagManagerCtrl.refresh();
         primaryStage.show();
+    }
+
+    /**
+     * Method that parses fxColor to int
+     *
+     * @param fxColor the color to be parsed
+     * @return return the color awtColor
+     */
+    public static int colorParseToInt(Color fxColor){
+        return ((int)(fxColor.getRed() * 255) << 16)
+                | ((int)(fxColor.getGreen() * 255) << 8)
+                | (int)(fxColor.getBlue() * 255);
+    }
+
+    /**
+     * Method that parses int to fxColor
+     * @param intColor the color to be parsed
+     * @return return the color fxColor
+     */
+    public static Color colorParseToFXColor(int intColor){
+        return Color.rgb(
+                (intColor >> 16) & 0xFF, // red component
+                (intColor >> 8) & 0xFF, // green component
+                intColor & 0xFF // blue component
+        );
     }
 
     /**
@@ -218,19 +250,31 @@ public class MainCtrl {
         primaryStage.setTitle("Board overview :)");
         boardOverviewCtrl.boardID = boardID;
         primaryStage.setScene(boardOverwiew);
-        boardOverviewCtrl.refresh(boardID);
+        boardOverviewCtrl.refreshName(boardID);
         primaryStage.show();
-        boardOverviewCtrl.clearBoard();
-        boardOverviewCtrl.displayLists();
+        //We later have to combine all these methods we call into one refresh method in boardOverviewCtrl
+        boardOverviewCtrl.setBoardName();
+        boardOverviewCtrl.refreshListViewTags();
+        boardOverviewCtrl.refresh();
     }
 
+
     /**
-     * Shows card overview
+     * show card overview
+     * @param cardID card id
+     * @param boardID board id
      */
-    public  void showCard(){
+    public  void showCard(int cardID, int boardID){
         primaryStage.setTitle("Card overview :)");
         primaryStage.setScene(card);
+        cardCtrl.cardID = cardID;
+        cardCtrl.boardID = boardID;
+
         primaryStage.show();
+        cardCtrl.setInfo();
+        cardCtrl.clearCard();
+        cardCtrl.displayTasks();
+
     }
 
     /**
@@ -263,4 +307,76 @@ public class MainCtrl {
         listEditCtrl.boardId = boardId;
         primaryStage.show();
     }
+        /**
+     * refresh board overview scene with newly polled data from the database
+     */
+    public void refreshBoardOverview()  {
+        boardOverviewCtrl.refresh();
+    }
+
+    /**
+     * add event listener for the enter key, intermediate function
+     * @param listID the list mouse is currently in
+     */
+    public void addEnterKeyListener(int listID) {
+        boardOverviewCtrl.addEnterKeyListener(listID);
+    }
+
+    /**
+     * refresh board after 200 milliseconds
+     * waits for database to update before pulling data again and showing in client
+     */
+    public void timeoutBoardRefresh() {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Future<?> future = executor.submit(() -> {
+            boardOverviewCtrl.refresh();
+        });
+        try {
+            future.get(200, TimeUnit.MILLISECONDS); // set a timeout of 5 seconds
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            future.cancel(true); // cancel the task if it takes too long
+            // handle the timeout exception here
+            e.printStackTrace();
+            System.out.println("time out exception in main controller");
+        }
+        executor.shutdown();
+    }
+
+
+    /**
+     * refresh board overview after custom timeout
+     * @param mil the timeout in milliseconds
+     */
+    public void timeoutBoardRefresh(int mil) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Future<?> future = executor.submit(() -> {
+            boardOverviewCtrl.refresh();
+        });
+        try {
+            future.get(mil, TimeUnit.MILLISECONDS); // set a timeout of 5 seconds
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            future.cancel(true); // cancel the task if it takes too long
+            // handle the timeout exception here
+            e.printStackTrace();
+            System.out.println("time out exception in main controller");
+        }
+        executor.shutdown();
+    }
+
+    /**
+     * Creates a card
+     * @param listID the id of the list
+     */
+    public void createCard(int listID) {
+        boardOverviewCtrl.createCard(listID);
+    }
+    /**
+     * refresh a specific list
+     * @param listID the lists id
+     * @param component the cardlist component
+     */
+    public void refreshListView(int listID, CardListComponent component) {
+        boardOverviewCtrl.refreshList(listID, component);
+    }
+
 }

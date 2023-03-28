@@ -1,20 +1,45 @@
 package client.components;
 
+import client.scenes.CardCtrl;
+import client.scenes.MainCtrl;
+import client.utils.ServerUtils;
+import commons.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+
 
 import java.io.IOException;
 
 public class SubTaskComponent extends HBox {
+    private int taskId;
+    private int cardId;
+    private CardCtrl cardCtrl;
+    private Task self;
     @FXML
-    private Label labelTitle;
+    private CheckBox checkbox;
+    @FXML
+    private TextField textField;
+    @FXML
+    private Button delete;
+    private ServerUtils server;
+    private MainCtrl mainCtrl;
 
     /**
-     * The constuctor for the component
+     * constructor for a subtask component
+     * @param cardId the card id the tasks are for
+     * @param cardCtrl the controller instance
      */
-    public SubTaskComponent() {
+    public SubTaskComponent(int cardId, CardCtrl cardCtrl) {
+        super();
+        this.cardCtrl = cardCtrl;
+        server = new ServerUtils();
+        mainCtrl = new MainCtrl();
+        this.cardId = cardId;
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/components/SubTaskComponent.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(SubTaskComponent.this);
@@ -24,24 +49,54 @@ public class SubTaskComponent extends HBox {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
-    }
 
-    private String title;
+        textField.setOnKeyTyped(event -> updateTask());
+        checkbox.setOnAction(event -> updateTask());
+        delete.setOnAction(event -> delete());
 
-    /**
-     * Getter for title
-     * @return the title
-     */
-    public String getTitle() {
-        return title;
+        textField.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; " +
+                "-fx-alignment: center");
+
     }
 
     /**
-     * Setter for title subtask
-     * @param title the title
+     * updates a task
      */
-    public void setTitle(String title) {
-        this.title = title;
-        labelTitle.setText(this.title);
+    public void updateTask(){
+        if(textField.getText().equals("")) return;
+            self.setName(textField.getText());
+            self.setChecked(checkbox.isSelected());
+            server.editTask(taskId,self);
+
+
+
     }
+
+    /**
+     * updates task
+     * @param task new task data
+     */
+    public void setData(Task task){
+        textField.setText(task.getName());
+        taskId = task.getId();
+        self = task;
+        checkbox.setSelected(task.isChecked());
+    }
+
+    /**
+     * delete a subtask
+     */
+    public void delete(){
+        System.out.println(taskId);
+        System.out.println(cardId);
+        server.deleteTask(taskId, cardId);
+        cardCtrl.refresh();
+    }
+
+
+
+
+
+
+
 }

@@ -46,7 +46,7 @@ public class TaskTest {
     @Test
     public void toStringTest(){
         Task task = new Task("test");
-        assertEquals(task.toString(), "Task #" + task.getId()+ ", name: " + task.getName());
+        assertEquals(task.toString(), "Task #" + task.getId()+ ", name: " + task.getName() + ", checked: "+task.isChecked());
     }
 
 

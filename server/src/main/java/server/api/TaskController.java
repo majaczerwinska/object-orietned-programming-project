@@ -26,14 +26,14 @@ public class TaskController {
     /**
      * Changes the task
      * @param id -  the id of the task
-     * @param newName - the new name for the task
+     * @param task - the new task for the task
      * @return  a response entity
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Task> editTask(@PathVariable("id") int id, String newName){
-        if(!ts.existsById(id) || newName.isEmpty()) return ResponseEntity.badRequest().build();
-        ts.updateTask(ts.getById(id), newName);
-        return ResponseEntity.ok(ts.getById(id));
+    public ResponseEntity<Task> editTask(@PathVariable("id") int id, @RequestBody Task task){
+        if(!ts.existsById(id) || task.getName().isEmpty()) return ResponseEntity.badRequest().build();
+        Task updated = ts.updateTask(ts.getById(id), task);
+        return ResponseEntity.ok().build();
     }
 
 

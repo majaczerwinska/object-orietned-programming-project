@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import server.database.CardListRepository;
 import server.database.CardRepository;
-
 import java.util.Optional;
 
 
@@ -102,6 +101,42 @@ public final class CardService {
         c.setColor(card.getColor());
         repo.save(c);
     }
+
+    /**
+     * Finds to which list the card belongs
+     * @param card the card
+     * @return the list it belongs to
+     */
+    public CardList getListForCard(Card card){
+        if(card==null) return null;
+
+        for(CardList list: cl.findAll()){
+            if(list.getCards().contains(card)) return list;
+        }
+        return null;
+    }
+
+    /**
+     * Changes to which list the card belongs
+     * @param card the card
+     * @param listID the new list
+     * @return the card
+     */
+    public Card changeListOfCard(Card card, int listID){
+        CardList oldlist = getListForCard(card);
+
+        oldlist.getCards().remove(card);
+        cl.save(oldlist);
+        cl.getById(listID).getCards().add(card);
+        cl.save(cl.getById(listID));
+
+
+        System.out.println(cl.getById(listID));
+        System.out.println(oldlist);
+        return card;
+    }
+
+
 
 
 

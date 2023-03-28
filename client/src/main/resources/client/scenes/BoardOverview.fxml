@@ -14,15 +14,30 @@
   <items>
       <VBox alignment="TOP_CENTER" prefHeight="493.0" prefWidth="200.0" spacing="10.0">
          <children>
-            <Label fx:id="boardName" text="Board: ...">
+            <Label fx:id="labelBoardTitle" text="Board: ...">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
+            <HBox prefHeight="31.0" prefWidth="179.0" spacing="10.0">
+               <children>
+                  <Label text="Board's key: ">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Label>
+                   <Label fx:id="boardKey" text="Label">
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Label>
+                   <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onMouseClicked="#getBoardKey" text="Copy" />
+               </children>
+            </HBox>
             <VBox alignment="TOP_CENTER" prefHeight="250.0" prefWidth="121.0" spacing="5.0" style="-fx-border-color: black;">
                <children>
                   <Label text="Tags" />
-                  <ListView fx:id="list" prefHeight="190.0" prefWidth="125.0" />
+                  <ListView fx:id="listViewTags" prefHeight="190.0" prefWidth="125.0" />
                   <Button fx:id="btnTagManager" mnemonicParsing="false" onAction="#showTagManager" text="Tag manager" />
                </children>
                <padding>
@@ -33,18 +48,21 @@
             <HBox alignment="CENTER" prefHeight="38.0" prefWidth="120.0" spacing="5.0">
                <children>
                   <Button fx:id="backbtn" mnemonicParsing="false" onAction="#back" text="Back" />
-                  <Button mnemonicParsing="false" text="Edit board" />
-                  <Button alignment="CENTER" mnemonicParsing="false" onAction="#addList" text="Add list" />
+                  <Button fx:id="editBoardButton" mnemonicParsing="false" text="Edit board" />
+                  <Button fx:id="addListButton" alignment="CENTER" mnemonicParsing="false" onAction="#createTestCard" text="Add list" />
                </children>
             </HBox>
-            <Label fx:id="boardKey" text="Label" />
-            <Button mnemonicParsing="false" onMouseClicked="#getBoardKey" text="Show" />
+            <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#refresh" text="refresh">
+               <VBox.margin>
+                  <Insets top="32.0" />
+               </VBox.margin>
+            </Button>
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </VBox>
-      <ScrollPane fitToHeight="true" prefHeight="494.0" prefWidth="607.0">
+      <ScrollPane fx:id="scrollPaneOverview" fitToHeight="true" onKeyReleased="#onEnterKeyReleased" prefHeight="494.0" prefWidth="607.0">
          <content>
             <HBox fx:id="hboxCardLists" spacing="10.0">
                <padding>

@@ -101,6 +101,8 @@ public class BoardSelectCtrl{
             Board res = server.getBoardByKey(key);
             if (res != null) {
                 b.add(res);
+            } else {
+                removeBoardKey(key);
             }
         }
         return b;
