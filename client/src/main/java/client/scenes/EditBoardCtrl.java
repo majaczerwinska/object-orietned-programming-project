@@ -7,7 +7,6 @@ import commons.Board;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 //import javafx.scene.shape.Circle;
 
@@ -31,7 +30,7 @@ public class EditBoardCtrl {
     private Text text;
 
 
-    private int boardId;
+    public int boardId;
 
 //    @FXML
 //    private Circle bigBlueButton;
@@ -58,7 +57,7 @@ public class EditBoardCtrl {
      * @param boardId The ID of the board we get all tags from
      */
     @FXML
-    private void openScene(int boardId) {
+    public void openScene(int boardId) {
         this.boardId = boardId;
         Board board = server.getBoard(this.boardId);
 
@@ -71,8 +70,7 @@ public class EditBoardCtrl {
      */
     @FXML
     private void exitButton(){
-        Stage stage = (Stage) exit.getScene().getWindow();
-        stage.close();
+        mainCtrl.showBoardOverview(boardId);
     }
 
 //    /**
@@ -112,7 +110,7 @@ public class EditBoardCtrl {
         else {
            server.editBoard(this.boardId, board);
         }
-        exitButton(); // Exits the scene
+        mainCtrl.showBoardOverview(boardId);
     }
 
 
