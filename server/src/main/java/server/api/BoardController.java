@@ -120,4 +120,16 @@ public class BoardController {
         abs.setBoardInfo(board);
         return ResponseEntity.ok().build();
     }
+
+    /**
+     * board getter using the name
+     * @param name
+     * @return
+     */
+    @GetMapping("/name/{name}")
+    public Board getBoardByName(@PathVariable("name") String name) {
+        System.out.println("Received get request at /api/boards/name/"+name);
+        Board res = abs.findByName(name);
+        return res;
+    }
 }
