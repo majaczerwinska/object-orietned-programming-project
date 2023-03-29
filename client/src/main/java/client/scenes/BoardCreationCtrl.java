@@ -69,13 +69,6 @@ public class BoardCreationCtrl {
             return;
         }
 
-        // check if the user has entered a board name that already exists 
-        if(server.getBoardByName(boardTitle) != null)
-        {
-            warningname.setText("\"There already exists a \nboard with this name!\"");
-            return;
-        }
-
         // checks if the user entered a board key
         String boardKey = boardKeyTextField.getText();
         if(boardKey.length() == 0)
