@@ -12,8 +12,10 @@ import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.HashSet;
+
+import java.util.Set;
 //import javafx.scene.shape.Circle;
 
 
@@ -63,7 +65,7 @@ public class CardCreationCtrl {
     @FXML
     private void openScene(int boardId) {
         this.boardId = boardId;
-        List<Tag> allTags = server.getTagsFromBoard(this.boardId);
+        Set<Tag> allTags = server.getTagsFromBoard(this.boardId);
 
 
         // Make listview ready
@@ -110,8 +112,8 @@ public class CardCreationCtrl {
         String name = this.name.getText();
         String description = this.description.getText();
         ObservableList<String> tags = this.tags.getSelectionModel().getSelectedItems();
-        List<Tag> tagList = new ArrayList<>();
-        List<Tag> allTags = server.getTagsFromBoard(boardId);
+        Set<Tag> tagList = new HashSet<>();
+        Set<Tag> allTags = server.getTagsFromBoard(boardId);
 
 
         for (Tag t : allTags) {
