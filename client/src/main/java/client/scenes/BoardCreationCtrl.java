@@ -3,10 +3,7 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import commons.Board;
 
 public class BoardCreationCtrl {
@@ -16,6 +13,12 @@ public class BoardCreationCtrl {
 
     @FXML
     private Label titleLabel;
+    @FXML
+    private ColorPicker palette;
+    @FXML
+    private Label warningname;
+    @FXML
+    private Label warningkey;
     @FXML
     private Label boardTitleLabel;
     @FXML
@@ -58,43 +61,47 @@ public class BoardCreationCtrl {
      */
     @FXML
     public void createBoardButtonClickHandler() {
+
+        // check if the user has entered a board name
         String boardTitle = boardTitleTextField.getText();
-        Board newBoard = new Board(boardTitle);
+        if(boardTitle.equals("")){
+            warningname.setText("\"Required field!\"");
+            return;
+        }
+
+        // check if the user has entered a board name that already exists 
+        if(server.getBoardByName(boardTitle) != null)
+        {
+            warningname.setText("\"There already exists a \nboard with this name!\"");
+            return;
+        }
+
+        // checks if the user entered a board key
         String boardKey = boardKeyTextField.getText();
         if(boardKey.length() == 0)
         {
-            // pop to enter the board key and try again
+            warningkey.setText("Required field!");
+            return;
         }
+
+        // checks if the user entered a key that is already in the database
+        if(server.getBoardByKey(boardKey) != null) {
+            warningkey.setText("There already exists a \nboard with this key!");
+            return;
+        }
+
+        // creates the board
+        Board newBoard = new Board(boardTitle);
         newBoard.setBoardkey(boardKey);
-        String colorValue = colorTextField.getText();
-        if (colorValue.length() == 0) {
-            // color gets defaulted to white
-            colorValue = "ffffff";
-        }
-        if (colorValue.length() != 6 && colorValue.length() != 0) {
-            // show error
-            // make a pop up to say that your color hexcode doesn't have enough digits
-        } else {
-            boolean okay = true;
-            for (int i = 0; i < 6; i++) {
-                if (!(colorValue.charAt(i) <= 102 &&
-                        colorValue.charAt(i) >= 97) ||
-                        (colorValue.charAt(i) <= 57 &&
-                                colorValue.charAt(i) >= 48)) {
-                    // show pop up that shows your color is not well formated
-                    okay = false;
-                }
-            }
-            if (okay == true) {
-                // color assigned to the board
-                newBoard.setColor(Integer.parseInt(colorValue, 16));
-            }
-        }
-        
+        newBoard.setColor(MainCtrl.colorParseToInt(palette.getValue()));
+
+        // checks if the user wants a password for their board
         if (passwordRequiredRadioButton.isSelected()) {
             String passwordValue = passwordTextField.getText();
             newBoard.setPassword(passwordValue);
         }
+
+        // add the board to the database and go back to select board page
         server.addBoard(newBoard);
         mainCtrl.saveBoardByKey(newBoard.getBoardkey());
         mainCtrl.showSelect();
@@ -113,5 +120,6 @@ public class BoardCreationCtrl {
      * refresh method
      */
     public void refresh() {
+
     }
 }

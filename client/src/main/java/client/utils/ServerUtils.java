@@ -22,6 +22,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 //import java.io.InputStreamReader;
 //import java.net.URL;
 import java.util.List;
+import java.util.Set;
 
 import commons.Board;
 import commons.Card;
@@ -152,17 +153,37 @@ public class ServerUtils {
      * @return - the board
      */
     public Board getBoard(int id){
-        try{
+        System.out.println(id);
             return ClientBuilder.newClient(new ClientConfig())
                     .target(SERVER).path("api/boards/"+id)
                     .request(APPLICATION_JSON)
                     .accept(APPLICATION_JSON)
-                    .get(new GenericType<>() {
+                    .get(new GenericType<Board>() {
                     });
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-        return null;
+
+    }
+
+    /**
+     * returns the board with the given name
+     * @param name the name of the board to be searched for
+     * @return the board
+     */
+    public Board getBoardByName(String name) {
+        try {
+            System.out.println("sending request in api/boards/name/"+name);
+            return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/boards/name/"+name)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(new GenericType<Board>() {});
+            } 
+            catch (Exception e)
+            {
+                System.out.println("Exception raised in getBoardByName() in ServerUtils " + name);
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+            }
+            return null;
     }
 
     /**
@@ -247,12 +268,12 @@ public class ServerUtils {
      * @param boardId the id from the board we need the tags from
      * @return the list with tags from the board
      */
-    public List<Tag> getTagsFromBoard(int boardId) {
+    public Set<Tag> getTagsFromBoard(int boardId) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/tags/" + boardId) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<Tag>>() {});
+                .get(new GenericType<Set<Tag>>() {});
     }
 
     /**
@@ -273,15 +294,14 @@ public class ServerUtils {
      * @param boardid board's id
      * @param tagid tag's id
      * @param cardid card's id
-     * @param tag the tag to add
      * @return the tag element
      */
-    public Tag addTagToCard(int boardid, int tagid, int cardid, Tag tag) {
+    public Tag addTagToCard(int boardid, int tagid, int cardid) {
         return ClientBuilder.newClient(new ClientConfig()) // /{boardId}/{cardId}/{tagId}
                 .target(SERVER).path("api/tags/" + boardid + "/" + cardid + "/"+tagid) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .put(Entity.entity(tag, APPLICATION_JSON), Tag.class);
+                .put(Entity.entity("", APPLICATION_JSON), Tag.class);
     }
 
     /**
@@ -505,6 +525,20 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .delete(Card.class);
     }
+    /**
+     * send a delete request for a cardlist
+     * @param listID the cardlist instance
+     * @param boardID the board the cardlist is in
+     * @return the deleted cardlist response
+     */
+    public CardList deleteCardList(int listID, int boardID) {
+
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/lists/" + boardID + "/" + listID) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .delete(CardList.class);
+    }
 
     /**
      * Edit board with id to the new board
@@ -542,5 +576,21 @@ public class ServerUtils {
             System.out.println(e.getMessage());
         }
         return null;
+    }
+
+    /**
+     * get a cardlist by its id
+     * @param listID its id
+     * @return the cardlist element
+     */
+    public CardList getCardList(int listID){
+
+            return ClientBuilder.newClient(new ClientConfig())
+                    .target(SERVER).path("api/lists/" + listID)
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .get(new GenericType<CardList>() {
+                    });
+
     }
 }
