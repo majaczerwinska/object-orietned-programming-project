@@ -168,7 +168,7 @@ public class ServerUtils {
      * @param name the name of the board to be searched for
      * @return the board
      */
-    public Board getBoardByName(String name) {
+    /*public Board getBoardByName(String name) {
         try {
             System.out.println("sending request in api/boards/name/"+name);
             return ClientBuilder.newClient(new ClientConfig())
@@ -184,7 +184,7 @@ public class ServerUtils {
                 e.printStackTrace();
             }
             return null;
-    }
+    }*/
 
     /**
      * Get card by id
