@@ -313,7 +313,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * @return an observable list with all tags
      */
     public ObservableList<Tag> getTagList(int boardID){
-        Set<Tag> t = server.getTagsFromBoard(boardID);
+        List<Tag> t = server.getTagsFromBoard(boardID);
         List<Tag> tags= new ArrayList<>();
         for(Tag tag : t){
             tags.add(tag);

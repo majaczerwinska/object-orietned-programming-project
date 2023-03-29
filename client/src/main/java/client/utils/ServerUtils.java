@@ -245,12 +245,12 @@ public class ServerUtils {
      * @param boardId the id from the board we need the tags from
      * @return the list with tags from the board
      */
-    public Set<Tag> getTagsFromBoard(int boardId) {
+    public List<Tag> getTagsFromBoard(int boardId) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/tags/" + boardId) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get(new GenericType<Set<Tag>>() {});
+                .get(new GenericType<List<Tag>>() {});
     }
 
     /**
@@ -258,12 +258,12 @@ public class ServerUtils {
      * @param cardId the card id
      * @return the list with tags
      */
-    public List<Tag> getTagsForCard(int cardId) {
+    public Set<Tag> getTagsForCard(int cardId) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/cards/" + cardId + "/tags") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<Tag>>() {});
+                .get(new GenericType<Set<Tag>>() {});
     }
 
     /**
@@ -276,6 +276,19 @@ public class ServerUtils {
     public Tag addTagToCard(int boardid, int tagid, int cardid) {
         return ClientBuilder.newClient(new ClientConfig()) // /{boardId}/{cardId}/{tagId}
                 .target(SERVER).path("api/tags/" + boardid + "/" + cardid + "/"+tagid) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .put(Entity.entity("", APPLICATION_JSON), Tag.class);
+    }
+    /**
+     * remove tag from card
+     * @param tagid tag's id
+     * @param cardid card's id
+     * @return the tag element
+     */
+    public Tag removeTagFromCard( int tagid, int cardid) {
+        return ClientBuilder.newClient(new ClientConfig()) // /{boardId}/{cardId}/{tagId}
+                .target(SERVER).path("api/tags/" + cardid + "/"+tagid) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity("", APPLICATION_JSON), Tag.class);
@@ -570,4 +583,6 @@ public class ServerUtils {
                     });
 
     }
+
+
 }

@@ -54,6 +54,7 @@ public class BoardRepositoryTest implements BoardRepository {
     @Override
     public void deleteAllById(Iterable<? extends Integer> integers) {
 
+
     }
 
     @Override

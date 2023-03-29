@@ -77,7 +77,7 @@ public class TagManagerCtrl implements Initializable {
      * @return an observable list with all tags
      */
     public ObservableList<Tag> getTagList(int boardId){
-        Set<Tag> tags = server.getTagsFromBoard(boardId);
+        List<Tag> tags = server.getTagsFromBoard(boardId);
         List<Tag> t = new ArrayList<>();
         for(Tag tag : tags){
             t.add(tag);

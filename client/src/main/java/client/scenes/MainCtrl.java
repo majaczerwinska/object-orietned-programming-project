@@ -146,8 +146,8 @@ public class MainCtrl {
         this.helpCtrl = help.getKey();
         this.helpScene = new Scene(help.getValue());
 
-//        showLanding();
-        showServerSelect();
+        showLanding();
+        //git showServerSelect();
         primaryStage.show();
     }
 
@@ -305,8 +305,8 @@ public class MainCtrl {
 
         primaryStage.show();
         cardCtrl.setInfo();
-        cardCtrl.clearCard();
-        cardCtrl.displayTasks();
+        cardCtrl.refresh();
+
 
     }
 
