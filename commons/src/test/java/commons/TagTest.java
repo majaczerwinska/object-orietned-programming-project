@@ -4,7 +4,9 @@ import org.junit.jupiter.api.Test;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -97,7 +99,7 @@ public class TagTest {
     @Test
     void setCardsAndGetCards() {
         Tag c = new Tag("a");
-        List<Card> list = new ArrayList<>();
+        Set<Card> list = new HashSet<>();
         Card card = new Card("wdjhbhr");
         list.add(card);
         c.setCards(list);

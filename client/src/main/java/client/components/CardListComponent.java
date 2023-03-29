@@ -2,8 +2,13 @@ package client.components;
 
 import client.scenes.MainCtrl;
 import client.utils.ServerUtils;
+
+
+import commons.Card;
+import commons.CardList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import commons.CardList;
@@ -12,12 +17,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
+
 import java.io.IOException;
 
 //TODO
 public class CardListComponent extends VBox{
 
-    private int listID;
+   // private int listID;
 
     private CardList self;
 
@@ -26,10 +32,22 @@ public class CardListComponent extends VBox{
     @FXML
     private VBox vboxCards;
     @FXML
+    private Button editlist;
+    @FXML
     private VBox vboxscene;
+    @FXML
+    private Button deletebutton;
+    @FXML
+    private Button addcard;
 
     @FXML
     private Label labelTitle;
+
+
+
+
+
+
 
     private int listId;
     private int boardId;
@@ -42,7 +60,10 @@ public class CardListComponent extends VBox{
      * @param mainCtrl
      */
     public CardListComponent(MainCtrl mainCtrl, int boardId, int listId) {
+
         super();
+        this.boardId = boardId;
+       // this.listID = listID;
         server = new ServerUtils();
         this.listId=listId;
         this.boardId=boardId;
@@ -57,6 +78,7 @@ public class CardListComponent extends VBox{
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+
 
 //        setOnDragOver(event ->{
 //
@@ -86,11 +108,26 @@ public class CardListComponent extends VBox{
     }
 
     /**
-     * Add a card
+     * Adding a card
      */
     public void addCard() {
-        mainCtrl.createCard(listID);
+
+
+         Card c = mainCtrl.createCard(listId);
+        System.out.println(boardId + "carlistcomp");
+         mainCtrl.showCard(c.getId(), boardId);
     }
+
+    /**
+     * Deleting a list
+     */
+    public void delete(){
+
+
+        server.deleteCardList(listId,boardId);
+        mainCtrl.refreshBoardOverview();
+    }
+
 
     /**
      * changes the list ot which the card belonds to when its dropped
@@ -144,7 +181,7 @@ public class CardListComponent extends VBox{
      */
     public void setData(CardList cardList){
         labelTitle.setText(cardList.getName());
-        listID = cardList.getId();
+        listId = cardList.getId();
         self = cardList;
     }
 
@@ -154,6 +191,7 @@ public class CardListComponent extends VBox{
     @FXML
     public void addEnterKeyListener() {
         System.out.println("add key listener called in card list component");
-        mainCtrl.addEnterKeyListener(listID);
+        mainCtrl.addEnterKeyListener(listId);
     }
+
 }

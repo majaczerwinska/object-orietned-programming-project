@@ -94,7 +94,7 @@ public class BoardCreationCtrl {
         Board newBoard = new Board(boardTitle);
         newBoard.setBoardkey(boardKey);
         newBoard.setColor(MainCtrl.colorParseToInt(palette.getValue()));
-
+        
         // checks if the user wants a password for their board
         if (passwordRequiredRadioButton.isSelected()) {
             String passwordValue = passwordTextField.getText();

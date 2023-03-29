@@ -19,14 +19,19 @@
                   <Insets right="-23.0" />
                </padding>
                     </Label>
-                    <Button mnemonicParsing="false" prefHeight="18.0" prefWidth="12.0" text="X" />
+                    <Button fx:id="deletebutton" mnemonicParsing="false" onAction="#delete" prefHeight="18.0" prefWidth="12.0" text="X" />
                 </children>
             </HBox>
       <VBox fx:id="vboxCards" maxWidth="-Infinity" spacing="10.0" />
             <HBox alignment="CENTER" prefHeight="4.0" spacing="5.0">
                 <children>
+
+
+                    <Button fx:id="addcard" alignment="CENTER" mnemonicParsing="false" onAction="#addCard" text="Add card" />
+
                     <Button mnemonicParsing="false" onMouseClicked="#editTitle" text="Edit list" />
-                    <Button alignment="CENTER" mnemonicParsing="false" onAction="#addCard" text="Add card" />
+
+
                 </children>
             </HBox>
         </children>
