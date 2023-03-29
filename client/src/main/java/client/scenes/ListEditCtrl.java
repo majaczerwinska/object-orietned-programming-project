@@ -36,6 +36,7 @@ public class ListEditCtrl {
     public void rename(MouseEvent mouseEvent){
         String newName = name.getText();
         server.editList(listId, newName);
+        name.setText("");
         mainCtrl.showBoardOverview(boardId);
     }
 
@@ -44,6 +45,7 @@ public class ListEditCtrl {
      * @param mouseEvent
      */
     public void cancel(MouseEvent mouseEvent){
+        name.setText("");
         mainCtrl.showBoardOverview(boardId);
     }
 

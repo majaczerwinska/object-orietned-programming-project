@@ -306,7 +306,6 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         Board b = server.getBoard(boardID);
         //boardName.setText(b.getName());
         boardKey.setText(b.getBoardkey());
-        boardKey.setVisible(false);
 
 //        list.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 //        ObservableList<Tag> tagList = FXCollections.observableList(server.getTagsFromBoard(boardID));
@@ -317,15 +316,9 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * display and copy to clipboard the boardKey
      */
     public void getBoardKey(){
-        if(boardKey.isVisible()){
-            boardKey.setVisible(false);
-        }
-        else{
-            boardKey.setVisible(true);
             StringSelection selection = new StringSelection(boardKey.getText());
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(selection, selection);
-        }
     }
 
 
