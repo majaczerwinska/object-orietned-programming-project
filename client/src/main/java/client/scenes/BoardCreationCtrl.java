@@ -61,27 +61,40 @@ public class BoardCreationCtrl {
      */
     @FXML
     public void createBoardButtonClickHandler() {
+
+        // check if the user has entered a board name
         String boardTitle = boardTitleTextField.getText();
         if(boardTitle.equals("")){
             warningname.setText("\"Required field!\"");
             return;
         }
 
+        // checks if the user entered a board key
         String boardKey = boardKeyTextField.getText();
         if(boardKey.length() == 0)
         {
-            warningkey.setText("Required field!");
+            warningkey.setText("\"Required field!\"");
             return;
-
         }
+
+        // checks if the user entered a key that is already in the database
+        if(server.getBoardByKey(boardKey) != null) {
+            warningkey.setText("There already exists a \nboard with this key!");
+            return;
+        }
+
+        // creates the board
         Board newBoard = new Board(boardTitle);
         newBoard.setBoardkey(boardKey);
         newBoard.setColor(MainCtrl.colorParseToInt(palette.getValue()));
-
+        
+        // checks if the user wants a password for their board
         if (passwordRequiredRadioButton.isSelected()) {
             String passwordValue = passwordTextField.getText();
             newBoard.setPassword(passwordValue);
         }
+
+        // add the board to the database and go back to select board page
         server.addBoard(newBoard);
         mainCtrl.saveBoardByKey(newBoard.getBoardkey());
         mainCtrl.showSelect();

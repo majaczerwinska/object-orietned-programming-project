@@ -125,4 +125,20 @@ public class BoardService {
         b.setColor(board.getColor());
         repo.save(b);
     }
+
+//    /**
+//     * find a board by name in the database
+//     * @param name of the board to be searched
+//     * @return Board elem or null
+//     */
+    /*public Board findByName(String name) {
+        System.out.println("Find by name called with name = " + name);
+        List<Board> l = repo.findAll();
+        for (Board b : l) {
+            if (b.getName().equals(name)) {
+                return b;
+            }
+        }
+        return null;
+    }*/
 }
