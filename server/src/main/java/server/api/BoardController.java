@@ -123,8 +123,8 @@ public class BoardController {
 
     /**
      * board getter using the name
-     * @param name
-     * @return
+     * @param name name of the board
+     * @return Board instance or null 
      */
     @GetMapping("/name/{name}")
     public Board getBoardByName(@PathVariable("name") String name) {
