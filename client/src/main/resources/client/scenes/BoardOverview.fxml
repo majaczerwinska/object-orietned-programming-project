@@ -56,11 +56,6 @@
 
                </children>
             </HBox>
-            <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#refresh" text="refresh">
-               <VBox.margin>
-                  <Insets top="32.0" />
-               </VBox.margin>
-            </Button>
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

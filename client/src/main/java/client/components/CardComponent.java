@@ -44,7 +44,7 @@ public class CardComponent extends HBox implements Initializable {
     private Card self;
 
     @FXML
-    private TextField tfTitle;
+    public TextField tfTitle;
 
 
     @FXML

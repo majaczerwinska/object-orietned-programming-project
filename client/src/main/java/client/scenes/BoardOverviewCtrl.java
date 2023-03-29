@@ -10,57 +10,21 @@ import commons.CardList;
 import commons.Tag;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-
-import commons.Card;
-import commons.CardList;
-
-
-import commons.Board;
-import commons.Card;
-import commons.CardList;
-import commons.Tag;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
-
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-//import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
-
-
-
-
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-//import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-
-import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-
-//import java.net.URL;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -220,21 +184,26 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * @param vbox the vbox in the list where the cards need to be showed
      * @param listId the list we need to populate with cards
      * @param cards the list of cards
+     * @param c card for focus
      */
-    public void displayCards(VBox vbox, int listId, List<Card> cards){
+    public void displayCards(VBox vbox, int listId, List<Card> cards, Card c){
         //List<Card> cards = server.getCardsFromList(listId);
         cards.sort(Comparator.comparing(Card::getPosition));
         for (Card card : cards) {
+
             CardComponent cardComponent = new CardComponent(mainCtrl);
 
             cardComponent.boardID = boardID;
             cardComponent.setData(card, listId);
-
             cardComponent.setStyle("-fx-background-color: " +
                     String.format("rgb(%d, %d, %d)", (card.getColor() >> 16) & 0xFF,
                     (card.getColor() >> 8) & 0xFF, card.getColor()& 0xFF)+";" );
 
             vbox.getChildren().add(cardComponent);
+            if(card.equals(c)){
+                cardComponent.tfTitle.requestFocus();
+
+            }
         }
     }
 
@@ -287,8 +256,9 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * displays cards in vboxes
      * @param cardLists card lists
      * @param allCards list of lists of cards
+     * @param c - card for focus
      */
-    public void displayLists(List<CardList> cardLists, List<List<Card>> allCards){
+    public void displayLists(List<CardList> cardLists, List<List<Card>> allCards, Card c){
         int i = 0;
         for (CardList cardList : cardLists) {
 
@@ -301,9 +271,10 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             cardListComponent.setOnMouseEntered(event -> addEnterKeyListener(cardList.getId()));
             hboxCardLists.getChildren().add(cardListComponent);
             cardListComponent.setData(cardList);
-            displayCards(cardListComponent.getVboxCards(), cardList.getId(), allCards.get(i));
+            displayCards(cardListComponent.getVboxCards(), cardList.getId(), allCards.get(i),c);
             i++;
         }
+
     }
 
 
@@ -326,6 +297,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * Refreshes the list overview with the tags
      */
     public void refreshListViewTags(){
+        listViewTags.requestFocus();
         listViewTags.setItems(getTagList(boardID));
         listViewTags.setCellFactory(param -> new ListCell<Tag>() {
             @Override
@@ -393,8 +365,9 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
     /**
      * Refresh scene from database
+     * @param c - card for focus
      */
-    public void refresh() {
+    public void refresh(Card c) {
         System.out.println("Refreshing board overview");
         List<CardList> cardLists = getCardListsFromServer();
         List<List<Card>> allCards = new ArrayList<>();
@@ -402,7 +375,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             allCards.add(getCardsOfListFromServer(cl.getId()));
         }
         clearBoard();
-        displayLists(cardLists, allCards);
+        displayLists(cardLists, allCards, c);
+
     }
 
     /**
@@ -432,7 +406,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         Card c = new Card("test card ..");
         System.out.println("creating test card "+c);
         server.addCard(c, 0);
-        refresh();
+        //refresh();
         mainCtrl.timeoutBoardRefresh();
     }
 
@@ -446,9 +420,9 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         System.out.println("creating new card "+c+" in list id="+listID);
         c.setPosition(server.getListSize(listID) + 1);
         c = server.addCard(c, listID);
-        refresh();
+        refresh(c);
+
         return c;
-//        mainCtrl.timeoutBoardRefresh();
     }
 
     /**
@@ -464,6 +438,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             isCreatingCard = true;
             // when the user presses the enter button
             Card createdCardElement = createCard(listID);
+
         }
     }
 
