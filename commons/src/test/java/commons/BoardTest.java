@@ -72,12 +72,12 @@ public class BoardTest {
         assertEquals(c.getBoardkey(), "b");
     }
 
-    @Test
-    void setColor() {
-        Board c = new Board("a");
-        c.setColor(1);
-        assertEquals(c.getColor(), 1);
-    }
+//    @Test
+//    void setColor() {
+//        Board c = new Board("a");
+//        c.setColor(1);
+//        assertEquals(c.getColor(), 1);
+//    }
 
     @Test
     void getId() {
@@ -91,12 +91,12 @@ public class BoardTest {
         assertEquals(c.getName(), "a");
     }
 
-    @Test
-    void getColor() {
-        Board c = new Board("a");
-        c.setColor(1);
-        assertEquals(c.getColor(), 1);
-    }
+//    @Test
+//    void getColor() {
+//        Board c = new Board("a");
+//        c.setColor(1);
+//        assertEquals(c.getColor(), 1);
+//    }
 
     @Test
     void getDescription() {

@@ -68,6 +68,9 @@ public class MainCtrl {
     private ListEditCtrl listEditCtrl;
     private Scene listEdit;
 
+    private CustomizationCtrl customizationCtrl;
+    private Scene customization;
+
 
     /**
      * 
@@ -86,6 +89,7 @@ public class MainCtrl {
      * @param help
      * @param taskCreator
      * @param listEdit
+     * @param customization
      */
     public void initialize(Stage primaryStage,
                            Pair<LandingCtrl, Parent> landing,
@@ -101,7 +105,8 @@ public class MainCtrl {
                            Pair<TaskCreatorCtrl, Parent> taskCreator,
                            Pair<ListEditCtrl, Parent> listEdit,
                            Pair<EditBoardCtrl, Parent> editBoard,
-                           Pair<HelpCtrl, Parent> help
+                           Pair<HelpCtrl, Parent> help,
+                           Pair<CustomizationCtrl, Parent> customization
                            ) {
         this.primaryStage = primaryStage;
         this.landingCtrl = landing.getKey();
@@ -145,6 +150,9 @@ public class MainCtrl {
         
         this.helpCtrl = help.getKey();
         this.helpScene = new Scene(help.getValue());
+
+        this.customizationCtrl = customization.getKey();
+        this.customization = new Scene(customization.getValue());
 
 //        showLanding();
         showServerSelect();
@@ -291,7 +299,6 @@ public class MainCtrl {
         boardOverviewCtrl.refresh();
     }
 
-
     /**
      * show card overview
      * @param cardID card id
@@ -353,9 +360,17 @@ public class MainCtrl {
      * refresh board overview scene with newly polled data from the database
      */
     public void refreshBoardOverview()  {
+
         boardOverviewCtrl.refresh();
+
     }
 
+    /**
+     * refreshes
+     */
+    public void refreshListColours(){
+        customizationCtrl.colourlist();
+    }
     /**
      * add event listener for the enter key, intermediate function
      * @param listID the list mouse is currently in
@@ -420,6 +435,17 @@ public class MainCtrl {
      */
     public void refreshListView(int listID, CardListComponent component) {
         boardOverviewCtrl.refreshList(listID, component);
+    }
+
+    /**
+     * takes you to the customization scene
+     * @param boardId
+     */
+    public void showCustomization(int boardId){
+        primaryStage.setTitle("Customization");
+        primaryStage.setScene(customization);
+        customizationCtrl.boardId = boardId;
+        primaryStage.show();
     }
 
 }

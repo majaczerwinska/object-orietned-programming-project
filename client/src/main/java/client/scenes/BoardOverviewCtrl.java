@@ -169,11 +169,11 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public void setColor(){
         Board board = server.getBoard(boardID);
         scrollPaneOverview.setStyle("-fx-background: " + String.format("rgb(%d, %d, %d)",
-                (board.getColor() >> 16) & 0xFF,
-                (board.getColor() >> 8) & 0xFF, board.getColor()& 0xFF)+";");
+                (board.getbColor() >> 16) & 0xFF,
+                (board.getbColor() >> 8) & 0xFF, board.getbColor()& 0xFF)+";");
         vboxList1.setStyle("-fx-background-color: " + String.format("rgb(%d, %d, %d)",
-                (board.getColor() >> 16) & 0xFF,
-                (board.getColor() >> 8) & 0xFF, board.getColor()& 0xFF)+";");
+                (board.getbColor() >> 16) & 0xFF,
+                (board.getbColor() >> 8) & 0xFF, board.getbColor()& 0xFF)+";");
 
     }
 
@@ -296,8 +296,9 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
             cardListComponent.setTitle(cardList.getName());
             cardListComponent.setStyle("-fx-background-color: " + String.format("rgb(%d, %d, %d)",
-                    (cardList.getColor() >> 16) & 0xFF,
-                    (cardList.getColor() >> 8) & 0xFF, cardList.getColor()& 0xFF)+";" );
+                    (cardList.getbColor() >> 16) & 0xFF,
+                    (cardList.getbColor() >> 8) & 0xFF, cardList.getbColor()& 0xFF)+";" );
+            System.out.println("List style: " + cardListComponent.getStyle());
             cardListComponent.setOnMouseEntered(event -> addEnterKeyListener(cardList.getId()));
             hboxCardLists.getChildren().add(cardListComponent);
             cardListComponent.setData(cardList);
@@ -360,7 +361,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     }
 
     /**
-     * refreshes the board's name field, board's key and tag list view
+     * refreshes the board's key (tag list view and name not anymore)
      * @param boardID
      */
     @FXML
@@ -395,7 +396,9 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             allCards.add(getCardsOfListFromServer(cl.getId()));
         }
         clearBoard();
+
         displayLists(cardLists, allCards);
+
     }
 
     /**
@@ -488,6 +491,14 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      */
     public void addListScene(ActionEvent event){
         mainCtrl.showListCreate(boardID);
+    }
+
+    /**
+     * takes you to customization scene
+     * @param event
+     */
+    public void goCustomization(ActionEvent event){
+        mainCtrl.showCustomization(boardID);
     }
 
 

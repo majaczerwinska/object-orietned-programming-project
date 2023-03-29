@@ -122,7 +122,7 @@ public class BoardService {
     public void setBoardInfo(Board board){
         Board b = repo.getById(board.getId());
         b.setName(board.getName());
-        b.setColor(board.getColor());
+        b.setbColor(board.getbColor());
         repo.save(b);
     }
 }

@@ -20,8 +20,10 @@ public class Board {
     @SequenceGenerator(name = "card_sequence", sequenceName = "card_sequence")
     @GeneratedValue(generator = "card_sequence", strategy = GenerationType.SEQUENCE)
     public int id;
-    @Column(name = "color")
-    private int color;
+    @Column(name = "b_color")
+    private int bColor;
+    @Column(name = "f_color")
+    private int fColor;
     @Column(name = "name")
     private String name;
     @Column(name = "boardkey")
@@ -37,6 +39,10 @@ public class Board {
     @JoinColumn(name = "board_id")
     private List<Tag> tags;
 
+    @OneToMany(targetEntity = Palette.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "board_id")
+    private List<Palette> palettes;
+
 
 
     /**
@@ -45,7 +51,8 @@ public class Board {
      */
     public Board(String name){
         this.name = name;
-        color = 0xffffff;
+        this.bColor = 0xffffff;
+        this.fColor = 0x000000;
         this.lists = new ArrayList<>();
         this.boardkey = "";
         this.tags = new ArrayList<>();
@@ -139,20 +146,32 @@ public class Board {
     }
 
     /**
-     * Retrieves the color of the board
+     * Retrieves the background color of the board
      * @return the color
      */
-    public int getColor() {
-        return color;
+    public int getbColor() {
+        return this.bColor;
     }
 
     /**
-     * Changes the color of the board
+     * Changes the background color of the board
      * @param colour the new color
      */
-    public void setColor(int colour) {
-        this.color = colour;
+    public void setbColor(int colour) {
+        this.bColor = colour;
     }
+
+    /**
+     * Retrieves the font color
+     * @return - the font color
+     */
+    public int getfColor(){return this.fColor;}
+
+    /**
+     * Changes the font color
+     * @param color - a new color
+     */
+    public void setfColor(int color){this.fColor = color;}
 
     /**
      * Gets the tags assigned to a board
@@ -201,8 +220,24 @@ public class Board {
      * Creates a string representation of the board
      * @return string of board attributes
      */
-    @Override
-    public String toString() {
-        return "Board #" + id + "\n name: " + name + "\n key: " + boardkey + "\n color: " + color;
+//    @Override
+//    public String toString() {
+//        return "Board #" + id + "\n name: " + name + "\n key: " + boardkey + "\n color: " + color;
+//    }
+
+    /**
+     * Retrieves palettes from the board
+     * @return list of palettes
+     */
+    public List<Palette> getPalettes() {
+        return palettes;
+    }
+
+    /**
+     * Sets the list of palettes
+     * @param palettes - a list of palettes
+     */
+    public void setPalettes(List<Palette> palettes) {
+        this.palettes = palettes;
     }
 }
