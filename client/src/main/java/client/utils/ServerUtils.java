@@ -163,11 +163,11 @@ public class ServerUtils {
 
     }
 
-    /**
-     * returns the board with the given name
-     * @param name the name of the board to be searched for
-     * @return the board
-     */
+//    /**
+//     * returns the board with the given name
+//     * @param name the name of the board to be searched for
+//     * @return the board
+//     */
     /*public Board getBoardByName(String name) {
         try {
             System.out.println("sending request in api/boards/name/"+name);
