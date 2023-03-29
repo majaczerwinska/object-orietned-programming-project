@@ -126,10 +126,10 @@ public class BoardController {
      * @param name name of the board
      * @return Board instance or null 
      */
-    @GetMapping("/name/{name}")
+    /*@GetMapping("/name/{name}")
     public Board getBoardByName(@PathVariable("name") String name) {
         System.out.println("Received get request at /api/boards/name/"+name);
         Board res = abs.findByName(name);
         return res;
-    }
+    }*/
 }

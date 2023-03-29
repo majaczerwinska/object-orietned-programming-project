@@ -131,7 +131,7 @@ public class BoardService {
      * @param name of the board to be searched
      * @return Board elem or null
      */
-    public Board findByName(String name) {
+    /*public Board findByName(String name) {
         System.out.println("Find by name called with name = " + name);
         List<Board> l = repo.findAll();
         for (Board b : l) {
@@ -140,5 +140,5 @@ public class BoardService {
             }
         }
         return null;
-    }
+    }*/
 }
