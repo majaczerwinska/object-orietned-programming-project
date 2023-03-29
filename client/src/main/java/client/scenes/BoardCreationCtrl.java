@@ -73,7 +73,7 @@ public class BoardCreationCtrl {
         String boardKey = boardKeyTextField.getText();
         if(boardKey.length() == 0)
         {
-            warningkey.setText("Required field!");
+            warningkey.setText("\"Required field!\"");
             return;
         }
 
