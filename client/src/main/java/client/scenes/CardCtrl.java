@@ -72,14 +72,12 @@ public class CardCtrl {
      */
     public void displayTasks(){
         List<Task> tasks = server.getTasksFromCard(cardID);
-
         for (Task task : tasks) {
             SubTaskComponent taskComponent = new SubTaskComponent(cardID, this);
             taskComponent.setData(task);
             vbox.getChildren().add(taskComponent);
         }
     }
-
 
     /**
      * Clears the card overview
@@ -105,7 +103,6 @@ public class CardCtrl {
         if (event.getCode() == KeyCode.ENTER) {
             if(newTask.getText().equals("")){
                 label.setText("Required field!");
-
                 return;
             }
             String name = newTask.getText();
@@ -131,11 +128,9 @@ public class CardCtrl {
      * launch card overview scene util
      */
     public void setInfo(){
-
         text.setText( server.getCard(cardID).getTitle());
         palette.setValue(MainCtrl.colorParseToFXColor(server.getCard(cardID).getColor()));
         area.setText(server.getCard(cardID).getDescription());
-
     }
 
     /**
@@ -149,7 +144,6 @@ public class CardCtrl {
             server.editCard(cardID,card);
             warning.setText("");
         }
-
     }
 
     /**
@@ -168,14 +162,11 @@ public class CardCtrl {
      * Shows the tags in this board that are not added to the card yet
      */
     public void showDropDown(){
-
-
         boardtags.setItems(getTagListOfBoard(boardID));
         boardtags.setCellFactory(param -> new ListCell<Tag>() {
             @Override
             public void updateItem(Tag tag, boolean empty) {
                 super.updateItem(tag, empty);
-
                 if (empty || tag == null || tag.getTitle() == null) {
                     setText(null);
                 } else {
@@ -186,12 +177,11 @@ public class CardCtrl {
             }
         });
     }
+
     /**
      * Shows the tags in this board that are not added to the card yet
      */
     public void showTags(){
-
-
         taglist.setItems(getTagListOfCard(cardID));
         taglist.setCellFactory(param -> new ListCell<Tag>() {
             @Override
@@ -223,7 +213,6 @@ public class CardCtrl {
             if(tagsofcard!=null && !tagsofcard.contains(tag)){
                 t.add(tag);
             }
-
         }
         ObservableList<Tag> tagList = FXCollections.observableArrayList(t);
         return tagList;
@@ -257,6 +246,9 @@ public class CardCtrl {
         }
     }
 
+    /**
+     * Remove a tag from a card
+     */
     public void removeTagFromCard(){
         Tag tag = taglist.getSelectionModel().getSelectedItem();
         if(tag!=null){
@@ -264,17 +256,7 @@ public class CardCtrl {
             showDropDown();
             taglist.getItems().clear();
             showTags();
-
         }
-
     }
-
-
-
-
-
-
-
-
 
 }
