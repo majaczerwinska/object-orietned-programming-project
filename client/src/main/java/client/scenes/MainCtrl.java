@@ -68,6 +68,9 @@ public class MainCtrl {
     private ListEditCtrl listEditCtrl;
     private Scene listEdit;
 
+    private CustomizationCtrl customizationCtrl;
+    private Scene customization;
+
 
     /**
      * 
@@ -86,6 +89,7 @@ public class MainCtrl {
      * @param help
      * @param taskCreator
      * @param listEdit
+     * @param customization
      */
     public void initialize(Stage primaryStage,
                            Pair<LandingCtrl, Parent> landing,
@@ -101,7 +105,8 @@ public class MainCtrl {
                            Pair<TaskCreatorCtrl, Parent> taskCreator,
                            Pair<ListEditCtrl, Parent> listEdit,
                            Pair<EditBoardCtrl, Parent> editBoard,
-                           Pair<HelpCtrl, Parent> help
+                           Pair<HelpCtrl, Parent> help,
+                           Pair<CustomizationCtrl, Parent> customization
                            ) {
         this.primaryStage = primaryStage;
         this.landingCtrl = landing.getKey();
@@ -146,8 +151,10 @@ public class MainCtrl {
         this.helpCtrl = help.getKey();
         this.helpScene = new Scene(help.getValue());
 
+        this.customizationCtrl = customization.getKey();
+        this.customization = new Scene(customization.getValue());
+
         showLanding();
-        //git showServerSelect();
         primaryStage.show();
     }
 
@@ -281,7 +288,7 @@ public class MainCtrl {
         primaryStage.setTitle("Board overview :)");
         boardOverviewCtrl.boardID = boardID;
         primaryStage.setScene(boardOverwiew);
-//        boardOverviewCtrl.refreshName(boardID);
+        boardOverviewCtrl.refreshName(boardID);
 
         primaryStage.show();
         //We later have to combine all these methods we call into one refresh method in boardOverviewCtrl
@@ -291,6 +298,20 @@ public class MainCtrl {
         boardOverviewCtrl.refresh(null);
     }
 
+    /**
+     * calls methood from boardoverview to color board's font
+     * @param boardId
+     * @param color
+     */
+    public void colorBF(int boardId, int color){
+        boardOverviewCtrl.boardID = boardId;
+        boardOverviewCtrl.colorFont(color);
+    }
+
+//    public void colorLF(int boardId, int listId, int color){
+//        CardListComponent list = new CardListComponent(this, boardId, listId);
+//                list.colorFont(color);
+//    }
 
     /**
      * show card overview
@@ -357,6 +378,12 @@ public class MainCtrl {
     }
 
     /**
+     * refreshes
+     */
+    public void refreshListColours(){
+        customizationCtrl.colourlist();
+    }
+    /**
      * add event listener for the enter key, intermediate function
      * @param listID the list mouse is currently in
      */
@@ -420,6 +447,17 @@ public class MainCtrl {
      */
     public void refreshListView(int listID, CardListComponent component) {
         boardOverviewCtrl.refreshList(listID, component);
+    }
+
+    /**
+     * takes you to the customization scene
+     * @param boardId
+     */
+    public void showCustomization(int boardId){
+        primaryStage.setTitle("Customization");
+        primaryStage.setScene(customization);
+        customizationCtrl.boardId = boardId;
+        primaryStage.show();
     }
 
 }

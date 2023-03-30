@@ -21,6 +21,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ListCell;
+//import java.net.URL;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -61,6 +62,11 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
     @FXML
     private Label boardKey;
+    @FXML
+    private Label boardKeyL;
+    @FXML
+    private Label tagL;
+
     @FXML
     private Button addListButton;
 
@@ -130,11 +136,11 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public void setColor(){
         Board board = server.getBoard(boardID);
         scrollPaneOverview.setStyle("-fx-background: " + String.format("rgb(%d, %d, %d)",
-                (board.getColor() >> 16) & 0xFF,
-                (board.getColor() >> 8) & 0xFF, board.getColor()& 0xFF)+";");
+                (board.getbColor() >> 16) & 0xFF,
+                (board.getbColor() >> 8) & 0xFF, board.getbColor()& 0xFF)+";");
         vboxList1.setStyle("-fx-background-color: " + String.format("rgb(%d, %d, %d)",
-                (board.getColor() >> 16) & 0xFF,
-                (board.getColor() >> 8) & 0xFF, board.getColor()& 0xFF)+";");
+                (board.getbColor() >> 16) & 0xFF,
+                (board.getbColor() >> 8) & 0xFF, board.getbColor()& 0xFF)+";");
 
     }
 
@@ -263,11 +269,14 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
             cardListComponent.setTitle(cardList.getName());
             cardListComponent.setStyle("-fx-background-color: " + String.format("rgb(%d, %d, %d)",
-                    (cardList.getColor() >> 16) & 0xFF,
-                    (cardList.getColor() >> 8) & 0xFF, cardList.getColor()& 0xFF)+";" );
+                    (cardList.getbColor() >> 16) & 0xFF,
+                    (cardList.getbColor() >> 8) & 0xFF, cardList.getbColor()& 0xFF)+";" );
+            System.out.println("List style: " + cardListComponent.getStyle());
             cardListComponent.setOnMouseEntered(event -> addEnterKeyListener(cardList.getId()));
             hboxCardLists.getChildren().add(cardListComponent);
             cardListComponent.setData(cardList);
+            String hexColor = String.format("#%06X", (0xFFFFFF & cardList.getfColor()));
+            cardListComponent.labelTitle.setStyle("-fx-text-fill: " + hexColor);
             displayCards(cardListComponent.getVboxCards(), cardList.getId(), allCards.get(i),c);
             i++;
         }
@@ -328,35 +337,28 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         mainCtrl.showListCreate(boardID);
     }
 
-//    /**
-//     * refreshes the board's name field, board's key and tag list view
-//     * @param boardID
-//     */
-//    @FXML
-//    public void refreshName(int boardID){
-//        Board b = server.getBoard(boardID);
-//        //boardName.setText(b.getName());
-//        boardKey.setText(b.getBoardkey());
-//        boardKey.setVisible(false);
-//
-////        list.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-////        ObservableList<Tag> tagList = FXCollections.observableList(server.getTagsFromBoard(boardID));
-////        list.setItems(tagList);
-//    }
+    /**
+     * refreshes the board's key (tag list view and name not anymore)
+     * @param boardID
+     */
+    @FXML
+    public void refreshName(int boardID){
+        Board b = server.getBoard(boardID);
+        //boardName.setText(b.getName());
+        boardKey.setText(b.getBoardkey());
+
+//        list.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+//        ObservableList<Tag> tagList = FXCollections.observableList(server.getTagsFromBoard(boardID));
+//        list.setItems(tagList);
+    }
 
     /**
      * display and copy to clipboard the boardKey
      */
     public void getBoardKey(){
-        if(boardKey.isVisible()){
-            boardKey.setVisible(false);
-        }
-        else{
-            boardKey.setVisible(true);
             StringSelection selection = new StringSelection(boardKey.getText());
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(selection, selection);
-        }
     }
 
 
@@ -372,8 +374,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             allCards.add(getCardsOfListFromServer(cl.getId()));
         }
         clearBoard();
-        displayLists(cardLists, allCards, c);
-
+        displayLists(cardLists, allCards,c);
     }
 
     /**
@@ -469,7 +470,26 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         mainCtrl.showListCreate(boardID);
     }
 
+    /**
+     * takes you to customization scene
+     * @param event
+     */
+    public void goCustomization(ActionEvent event){
+        mainCtrl.showCustomization(boardID);
+    }
 
+    /**
+     * sets color of font for board components
+     * @param color - new color
+     */
+    @FXML
+    public void colorFont(int color){
+        String hexColor = String.format("#%06X", (0xFFFFFF & color));
+        labelBoardTitle.setStyle("-fx-text-fill: " + hexColor);
+        boardKey.setStyle("-fx-text-fill: " + hexColor);
+        boardKeyL.setStyle("-fx-text-fill: " + hexColor);
+        tagL.setStyle("-fx-text-fill: " + hexColor);
+    }
 
 
 }

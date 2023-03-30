@@ -225,6 +225,25 @@ public class ServerUtils {
     }
 
     /**
+     * Edit list colour
+     * @param id the id of the list to edit
+     * @param list with the new color
+     * @return return the list edited
+     */
+    public CardList editCardListColour(int id, CardList list) {
+        try {
+            return ClientBuilder.newClient(new ClientConfig())
+                    .target(SERVER).path("api/lists/color/"+id)
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .put(Entity.entity(list, APPLICATION_JSON), CardList.class);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    /**
      * Changes to which list the card belongs
      * @param listid the new list
      * @param card the card
