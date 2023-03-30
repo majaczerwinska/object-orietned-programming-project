@@ -300,6 +300,21 @@ public class MainCtrl {
     }
 
     /**
+     * calls methood from boardoverview to color board's font
+     * @param boardId
+     * @param color
+     */
+    public void colorBF(int boardId, int color){
+        boardOverviewCtrl.boardID = boardId;
+        boardOverviewCtrl.colorFont(color);
+    }
+
+//    public void colorLF(int boardId, int listId, int color){
+//        CardListComponent list = new CardListComponent(this, boardId, listId);
+//                list.colorFont(color);
+//    }
+
+    /**
      * show card overview
      * @param cardID card id
      * @param boardID board id

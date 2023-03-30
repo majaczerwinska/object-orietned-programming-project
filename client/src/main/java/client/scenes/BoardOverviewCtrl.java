@@ -12,19 +12,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 
-import commons.Card;
-import commons.CardList;
-
-
-import commons.Board;
-import commons.Card;
-import commons.CardList;
-import commons.Tag;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
-
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 //import javafx.fxml.Initializable;
@@ -37,25 +24,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 
-
-
-
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 //import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 
-import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-
 //import java.net.URL;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -100,6 +75,11 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
     @FXML
     private Label boardKey;
+    @FXML
+    private Label boardKeyL;
+    @FXML
+    private Label tagL;
+
     @FXML
     private Button addListButton;
 
@@ -302,6 +282,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             cardListComponent.setOnMouseEntered(event -> addEnterKeyListener(cardList.getId()));
             hboxCardLists.getChildren().add(cardListComponent);
             cardListComponent.setData(cardList);
+            String hexColor = String.format("#%06X", (0xFFFFFF & cardList.getfColor()));
+            cardListComponent.labelTitle.setStyle("-fx-text-fill: " + hexColor);
             displayCards(cardListComponent.getVboxCards(), cardList.getId(), allCards.get(i));
             i++;
         }
@@ -501,7 +483,18 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         mainCtrl.showCustomization(boardID);
     }
 
-
+    /**
+     * sets color of font for board components
+     * @param color - new color
+     */
+    @FXML
+    public void colorFont(int color){
+        String hexColor = String.format("#%06X", (0xFFFFFF & color));
+        labelBoardTitle.setStyle("-fx-text-fill: " + hexColor);
+        boardKey.setStyle("-fx-text-fill: " + hexColor);
+        boardKeyL.setStyle("-fx-text-fill: " + hexColor);
+        tagL.setStyle("-fx-text-fill: " + hexColor);
+    }
 
 
 }

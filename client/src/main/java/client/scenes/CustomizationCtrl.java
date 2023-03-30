@@ -54,9 +54,11 @@ public class CustomizationCtrl {
         board.setbColor(mainCtrl.colorParseToInt(bb.getValue()));
         board.setfColor(mainCtrl.colorParseToInt(bf.getValue()));
         server.editBoard(boardId,board);
-       colourlist();
+        colourlist();
 
         mainCtrl.showBoardOverview(boardId);
+        mainCtrl.colorBF(boardId, MainCtrl.colorParseToInt(bf.getValue()));
+
     }
 
     /**
@@ -68,6 +70,7 @@ public class CustomizationCtrl {
             list.setbColor(mainCtrl.colorParseToInt(lb.getValue()));
             list.setfColor(mainCtrl.colorParseToInt(lf.getValue()));
             server.editCardListColour(list.getId(), list);
+            //mainCtrl.colorLF(boardId, list.getId(), MainCtrl.colorParseToInt(lf.getValue()));
         }
     }
 

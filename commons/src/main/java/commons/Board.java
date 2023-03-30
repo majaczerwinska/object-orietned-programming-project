@@ -220,10 +220,10 @@ public class Board {
      * Creates a string representation of the board
      * @return string of board attributes
      */
-//    @Override
-//    public String toString() {
-//        return "Board #" + id + "\n name: " + name + "\n key: " + boardkey + "\n color: " + color;
-//    }
+    @Override
+    public String toString() {
+        return "Board #" + id + "\n name: " + name + "\n key: " + boardkey;
+    }
 
     /**
      * Retrieves palettes from the board
