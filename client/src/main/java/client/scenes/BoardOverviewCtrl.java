@@ -190,6 +190,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
             CardComponent cardComponent = new CardComponent(mainCtrl);
 
+            mainCtrl.cardIdComponentMap.put(card.getId(), cardComponent);
+
             cardComponent.boardID = boardID;
             cardComponent.setData(card, listId);
             cardComponent.setStyle("-fx-background-color: " +
@@ -199,37 +201,21 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             vbox.getChildren().add(cardComponent);
             if(card.equals(c)){
                 cardComponent.tfTitle.requestFocus();
-
             }
         }
     }
 
 
+    /**
+     *
+     */
+    @FXML
+    public void callTestMethod() {
+
+    }
 
 
 
-//    /**
-//     * displays cards in vboxes
-//     * @param vbox the vbox in the list where the cards need to be showed
-//     * @param listId the list we need to populate with cards
-//     * @param focusCard f
-//     */
-//    public void displayCardsWithFocus(VBox vbox, int listId, Card focusCard){
-//        List<Card> cards = server.getCardsFromList(listId);
-//
-//        for (Card card : cards) {
-//            CardComponent cardComponent = new CardComponent(mainCtrl);
-//            System.out.println(card +"<=card, focuscard=>" + focusCard);
-//            System.out.println(card.softEquals(focusCard));
-//            if (card.softEquals(focusCard)) {
-//                System.out.println("Card is getting focus");
-//                cardComponent.getTfTitle().requestFocus();
-//            }
-//            cardComponent.boardID = boardID;
-//            cardComponent.setData(card, listId);
-//            vbox.getChildren().add(cardComponent);
-//        }
-//    }
 
     /**
      * gets the list of cardlists with serverutils

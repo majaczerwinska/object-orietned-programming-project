@@ -238,7 +238,9 @@ public class ServerUtils {
                     .accept(APPLICATION_JSON)
                     .put(Entity.entity(card, APPLICATION_JSON), Card.class);
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println(e.getMessage());
+            System.out.println("Bad request in changeListOfCard server utils");
         }
         return null;
     }

@@ -15,14 +15,19 @@
  */
 package client.scenes;
 
+import client.components.CardComponent;
 import client.components.CardListComponent;
 import commons.Card;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.DataFormat;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.*;
 
 public class MainCtrl {
@@ -69,6 +74,10 @@ public class MainCtrl {
     private Scene listEdit;
 
 
+    public Map<Integer, CardComponent> cardIdComponentMap;
+
+    public final DataFormat CARD_FORMAT = new DataFormat("application/x-card");
+
     /**
      * 
      * @param landing
@@ -103,6 +112,10 @@ public class MainCtrl {
                            Pair<EditBoardCtrl, Parent> editBoard,
                            Pair<HelpCtrl, Parent> help
                            ) {
+
+        this.cardIdComponentMap = new HashMap<>();
+        System.setProperty("javafx.dnd.delayedDragCallback", "false");
+
         this.primaryStage = primaryStage;
         this.landingCtrl = landing.getKey();
         this.landing = new Scene(landing.getValue());
@@ -147,7 +160,6 @@ public class MainCtrl {
         this.helpScene = new Scene(help.getValue());
 
         showLanding();
-        //git showServerSelect();
         primaryStage.show();
     }
 
@@ -166,7 +178,6 @@ public class MainCtrl {
     public void showLanding() {
         primaryStage.setTitle("Landing page!!");
         primaryStage.setScene(landing);
-
     }
 
     /**
@@ -213,6 +224,35 @@ public class MainCtrl {
         tagManagerCtrl.refresh();
         primaryStage.show();
     }
+
+
+    /**
+     *
+     * @param cardComponent card component instance
+     * @return int card id
+     */
+    public Integer cardComponentToCardId(CardComponent cardComponent) {
+        for (int i : this.cardIdComponentMap.keySet()) {
+            if (this.cardIdComponentMap.get(i).equals(cardComponent)) {
+                return i;
+            }
+        }
+        return null;
+    }
+
+//    /**
+//     *
+//     * @param hbox card component hbox
+//     * @return int card id
+//     */
+//    public Integer cardComponentToCardId(HBox hbox) {
+//        for (int i : this.cardIdComponentMap.keySet()) {
+//            if (this.cardIdComponentMap.get(i).equals(cardComponent)) {
+//                return i;
+//            }
+//        }
+//        return null;
+//    }
 
     /**
      * Method that parses fxColor to int

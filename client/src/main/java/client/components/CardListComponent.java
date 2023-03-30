@@ -6,15 +6,15 @@ import client.utils.ServerUtils;
 
 import commons.Card;
 import commons.CardList;
+import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
-import commons.CardList;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.input.*;
 import javafx.scene.layout.VBox;
 
 
@@ -52,10 +52,10 @@ public class CardListComponent extends VBox{
 
         super();
         this.boardId = boardId;
-       // this.listID = listID;
+        // this.listID = listID;
         server = new ServerUtils();
-        this.listId=listId;
-        this.boardId=boardId;
+        this.listId = listId;
+        this.boardId = boardId;
         this.mainCtrl = mainCtrl;
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/components/CardListComponent.fxml"));
@@ -68,6 +68,137 @@ public class CardListComponent extends VBox{
             throw new RuntimeException(exception);
         }
 
+
+        // Event handlers for dragging and dropping:
+        ///////////////////////////////////////////
+
+        // check if it is a valid drop target
+        setOnDragOver(event -> {
+                    if (event.getGestureSource() != this && event.getDragboard().hasString()) {
+                        event.acceptTransferModes(TransferMode.MOVE);
+                    }
+                    event.consume();
+        });
+
+        // event handler for when a dragged card enters a list, highlight where it will be dropped
+        setOnDragEntered(event -> {
+            int position = getDroppedPosition(event);
+            setStyle("-fx-background-color: red");
+
+        });
+        // undo the highlight. called when a dragged card leaves the bounds of list
+        setOnDragExited(event -> {
+            setStyle("-fx-background-color: blue");
+        });
+
+        // main handler, deals with a card being dropped into the list
+        /*
+        setOnDragDropped(event -> {
+            Dragboard dragboard = event.getDragboard();
+            boolean success = false;
+            if (dragboard.hasString()) {
+
+                // only accept move drags
+                event.acceptTransferModes(TransferMode.MOVE);
+
+                // Get the card being dragged
+                int cardID = Integer.parseInt(dragboard.getString());
+                Card draggedCard = (Card) server.getCard(cardID);
+                CardComponent draggedCardComponent = mainCtrl.cardIdComponentMap.get(draggedCard.getId());
+
+
+                // Get a reference to the source list and remove the card from it
+                CardListComponent source = (CardListComponent) event.getSource();
+                VBox sourceList = (VBox) source.getChildren().get(1);
+                sourceList.getChildren().remove(draggedCardComponent);
+
+
+                // Get a reference to the target list and add the card to it
+                CardListComponent target = (CardListComponent) event.getGestureTarget();
+                VBox targetList = (VBox) target.getChildren().get(1);
+                System.out.println("drag drop: "+target +"\n\n" + this + "\n\n" + targetList + "\n\n" + vboxCards);
+                targetList.getChildren().add(draggedCardComponent);
+
+                server.changeListOfCard(target.listId, draggedCard);
+
+                System.out.println("getting dropped card from server:");
+                System.out.println(server.getCard(cardID));
+                //updateCardPositionAttributes();
+
+                success = true;
+            } else {
+                throw new RuntimeException("Dragging failed!!");
+            }
+
+            event.setDropCompleted(success);
+            event.consume();
+
+
+        });
+        */
+
+        setOnDragDropped(this::onDragDropped);
+
+    }
+
+
+    // Drag and drop:
+
+
+    /**
+     * get the position a card should be inserted in when dragged over a list
+     * @param event drag event
+     * @return int position
+     */
+    public int getDroppedPosition(DragEvent event) {
+        double y = event.getY();
+
+        return 2;
+    }
+
+
+    public void onDragDropped(DragEvent event){
+        Dragboard db = event.getDragboard();
+        boolean success = false;
+        if (db.hasString()) {
+            Card c = server.getCard(Integer.parseInt(db.getString()));
+            System.out.println(c);
+            System.out.println(listId);
+            server.changeListOfCard(listId,c);
+            System.out.println(c);
+            c.setPosition(3);
+            System.out.println(c);
+            //server.editCard(c.getId(), c);
+            System.out.println(server.getCard(c.getId()));
+            success = true;
+        }
+        event.setDropCompleted(success);
+        Platform.runLater(()->{
+            mainCtrl.refreshBoardOverview();
+        });
+
+        event.consume();
+
+    }
+
+
+    /**
+     * set the position attribute of every card in the vbox
+     * to its position in the vbox
+     */
+    public void updateCardPositionAttributes() {
+        ObservableList<Node> vboxChildren = vboxCards.getChildren();
+        for (int i = 0; i < vboxChildren.size(); i++) {
+            Node node = vboxChildren.get(i);
+            System.out.println(node);
+            System.out.println(i);
+            int id = mainCtrl.cardComponentToCardId((CardComponent) node);
+            System.out.println("card id="+id);
+            Card c = server.getCard(id);
+            c.setPosition(i);
+            server.editCard(id, c);
+        }
+    }
 
 //        setOnDragOver(event ->{
 //
@@ -93,8 +224,6 @@ public class CardListComponent extends VBox{
 //                event.consume();
 //
 //        });
-
-    }
 
     /**
      * Adding a card
