@@ -22,9 +22,6 @@ import java.io.IOException;
 
 //TODO
 public class CardListComponent extends VBox{
-
-   // private int listID;
-
     private CardList self;
 
     private MainCtrl mainCtrl;
@@ -39,15 +36,8 @@ public class CardListComponent extends VBox{
     private Button deletebutton;
     @FXML
     private Button addcard;
-
     @FXML
-    private Label labelTitle;
-
-
-
-
-
-
+    public Label labelTitle;
 
     private int listId;
     private int boardId;
@@ -112,7 +102,7 @@ public class CardListComponent extends VBox{
      */
     public void addCard() {
 
-
+        System.out.println(vboxCards.getHeight());
          Card c = mainCtrl.createCard(listId);
         System.out.println(boardId + "carlistcomp");
          mainCtrl.showCard(c.getId(), boardId);
@@ -165,6 +155,7 @@ public class CardListComponent extends VBox{
      */
     public void setTitle(String title){
         labelTitle.setText(title);
+
     }
 
     /**
@@ -192,6 +183,16 @@ public class CardListComponent extends VBox{
     public void addEnterKeyListener() {
         System.out.println("add key listener called in card list component");
         mainCtrl.addEnterKeyListener(listId);
+    }
+
+    /**
+     * sets font color for list's title
+     * @param color - the new color
+     */
+    @FXML
+    public void colorFont(int color){
+        String hexColor = String.format("#%06X", (0xFFFFFF & color));
+        labelTitle.setStyle("-fx-text-fill: " + hexColor);
     }
 
 }

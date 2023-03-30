@@ -44,6 +44,19 @@ public class CardListController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * updates list's color
+     * @param id - list id
+     * @param list - list to be changed
+     * @return - response entity
+     */
+    @PutMapping("/color/{id}")
+    public ResponseEntity<CardList> recolorList(@PathVariable("id") int id,@RequestBody CardList list){
+        if(!als.existsById(id)) return ResponseEntity.badRequest().build();
+        als.updateTaskListColour(list);
+        return ResponseEntity.ok().build();
+    }
+
 
     /**
      *Adds a list ot the database

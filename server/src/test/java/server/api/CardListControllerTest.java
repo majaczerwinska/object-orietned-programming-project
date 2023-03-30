@@ -26,6 +26,7 @@ import server.database.CardListRepositoryTest;
 import server.service.CardService;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -103,6 +104,54 @@ public class CardListControllerTest {
         CardList list = new CardList("c");
         int listId = list.getId();
         assertEquals(con.getCardsFromList(listId), ResponseEntity.badRequest().build());
+    }
+
+
+
+    @Test
+    public void getListSizeTest(){
+        Board board = new Board("board");
+        CardList list = new CardList("c");
+        Card card = new Card("title");
+        Card card2 = new Card("title2");
+        Card card3 = new Card("title3");
+        List<Card> cards = new ArrayList<>();
+        cards.add(card);
+        cards.add(card2);
+        cards.add(card3);
+        list.setCards(cards);
+        list.lastPosition = 9;
+        int listId = list.getId();
+        br.save(board);
+        ser.save(list, board.getId());
+        cardService.save(card, listId);
+        cardService.save(card2, listId);
+        cardService.save(card3, listId);
+        ResponseEntity<Integer>  size = ResponseEntity.ok(9);
+        assertEquals(con.getListSize(listId), size);
+    }
+
+    @Test
+    public void setListSizeTest(){
+        Board board = new Board("board");
+        CardList list = new CardList("c");
+        Card card = new Card("title");
+        Card card2 = new Card("title2");
+        Card card3 = new Card("title3");
+        List<Card> cards = new ArrayList<>();
+        cards.add(card);
+        cards.add(card2);
+        cards.add(card3);
+        list.setCards(cards);
+        list.lastPosition = 9;
+        int listId = list.getId();
+        br.save(board);
+        ser.save(list, board.getId());
+        cardService.save(card, listId);
+        cardService.save(card2, listId);
+        cardService.save(card3, listId);
+        ResponseEntity<Integer>  size = ResponseEntity.ok(12);
+        assertEquals(con.setListSize(listId, 12), size);
     }
 
 

@@ -94,6 +94,17 @@ public  class CardListService {
     }
 
     /**
+     * Updates the  of a list in the database
+     * @param list the updated list
+     */
+    public void updateTaskListColour(CardList list) {
+        CardList l = repo.getById(list.getId());
+        l.setbColor(list.getbColor());
+        l.setfColor(list.getfColor());
+        repo.save(l);
+    }
+
+    /**
      * Gets all cards from a list
      * @param listId the id of the list we need to get the cards from
      * @return list of cards

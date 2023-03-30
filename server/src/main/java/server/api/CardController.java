@@ -2,6 +2,7 @@ package server.api;
 
 import commons.Card;
 
+import commons.Tag;
 import commons.Task;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import server.service.CardService;
 
 import java.util.List;
+import java.util.Set;
 
 
 //import java.util.Random;
@@ -138,5 +140,18 @@ public class CardController {
         Card c =acs.findById(id).get();
         List<Task> tasks = c.getTasks();
         return ResponseEntity.ok(tasks);
+    }
+
+    /**
+     * Gets the tags from a card
+     * @param id the id of the card we need to get the tags from
+     * @return a response entity with the ste of tags
+     */
+    @GetMapping("/{id}/tags")
+    public ResponseEntity<Set<Tag>> getTags(@PathVariable("id") int id) {
+        if(id < 0 || !acs.existsById(id)) return ResponseEntity.badRequest().body(null);
+        Card c =acs.findById(id).get();
+        Set<Tag> tags = c.getTags();
+        return ResponseEntity.ok(tags);
     }
 }

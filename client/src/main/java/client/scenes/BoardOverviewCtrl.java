@@ -1,5 +1,4 @@
 package client.scenes;
-
 import client.components.CardComponent;
 import client.components.CardListComponent;
 import client.utils.ServerUtils;
@@ -12,61 +11,26 @@ import commons.Tag;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-
-import commons.Card;
-import commons.CardList;
-
-
-import commons.Board;
-import commons.Card;
-import commons.CardList;
-import commons.Tag;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
-
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-//import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
-
-
-
-
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-//import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-
-import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import org.springframework.web.socket.TextMessage;
-
 //import java.net.URL;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-
 import java.util.*;
 import java.util.List;
-
+import java.util.ArrayList;
+import java.util.Comparator;
 
 public class BoardOverviewCtrl /*implements Initializable*/ {
     private final ServerUtils server;
@@ -102,6 +66,11 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
     @FXML
     private Label boardKey;
+    @FXML
+    private Label boardKeyL;
+    @FXML
+    private Label tagL;
+
     @FXML
     private Button addListButton;
 
@@ -173,7 +142,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public void subscribeToBoard(int boardID){
         websocketClient.registerForMessages("/topic/boards/"+boardID, String.class, update -> {
             System.out.println("payload: "+ update);
-            refresh();
+            refresh(null);
         });
     }
 
@@ -202,11 +171,11 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public void setColor(){
         Board board = server.getBoard(boardID);
         scrollPaneOverview.setStyle("-fx-background: " + String.format("rgb(%d, %d, %d)",
-                (board.getColor() >> 16) & 0xFF,
-                (board.getColor() >> 8) & 0xFF, board.getColor()& 0xFF)+";");
+                (board.getbColor() >> 16) & 0xFF,
+                (board.getbColor() >> 8) & 0xFF, board.getbColor()& 0xFF)+";");
         vboxList1.setStyle("-fx-background-color: " + String.format("rgb(%d, %d, %d)",
-                (board.getColor() >> 16) & 0xFF,
-                (board.getColor() >> 8) & 0xFF, board.getColor()& 0xFF)+";");
+                (board.getbColor() >> 16) & 0xFF,
+                (board.getbColor() >> 8) & 0xFF, board.getbColor()& 0xFF)+";");
 
     }
 
@@ -255,21 +224,26 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * @param vbox the vbox in the list where the cards need to be showed
      * @param listId the list we need to populate with cards
      * @param cards the list of cards
+     * @param c card for focus
      */
-    public void displayCards(VBox vbox, int listId, List<Card> cards){
+    public void displayCards(VBox vbox, int listId, List<Card> cards, Card c){
         //List<Card> cards = server.getCardsFromList(listId);
         cards.sort(Comparator.comparing(Card::getPosition));
         for (Card card : cards) {
+
             CardComponent cardComponent = new CardComponent(mainCtrl);
 
             cardComponent.boardID = boardID;
             cardComponent.setData(card, listId);
-
             cardComponent.setStyle("-fx-background-color: " +
                     String.format("rgb(%d, %d, %d)", (card.getColor() >> 16) & 0xFF,
                     (card.getColor() >> 8) & 0xFF, card.getColor()& 0xFF)+";" );
 
             vbox.getChildren().add(cardComponent);
+            if(card.equals(c)){
+                cardComponent.tfTitle.requestFocus();
+
+            }
         }
     }
 
@@ -322,8 +296,9 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * displays cards in vboxes
      * @param cardLists card lists
      * @param allCards list of lists of cards
+     * @param c - card for focus
      */
-    public void displayLists(List<CardList> cardLists, List<List<Card>> allCards){
+    public void displayLists(List<CardList> cardLists, List<List<Card>> allCards, Card c){
         int i = 0;
         for (CardList cardList : cardLists) {
 
@@ -331,14 +306,18 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
             cardListComponent.setTitle(cardList.getName());
             cardListComponent.setStyle("-fx-background-color: " + String.format("rgb(%d, %d, %d)",
-                    (cardList.getColor() >> 16) & 0xFF,
-                    (cardList.getColor() >> 8) & 0xFF, cardList.getColor()& 0xFF)+";" );
+                    (cardList.getbColor() >> 16) & 0xFF,
+                    (cardList.getbColor() >> 8) & 0xFF, cardList.getbColor()& 0xFF)+";" );
+            System.out.println("List style: " + cardListComponent.getStyle());
             cardListComponent.setOnMouseEntered(event -> addEnterKeyListener(cardList.getId()));
             hboxCardLists.getChildren().add(cardListComponent);
             cardListComponent.setData(cardList);
-            displayCards(cardListComponent.getVboxCards(), cardList.getId(), allCards.get(i));
+            String hexColor = String.format("#%06X", (0xFFFFFF & cardList.getfColor()));
+            cardListComponent.labelTitle.setStyle("-fx-text-fill: " + hexColor);
+            displayCards(cardListComponent.getVboxCards(), cardList.getId(), allCards.get(i),c);
             i++;
         }
+
     }
 
 
@@ -348,7 +327,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * @return an observable list with all tags
      */
     public ObservableList<Tag> getTagList(int boardID){
-        Set<Tag> t = server.getTagsFromBoard(boardID);
+        List<Tag> t = server.getTagsFromBoard(boardID);
         List<Tag> tags= new ArrayList<>();
         for(Tag tag : t){
             tags.add(tag);
@@ -363,12 +342,12 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public void refreshListViewTags(){
         Platform.runLater(new Runnable() {
             @Override public void run() {
+                listViewTags.requestFocus();
                 listViewTags.setItems(getTagList(boardID));
                 listViewTags.setCellFactory(param -> new ListCell<Tag>() {
                     @Override
                     protected void updateItem(Tag tag, boolean empty) {
                         super.updateItem(tag, empty);
-
                         if (empty || tag == null || tag.getTitle() == null) {
                             setText(null);
                         } else {
@@ -399,42 +378,36 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         mainCtrl.showListCreate(boardID);
     }
 
-//    /**
-//     * refreshes the board's name field, board's key and tag list view
-//     * @param boardID
-//     */
-//    @FXML
-//    public void refreshName(int boardID){
-//        Board b = server.getBoard(boardID);
-//        //boardName.setText(b.getName());
-//        boardKey.setText(b.getBoardkey());
-//        boardKey.setVisible(false);
-//
-////        list.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-////        ObservableList<Tag> tagList = FXCollections.observableList(server.getTagsFromBoard(boardID));
-////        list.setItems(tagList);
-//    }
+    /**
+     * refreshes the board's key (tag list view and name not anymore)
+     * @param boardID
+     */
+    @FXML
+    public void refreshName(int boardID){
+        Board b = server.getBoard(boardID);
+        //boardName.setText(b.getName());
+        boardKey.setText(b.getBoardkey());
+
+//        list.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+//        ObservableList<Tag> tagList = FXCollections.observableList(server.getTagsFromBoard(boardID));
+//        list.setItems(tagList);
+    }
 
     /**
      * display and copy to clipboard the boardKey
      */
     public void getBoardKey(){
-        if(boardKey.isVisible()){
-            boardKey.setVisible(false);
-        }
-        else{
-            boardKey.setVisible(true);
             StringSelection selection = new StringSelection(boardKey.getText());
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(selection, selection);
-        }
     }
 
 
     /**
      * Refresh scene from database
+     * @param c - card for focus
      */
-    public void refresh() {
+    public void refresh(Card c) {
         Platform.runLater(new Runnable() {
             @Override public void run() {
                 System.out.println("Refreshing board overview");
@@ -444,7 +417,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
                     allCards.add(getCardsOfListFromServer(cl.getId()));
                 }
                 clearBoard();
-                displayLists(cardLists, allCards);
+                displayLists(cardLists, allCards, c);
             }
         });
     }
@@ -476,7 +449,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         Card c = new Card("test card ..");
         System.out.println("creating test card "+c);
         server.addCard(c, 0, 0);
-        refresh();
+        //refresh();
         mainCtrl.timeoutBoardRefresh();
     }
 
@@ -490,9 +463,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         System.out.println("creating new card "+c+" in list id="+listID);
         c.setPosition(server.getListSize(listID) + 1);
         c = server.addCard(c, boardID, listID);
-        refresh();
+        refresh(c);
         return c;
-//        mainCtrl.timeoutBoardRefresh();
     }
 
     /**
@@ -508,6 +480,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             isCreatingCard = true;
             // when the user presses the enter button
             Card createdCardElement = createCard(listID);
+
         }
     }
 
@@ -541,7 +514,26 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         mainCtrl.showListCreate(boardID);
     }
 
+    /**
+     * takes you to customization scene
+     * @param event
+     */
+    public void goCustomization(ActionEvent event){
+        mainCtrl.showCustomization(boardID);
+    }
 
+    /**
+     * sets color of font for board components
+     * @param color - new color
+     */
+    @FXML
+    public void colorFont(int color){
+        String hexColor = String.format("#%06X", (0xFFFFFF & color));
+        labelBoardTitle.setStyle("-fx-text-fill: " + hexColor);
+        boardKey.setStyle("-fx-text-fill: " + hexColor);
+        boardKeyL.setStyle("-fx-text-fill: " + hexColor);
+        tagL.setStyle("-fx-text-fill: " + hexColor);
+    }
 
 
 }

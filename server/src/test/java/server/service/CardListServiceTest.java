@@ -97,4 +97,31 @@ public class CardListServiceTest {
         assertEquals(ser.getCardsFromList(listId), cardList);
     }
 
+    @Test
+    public void getListSizeTest(){
+        Board board = new Board("board");
+        CardList list = new CardList("c");
+        Card card = new Card("title");
+        int listId = list.getId();
+        list.lastPosition = 8;
+        br.save(board);
+        ser.save(list, board.getId());
+        cardService.save(card, listId);
+        assertEquals(ser.getListSize(listId), 8);
+    }
+
+    @Test
+    public void setListSizeTest(){
+        Board board = new Board("board");
+        CardList list = new CardList("c");
+        Card card = new Card("title");
+        int listId = list.getId();
+        list.lastPosition = 8;
+        br.save(board);
+        ser.save(list, board.getId());
+        cardService.save(card, listId);
+        ser.setListSize(listId, 12);
+        assertEquals(ser.getListSize(listId), 12);
+    }
+
 }
