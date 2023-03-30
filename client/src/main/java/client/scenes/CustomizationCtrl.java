@@ -4,10 +4,16 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Board;
 import commons.CardList;
+import commons.Palette;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+
 import java.util.List;
 
 public class CustomizationCtrl {
@@ -17,6 +23,14 @@ public class CustomizationCtrl {
 
     public int boardId;
 
+    private Color listB = MainCtrl.colorParseToFXColor(11776947);
+    private Color listF = MainCtrl.colorParseToFXColor(0) ;
+    private Color boardB = MainCtrl.colorParseToFXColor(2580);
+    private Color boardF = MainCtrl.colorParseToFXColor(13421772);
+
+    private Color listBt;
+    private Color listFt;
+
     @FXML
     private ColorPicker bb;
     @FXML
@@ -25,6 +39,10 @@ public class CustomizationCtrl {
     private ColorPicker lb;
     @FXML
     private ColorPicker lf;
+
+    @FXML
+    private ListView<Palette> palettes;
+    private ObservableList<Palette> items = FXCollections.observableArrayList();
 
     /**
      * constructor
@@ -55,6 +73,8 @@ public class CustomizationCtrl {
         board.setfColor(mainCtrl.colorParseToInt(bf.getValue()));
         server.editBoard(boardId,board);
         colourlist();
+        listBt = lb.getValue();
+        listFt = lf.getValue();
 
         mainCtrl.showBoardOverview(boardId);
         mainCtrl.colorBF(boardId, MainCtrl.colorParseToInt(bf.getValue()));
@@ -73,5 +93,63 @@ public class CustomizationCtrl {
             //mainCtrl.colorLF(boardId, list.getId(), MainCtrl.colorParseToInt(lf.getValue()));
         }
     }
+
+    /**
+     * refreshes the page to set values for color pickers
+     */
+    public void refresh(){
+        Board b = server.getBoard(boardId);
+        List<CardList> l = server.getCardListsFromBoard(boardId);
+        bb.setValue(MainCtrl.colorParseToFXColor(b.getbColor()));
+        bf.setValue(MainCtrl.colorParseToFXColor(b.getfColor()));
+        System.out.println("board color: " + bb.getValue());
+        System.out.println("board f color: " + bf.getValue());
+        if(l.isEmpty()){
+            if(listBt == null){
+                lb.setValue(listB);
+                lf.setValue(listF);
+            }
+            else{
+                lb.setValue(listBt);
+                lf.setValue(listFt);
+            }
+        }
+        else{
+            lb.setValue(MainCtrl.colorParseToFXColor(l.get(0).getbColor()));
+            lf.setValue(MainCtrl.colorParseToFXColor(l.get(0).getfColor()));
+        }
+//        palettes.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+//        ObservableList<Palette> boardList = FXCollections.observableList(getPalettes());
+//        palettes.setItems(boardList);
+    }
+
+    /**
+     * resets color pickers for a board to default
+     * @param event
+     */
+    @FXML
+    public void resetBoard(MouseEvent event){
+        bb.setValue(boardB);
+        bf.setValue(boardF);
+    }
+
+    /**
+     * resets color pickers for lists to default
+     * @param event
+     */
+    @FXML
+    public void resetList(MouseEvent event){
+        lb.setValue(listB);
+        lf.setValue(listF);
+    }
+
+//    public List<Palette> getPalettes(){
+//        return server.getPalettesFromBoard(boardId);
+//    }
+////    @FXML
+////    public void addPalette(MouseEvent event){
+////        Palette p = new Palette()
+////    }
+
 
 }

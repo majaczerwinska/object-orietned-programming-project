@@ -14,6 +14,7 @@
   <items>
       <VBox fx:id="vboxList1" alignment="TOP_CENTER" prefHeight="493.0" prefWidth="200.0" spacing="10.0">
          <children>
+
             <HBox prefHeight="35.0" prefWidth="179.0">
                <children>
                   <Button fx:id="lock" mnemonicParsing="false" onAction="#clickLockInUnlockedBoard" prefHeight="45.0" prefWidth="46.0" text="🔓">
@@ -35,8 +36,9 @@
                </children>
             </HBox>
             <HBox prefHeight="31.0" prefWidth="179.0" spacing="10.0">
+
                <children>
-                  <Label fx:id="boardKeyL" text="Board's key: ">
+                  <Label fx:id="boardKeyL" text="Key: ">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
