@@ -20,7 +20,7 @@ public class CardListController {
     /**
      *Constructor
      * @param l - the service on use
-     * @param msgs the the messaging template for messages
+     * @param msgs the messaging template for messages
      */
     @Autowired
     public CardListController(CardListService l, SimpMessagingTemplate msgs) {

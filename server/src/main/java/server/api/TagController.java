@@ -71,7 +71,7 @@ public class TagController {
     @DeleteMapping("/{boardId}/{id}")
     public ResponseEntity<Tag> deleteTag(@PathVariable("boardId") int boardId, @PathVariable("id") int id) {
         if(!ser.existsById(id)) return ResponseEntity.badRequest().build();
-        Tag tag = ser.delete(ser.findById(id).get(), boardId);
+        Tag tag = ser.delete(ser.getById(id), boardId);
         msgs.convertAndSend("/topic/tags/"+boardId,"Tag deleted on board#" + boardId);
         if(tag==null) return ResponseEntity.badRequest().build();
         return ResponseEntity.ok().build();
@@ -88,7 +88,7 @@ public class TagController {
     public ResponseEntity<Tag> editTag(@PathVariable("boardId") int boardId,
                                        @PathVariable("id") int id, @RequestBody Tag newTag){
         if(!ser.existsById(id)) return ResponseEntity.badRequest().build();
-        Tag saved = ser.editTag(ser.findById(id).get(), newTag);
+        Tag saved = ser.editTag(ser.getById(id), newTag);
         msgs.convertAndSend("/topic/tags/"+boardId,"Tag edited on board#" + boardId);
         if(saved==null) return ResponseEntity.badRequest().build();
         return ResponseEntity.ok().build();

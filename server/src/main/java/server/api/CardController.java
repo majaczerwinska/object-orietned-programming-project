@@ -27,7 +27,7 @@ public class CardController {
     /**
      *Constructor
      * @param c the service we use
-     * @param msgs the the messaging template for messages
+     * @param msgs the messaging template for messages
      */
     public CardController(CardService c, SimpMessagingTemplate msgs) {
         this.acs = c;

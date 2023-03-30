@@ -85,14 +85,6 @@ public class TagService {
         return repo.getById(id);
     }
 
-    /**
-     * Return tag instance given its id
-     * @param id tag id
-     * @return optional tag object
-     */
-    public Optional<Tag> findById(int id){
-        return repo.findById(id);
-    }
 
     /**
      * return true if a tag with the given id exists, false otherwise

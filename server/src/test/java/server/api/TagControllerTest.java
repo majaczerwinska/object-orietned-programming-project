@@ -7,11 +7,11 @@ import commons.Tag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-//import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+//import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageChannel;
-//import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+//import org.springframework.messaging.converter.StringMessageConverter;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 //import org.springframework.messaging.simp.stomp.StompFrameHandler;
 //import org.springframework.messaging.simp.stomp.StompHeaders;
@@ -19,7 +19,6 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 //import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
 //import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 //import org.springframework.web.socket.messaging.WebSocketStompClient;
-import server.WebsocketConfig;
 import server.database.BoardRepositoryTest;
 import server.database.CardRepositoryTest;
 import server.service.BoardService;
@@ -27,52 +26,51 @@ import server.service.TagService;
 import server.database.TagRepositoryTest;
 
 //import java.lang.reflect.Type;
-//import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//This annotation loads the WebsocketConfigTest to instantiate websocket server for testing
 public class TagControllerTest {
+//    @LocalServerPort
+//    private int port;
     private TagRepositoryTest repo;
     private BoardRepositoryTest br;
     private CardRepositoryTest cr;
     private TagController con;
     private TagService ser;
     private BoardService boardService;
+    @Autowired
     private SimpMessagingTemplate msgs;
-    private WebsocketConfig websocketConfig;
+
+//    private StompSession session;
 
     @BeforeEach
     public void setup() throws ExecutionException, InterruptedException {
-//        StompSession session;
-//            StandardWebSocketClient client = new StandardWebSocketClient();
-//            WebSocketStompClient stompClient = new WebSocketStompClient(client);
-//            stompClient.setMessageConverter(new MappingJackson2MessageConverter());
-//            System.out.println("Connecting to WebSocket server...");
-//            session = stompClient.connect("ws://localhost:8080/websocket", new StompSessionHandlerAdapter() {
-//                @Override
-//                public Type getPayloadType(StompHeaders headers) {
-//                    return null;
-//                }
+//        StandardWebSocketClient client = new StandardWebSocketClient();
+//        WebSocketStompClient stompClient = new WebSocketStompClient(client);
+//        stompClient.setMessageConverter(new StringMessageConverter());
+//        System.out.println("Connecting to WebSocket server...");
+//        session = stompClient.connect("ws://localhost:" + port + "/websocketTest", new StompSessionHandlerAdapter() {}).get();
+//        session.subscribe("/topic/tags/0", new StompFrameHandler() {
+//            @Override
+//            public Type getPayloadType(StompHeaders headers) {
+//                return String.class;
+//            }
 //
-//                @Override
-//                public void handleFrame(StompHeaders headers, Object payload) {
-//                }
-//            }).get();
-//            session.subscribe("/topic/tags/0",null);
+//            @Override
+//            public void handleFrame(StompHeaders headers, Object payload) {
+//                return;
+//            }
+//        });
 
         repo = new TagRepositoryTest();
         br = new BoardRepositoryTest();
         cr = new CardRepositoryTest();
         ser = new TagService(repo, br, cr);
         boardService = new BoardService(br);
-        msgs = new SimpMessagingTemplate(new MessageChannel() {
-            @Override
-            public boolean send(Message<?> message, long timeout) {
-                return false;
-            }
-        });
         con = new TagController(ser, boardService, msgs);
     }
 

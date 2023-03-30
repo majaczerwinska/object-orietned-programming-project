@@ -3,30 +3,47 @@ package server.api;
 import commons.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.converter.StringMessageConverter;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.stomp.StompFrameHandler;
+import org.springframework.messaging.simp.stomp.StompHeaders;
+import org.springframework.messaging.simp.stomp.StompSession;
+import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.web.socket.client.standard.StandardWebSocketClient;
+import org.springframework.web.socket.messaging.WebSocketStompClient;
 import server.service.CardService;
 import server.database.CardListRepositoryTest;
 import server.database.CardRepositoryTest;
 
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//This annotation loads the WebsocketConfigTest to instantiate websocket server for testing
 public class CardControllerTest {
     private CardRepositoryTest repo;
     private CardListRepositoryTest cl;
     private CardController con;
     private CardService ser;
+    @Autowired
+    private SimpMessagingTemplate msgs;
 
     @BeforeEach
     public void setup() {
         repo = new CardRepositoryTest();
         cl = new CardListRepositoryTest();
         ser = new CardService(repo, cl);
-        con = new CardController(ser, null);
+        con = new CardController(ser, msgs);
     }
 
     @Test
