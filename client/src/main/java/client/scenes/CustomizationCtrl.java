@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.components.PaletteComponent;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Board;
@@ -12,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 import java.util.List;
@@ -40,9 +42,12 @@ public class CustomizationCtrl {
     @FXML
     private ColorPicker lf;
 
+//    @FXML
+//    private ListView<Palette> palettes;
+//    private ObservableList<Palette> items = FXCollections.observableArrayList();
+
     @FXML
-    private ListView<Palette> palettes;
-    private ObservableList<Palette> items = FXCollections.observableArrayList();
+    private VBox palettes;
 
     /**
      * constructor
@@ -98,6 +103,7 @@ public class CustomizationCtrl {
      * refreshes the page to set values for color pickers
      */
     public void refresh(){
+        clearPalette();
         Board b = server.getBoard(boardId);
         List<CardList> l = server.getCardListsFromBoard(boardId);
         bb.setValue(MainCtrl.colorParseToFXColor(b.getbColor()));
@@ -118,6 +124,12 @@ public class CustomizationCtrl {
             lb.setValue(MainCtrl.colorParseToFXColor(l.get(0).getbColor()));
             lf.setValue(MainCtrl.colorParseToFXColor(l.get(0).getfColor()));
         }
+        List<Palette> p = server.getPalettesFromBoard(boardId);
+        for(Palette pal : p){
+            PaletteComponent component = new PaletteComponent(this, boardId);
+            component.setData(pal);
+            palettes.getChildren().add(component);
+        }
 //        palettes.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 //        ObservableList<Palette> boardList = FXCollections.observableList(getPalettes());
 //        palettes.setItems(boardList);
@@ -131,6 +143,9 @@ public class CustomizationCtrl {
     public void resetBoard(MouseEvent event){
         bb.setValue(boardB);
         bf.setValue(boardF);
+    }
+    public void clearPalette(){
+        palettes.getChildren().clear();
     }
 
     /**

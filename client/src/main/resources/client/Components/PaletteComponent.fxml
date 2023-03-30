@@ -6,12 +6,12 @@
 <?import javafx.scene.layout.HBox?>
 
 
-<HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="421.0" spacing="20.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="421.0" spacing="20.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" type="HBox">
    <children>
-      <Label text="Label" />
-      <ColorPicker prefHeight="25.0" prefWidth="95.0" />
-      <ColorPicker prefHeight="25.0" prefWidth="95.0" />
+      <Label fx:id="name" text="Label" />
+      <ColorPicker fx:id="background" prefHeight="25.0" prefWidth="95.0" />
+      <ColorPicker fx:id="font" prefHeight="25.0" prefWidth="95.0" />
       <Button mnemonicParsing="false" text="X" />
       <Button mnemonicParsing="false" text="set as default" />
    </children>
-</HBox>
+</fx:root>

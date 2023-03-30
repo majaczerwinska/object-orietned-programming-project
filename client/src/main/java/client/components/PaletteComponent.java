@@ -1,7 +1,9 @@
 package client.components;
 
+import client.scenes.CustomizationCtrl;
 import client.scenes.MainCtrl;
 import client.utils.ServerUtils;
+import commons.Palette;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -25,18 +27,18 @@ public class PaletteComponent extends HBox {
     @FXML
     private Button setDef;
 
-    private MainCtrl mainCtrl;
+    private CustomizationCtrl customizationCtrl;
     private int boardId;
     private ServerUtils server;
 
     /**
      * constructor
-     * @param mainCtrl
+     * @param customizationCtrl
      * @param boardId
      */
-    public PaletteComponent(MainCtrl mainCtrl, int boardId){
+    public PaletteComponent(CustomizationCtrl customizationCtrl, int boardId){
         super();
-        this.mainCtrl = mainCtrl;
+        this.customizationCtrl = customizationCtrl;
         this.boardId = boardId;
         server = new ServerUtils();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/components/PaletteComponent.fxml"));
@@ -50,5 +52,19 @@ public class PaletteComponent extends HBox {
         }
 
     }
+
+    public void setData(Palette p){
+        name.setText(p.getName());
+        background.setValue(MainCtrl.colorParseToFXColor(p.getbColor()));
+        font.setValue(MainCtrl.colorParseToFXColor(p.getfColor()));
+//        if(p.isIsdefault()){
+//            setDef.setVisible(false);
+//        }
+//        else{
+//            setDef.setVisible(true);
+//        }
+    }
+
+
 
 }
