@@ -295,7 +295,7 @@ public class CardComponent extends HBox implements Initializable {
         System.out.println("Text update card" + self);
         self.setTitle(tfTitle.getText());
         //self.setDescription(tfDescription.getText());
-        server.editCard(cardID,self);
+        server.editCard(boardID, cardID,self);
         System.out.println("exits method"+ self);
     }
 
@@ -326,7 +326,7 @@ public class CardComponent extends HBox implements Initializable {
             // UI update code here
             System.out.println("deleting card (CardComponent.deleteCard(self)) " + self);
 
-            server.deleteCard(self, cardListID);
+            server.deleteCard(self, boardID, cardListID);
             server.setListSize(cardListID, server.getListSize(cardListID) - 1);
 
             Platform.runLater(() -> {

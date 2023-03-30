@@ -144,7 +144,7 @@ public class CardCtrl {
             Card card= new Card(text.getText());
             card.setDescription(area.getText());
             card.setColor(MainCtrl.colorParseToInt(palette.getValue()));
-            server.editCard(cardID,card);
+            server.editCard(boardID, cardID,card);
             warning.setText("");
         }
 

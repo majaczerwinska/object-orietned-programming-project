@@ -21,10 +21,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 //import java.io.IOException;
 //import java.io.InputStreamReader;
 //import java.net.URL;
-import java.lang.reflect.Type;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.function.Consumer;
 import java.util.Set;
 
 import commons.Board;
@@ -41,13 +38,6 @@ import org.glassfish.jersey.client.ClientConfig;
 //import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
-import org.springframework.messaging.converter.MappingJackson2MessageConverter;
-import org.springframework.messaging.simp.stomp.StompFrameHandler;
-import org.springframework.messaging.simp.stomp.StompHeaders;
-import org.springframework.messaging.simp.stomp.StompSession;
-import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
-import org.springframework.web.socket.client.standard.StandardWebSocketClient;
-import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 //import java.io.BufferedReader;
 //import java.io.IOException;
@@ -100,48 +90,15 @@ public class ServerUtils {
 //                .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
 //    }
 
-    private StompSession connect(String url){
-        StandardWebSocketClient client = new StandardWebSocketClient();
-        WebSocketStompClient stompClient = new WebSocketStompClient(client);
-        stompClient.setMessageConverter(new MappingJackson2MessageConverter());
-        try {
-            return stompClient.connect(url, new StompSessionHandlerAdapter() {}).get();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-        }
-        throw new IllegalStateException();
-    }
-
-    private StompSession session = connect("ws://localhost:8080/websocket");
-
-    public <T> void registerForMessages(String dest, Class<T> type, Consumer<T> consumer){
-        session.subscribe(dest, new StompFrameHandler() {
-            @Override
-            public Type getPayloadType(StompHeaders headers) {
-                return type;
-            }
-
-            @Override
-            public void handleFrame(StompHeaders headers, Object payload) {
-                consumer.accept((T)payload);
-            }
-        });
-    }
-
-    public void sendMessage(String dest, Object o){
-        session.send(dest, o);
-    }
-
     /**
-     * @param card -
+     * @param card card o be added
      * @param listID the list id
+     * @param boardId the board the list is in
      * @return -
      */
-    public Card addCard(Card card, int listID) {
+    public Card addCard(Card card, int boardId, int listID) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/cards/" + listID) //
+                .target(SERVER).path("api/cards/" + boardId + "/" + listID) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(card, APPLICATION_JSON), Card.class);
@@ -228,14 +185,15 @@ public class ServerUtils {
 
     /**
      * Edit card with id to the new card
+     * @param boardId the board the card is in
      * @param id the id of the card to edit
      * @param card the new card the old card is replaced by
      * @return return the card edited
      */
-    public Card editCard(int id, Card card) {
+    public Card editCard(int boardId, int id, Card card) {
         try {
             return ClientBuilder.newClient(new ClientConfig())
-                    .target(SERVER).path("api/cards/" + id)
+                    .target(SERVER).path("api/cards/edit/" + boardId + "/" + id)
                     .request(APPLICATION_JSON)
                     .accept(APPLICATION_JSON)
                     .put(Entity.entity(card, APPLICATION_JSON), Card.class);
@@ -397,13 +355,14 @@ public class ServerUtils {
 
     /**
      * Edits a tag in the database (calls the edit method from the controller)
-     * @param oldTag the old tag
+     * @param boardId the board the card is in
+     * @param id the id of the tag to be edited
      * @param newTag the tag with de new attributes
      * @return the edited tag
      */
-    public Tag editTag(Tag oldTag, Tag newTag){
+    public Tag editTag(int boardId, int id, Tag newTag){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/tags/" + oldTag.getId()) //
+                .target(SERVER).path("api/tags/edit/" + boardId + "/" + id) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(newTag, APPLICATION_JSON), Tag.class);
@@ -521,27 +480,29 @@ public class ServerUtils {
 
     /**
      * renames your list
+     * @param boardId the board the list is in
      * @param listId - id of the list to be renamed
      * @param newName - new name
      * @return - edited list
      */
-    public CardList editList(int listId, String newName) {
+    public CardList editList(int boardId, int listId, String newName) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/lists/" + listId)
+                .target(SERVER).path("api/lists/" + boardId + "/" + listId)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(newName, APPLICATION_JSON), CardList.class);
     }
     /**
      * send a delete request for a card
+     * @param boardId the board the card is in
      * @param c the card instance
      * @param listID the list the card is in
      * @return the deleted card response
      */
-    public Card deleteCard(Card c, int listID) {
+    public Card deleteCard(Card c, int boardId, int listID) {
         System.out.println("Sending DELETE request to api/cards/"+listID+"/"+c.getId()+"\nCard for card element "+c);
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/cards/" + listID + "/" + c.getId()) //
+                .target(SERVER).path("api/cards/" + boardId + "/" + listID + "/" + c.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .delete(Card.class);

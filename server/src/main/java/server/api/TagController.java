@@ -4,9 +4,10 @@ package server.api;
 import commons.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
+//import org.springframework.messaging.handler.annotation.DestinationVariable;
+//import org.springframework.messaging.handler.annotation.MessageMapping;
+//import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import server.service.BoardService;
 import server.service.TagService;
@@ -18,23 +19,19 @@ import java.util.List;
 public class TagController {
     private TagService ser;
     private BoardService boardService;
+    private SimpMessagingTemplate msgs;
 
     /**
      * Constructor
      * @param ser the service used
      * @param boardService the boardservice used
+     * @param msgs the messaging template for messages
      */
     @Autowired
-    public TagController(TagService ser, BoardService boardService){
+    public TagController(TagService ser, BoardService boardService, SimpMessagingTemplate msgs){
         this.ser = ser;
         this.boardService = boardService;
-    }
-
-    @MessageMapping("/tags/{boardId}")
-    @SendTo("/topic/tags/{boardId}")
-    public Tag addMessage(@DestinationVariable("boardId") int boardID, Tag tag){
-        addTag(boardID, tag);
-        return tag;
+        this.msgs = msgs;
     }
 
     /**
@@ -60,6 +57,7 @@ public class TagController {
     public ResponseEntity<Tag> addTag(@PathVariable("boardId") int boardId, @RequestBody Tag tag) {
         if(tag.getTitle()==null) return ResponseEntity.badRequest().build();
         Tag saved = ser.save(tag,boardId);
+        msgs.convertAndSend("/topic/tags/"+boardId, tag);
         if(saved==null) return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(saved);
     }
@@ -73,7 +71,8 @@ public class TagController {
     @DeleteMapping("/{boardId}/{id}")
     public ResponseEntity<Tag> deleteTag(@PathVariable("boardId") int boardId, @PathVariable("id") int id) {
         if(!ser.existsById(id)) return ResponseEntity.badRequest().build();
-        Tag tag = ser.delete(ser.getById(id), boardId);
+        Tag tag = ser.delete(ser.findById(id).get(), boardId);
+        msgs.convertAndSend("/topic/tags/"+boardId, tag);
         if(tag==null) return ResponseEntity.badRequest().build();
         return ResponseEntity.ok().build();
     }
@@ -82,12 +81,15 @@ public class TagController {
      * Edits a tag
      * @param id the id of the tag to be edited
      * @param newTag the new tag with the right attributes
+     * @param boardId the id of the board at which the tag is located
      * @return the response status
      */
-    @PutMapping("/{id}")
-    public ResponseEntity<Tag> editTag(@PathVariable("id") int id, @RequestBody Tag newTag){
+    @PutMapping("/edit/{boardId}/{id}")
+    public ResponseEntity<Tag> editTag(@PathVariable("boardId") int boardId,
+                                       @PathVariable("id") int id, @RequestBody Tag newTag){
         if(!ser.existsById(id)) return ResponseEntity.badRequest().build();
-        Tag saved = ser.editTag(ser.getById(id), newTag);
+        Tag saved = ser.editTag(ser.findById(id).get(), newTag);
+        msgs.convertAndSend("/topic/tags/"+boardId, saved);
         if(saved==null) return ResponseEntity.badRequest().build();
         return ResponseEntity.ok().build();
     }

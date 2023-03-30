@@ -7,14 +7,29 @@ import commons.Tag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageChannel;
+//import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+//import org.springframework.messaging.simp.stomp.StompFrameHandler;
+//import org.springframework.messaging.simp.stomp.StompHeaders;
+//import org.springframework.messaging.simp.stomp.StompSession;
+//import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+//import org.springframework.web.socket.client.standard.StandardWebSocketClient;
+//import org.springframework.web.socket.messaging.WebSocketStompClient;
+import server.WebsocketConfig;
 import server.database.BoardRepositoryTest;
 import server.database.CardRepositoryTest;
 import server.service.BoardService;
 import server.service.TagService;
 import server.database.TagRepositoryTest;
 
+//import java.lang.reflect.Type;
+//import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,15 +40,40 @@ public class TagControllerTest {
     private TagController con;
     private TagService ser;
     private BoardService boardService;
+    private SimpMessagingTemplate msgs;
+    private WebsocketConfig websocketConfig;
 
     @BeforeEach
-    public void setup() {
+    public void setup() throws ExecutionException, InterruptedException {
+//        StompSession session;
+//            StandardWebSocketClient client = new StandardWebSocketClient();
+//            WebSocketStompClient stompClient = new WebSocketStompClient(client);
+//            stompClient.setMessageConverter(new MappingJackson2MessageConverter());
+//            System.out.println("Connecting to WebSocket server...");
+//            session = stompClient.connect("ws://localhost:8080/websocket", new StompSessionHandlerAdapter() {
+//                @Override
+//                public Type getPayloadType(StompHeaders headers) {
+//                    return null;
+//                }
+//
+//                @Override
+//                public void handleFrame(StompHeaders headers, Object payload) {
+//                }
+//            }).get();
+//            session.subscribe("/topic/tags/0",null);
+
         repo = new TagRepositoryTest();
         br = new BoardRepositoryTest();
         cr = new CardRepositoryTest();
         ser = new TagService(repo, br, cr);
         boardService = new BoardService(br);
-        con = new TagController(ser, boardService);
+        msgs = new SimpMessagingTemplate(new MessageChannel() {
+            @Override
+            public boolean send(Message<?> message, long timeout) {
+                return false;
+            }
+        });
+        con = new TagController(ser, boardService, msgs);
     }
 
     @Test
@@ -95,7 +135,7 @@ public class TagControllerTest {
         Board b = new Board("t");
         br.save(b);
         con.addTag(b.getId(),tag);
-        con.editTag(tag.getId(), new Tag("t", 1));
+        con.editTag(b.getId(), tag.getId(), new Tag("t", 1));
         assertEquals(tag.getTitle(), "t");
         assertEquals(tag.getColor(), 1);
 

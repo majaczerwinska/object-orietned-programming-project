@@ -31,7 +31,7 @@ public class CardListControllerTest {
         repo = new CardListRepositoryTest();
         br = new BoardRepositoryTest();
         ser = new CardListService(repo, br);
-        con = new CardListController(ser);
+        con = new CardListController(ser, null);
         cr = new CardRepositoryTest();
         cardService = new CardService(cr, repo);
     }
@@ -63,7 +63,7 @@ public class CardListControllerTest {
         br.save(board);
         CardList list = new CardList("title");
         con.addList(board.getId(), list);
-        con.renameList(list.getId(),"t");
+        con.renameList(board.getId(), list.getId(),"t");
         assertEquals(list.getName(),"t");
 
     }

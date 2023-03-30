@@ -13,6 +13,7 @@ import server.database.TagRepository;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -82,6 +83,15 @@ public class TagService {
      */
     public Tag getById(int id){
         return repo.getById(id);
+    }
+
+    /**
+     * Return tag instance given its id
+     * @param id tag id
+     * @return optional tag object
+     */
+    public Optional<Tag> findById(int id){
+        return repo.findById(id);
     }
 
     /**

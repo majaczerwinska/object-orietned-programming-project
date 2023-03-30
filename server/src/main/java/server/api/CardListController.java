@@ -4,6 +4,7 @@ import commons.Card;
 import commons.CardList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import server.service.CardListService;
 
@@ -14,26 +15,33 @@ import java.util.List;
 public class CardListController {
 
     private CardListService als;
+    private SimpMessagingTemplate msgs;
+    CardList cardList = new CardList("test");
 
     /**
      *Constructor
      * @param l - the service on use
+     * @param msgs the the messaging template for messages
      */
     @Autowired
-    public CardListController(CardListService l) {
+    public CardListController(CardListService l, SimpMessagingTemplate msgs) {
         this.als = l;
+        this.msgs = msgs;
     }
 
     /**
      * Renames the tasklist
      * @param id the id of the list
      * @param name the new name of the list
+     * @param boardId the id of the board at which the cardList is located
      * @return a string showing the id of the renamed list and the new name
      */
-    @PutMapping("/{id}")
-    public ResponseEntity<CardList> renameList(@PathVariable("id") int id,@RequestBody String name){
+    @PutMapping("/{boardId}/{id}")
+    public ResponseEntity<CardList> renameList(@PathVariable("boardId") int boardId,
+                                               @PathVariable("id") int id,@RequestBody String name){
         if(!als.existsById(id)) return ResponseEntity.badRequest().build();
         als.updateTaskListName(als.getById(id), name);
+        msgs.convertAndSend("/topic/boards/"+boardId, cardList);
         return ResponseEntity.ok().build();
     }
 
@@ -49,6 +57,7 @@ public class CardListController {
     public ResponseEntity<CardList> addList(@PathVariable("boardId") int boardId, @RequestBody CardList list) {
         if(list.getName()==null) return ResponseEntity.badRequest().build();
         CardList saved = als.save(list, boardId);
+        msgs.convertAndSend("/topic/boards/"+boardId, cardList);
         if(saved == null) return ResponseEntity.badRequest().build();
 
         return ResponseEntity.ok(saved);
@@ -64,6 +73,7 @@ public class CardListController {
     public ResponseEntity<CardList> deleteList(@PathVariable("boardId") int boardId, @PathVariable("id") int id) {
         if(!als.existsById(id)) return ResponseEntity.badRequest().build();
         CardList list = als.delete(als.getById(id), boardId);
+        msgs.convertAndSend("/topic/boards/"+boardId, cardList);
         if(list==null) return ResponseEntity.badRequest().build();
         return ResponseEntity.ok().build();
     }

@@ -26,7 +26,7 @@ public class CardControllerTest {
         repo = new CardRepositoryTest();
         cl = new CardListRepositoryTest();
         ser = new CardService(repo, cl);
-        con = new CardController(ser);
+        con = new CardController(ser, null);
     }
 
     @Test
@@ -34,7 +34,7 @@ public class CardControllerTest {
         CardList list = new CardList("l");
         cl.save(list);
         Card card = new Card("title");
-        con.addCard(list.getId(),card);
+        con.addCard(0, list.getId(),card);
         assertTrue(repo.existsById(card.getId()));
 
     }
@@ -44,8 +44,8 @@ public class CardControllerTest {
         CardList list = new CardList("l");
         cl.save(list);
         Card card = new Card("title");
-        con.addCard(list.getId(), card);
-        con.deleteCard(list.getId(), card.getId());
+        con.addCard(0, list.getId(), card);
+        con.deleteCard(0, list.getId(), card.getId());
         assertFalse(repo.existsById(card.getId()));
 
     }
@@ -56,8 +56,8 @@ public class CardControllerTest {
         cl.save(list);
         Card card = new Card("title");
         Card card2 = new Card("title2");
-        con.addCard(list.getId(), card);
-        con.editCard(card.getId(), card2);
+        con.addCard(0, list.getId(), card);
+        con.editCard(0, card.getId(), card2);
         assertEquals(card, card2);
 
     }
@@ -69,8 +69,8 @@ public class CardControllerTest {
         cl.save(list);
         Card card = new Card("title");
         Card card2 = new Card();
-        con.addCard(list.getId(),card);
-        con.editCard(card.getId(), card2);
+        con.addCard(0, list.getId(),card);
+        con.editCard(0, card.getId(), card2);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
 
     }
@@ -80,7 +80,7 @@ public class CardControllerTest {
         CardList list = new CardList("c");
         cl.save(list);
         Card card = new Card("title");
-        con.addCard(list.getId(), card);
+        con.addCard(0, list.getId(), card);
         ResponseEntity<Card> cardResponseEntity = ResponseEntity.ok(card);
         assertEquals(con.getCard(card.getId()), cardResponseEntity);
     }
@@ -91,7 +91,7 @@ public class CardControllerTest {
         Card card = new Card("title");
         List<Task> tasks = new ArrayList<>();
         card.setTasks(tasks);
-        con.addCard(list.getId(), card);
+        con.addCard(0, list.getId(), card);
         assertEquals(con.getTasks(card.getId()),ResponseEntity.ok(tasks) );
     }
 
