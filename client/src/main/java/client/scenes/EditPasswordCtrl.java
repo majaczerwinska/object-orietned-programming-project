@@ -3,41 +3,37 @@ package client.scenes;
 import client.utils.ServerUtils;
 import commons.Board;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
 import javax.inject.Inject;
 import java.util.prefs.Preferences;
 
-
-public class LockInUnlockedBoardCtrl {
+public class EditPasswordCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
-    @FXML
-    private Button cancel;
-    @FXML
-    private Button setpassword;
+    public int boardID;
+    private Preferences pref;
     @FXML
     private TextField password1;
     @FXML
     private TextField password2;
     @FXML
+    private Button cancel;
+    @FXML
+    private Button edit;
+    @FXML
+    private Button remove;
+    @FXML
     private Label warning1;
     @FXML
     private Label warning2;
 
-    public int boardID;
-    private Preferences pref;
-
-    /***
-     * constructor
-     * @param server the server
-     * @param mainCtrl main controller
-     */
     @Inject
-    public LockInUnlockedBoardCtrl(ServerUtils server, MainCtrl mainCtrl){
-        this.mainCtrl = mainCtrl;
+    public EditPasswordCtrl(ServerUtils server, MainCtrl mainCtrl){
         this.server = server;
+        this.mainCtrl = mainCtrl;
         this.pref = Preferences.userRoot().node("locking");
     }
 
@@ -69,7 +65,7 @@ public class LockInUnlockedBoardCtrl {
     /**
      * Sets the password
      */
-    public void setPassword(){
+    public void editPassword(){
         String password = verificationOfPassword();
         if(password==null) return;
         Board board = server.getBoard(boardID);
@@ -78,7 +74,16 @@ public class LockInUnlockedBoardCtrl {
         pref.put(String.valueOf(boardID),password);
         mainCtrl.closeLocker();
         mainCtrl.showBoardOverview(boardID);
-
     }
+
+    public void removePassword(){
+        Board board = server.getBoard(boardID);
+        board.setPassword("");
+        server.editBoard(boardID, board);
+        pref.remove(String.valueOf(boardID));
+        mainCtrl.closeLocker();
+        mainCtrl.showBoardOverview(boardID);
+    }
+
 
 }
