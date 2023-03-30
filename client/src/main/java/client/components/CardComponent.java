@@ -25,6 +25,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 //TODO
 public class CardComponent extends HBox implements Initializable {
@@ -233,7 +234,7 @@ public class CardComponent extends HBox implements Initializable {
      * //todo here
      */
     public void getTagColors() {
-        List<Tag> tags = server.getTagsForCard(cardID);
+        Set<Tag> tags = server.getTagsForCard(cardID);
         System.out.println(tags);
     }
 

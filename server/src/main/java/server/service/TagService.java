@@ -134,7 +134,9 @@ public class TagService {
         Tag tag = repo.getById(tagId);
         Card card = cr.getById(cardId);
         card.getTags().remove(tag);
+        cr.save(card);
         tag.getCards().remove(card);
+        repo.save(tag);
         return tag;
     }
 

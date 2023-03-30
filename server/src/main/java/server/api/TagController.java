@@ -112,7 +112,7 @@ public class TagController {
         }
         Tag t =ser.removeTagFromCard(cardId, tagId);
         if(t==null)  return ResponseEntity.badRequest().build();
-        return ResponseEntity.ok(t);
+        return ResponseEntity.ok().build();
     }
 
 
