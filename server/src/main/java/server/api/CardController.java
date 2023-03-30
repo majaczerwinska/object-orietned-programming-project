@@ -89,9 +89,11 @@ public class CardController {
         if(!acs.existsById(id) || card.getTitle() == null){
             return ResponseEntity.badRequest().build();
         }
+
         card.setId(id);
         acs.setCardInfo(card);
         msgs.convertAndSend("/topic/boards/"+boardId , "Card edited on board#" + boardId);
+
         return ResponseEntity.ok().build();
     }
 

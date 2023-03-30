@@ -91,11 +91,10 @@ public class CardService {
     }
 
     /**
-     * set card's information
-     * @param card with updated information
+     * Sets the information of the card
+     * @param card the card
      */
-
-    public void setCardInfo(Card card){
+    public void setCardInfo( Card card){
         Card c = repo.getById(card.getId());
         c.setDescription(card.getDescription());
         c.setTitle(card.getTitle());
