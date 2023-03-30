@@ -626,7 +626,7 @@ public class ServerUtils {
      *
      * @param boardId
      * @param palette
-     * @return
+     * @return - added palette ?
      */
     public Palette addPaletteToBoard(int boardId, Palette palette){
         return ClientBuilder.newClient(new ClientConfig())
@@ -640,7 +640,7 @@ public class ServerUtils {
     /**
      *
      * @param boardId
-     * @return
+     * @return - added palette?
      */
     public List<Palette> getPalettesFromBoard(int boardId){
         return ClientBuilder.newClient(new ClientConfig()) //

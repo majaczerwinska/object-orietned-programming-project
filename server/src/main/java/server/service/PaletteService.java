@@ -29,7 +29,7 @@ public class PaletteService {
      * constructor
      * @param palette
      * @param boardId
-     * @return
+     * @return - saved palette, null if it wasn't successful
      */
     public Palette save(Palette palette, int boardId){
         if(!br.existsById(boardId)) return null;
