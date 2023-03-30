@@ -141,7 +141,11 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         vboxList1.setStyle("-fx-background-color: " + String.format("rgb(%d, %d, %d)",
                 (board.getbColor() >> 16) & 0xFF,
                 (board.getbColor() >> 8) & 0xFF, board.getbColor()& 0xFF)+";");
-
+        String hexColor = String.format("#%06X", (0xFFFFFF & board.getfColor()));
+        labelBoardTitle.setStyle("-fx-text-fill: " + hexColor);
+        boardKey.setStyle("-fx-text-fill: " + hexColor);
+        boardKeyL.setStyle("-fx-text-fill: " + hexColor);
+        tagL.setStyle("-fx-text-fill: " + hexColor);
     }
 
 
@@ -462,13 +466,13 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         scrollPaneOverview.setOnKeyPressed(event -> onEnterKeyPressed(event, listID));
     }
 
-    /**
-     * Adds a list
-     * @param event touching the add list button
-     */
-    public void addListScene(ActionEvent event){
-        mainCtrl.showListCreate(boardID);
-    }
+//    /**
+//     * Adds a list
+//     * @param event touching the add list button
+//     */
+//    public void addListScene(ActionEvent event){
+//        mainCtrl.showListCreate(boardID);
+//    }
 
     /**
      * takes you to customization scene

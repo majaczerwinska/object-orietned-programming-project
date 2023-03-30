@@ -19,9 +19,9 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <HBox prefHeight="31.0" prefWidth="179.0" spacing="10.0">
+            <HBox alignment="CENTER" prefHeight="31.0" prefWidth="179.0" spacing="10.0">
                <children>
-                  <Label fx:id="boardKeyL" text="Board's key: ">
+                  <Label fx:id="boardKeyL" text="Key: ">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>

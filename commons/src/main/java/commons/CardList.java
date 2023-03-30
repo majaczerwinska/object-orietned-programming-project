@@ -44,8 +44,8 @@ public class CardList {
      */
     public CardList(String name) {
         this.name = name;
-        this.bColor = 0xffffff;
-        this.fColor = 0x000000;
+        this.bColor = 11776947;
+        this.fColor = 0;
         this.cards = new ArrayList<>();
     }
 

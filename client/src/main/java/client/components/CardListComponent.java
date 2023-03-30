@@ -52,7 +52,7 @@ public class CardListComponent extends VBox{
     public CardListComponent(MainCtrl mainCtrl, int boardId, int listId) {
 
         super();
-        this.boardId = boardId;
+       // this.boardId = boardId;
        // this.listID = listID;
         server = new ServerUtils();
         this.listId=listId;

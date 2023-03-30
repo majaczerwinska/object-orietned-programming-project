@@ -457,6 +457,8 @@ public class MainCtrl {
         primaryStage.setTitle("Customization");
         primaryStage.setScene(customization);
         customizationCtrl.boardId = boardId;
+        customizationCtrl.refresh();
+
         primaryStage.show();
     }
 
