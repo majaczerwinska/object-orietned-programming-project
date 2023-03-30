@@ -57,6 +57,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.springframework.web.socket.TextMessage;
 
 //import java.net.URL;
 import java.awt.*;
@@ -170,7 +171,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * @param boardID the boarId from the board we want updates from
      */
     public void subscribeToBoard(int boardID){
-        websocketClient.registerForMessages("/topic/boards/"+boardID, CardList.class, update -> {
+        websocketClient.registerForMessages("/topic/boards/"+boardID, String.class, update -> {
             System.out.println("payload: "+ update);
             refresh();
         });
@@ -181,7 +182,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * @param boardID the boarId from the board we want updates from
      */
     public void subscribeToTagsFromBoard(int boardID){
-        websocketClient.registerForMessages("/topic/tags/"+boardID, Tag.class, update -> {
+        websocketClient.registerForMessages("/topic/tags/"+boardID, String.class, update -> {
                     System.out.println("payload: "+ update);
                     refreshListViewTags();
         });

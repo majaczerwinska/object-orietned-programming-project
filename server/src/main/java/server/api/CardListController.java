@@ -16,7 +16,6 @@ public class CardListController {
 
     private CardListService als;
     private SimpMessagingTemplate msgs;
-    CardList cardList = new CardList("test");
 
     /**
      *Constructor
@@ -41,7 +40,7 @@ public class CardListController {
                                                @PathVariable("id") int id,@RequestBody String name){
         if(!als.existsById(id)) return ResponseEntity.badRequest().build();
         als.updateTaskListName(als.getById(id), name);
-        msgs.convertAndSend("/topic/boards/"+boardId, cardList);
+        msgs.convertAndSend("/topic/boards/"+boardId, "CardList edited on board#" + boardId);
         return ResponseEntity.ok().build();
     }
 
@@ -57,7 +56,7 @@ public class CardListController {
     public ResponseEntity<CardList> addList(@PathVariable("boardId") int boardId, @RequestBody CardList list) {
         if(list.getName()==null) return ResponseEntity.badRequest().build();
         CardList saved = als.save(list, boardId);
-        msgs.convertAndSend("/topic/boards/"+boardId, cardList);
+        msgs.convertAndSend("/topic/boards/"+boardId, "CardList added on board#" + boardId);
         if(saved == null) return ResponseEntity.badRequest().build();
 
         return ResponseEntity.ok(saved);
@@ -73,7 +72,7 @@ public class CardListController {
     public ResponseEntity<CardList> deleteList(@PathVariable("boardId") int boardId, @PathVariable("id") int id) {
         if(!als.existsById(id)) return ResponseEntity.badRequest().build();
         CardList list = als.delete(als.getById(id), boardId);
-        msgs.convertAndSend("/topic/boards/"+boardId, cardList);
+        msgs.convertAndSend("/topic/boards/"+boardId, "CardList deleted on board#" + boardId);
         if(list==null) return ResponseEntity.badRequest().build();
         return ResponseEntity.ok().build();
     }

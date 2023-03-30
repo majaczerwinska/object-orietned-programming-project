@@ -2,7 +2,6 @@ package server.api;
 
 import commons.Card;
 
-import commons.CardList;
 import commons.Task;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.stereotype.Controller;
@@ -24,7 +23,6 @@ public class CardController {
     private CardService acs;
 
     private SimpMessagingTemplate msgs;
-    CardList cardList = new CardList("test");
 
     /**
      *Constructor
@@ -50,7 +48,7 @@ public class CardController {
                                         @PathVariable("listId") int listId, @RequestBody Card card) {
         if(card.getTitle()==null) return ResponseEntity.badRequest().build();
         Card saved = acs.save(card, listId);
-        msgs.convertAndSend("/topic/boards/"+ boardId, cardList);
+        msgs.convertAndSend("/topic/boards/"+ boardId, "Card added on board#" + boardId);
         if(saved==null) return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(saved);
     }
@@ -68,7 +66,7 @@ public class CardController {
         System.out.println("Received DELETE request for listID="+listId+" card id="+id);
         if(!acs.existsById(id)) return ResponseEntity.badRequest().build();
         Card card = acs.delete(acs.getById(id), listId);
-        msgs.convertAndSend("/topic/boards/"+boardId, cardList);
+        msgs.convertAndSend("/topic/boards/"+boardId, "Card deleted on board#" + boardId);
 
         if(card==null) return ResponseEntity.badRequest().build();
 
@@ -91,7 +89,7 @@ public class CardController {
         }
         card.setId(id);
         acs.setCardInfo(card);
-        msgs.convertAndSend("/topic/boards/"+boardId , cardList);
+        msgs.convertAndSend("/topic/boards/"+boardId , "Card edited on board#" + boardId);
         return ResponseEntity.ok().build();
     }
 

@@ -57,7 +57,7 @@ public class TagController {
     public ResponseEntity<Tag> addTag(@PathVariable("boardId") int boardId, @RequestBody Tag tag) {
         if(tag.getTitle()==null) return ResponseEntity.badRequest().build();
         Tag saved = ser.save(tag,boardId);
-        msgs.convertAndSend("/topic/tags/"+boardId, tag);
+        msgs.convertAndSend("/topic/tags/"+boardId, "Tag added on board#" + boardId);
         if(saved==null) return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(saved);
     }
@@ -72,7 +72,7 @@ public class TagController {
     public ResponseEntity<Tag> deleteTag(@PathVariable("boardId") int boardId, @PathVariable("id") int id) {
         if(!ser.existsById(id)) return ResponseEntity.badRequest().build();
         Tag tag = ser.delete(ser.findById(id).get(), boardId);
-        msgs.convertAndSend("/topic/tags/"+boardId, tag);
+        msgs.convertAndSend("/topic/tags/"+boardId,"Tag deleted on board#" + boardId);
         if(tag==null) return ResponseEntity.badRequest().build();
         return ResponseEntity.ok().build();
     }
@@ -89,7 +89,7 @@ public class TagController {
                                        @PathVariable("id") int id, @RequestBody Tag newTag){
         if(!ser.existsById(id)) return ResponseEntity.badRequest().build();
         Tag saved = ser.editTag(ser.findById(id).get(), newTag);
-        msgs.convertAndSend("/topic/tags/"+boardId, saved);
+        msgs.convertAndSend("/topic/tags/"+boardId,"Tag edited on board#" + boardId);
         if(saved==null) return ResponseEntity.badRequest().build();
         return ResponseEntity.ok().build();
     }

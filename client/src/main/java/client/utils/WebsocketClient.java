@@ -1,6 +1,6 @@
 package client.utils;
 
-import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.converter.StringMessageConverter;
 import org.springframework.messaging.simp.stomp.StompFrameHandler;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
@@ -36,7 +36,7 @@ public class WebsocketClient {
     private StompSession connect(String url){
         StandardWebSocketClient client = new StandardWebSocketClient();
         WebSocketStompClient stompClient = new WebSocketStompClient(client);
-        stompClient.setMessageConverter(new MappingJackson2MessageConverter());
+        stompClient.setMessageConverter(new StringMessageConverter());
         try {
             System.out.println("Connecting to WebSocket server...");
             return stompClient.connect(url, new StompSessionHandlerAdapter() {

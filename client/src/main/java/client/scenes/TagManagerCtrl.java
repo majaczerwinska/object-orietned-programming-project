@@ -89,7 +89,7 @@ public class TagManagerCtrl implements Initializable {
      * Subscribes to endpoint that listens to all updates of tags from specific board
      */
     public void subscribe(){
-        websocketClient.registerForMessages("/topic/tags/"+boardId, Tag.class, update -> {
+        websocketClient.registerForMessages("/topic/tags/"+boardId, String.class, update -> {
             System.out.println("payload: " + update);
             refresh();
         });
