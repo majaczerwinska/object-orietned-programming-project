@@ -11,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -83,9 +84,6 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         this.mainCtrl = mainCtrl;
         this.server = server;
 
-
-
-
 //        Board board = this.server.getBoard(boardID);
 //        String title = board.getName();
 //        if(title == null){
@@ -143,7 +141,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
     /**
      * Shows the tag manager scene
-     * @param actionEvent the event when clicking the "tag manager" button
+     * @param actionEvent the event when clicking the "tag manager" button58
      */
     public void showTagManager(ActionEvent actionEvent){
         System.out.println("showTagManger with id #" + boardID);
@@ -190,6 +188,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
             CardComponent cardComponent = new CardComponent(mainCtrl);
 
+            mainCtrl.cardIdComponentMap.remove(card.getId());
+            mainCtrl.cardIdComponentMap.remove(cardComponent);
             mainCtrl.cardIdComponentMap.put(card.getId(), cardComponent);
 
             cardComponent.boardID = boardID;
@@ -203,15 +203,6 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
                 cardComponent.tfTitle.requestFocus();
             }
         }
-    }
-
-
-    /**
-     *
-     */
-    @FXML
-    public void callTestMethod() {
-
     }
 
 
@@ -248,14 +239,23 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             CardListComponent cardListComponent = new CardListComponent(mainCtrl, boardID,cardList.getId());
 
             cardListComponent.setTitle(cardList.getName());
-            cardListComponent.setStyle("-fx-background-color: " + String.format("rgb(%d, %d, %d)",
+            cardListComponent.setStyle("-fx-background-color: " + String.format("rgb(%d, %d, %d);",
                     (cardList.getColor() >> 16) & 0xFF,
-                    (cardList.getColor() >> 8) & 0xFF, cardList.getColor()& 0xFF)+";" );
+                    (cardList.getColor() >> 8) & 0xFF, cardList.getColor()& 0xFF));
             cardListComponent.setOnMouseEntered(event -> addEnterKeyListener(cardList.getId()));
             hboxCardLists.getChildren().add(cardListComponent);
             cardListComponent.setData(cardList);
             displayCards(cardListComponent.getVboxCards(), cardList.getId(), allCards.get(i),c);
+            server.setListSize(cardList.getId(), cardListComponent.getVboxCards().getChildren().size());
             i++;
+            int j = 1;
+            for (Node cardComponent : cardListComponent.getVboxCards().getChildren()) {
+                if (cardComponent instanceof CardComponent) {
+                    CardComponent cc = (CardComponent) cardComponent;
+                    cc.self.setPosition(j++);
+                    server.editCard(cc.self.getId(), cc.self);
+                }
+            }
         }
 
     }
@@ -313,22 +313,6 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         System.out.println("going to list creation for board "+boardID);
         mainCtrl.showListCreate(boardID);
     }
-
-//    /**
-//     * refreshes the board's name field, board's key and tag list view
-//     * @param boardID
-//     */
-//    @FXML
-//    public void refreshName(int boardID){
-//        Board b = server.getBoard(boardID);
-//        //boardName.setText(b.getName());
-//        boardKey.setText(b.getBoardkey());
-//        boardKey.setVisible(false);
-//
-////        list.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-////        ObservableList<Tag> tagList = FXCollections.observableList(server.getTagsFromBoard(boardID));
-////        list.setItems(tagList);
-//    }
 
     /**
      * display and copy to clipboard the boardKey
@@ -400,8 +384,11 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      */
     public Card createCard(int listID) {
         Card c = new Card("title..");
+        //int size = server.getListSize(listID) + 1;
+        c.setPosition(99999);
         System.out.println("creating new card "+c+" in list id="+listID);
-        c.setPosition(server.getListSize(listID) + 1);
+
+        //server.setListSize(listID, size);
         c = server.addCard(c, listID);
         refresh(c);
 

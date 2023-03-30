@@ -39,7 +39,7 @@ public class CardComponent extends HBox implements Initializable {
 
     private int cardListID;
 
-    private Card self;
+    public Card self;
 
     @FXML
     public TextField tfTitle;
@@ -298,11 +298,12 @@ public class CardComponent extends HBox implements Initializable {
      * Update card if any text field is updated
      */
     public void updateCard() {
-        System.out.println("Text update card" + self);
+        System.out.println("Update card method called in card component for card=" + self);
         self.setTitle(tfTitle.getText());
         //self.setDescription(tfDescription.getText());
+//        for (CardComponent c : )
         server.editCard(cardID,self);
-        System.out.println("exits method"+ self);
+        System.out.println("update card method exits with card="+ self);
     }
 
     /**
@@ -332,7 +333,7 @@ public class CardComponent extends HBox implements Initializable {
         // UI update code here
         System.out.println("deleting card (CardComponent.deleteCard(self)) " + self);
         server.deleteCard(self, cardListID);
-        server.setListSize(cardListID, server.getListSize(cardListID) - 1);
+        //server.setListSize(cardListID, server.getListSize(cardListID) - 1);
         mainCtrl.refreshBoardOverview();
 
     }

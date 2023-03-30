@@ -99,6 +99,7 @@ public final class CardService {
         c.setDescription(card.getDescription());
         c.setTitle(card.getTitle());
         c.setColor(card.getColor());
+        c.setPosition(card.getPosition());
         repo.save(c);
     }
 

@@ -16,6 +16,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.*;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 
 
 import java.io.IOException;
@@ -41,6 +43,7 @@ public class CardListComponent extends VBox{
     private int listId;
     private int boardId;
 
+    private Line highlight = new Line();
 
     /**
      * constructor for cardListComponent
@@ -74,6 +77,8 @@ public class CardListComponent extends VBox{
 
         // check if it is a valid drop target
         setOnDragOver(event -> {
+            int position = getDroppedPosition(event);
+            this.highlight = showDragDropLine(position, this.highlight);
                     if (event.getGestureSource() != this && event.getDragboard().hasString()) {
                         event.acceptTransferModes(TransferMode.MOVE);
                     }
@@ -82,13 +87,14 @@ public class CardListComponent extends VBox{
 
         // event handler for when a dragged card enters a list, highlight where it will be dropped
         setOnDragEntered(event -> {
-            int position = getDroppedPosition(event);
+
             setStyle("-fx-background-color: red");
 
         });
         // undo the highlight. called when a dragged card leaves the bounds of list
         setOnDragExited(event -> {
             setStyle("-fx-background-color: blue");
+            hideDropLine(this.highlight);
         });
 
         // main handler, deals with a card being dropped into the list
@@ -151,9 +157,17 @@ public class CardListComponent extends VBox{
      * @return int position
      */
     public int getDroppedPosition(DragEvent event) {
+        if (event == null) return 0;
         double y = event.getY();
+        if (y < 86) {
+            return -1;
+        }
+        int listSize = vboxCards.getChildren().size();
+        if (y > 75 + (listSize*68) - 19) {
+            return listSize + 1;
+        }
 
-        return 2;
+        return (int) Math.floor((event.getY() - 85) / (58 + 10)) + 1;
     }
 
 
@@ -162,18 +176,21 @@ public class CardListComponent extends VBox{
         boolean success = false;
         if (db.hasString()) {
             Card c = server.getCard(Integer.parseInt(db.getString()));
-            System.out.println(c);
-            System.out.println(listId);
+            CardComponent cardComponent = mainCtrl.cardIdComponentMap.get(c.getId());
             Card newcard = server.changeListOfCard(listId,c);
-            System.out.println(newcard);
-            newcard.setPosition(5);
+            newcard.setPosition(getDroppedPosition(event));
             server.editCard(newcard.getId(), newcard);
-//            System.out.println(server.getCard(c.getId()));
+            mainCtrl.cardIdComponentMap.remove(c.getId());
+            mainCtrl.cardIdComponentMap.put(newcard.getId(), cardComponent);
             success = true;
+            hideDropLine(this.highlight);
         }
         event.setDropCompleted(success);
         Platform.runLater(()->{
             mainCtrl.refreshBoardOverview();
+            System.out.println(mainCtrl.cardIdComponentMap.toString());
+            System.out.println(vboxCards.getChildren());
+            //updateCardPositionAttributes();
         });
 
         event.consume();
@@ -181,6 +198,30 @@ public class CardListComponent extends VBox{
     }
 
 
+    public Line showDragDropLine(int position, Line highlight) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                highlight.setStroke(Color.BLACK);
+                highlight.setStrokeWidth(2);
+                hideDropLine(highlight);
+                // set the start and end points of the line
+                highlight.setStartX(20);
+                highlight.setEndX(228);
+                highlight.setStartY(position * 58);
+                highlight.setEndY(position * 58);
+
+                vboxCards.getChildren().add(position, highlight);
+            }
+        });
+
+
+        return highlight;
+    }
+
+    public void hideDropLine(Line l) {
+        vboxCards.getChildren().remove(l);
+    }
     /**
      * set the position attribute of every card in the vbox
      * to its position in the vbox
@@ -191,8 +232,13 @@ public class CardListComponent extends VBox{
             Node node = vboxChildren.get(i);
             System.out.println(node);
             System.out.println(i);
-            int id = mainCtrl.cardComponentToCardId((CardComponent) node);
+            Integer id = mainCtrl.cardComponentToCardId((CardComponent) node);
+            if (id == null) {
+                System.out.println(mainCtrl.cardIdComponentMap);
+                throw new RuntimeException("card component to card id returned null in updatecardpositions for node="+node);
+            }
             System.out.println("card id="+id);
+
             Card c = server.getCard(id);
             c.setPosition(i);
             server.editCard(id, c);

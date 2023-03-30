@@ -411,6 +411,7 @@ public class ServerUtils {
      */
     public Integer setListSize(int listId, int newSize) {
         // /{listId}/size/{size}
+        System.out.println("Sending PUT request to " + "api/lists/" + listId + "/size/"+ newSize);
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/lists/" + listId + "/size/"+ newSize) //
                 .request(APPLICATION_JSON) //

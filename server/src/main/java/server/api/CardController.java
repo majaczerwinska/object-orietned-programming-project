@@ -74,6 +74,7 @@ public class CardController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Card> editCard(@PathVariable("id") int id, @RequestBody Card card) {
+        System.out.println("editing card with id="+id+" to card="+card);
         if(!acs.existsById(id) || card.getTitle() == null){
             return ResponseEntity.badRequest().build();
         }
