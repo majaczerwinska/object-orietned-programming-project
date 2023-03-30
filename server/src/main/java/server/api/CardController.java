@@ -77,8 +77,8 @@ public class CardController {
         if(!acs.existsById(id) || card.getTitle() == null){
             return ResponseEntity.badRequest().build();
         }
-        card.setId(id);
-        acs.setCardInfo(card);
+        //card.setId(id);
+        acs.setCardInfo(id, card);
         return ResponseEntity.ok().build();
     }
 

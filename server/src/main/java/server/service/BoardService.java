@@ -107,7 +107,7 @@ public class BoardService {
         List<Board> l = repo.findAll();
         System.out.println("Repo answered findAll with "+l);
         for (Board b : l) {
-            if (b.getBoardkey().equals(key)) {
+            if (b.getBoardkey()!=null && b.getBoardkey().equals(key)) {
                 return b;
             }
         }
@@ -123,6 +123,7 @@ public class BoardService {
         Board b = repo.getById(board.getId());
         b.setName(board.getName());
         b.setColor(board.getColor());
+        b.setPassword(board.getPassword());
         repo.save(b);
     }
 

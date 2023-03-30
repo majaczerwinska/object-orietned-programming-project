@@ -20,6 +20,7 @@ import commons.Card;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -28,6 +29,7 @@ import java.util.concurrent.*;
 public class MainCtrl {
 
     private Stage primaryStage;
+    private Stage locker;
 
     private LandingCtrl landingCtrl;
     private Scene landing;
@@ -67,6 +69,11 @@ public class MainCtrl {
 
     private ListEditCtrl listEditCtrl;
     private Scene listEdit;
+    private LockInUnlockedBoardCtrl lockInUnlockedBoardCtrl;
+    private Scene unlocked;
+
+    private ProvidePasswordCtrl providePasswordCtrl;
+    private Scene providePassword;
 
 
     /**
@@ -86,8 +93,12 @@ public class MainCtrl {
      * @param help
      * @param taskCreator
      * @param listEdit
+     * @param unlocked
+     * @param locker
+     * @param providePassword
      */
     public void initialize(Stage primaryStage,
+                           Stage locker,
                            Pair<LandingCtrl, Parent> landing,
                            Pair<CardCtrl, Parent> card,
                            Pair<PublicBoardCtrl, Parent> publicBoard,
@@ -101,9 +112,15 @@ public class MainCtrl {
                            Pair<TaskCreatorCtrl, Parent> taskCreator,
                            Pair<ListEditCtrl, Parent> listEdit,
                            Pair<EditBoardCtrl, Parent> editBoard,
-                           Pair<HelpCtrl, Parent> help
+                           Pair<HelpCtrl, Parent> help,
+                           Pair<LockInUnlockedBoardCtrl, Parent> unlocked,
+                           Pair<ProvidePasswordCtrl, Parent> providePassword
                            ) {
         this.primaryStage = primaryStage;
+        this.locker = locker;
+
+        locker.initModality(Modality.APPLICATION_MODAL);
+        locker.initOwner(primaryStage);
         this.landingCtrl = landing.getKey();
         this.landing = new Scene(landing.getValue());
 
@@ -146,6 +163,12 @@ public class MainCtrl {
         this.helpCtrl = help.getKey();
         this.helpScene = new Scene(help.getValue());
 
+        this.lockInUnlockedBoardCtrl = unlocked.getKey();
+        this.unlocked = new Scene(unlocked.getValue());
+
+        this.providePasswordCtrl = providePassword.getKey();
+        this.providePassword = new Scene(providePassword.getValue());
+
         showLanding();
         //git showServerSelect();
         primaryStage.show();
@@ -168,6 +191,23 @@ public class MainCtrl {
         primaryStage.setScene(landing);
 
     }
+
+    public void showLockInUnlockedBoard(int boardID) {
+        locker.setTitle("Do you want to lock!!");
+        locker.setScene(unlocked);
+        lockInUnlockedBoardCtrl.boardID = boardID;
+        locker.showAndWait();
+    }
+    public void showProvidePassword(int boardID) {
+        locker.setTitle("Provide password!!");
+        locker.setScene(providePassword);
+        providePasswordCtrl.boardID = boardID;
+        locker.showAndWait();
+    }
+    public void closeLocker(){
+        locker.close();
+    }
+
 
     /**
      *
@@ -287,6 +327,7 @@ public class MainCtrl {
         //We later have to combine all these methods we call into one refresh method in boardOverviewCtrl
         boardOverviewCtrl.setBoardName();
         boardOverviewCtrl.setColor();
+        boardOverviewCtrl.setLock();
         boardOverviewCtrl.refreshListViewTags();
         boardOverviewCtrl.refresh(null);
     }
@@ -309,6 +350,8 @@ public class MainCtrl {
 
 
     }
+
+
 
     /**
      * Shows board creation scene

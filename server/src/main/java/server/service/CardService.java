@@ -89,13 +89,9 @@ public final class CardService {
         return repo.existsById(id);
     }
 
-    /**
-     * set card's information
-     * @param card with updated information
-     */
 
-    public void setCardInfo(Card card){
-        Card c = repo.getById(card.getId());
+    public void setCardInfo(int id, Card card){
+        Card c = repo.getById(id);
         c.setDescription(card.getDescription());
         c.setTitle(card.getTitle());
         c.setColor(card.getColor());

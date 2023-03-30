@@ -27,6 +27,7 @@ import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.prefs.Preferences;
 
 public class BoardOverviewCtrl /*implements Initializable*/ {
     private final ServerUtils server;
@@ -71,6 +72,10 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
     @FXML
     private Label labelBoardTitle;
+    @FXML
+    private Button lock;
+    private Preferences pref;
+
 
 
     /**
@@ -82,10 +87,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public BoardOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
-
-
-
-
+        this.pref = Preferences.userRoot().node("locking");
 //        Board board = this.server.getBoard(boardID);
 //        String title = board.getName();
 //        if(title == null){
@@ -138,7 +140,35 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
     }
 
+    public void setLock(){
+        Board board = server.getBoard(boardID);
+        if(board.getPassword().equals("") || board.getPassword()==null ){
+            lock.setText("\uD83D\uDD13");
+            lock.setStyle("-fx-background-color: white");
+            return;
+        }
+        lock.setText("\uD83D\uDD12");
+        System.out.println("\n\n\n\n\n" + pref.get(String.valueOf(boardID),"notfound"));
+        checkForPref();
 
+        if(pref.get(String.valueOf(boardID),"").equals("")){
+            lock.setStyle("-fx-background-color: red");
+        }
+        else{
+            lock.setStyle("-fx-background-color: green");
+        }
+
+
+    }
+
+    public void checkForPref(){
+        for(Board b :server.getBoards()){
+            if(!pref.get(String.valueOf(b.getId()),"").equals("") &&
+                    !pref.get(String.valueOf(b.getId()),"notfound").equals(b.getPassword())) {
+                pref.remove(String.valueOf(b.getId()));
+            }
+        }
+    }
 
 
     /**
@@ -468,6 +498,19 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public void addListScene(ActionEvent event){
         mainCtrl.showListCreate(boardID);
     }
+
+    public void clickLockInUnlockedBoard(){
+        if(boardID==0){
+            return;
+        }
+        if(server.getBoard(boardID).getPassword().equals("")){
+            mainCtrl.showLockInUnlockedBoard(boardID);
+        } else if (pref.get(String.valueOf(boardID),"notfound").equals("notfound")) {
+            mainCtrl.showProvidePassword(boardID);
+        }
+
+    }
+
 
 
 
