@@ -130,22 +130,14 @@ public final class CardService {
         cl.save(oldlist);
         CardList newlist = cl.getById(listID);
         newlist.getCards().add(card);
-        int size = cl.getById(listID).getCards().size();
-        System.out.println("List with id="+listID+" and size="+size+"\n\n"+cl.getById(listID)+"\n\n\n");
+//        int size = cl.getById(listID).getCards().size();
+        System.out.println("List with id="+listID+"\n\n"+cl.getById(listID)+"\n\n\n");
         System.out.println(card+"\n\n");
         cl.save(newlist);
         System.out.println(cl.getById(listID)+"\n\n\n");
-//        card.setId(id);
-//        setCardInfo(card);
-//        repo.save(card);
 
-//        newlist.getCards().get(size-1).setId(id);
-//        cl.save(newlist);
-        System.out.println(cl.getById(listID)+"\n\n\n");
-
-        System.out.println(cl.getById(listID));
         System.out.println(oldlist);
-        return card;
+        return newlist.getCards().get(newlist.getCards().size()-1);
     }
 
 

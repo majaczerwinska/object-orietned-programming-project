@@ -236,7 +236,7 @@ public class ServerUtils {
                     .target(SERVER).path("api/cards/" + card.getId()+"/"+listid)
                     .request(APPLICATION_JSON)
                     .accept(APPLICATION_JSON)
-                    .put(Entity.entity(card, APPLICATION_JSON), Card.class);
+                    .post(Entity.entity(card, APPLICATION_JSON), Card.class);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e.getMessage());

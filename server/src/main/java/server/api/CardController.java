@@ -89,11 +89,11 @@ public class CardController {
      * @param card the card
      * @return the card
      */
-    @PutMapping("/{id}/{listid}")
+    @PostMapping("/{id}/{listid}")
     public ResponseEntity<Card> changeListforCard(@PathVariable("id") int id, @PathVariable("listid") int listid,
                                                   @RequestBody Card card) {
         System.out.println("Changing list for card="+id+" to list="+listid);
-        card.setId(id);
+//        card.setId(id);
         System.out.println(card);
         System.out.println(acs.getListForCard(card));
 
@@ -109,7 +109,7 @@ public class CardController {
 
         Card newcard = acs.changeListOfCard(card, listid);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(newcard);
     }
 
     /**

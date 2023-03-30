@@ -164,12 +164,11 @@ public class CardListComponent extends VBox{
             Card c = server.getCard(Integer.parseInt(db.getString()));
             System.out.println(c);
             System.out.println(listId);
-            server.changeListOfCard(listId,c);
-            System.out.println(c);
-            c.setPosition(3);
-            System.out.println(c);
-            //server.editCard(c.getId(), c);
-            System.out.println(server.getCard(c.getId()));
+            Card newcard = server.changeListOfCard(listId,c);
+            System.out.println(newcard);
+            newcard.setPosition(5);
+            server.editCard(newcard.getId(), newcard);
+//            System.out.println(server.getCard(c.getId()));
             success = true;
         }
         event.setDropCompleted(success);
