@@ -7,6 +7,7 @@ import commons.CardList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import server.database.BoardRepository;
 import server.database.CardListRepository;
 
@@ -14,8 +15,8 @@ import java.util.List;
 
 
 @Service
-
-public final class CardListService {
+@Transactional
+public  class CardListService {
     private CardListRepository repo;
 
     private BoardRepository br;

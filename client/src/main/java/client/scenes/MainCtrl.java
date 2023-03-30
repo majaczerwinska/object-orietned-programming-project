@@ -218,6 +218,7 @@ public class MainCtrl {
         //Later combine these methods into one refresh method
         tagManagerCtrl.setLabelBoard();
         tagManagerCtrl.refresh();
+        tagManagerCtrl.subscribe();
         primaryStage.show();
     }
 
@@ -289,7 +290,6 @@ public class MainCtrl {
         boardOverviewCtrl.boardID = boardID;
         primaryStage.setScene(boardOverwiew);
         boardOverviewCtrl.refreshName(boardID);
-
         primaryStage.show();
         //We later have to combine all these methods we call into one refresh method in boardOverviewCtrl
         boardOverviewCtrl.setBoardName();
@@ -297,6 +297,31 @@ public class MainCtrl {
         boardOverviewCtrl.refreshListViewTags();
         boardOverviewCtrl.refresh(null);
     }
+
+    /**
+     * Calls the methods to create a stomp session in boardOverviewCtrl and tagManagerCtrl
+     */
+    public void setStompSession(){
+        boardOverviewCtrl.setStompSession();
+        tagManagerCtrl.setStompSession();
+    }
+
+    /**
+     * Subscribes to endpoint that listens to all updates of cards and lists from a specific board
+     * @param boardId the boarId from the board we want updates from
+     */
+    public void subscribeToBoard(int boardId){
+        boardOverviewCtrl.subscribeToBoard(boardId);
+    }
+
+    /**
+     * Subscribes to endpoint that listens to all updates of tags from a specific board
+     * @param boardId the boarId from the board we want updates from
+     */
+    public void subscribeToTagsFromBoard(int boardId){
+        boardOverviewCtrl.subscribeToTagsFromBoard(boardId);
+    }
+
 
     /**
      * calls methood from boardoverview to color board's font

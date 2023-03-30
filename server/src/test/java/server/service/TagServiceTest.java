@@ -89,6 +89,17 @@ public class TagServiceTest {
 
     }
 
+//    @Test
+//    public void findByIdTest(){
+//        Tag tag = new Tag("title");
+//        Board b = new Board("b");
+//        repo.save(tag);
+//        br.save(b);
+//        ser.save(tag, b.getId());
+//        assertEquals(ser.findById(tag.getId()).get(), tag);
+//
+//    }
+
     @Test
     public void existsByIdTest(){
         Tag tag = new Tag("title");

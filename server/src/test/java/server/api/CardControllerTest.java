@@ -3,30 +3,47 @@ package server.api;
 import commons.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.converter.StringMessageConverter;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.stomp.StompFrameHandler;
+import org.springframework.messaging.simp.stomp.StompHeaders;
+import org.springframework.messaging.simp.stomp.StompSession;
+import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.web.socket.client.standard.StandardWebSocketClient;
+import org.springframework.web.socket.messaging.WebSocketStompClient;
 import server.service.CardService;
 import server.database.CardListRepositoryTest;
 import server.database.CardRepositoryTest;
 
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//This annotation loads the WebsocketConfigTest to instantiate websocket server for testing
 public class CardControllerTest {
     private CardRepositoryTest repo;
     private CardListRepositoryTest cl;
     private CardController con;
     private CardService ser;
+    @Autowired
+    private SimpMessagingTemplate msgs;
 
     @BeforeEach
     public void setup() {
         repo = new CardRepositoryTest();
         cl = new CardListRepositoryTest();
         ser = new CardService(repo, cl);
-        con = new CardController(ser);
+        con = new CardController(ser, msgs);
     }
 
     @Test
@@ -34,7 +51,7 @@ public class CardControllerTest {
         CardList list = new CardList("l");
         cl.save(list);
         Card card = new Card("title");
-        con.addCard(list.getId(),card);
+        con.addCard(0, list.getId(),card);
         assertTrue(repo.existsById(card.getId()));
 
     }
@@ -44,8 +61,8 @@ public class CardControllerTest {
         CardList list = new CardList("l");
         cl.save(list);
         Card card = new Card("title");
-        con.addCard(list.getId(), card);
-        con.deleteCard(list.getId(), card.getId());
+        con.addCard(0, list.getId(), card);
+        con.deleteCard(0, list.getId(), card.getId());
         assertFalse(repo.existsById(card.getId()));
 
     }
@@ -56,8 +73,8 @@ public class CardControllerTest {
         cl.save(list);
         Card card = new Card("title");
         Card card2 = new Card("title2");
-        con.addCard(list.getId(), card);
-        con.editCard(card.getId(), card2);
+        con.addCard(0, list.getId(), card);
+        con.editCard(0, card.getId(), card2);
         assertEquals(card, card2);
 
     }
@@ -69,8 +86,8 @@ public class CardControllerTest {
         cl.save(list);
         Card card = new Card("title");
         Card card2 = new Card();
-        con.addCard(list.getId(),card);
-        con.editCard(card.getId(), card2);
+        con.addCard(0, list.getId(),card);
+        con.editCard(0, card.getId(), card2);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
 
     }
@@ -80,7 +97,7 @@ public class CardControllerTest {
         CardList list = new CardList("c");
         cl.save(list);
         Card card = new Card("title");
-        con.addCard(list.getId(), card);
+        con.addCard(0, list.getId(), card);
         ResponseEntity<Card> cardResponseEntity = ResponseEntity.ok(card);
         assertEquals(con.getCard(card.getId()), cardResponseEntity);
     }
@@ -91,7 +108,7 @@ public class CardControllerTest {
         Card card = new Card("title");
         List<Task> tasks = new ArrayList<>();
         card.setTasks(tasks);
-        con.addCard(list.getId(), card);
+        con.addCard(0, list.getId(), card);
         assertEquals(con.getTasks(card.getId()),ResponseEntity.ok(tasks) );
     }
 
