@@ -323,19 +323,12 @@ public class CardComponent extends HBox implements Initializable {
      * listener for the [x] button in each card in board overview
      */
     public void deleteCard() {
-        Platform.runLater(() -> {
-            // UI update code here
-            System.out.println("deleting card (CardComponent.deleteCard(self)) " + self);
 
-            server.deleteCard(self, cardListID);
-            server.setListSize(cardListID, server.getListSize(cardListID) - 1);
-
-            Platform.runLater(() -> {
-                mainCtrl.refreshBoardOverview();
-            });
-            mainCtrl.timeoutBoardRefresh(400);
-            mainCtrl.timeoutBoardRefresh(700);
-        });
+        // UI update code here
+        System.out.println("deleting card (CardComponent.deleteCard(self)) " + self);
+        server.deleteCard(self, cardListID);
+        server.setListSize(cardListID, server.getListSize(cardListID) - 1);
+        mainCtrl.refreshBoardOverview();
 
     }
 
