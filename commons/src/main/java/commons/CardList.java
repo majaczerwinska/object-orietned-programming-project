@@ -23,8 +23,10 @@ public class CardList {
     private int id;
     @Column(name = "list_name")
     private String name;
-    @Column(name = "list_color")
-    private int color;
+    @Column(name = "list_b_color")
+    private int bColor;
+    @Column(name = "list_f_color")
+    private int fColor;
 
     @Column(name = "list_height")
     public int lastPosition;
@@ -42,7 +44,8 @@ public class CardList {
      */
     public CardList(String name) {
         this.name = name;
-        this.color = 0xffffff;
+        this.bColor = 11776947;
+        this.fColor = 0;
         this.cards = new ArrayList<>();
     }
 
@@ -68,11 +71,11 @@ public class CardList {
     }
 
     /**
-     *Changes the color
+     * Changes the background color
      * @param color - the color
      */
-    public void setColor(int color) {
-        this.color = color;
+    public void setbColor(int color) {
+        this.bColor = color;
     }
 
     /**
@@ -110,29 +113,41 @@ public class CardList {
     }
 
     /**
-     *Retrieves the color
+     * Retrieves the background color
      * @return - the color
      */
-    public int getColor() {
-        return color;
+    public int getbColor() {
+        return this.bColor;
     }
 
     /**
-     * Creates a string for the object
-     * @return a string representation
+     * Retrieves the font color
+     * @return - the color
      */
-    public String toString(){
-        String res = "List #" + id + "\n name: " +name + "\n color: " + color + "\n";
-        if (this.cards.size() < 1) {
-            res += "this list has no cards";
-        } else {
-            res += "Cards:\n";
-            for (Card c : cards) {
-                res += c.toString();
-            }
-        }
-        return res;
-    }
+    public int getfColor(){return this.fColor;}
+
+    /**
+     * Sets the font color
+     * @param color - the color
+     */
+    public void setfColor(int color){this.fColor = color;}
+
+//    /**
+//     * Creates a string for the object
+//     * @return a string representation
+//     */
+//    public String toString(){
+//        String res = "List #" + id + "\n name: " +name + "\n color: " + color + "\n";
+//        if (this.cards.size() < 1) {
+//            res += "this list has no cards";
+//        } else {
+//            res += "Cards:\n";
+//            for (Card c : cards) {
+//                res += c.toString();
+//            }
+//        }
+//        return res;
+//    }
 
 
 

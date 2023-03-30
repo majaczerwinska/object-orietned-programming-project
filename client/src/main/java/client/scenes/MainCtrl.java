@@ -21,6 +21,7 @@ import commons.Card;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -31,6 +32,7 @@ import java.util.concurrent.*;
 public class MainCtrl {
 
     private Stage primaryStage;
+    private Stage locker;
 
     private LandingCtrl landingCtrl;
     private Scene landing;
@@ -70,6 +72,14 @@ public class MainCtrl {
 
     private ListEditCtrl listEditCtrl;
     private Scene listEdit;
+    private LockInUnlockedBoardCtrl lockInUnlockedBoardCtrl;
+    private Scene unlocked;
+
+    private ProvidePasswordCtrl providePasswordCtrl;
+    private Scene providePassword;
+
+    private CustomizationCtrl customizationCtrl;
+    private Scene customization;
 
 
     public Map<Integer, CardComponent> cardIdComponentMap;
@@ -91,8 +101,16 @@ public class MainCtrl {
      * @param help
      * @param taskCreator
      * @param listEdit
+
+     * @param unlocked
+     * @param locker
+     * @param providePassword
+
+     * @param customization
+
      */
     public void initialize(Stage primaryStage,
+                           Stage locker,
                            Pair<LandingCtrl, Parent> landing,
                            Pair<CardCtrl, Parent> card,
                            Pair<PublicBoardCtrl, Parent> publicBoard,
@@ -106,13 +124,21 @@ public class MainCtrl {
                            Pair<TaskCreatorCtrl, Parent> taskCreator,
                            Pair<ListEditCtrl, Parent> listEdit,
                            Pair<EditBoardCtrl, Parent> editBoard,
-                           Pair<HelpCtrl, Parent> help
+                           Pair<HelpCtrl, Parent> help,
+                           Pair<LockInUnlockedBoardCtrl, Parent> unlocked,
+                           Pair<ProvidePasswordCtrl, Parent> providePassword,
+                           Pair<CustomizationCtrl, Parent> customization
+
                            ) {
 
         this.cardIdComponentMap = new HashMap<>();
         System.setProperty("javafx.dnd.delayedDragCallback", "false");
 
         this.primaryStage = primaryStage;
+        this.locker = locker;
+
+        locker.initModality(Modality.APPLICATION_MODAL);
+        locker.initOwner(primaryStage);
         this.landingCtrl = landing.getKey();
         this.landing = new Scene(landing.getValue());
 
@@ -155,6 +181,16 @@ public class MainCtrl {
         this.helpCtrl = help.getKey();
         this.helpScene = new Scene(help.getValue());
 
+
+        this.lockInUnlockedBoardCtrl = unlocked.getKey();
+        this.unlocked = new Scene(unlocked.getValue());
+
+        this.providePasswordCtrl = providePassword.getKey();
+        this.providePassword = new Scene(providePassword.getValue());
+
+        this.customizationCtrl = customization.getKey();
+        this.customization = new Scene(customization.getValue());
+
         showLanding();
         primaryStage.show();
     }
@@ -175,6 +211,36 @@ public class MainCtrl {
         primaryStage.setTitle("Landing page!!");
         primaryStage.setScene(landing);
     }
+
+    /**
+     * Shows the popup when choosing to lock it
+     * @param boardID the id of the board
+     */
+    public void showLockInUnlockedBoard(int boardID) {
+        locker.setTitle("Do you want to lock!!");
+        locker.setScene(unlocked);
+        lockInUnlockedBoardCtrl.boardID = boardID;
+        locker.showAndWait();
+    }
+
+    /**
+     * Shows the popup for providing a password
+     * @param boardID the id of the board
+     */
+    public void showProvidePassword(int boardID) {
+        locker.setTitle("Provide password!!");
+        locker.setScene(providePassword);
+        providePasswordCtrl.boardID = boardID;
+        locker.showAndWait();
+    }
+
+    /**
+     * closes the pop up of locker
+     */
+    public void closeLocker(){
+        locker.close();
+    }
+
 
     /**
      *
@@ -218,6 +284,7 @@ public class MainCtrl {
         //Later combine these methods into one refresh method
         tagManagerCtrl.setLabelBoard();
         tagManagerCtrl.refresh();
+        tagManagerCtrl.subscribe();
         primaryStage.show();
     }
 
@@ -317,16 +384,55 @@ public class MainCtrl {
         primaryStage.setTitle("Board overview :)");
         boardOverviewCtrl.boardID = boardID;
         primaryStage.setScene(boardOverwiew);
-//        boardOverviewCtrl.refreshName(boardID);
-
+        boardOverviewCtrl.refreshName(boardID);
         primaryStage.show();
         //We later have to combine all these methods we call into one refresh method in boardOverviewCtrl
         boardOverviewCtrl.setBoardName();
         boardOverviewCtrl.setColor();
+        boardOverviewCtrl.setLock();
         boardOverviewCtrl.refreshListViewTags();
         boardOverviewCtrl.refresh(null);
     }
 
+    /**
+     * Calls the methods to create a stomp session in boardOverviewCtrl and tagManagerCtrl
+     */
+    public void setStompSession(){
+        boardOverviewCtrl.setStompSession();
+        tagManagerCtrl.setStompSession();
+    }
+
+    /**
+     * Subscribes to endpoint that listens to all updates of cards and lists from a specific board
+     * @param boardId the boarId from the board we want updates from
+     */
+    public void subscribeToBoard(int boardId){
+        boardOverviewCtrl.subscribeToBoard(boardId);
+    }
+
+    /**
+     * Subscribes to endpoint that listens to all updates of tags from a specific board
+     * @param boardId the boarId from the board we want updates from
+     */
+    public void subscribeToTagsFromBoard(int boardId){
+        boardOverviewCtrl.subscribeToTagsFromBoard(boardId);
+    }
+
+
+    /**
+     * calls methood from boardoverview to color board's font
+     * @param boardId
+     * @param color
+     */
+    public void colorBF(int boardId, int color){
+        boardOverviewCtrl.boardID = boardId;
+        boardOverviewCtrl.colorFont(color);
+    }
+
+//    public void colorLF(int boardId, int listId, int color){
+//        CardListComponent list = new CardListComponent(this, boardId, listId);
+//                list.colorFont(color);
+//    }
 
     /**
      * show card overview
@@ -345,6 +451,8 @@ public class MainCtrl {
 
 
     }
+
+
 
     /**
      * Shows board creation scene
@@ -392,6 +500,12 @@ public class MainCtrl {
         boardOverviewCtrl.refresh(null);
     }
 
+    /**
+     * refreshes
+     */
+    public void refreshListColours(){
+        customizationCtrl.colourlist();
+    }
     /**
      * add event listener for the enter key, intermediate function
      * @param listID the list mouse is currently in
@@ -456,6 +570,19 @@ public class MainCtrl {
      */
     public void refreshListView(int listID, CardListComponent component) {
         boardOverviewCtrl.refreshList(listID, component);
+    }
+
+    /**
+     * takes you to the customization scene
+     * @param boardId
+     */
+    public void showCustomization(int boardId){
+        primaryStage.setTitle("Customization");
+        primaryStage.setScene(customization);
+        customizationCtrl.boardId = boardId;
+        customizationCtrl.refresh();
+
+        primaryStage.show();
     }
 
 }

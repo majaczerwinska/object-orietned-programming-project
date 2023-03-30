@@ -6,7 +6,6 @@ import commons.CardList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
@@ -23,8 +22,8 @@ public class ListCreationCtrl {
     private Button createbutton;
     @FXML
     private Button backbutton;
-    @FXML
-    private ColorPicker palette;
+    //@FXML
+    //private ColorPicker palette;
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
@@ -52,8 +51,12 @@ public class ListCreationCtrl {
         }
         else{
             CardList list = new CardList(name.getText());
-            list.setColor(MainCtrl.colorParseToInt(palette.getValue()));
+            //list.setColor(MainCtrl.colorParseToInt(palette.getValue()));
+            mainCtrl.refreshListColours();
             server.createList(boardID, list);
+            name.setText("");
+
+
             mainCtrl.showBoardOverview(boardID);
         }
 

@@ -37,7 +37,8 @@ public class CardListComponent extends VBox{
     @FXML
     private Button addcard;
     @FXML
-    private Label labelTitle;
+    public Label labelTitle;
+
     private int listId;
     private int boardId;
 
@@ -52,8 +53,6 @@ public class CardListComponent extends VBox{
     public CardListComponent(MainCtrl mainCtrl, int boardId, int listId) {
 
         super();
-        this.boardId = boardId;
-        // this.listID = listID;
         server = new ServerUtils();
         this.listId = listId;
         this.boardId = boardId;
@@ -138,7 +137,7 @@ public class CardListComponent extends VBox{
             CardComponent cardComponent = mainCtrl.cardIdComponentMap.get(c.getId());
             Card newcard = server.changeListOfCard(listId,c);
             newcard.setPosition(getDroppedPosition(event));
-            server.editCard(newcard.getId(), newcard);
+            server.editCard(newcard.getId(), boardId, newcard);
             mainCtrl.cardIdComponentMap.remove(c.getId());
             mainCtrl.cardIdComponentMap.put(newcard.getId(), cardComponent);
             success = true;
@@ -167,7 +166,7 @@ public class CardListComponent extends VBox{
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                highlight.setStroke(MainCtrl.colorParseToFXColor(server.getBoard(boardId).getColor()));
+                highlight.setStroke(MainCtrl.colorParseToFXColor(server.getBoard(boardId).getbColor()));
                 highlight.setStrokeWidth(2);
                 highlight.setStyle("-fx-end-margin: -80");
                 hideDropLine(highlight);
@@ -215,7 +214,7 @@ public class CardListComponent extends VBox{
 
             Card c = server.getCard(id);
             c.setPosition(i);
-            server.editCard(id, c);
+            server.editCard(id, boardId, c);
         }
     }
 
@@ -289,6 +288,16 @@ public class CardListComponent extends VBox{
     public void addEnterKeyListener() {
         System.out.println("add key listener called in card list component");
         mainCtrl.addEnterKeyListener(listId);
+    }
+
+    /**
+     * sets font color for list's title
+     * @param color - the new color
+     */
+    @FXML
+    public void colorFont(int color){
+        String hexColor = String.format("#%06X", (0xFFFFFF & color));
+        labelTitle.setStyle("-fx-text-fill: " + hexColor);
     }
 
 }

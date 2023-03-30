@@ -6,6 +6,7 @@ import commons.Tag;
 import commons.Task;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.stereotype.Controller;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import server.service.CardService;
 
@@ -23,13 +24,16 @@ public class CardController {
 
     private CardService acs;
 
+    private SimpMessagingTemplate msgs;
 
     /**
      *Constructor
      * @param c the service we use
+     * @param msgs the messaging template for messages
      */
-    public CardController(CardService c) {
+    public CardController(CardService c, SimpMessagingTemplate msgs) {
         this.acs = c;
+        this.msgs = msgs;
     }
 
 
@@ -38,12 +42,15 @@ public class CardController {
      *Adds a card to the database
      * @param card - the card to be added
      * @param listId - the id of the list to which we add the card
+     * @param boardId the id of the board at which the card is located
      * @return - a response entity
      */
-    @PostMapping("/{listId}")
-    public ResponseEntity<Card> addCard(@PathVariable("listId") int listId, @RequestBody Card card) {
+    @PostMapping("/{boardId}/{listId}")
+    public ResponseEntity<Card> addCard(@PathVariable("boardId") int boardId,
+                                        @PathVariable("listId") int listId, @RequestBody Card card) {
         if(card.getTitle()==null) return ResponseEntity.badRequest().build();
         Card saved = acs.save(card, listId);
+        msgs.convertAndSend("/topic/boards/"+ boardId, "Card added on board#" + boardId);
         if(saved==null) return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(saved);
     }
@@ -52,13 +59,16 @@ public class CardController {
      *deletes a card from the database
      * @param id - the id of the card to be deleted
      * @param listId - the id of the list from which the card is deleted
+     * @param boardId the id of the board at which the card is located
      * @return - a response entity
      */
-    @DeleteMapping("/{listId}/{id}")
-    public ResponseEntity<Card> deleteCard(@PathVariable("listId") int listId, @PathVariable("id") int id) {
+    @DeleteMapping("/{boardId}/{listId}/{id}")
+    public ResponseEntity<Card> deleteCard(@PathVariable("boardId") int boardId,
+                                           @PathVariable("listId") int listId, @PathVariable("id") int id) {
         System.out.println("Received DELETE request for listID="+listId+" card id="+id);
         if(!acs.existsById(id)) return ResponseEntity.badRequest().build();
         Card card = acs.delete(acs.getById(id), listId);
+        msgs.convertAndSend("/topic/boards/"+boardId, "Card deleted on board#" + boardId);
 
         if(card==null) return ResponseEntity.badRequest().build();
 
@@ -69,17 +79,26 @@ public class CardController {
      * edits card's title, description, color
      * @param id card's id
      * @param card card with updated information
+     * @param boardId the id of the board at which the card is located
      * @return a response entity with the card object
      */
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Card> editCard(@PathVariable("id") int id, @RequestBody Card card) {
-        System.out.println("editing card with id="+id+" to card="+card);
+//<<<<<<< HEAD
+//    @PutMapping("/{id}")
+//    public ResponseEntity<Card> editCard(@PathVariable("id") int id, @RequestBody Card card) {
+//        System.out.println("editing card with id="+id+" to card="+card);
+//=======
+    @PutMapping("/edit/{boardId}/{id}")
+    public ResponseEntity<Card> editCard(@PathVariable("boardId") int boardId,
+                                         @PathVariable("id") int id, @RequestBody Card card) {
         if(!acs.existsById(id) || card.getTitle() == null){
             return ResponseEntity.badRequest().build();
         }
+
         card.setId(id);
         acs.setCardInfo(card);
+        msgs.convertAndSend("/topic/boards/"+boardId , "Card edited on board#" + boardId);
+
         return ResponseEntity.ok().build();
     }
 

@@ -299,9 +299,8 @@ public class CardComponent extends HBox implements Initializable {
     public void updateCard() {
         System.out.println("Update card method called in card component for card=" + self);
         self.setTitle(tfTitle.getText());
-        //self.setDescription(tfDescription.getText());
-//        for (CardComponent c : )
-        server.editCard(cardID,self);
+
+        server.editCard(boardID, cardID,self);
         System.out.println("update card method exits with card="+ self);
     }
 
@@ -328,13 +327,10 @@ public class CardComponent extends HBox implements Initializable {
      * listener for the [x] button in each card in board overview
      */
     public void deleteCard() {
-
         // UI update code here
         System.out.println("deleting card (CardComponent.deleteCard(self)) " + self);
-        server.deleteCard(self, cardListID);
-        //server.setListSize(cardListID, server.getListSize(cardListID) - 1);
+        server.deleteCard(self, boardID, cardListID);
         mainCtrl.refreshBoardOverview();
-
     }
 
 
