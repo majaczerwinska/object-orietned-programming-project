@@ -20,8 +20,6 @@ import client.components.CardListComponent;
 import commons.Card;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.DataFormat;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -75,8 +73,6 @@ public class MainCtrl {
 
 
     public Map<Integer, CardComponent> cardIdComponentMap;
-
-    public final DataFormat CARD_FORMAT = new DataFormat("application/x-card");
 
     /**
      * 
