@@ -95,6 +95,25 @@ public class CardControllerTest {
         assertEquals(con.getTasks(card.getId()),ResponseEntity.ok(tasks) );
     }
 
+//    @Test
+//    public void changeListForTaskTest(){
+//        CardList list = new CardList("c");
+//        CardList list2 = new CardList("c");
+//
+//        Card card = new Card("title");
+//        List<Card> cards = new ArrayList<>();
+//        cards.add(card);
+//        list.setCards(cards);
+//
+//        cl.save(list);
+//        cl.save(list2);
+//        con.addCard(list.getId(), card);
+//
+//        con.changeListforCard(card.getId(), list2.getId(), card);
+//
+//        assertEquals(cl.getById(list2.getId()).getCards(), cards);
+//    }
+
 
 
 
