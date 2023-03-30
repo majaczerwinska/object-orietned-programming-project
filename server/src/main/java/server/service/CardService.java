@@ -90,9 +90,12 @@ public class CardService {
         return repo.existsById(id);
     }
 
-
-    public void setCardInfo(int id, Card card){
-        Card c = repo.getById(id);
+    /**
+     * Sets the information of the card
+     * @param card the card
+     */
+    public void setCardInfo( Card card){
+        Card c = repo.getById(card.getId());
         c.setDescription(card.getDescription());
         c.setTitle(card.getTitle());
         c.setColor(card.getColor());

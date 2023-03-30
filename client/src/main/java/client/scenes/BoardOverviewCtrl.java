@@ -31,11 +31,10 @@ import java.util.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Comparator;
-<<<<<<< HEAD
+
 import java.util.List;
 import java.util.prefs.Preferences;
-=======
->>>>>>> ea8b16f0dcff193d45792e187addaf7d98591652
+
 
 public class BoardOverviewCtrl /*implements Initializable*/ {
     private final ServerUtils server;
@@ -102,15 +101,12 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public BoardOverviewCtrl(ServerUtils server, MainCtrl mainCtrl, WebsocketClient websocketClient) {
         this.mainCtrl = mainCtrl;
         this.server = server;
-<<<<<<< HEAD
+
         this.pref = Preferences.userRoot().node("locking");
-=======
+
         this.websocketClient = websocketClient;
         System.out.println("Inject called in board overview");
 
-
-
->>>>>>> ea8b16f0dcff193d45792e187addaf7d98591652
 //        Board board = this.server.getBoard(boardID);
 //        String title = board.getName();
 //        if(title == null){
@@ -192,6 +188,9 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
     }
 
+    /**
+     * sets the colour of the button
+     */
     public void setLock(){
         Board board = server.getBoard(boardID);
         if(board.getPassword().equals("") || board.getPassword()==null ){
@@ -213,6 +212,9 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
     }
 
+    /**
+     * Checks if the board is the correct board
+     */
     public void checkForPref(){
         for(Board b :server.getBoards()){
             if(!pref.get(String.valueOf(b.getId()),"").equals("") &&
@@ -555,7 +557,9 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         mainCtrl.showListCreate(boardID);
     }
 
-<<<<<<< HEAD
+    /**
+     * clicking the lock button
+     */
     public void clickLockInUnlockedBoard(){
         if(boardID==0){
             return;
@@ -568,8 +572,6 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
     }
 
-
-=======
     /**
      * takes you to customization scene
      * @param event
@@ -577,7 +579,6 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public void goCustomization(ActionEvent event){
         mainCtrl.showCustomization(boardID);
     }
->>>>>>> ea8b16f0dcff193d45792e187addaf7d98591652
 
     /**
      * sets color of font for board components

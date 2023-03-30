@@ -22,6 +22,12 @@ public class ProvidePasswordCtrl {
     private Label warning;
     public int boardID;
     private Preferences pref;
+
+    /**
+     * Constructor
+     * @param server the server
+     * @param mainCtrl the main controller
+     */
     @Inject
     public ProvidePasswordCtrl(ServerUtils server,MainCtrl mainCtrl){
         this.server = server;
@@ -29,10 +35,16 @@ public class ProvidePasswordCtrl {
         this.pref = Preferences.userRoot().node("locking");
     }
 
+    /**
+     * cancels the popup
+     */
     public void cancel(){
         mainCtrl.closeLocker();
     }
 
+    /**
+     * unlocks the board for write mode
+     */
     public void unlock(){
         String pass = password.getText();
         if(!pass.equals(server.getBoard(boardID).getPassword())){

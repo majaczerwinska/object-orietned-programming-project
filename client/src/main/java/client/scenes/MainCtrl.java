@@ -204,18 +204,31 @@ public class MainCtrl {
 
     }
 
+    /**
+     * Shows the popup when choosing to lock it
+     * @param boardID the id of the board
+     */
     public void showLockInUnlockedBoard(int boardID) {
         locker.setTitle("Do you want to lock!!");
         locker.setScene(unlocked);
         lockInUnlockedBoardCtrl.boardID = boardID;
         locker.showAndWait();
     }
+
+    /**
+     * Shows the popup for providing a password
+     * @param boardID the id of the board
+     */
     public void showProvidePassword(int boardID) {
         locker.setTitle("Provide password!!");
         locker.setScene(providePassword);
         providePasswordCtrl.boardID = boardID;
         locker.showAndWait();
     }
+
+    /**
+     * closes the pop up of locker
+     */
     public void closeLocker(){
         locker.close();
     }

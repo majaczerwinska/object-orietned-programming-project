@@ -8,11 +8,8 @@ CREATE TABLE IF NOT EXISTS BOARDS (
 );
 
 DELETE FROM BOARDS WHERE id = 0;
-<<<<<<< HEAD
-INSERT INTO BOARDS (id, name, boardkey, color, password) VALUES
-    (0, 'Public Board','public',0xffffff , '');
-=======
+
 INSERT INTO BOARDS (id, name, b_color, f_color, boardkey, password) VALUES
     (0, 'Public Board', 0, 1, 'public', '');
->>>>>>> ea8b16f0dcff193d45792e187addaf7d98591652
+
 

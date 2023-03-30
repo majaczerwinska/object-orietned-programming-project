@@ -29,7 +29,11 @@ public class LockInUnlockedBoardCtrl {
     public int boardID;
     private Preferences pref;
 
-
+    /***
+     * constructor
+     * @param server the server
+     * @param mainCtrl main controller
+     */
     @Inject
     public LockInUnlockedBoardCtrl(ServerUtils server, MainCtrl mainCtrl){
         this.mainCtrl = mainCtrl;
@@ -37,10 +41,17 @@ public class LockInUnlockedBoardCtrl {
         this.pref = Preferences.userRoot().node("locking");
     }
 
+    /**
+     * cancel method
+     */
     public void cancel(){
         mainCtrl.showBoardOverview(boardID);
     }
 
+    /**
+     * verifies the password
+     * @return the password
+     */
     public String verificationOfPassword(){
         if(password1.getText().equals("")){
             warning1.setText("Required field!");
@@ -54,6 +65,9 @@ public class LockInUnlockedBoardCtrl {
         return password;
     }
 
+    /**
+     * Sets the password
+     */
     public void setPassword(){
         String password = verificationOfPassword();
         if(password==null) return;
