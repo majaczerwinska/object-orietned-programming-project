@@ -1,5 +1,6 @@
 package server.service;
 
+import commons.Board;
 import commons.Card;
 import commons.CardList;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,6 +10,9 @@ import server.database.CardListRepositoryTest;
 import server.database.CardRepositoryTest;
 import server.service.CardService;
 
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -93,6 +97,43 @@ public class CardServiceTest {
 
     }
 
-
+//    @Test
+//    public void getListForCardTest(){
+//        CardList list = new CardList("l");
+//        Card card1 = new Card("c1");
+//        Card card2 = new Card("c2");
+//        List<Card> cards = new ArrayList<>();
+//        list.setCards(cards);
+//        cl.save(list);
+//        cards.add(card1);
+//        ser.save(card1, list.getId());
+//
+//        cards.add(card2);
+//        ser.save(card2, list.getId());
+//
+//        assertEquals(ser.getListForCard(card2), list);
+//
+//    }
+//
+//    @Test
+//    public void changeListForCardTest(){
+//        CardList list = new CardList("l");
+//        Card card1 = new Card("c1");
+//        Card card2 = new Card("c2");
+//        List<Card> cards = new ArrayList<>();
+//
+//        CardList list2 = new CardList("l2");
+//        list.setCards(cards);
+//        cl.save(list);
+//        cl.save(list2);
+//        cards.add(card1);
+//        ser.save(card1, list.getId());
+//        cards.add(card2);
+//        ser.save(card2, list.getId());
+//        ser.changeListOfCard(card2, list2.getId());
+//
+//        assertEquals(list2.getId(), ser.getListForCard(card2).getId());
+//
+//    }
 
 }

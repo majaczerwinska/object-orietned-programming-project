@@ -25,6 +25,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 //TODO
 public class CardComponent extends HBox implements Initializable {
@@ -44,7 +45,7 @@ public class CardComponent extends HBox implements Initializable {
     private Card self;
 
     @FXML
-    private TextField tfTitle;
+    public TextField tfTitle;
 
 
     @FXML
@@ -233,7 +234,7 @@ public class CardComponent extends HBox implements Initializable {
      * //todo here
      */
     public void getTagColors() {
-        List<Tag> tags = server.getTagsForCard(cardID);
+        Set<Tag> tags = server.getTagsForCard(cardID);
         System.out.println(tags);
     }
 
@@ -322,19 +323,12 @@ public class CardComponent extends HBox implements Initializable {
      * listener for the [x] button in each card in board overview
      */
     public void deleteCard() {
-        Platform.runLater(() -> {
-            // UI update code here
-            System.out.println("deleting card (CardComponent.deleteCard(self)) " + self);
 
-            server.deleteCard(self, cardListID);
-            server.setListSize(cardListID, server.getListSize(cardListID) - 1);
-
-            Platform.runLater(() -> {
-                mainCtrl.refreshBoardOverview();
-            });
-            mainCtrl.timeoutBoardRefresh(400);
-            mainCtrl.timeoutBoardRefresh(700);
-        });
+        // UI update code here
+        System.out.println("deleting card (CardComponent.deleteCard(self)) " + self);
+        server.deleteCard(self, cardListID);
+        server.setListSize(cardListID, server.getListSize(cardListID) - 1);
+        mainCtrl.refreshBoardOverview();
 
     }
 

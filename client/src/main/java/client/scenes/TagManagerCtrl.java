@@ -1,5 +1,4 @@
 package client.scenes;
-
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Board;
@@ -12,17 +11,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Set;
-
 import static client.scenes.MainCtrl.colorParseToFXColor;
 import static client.scenes.MainCtrl.colorParseToInt;
-
-
 public class TagManagerCtrl implements Initializable {
 
     private final ServerUtils server;
@@ -77,7 +71,7 @@ public class TagManagerCtrl implements Initializable {
      * @return an observable list with all tags
      */
     public ObservableList<Tag> getTagList(int boardId){
-        Set<Tag> tags = server.getTagsFromBoard(boardId);
+        List<Tag> tags = server.getTagsFromBoard(boardId);
         List<Tag> t = new ArrayList<>();
         for(Tag tag : tags){
             t.add(tag);

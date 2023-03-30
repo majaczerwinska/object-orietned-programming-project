@@ -22,9 +22,6 @@ import java.io.IOException;
 
 //TODO
 public class CardListComponent extends VBox{
-
-   // private int listID;
-
     private CardList self;
 
     private MainCtrl mainCtrl;
@@ -39,7 +36,6 @@ public class CardListComponent extends VBox{
     private Button deletebutton;
     @FXML
     private Button addcard;
-
     @FXML
     public Label labelTitle;
 
@@ -106,7 +102,7 @@ public class CardListComponent extends VBox{
      */
     public void addCard() {
 
-
+        System.out.println(vboxCards.getHeight());
          Card c = mainCtrl.createCard(listId);
         System.out.println(boardId + "carlistcomp");
          mainCtrl.showCard(c.getId(), boardId);
@@ -159,6 +155,7 @@ public class CardListComponent extends VBox{
      */
     public void setTitle(String title){
         labelTitle.setText(title);
+
     }
 
     /**

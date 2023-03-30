@@ -163,6 +163,29 @@ public class ServerUtils {
 
     }
 
+//    /**
+//     * returns the board with the given name
+//     * @param name the name of the board to be searched for
+//     * @return the board
+//     */
+    /*public Board getBoardByName(String name) {
+        try {
+            System.out.println("sending request in api/boards/name/"+name);
+            return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/boards/name/"+name)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(new GenericType<Board>() {});
+            } 
+            catch (Exception e)
+            {
+                System.out.println("Exception raised in getBoardByName() in ServerUtils " + name);
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+            }
+            return null;
+    }*/
+
     /**
      * Get card by id
      * @param id the id to get cards by
@@ -264,12 +287,12 @@ public class ServerUtils {
      * @param boardId the id from the board we need the tags from
      * @return the list with tags from the board
      */
-    public Set<Tag> getTagsFromBoard(int boardId) {
+    public List<Tag> getTagsFromBoard(int boardId) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/tags/" + boardId) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get(new GenericType<Set<Tag>>() {});
+                .get(new GenericType<List<Tag>>() {});
     }
 
     /**
@@ -277,12 +300,12 @@ public class ServerUtils {
      * @param cardId the card id
      * @return the list with tags
      */
-    public List<Tag> getTagsForCard(int cardId) {
+    public Set<Tag> getTagsForCard(int cardId) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/cards/" + cardId + "/tags") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<Tag>>() {});
+                .get(new GenericType<Set<Tag>>() {});
     }
 
     /**
@@ -295,6 +318,19 @@ public class ServerUtils {
     public Tag addTagToCard(int boardid, int tagid, int cardid) {
         return ClientBuilder.newClient(new ClientConfig()) // /{boardId}/{cardId}/{tagId}
                 .target(SERVER).path("api/tags/" + boardid + "/" + cardid + "/"+tagid) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .put(Entity.entity("", APPLICATION_JSON), Tag.class);
+    }
+    /**
+     * remove tag from card
+     * @param tagid tag's id
+     * @param cardid card's id
+     * @return the tag element
+     */
+    public Tag removeTagFromCard( int tagid, int cardid) {
+        return ClientBuilder.newClient(new ClientConfig()) // /{boardId}/{cardId}/{tagId}
+                .target(SERVER).path("api/tags/" + cardid + "/"+tagid) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity("", APPLICATION_JSON), Tag.class);
@@ -589,4 +625,6 @@ public class ServerUtils {
                     });
 
     }
+
+
 }

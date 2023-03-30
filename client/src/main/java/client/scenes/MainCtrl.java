@@ -154,8 +154,7 @@ public class MainCtrl {
         this.customizationCtrl = customization.getKey();
         this.customization = new Scene(customization.getValue());
 
-//        showLanding();
-        showServerSelect();
+        showLanding();
         primaryStage.show();
     }
 
@@ -296,7 +295,7 @@ public class MainCtrl {
         boardOverviewCtrl.setBoardName();
         boardOverviewCtrl.setColor();
         boardOverviewCtrl.refreshListViewTags();
-        boardOverviewCtrl.refresh();
+        boardOverviewCtrl.refresh(null);
     }
 
     /**
@@ -327,8 +326,8 @@ public class MainCtrl {
 
         primaryStage.show();
         cardCtrl.setInfo();
-        cardCtrl.clearCard();
-        cardCtrl.displayTasks();
+        cardCtrl.refresh();
+
 
     }
 
@@ -375,9 +374,7 @@ public class MainCtrl {
      * refresh board overview scene with newly polled data from the database
      */
     public void refreshBoardOverview()  {
-
-        boardOverviewCtrl.refresh();
-
+        boardOverviewCtrl.refresh(null);
     }
 
     /**
@@ -401,7 +398,7 @@ public class MainCtrl {
     public void timeoutBoardRefresh() {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Future<?> future = executor.submit(() -> {
-            boardOverviewCtrl.refresh();
+            boardOverviewCtrl.refresh(null);
         });
         try {
             future.get(200, TimeUnit.MILLISECONDS); // set a timeout of 5 seconds
@@ -422,7 +419,7 @@ public class MainCtrl {
     public void timeoutBoardRefresh(int mil) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Future<?> future = executor.submit(() -> {
-            boardOverviewCtrl.refresh();
+            boardOverviewCtrl.refresh(null);
         });
         try {
             future.get(mil, TimeUnit.MILLISECONDS); // set a timeout of 5 seconds
