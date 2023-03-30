@@ -62,7 +62,7 @@ public class EditBoardCtrl {
         Board board = server.getBoard(this.boardId);
 
         name.setText(board.getName());
-        color.setText(String.valueOf(board.getColor()));
+        color.setText(String.valueOf(board.getbColor()));
     }
 
     /**
@@ -99,7 +99,7 @@ public class EditBoardCtrl {
 
         Board board = new Board(name);
         board.setId(boardId);
-        board.setColor(boardColor);
+        board.setbColor(boardColor);
 
         if (name.isEmpty() || color.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);

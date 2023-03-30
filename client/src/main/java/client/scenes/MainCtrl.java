@@ -75,6 +75,9 @@ public class MainCtrl {
     private ProvidePasswordCtrl providePasswordCtrl;
     private Scene providePassword;
 
+    private CustomizationCtrl customizationCtrl;
+    private Scene customization;
+
 
     /**
      * 
@@ -93,9 +96,13 @@ public class MainCtrl {
      * @param help
      * @param taskCreator
      * @param listEdit
+
      * @param unlocked
      * @param locker
      * @param providePassword
+
+     * @param customization
+
      */
     public void initialize(Stage primaryStage,
                            Stage locker,
@@ -114,7 +121,9 @@ public class MainCtrl {
                            Pair<EditBoardCtrl, Parent> editBoard,
                            Pair<HelpCtrl, Parent> help,
                            Pair<LockInUnlockedBoardCtrl, Parent> unlocked,
-                           Pair<ProvidePasswordCtrl, Parent> providePassword
+                           Pair<ProvidePasswordCtrl, Parent> providePassword,
+                           Pair<CustomizationCtrl, Parent> customization
+
                            ) {
         this.primaryStage = primaryStage;
         this.locker = locker;
@@ -163,14 +172,17 @@ public class MainCtrl {
         this.helpCtrl = help.getKey();
         this.helpScene = new Scene(help.getValue());
 
+
         this.lockInUnlockedBoardCtrl = unlocked.getKey();
         this.unlocked = new Scene(unlocked.getValue());
 
         this.providePasswordCtrl = providePassword.getKey();
         this.providePassword = new Scene(providePassword.getValue());
 
+        this.customizationCtrl = customization.getKey();
+        this.customization = new Scene(customization.getValue());
+
         showLanding();
-        //git showServerSelect();
         primaryStage.show();
     }
 
@@ -251,6 +263,7 @@ public class MainCtrl {
         //Later combine these methods into one refresh method
         tagManagerCtrl.setLabelBoard();
         tagManagerCtrl.refresh();
+        tagManagerCtrl.subscribe();
         primaryStage.show();
     }
 
@@ -321,8 +334,7 @@ public class MainCtrl {
         primaryStage.setTitle("Board overview :)");
         boardOverviewCtrl.boardID = boardID;
         primaryStage.setScene(boardOverwiew);
-//        boardOverviewCtrl.refreshName(boardID);
-
+        boardOverviewCtrl.refreshName(boardID);
         primaryStage.show();
         //We later have to combine all these methods we call into one refresh method in boardOverviewCtrl
         boardOverviewCtrl.setBoardName();
@@ -332,6 +344,45 @@ public class MainCtrl {
         boardOverviewCtrl.refresh(null);
     }
 
+    /**
+     * Calls the methods to create a stomp session in boardOverviewCtrl and tagManagerCtrl
+     */
+    public void setStompSession(){
+        boardOverviewCtrl.setStompSession();
+        tagManagerCtrl.setStompSession();
+    }
+
+    /**
+     * Subscribes to endpoint that listens to all updates of cards and lists from a specific board
+     * @param boardId the boarId from the board we want updates from
+     */
+    public void subscribeToBoard(int boardId){
+        boardOverviewCtrl.subscribeToBoard(boardId);
+    }
+
+    /**
+     * Subscribes to endpoint that listens to all updates of tags from a specific board
+     * @param boardId the boarId from the board we want updates from
+     */
+    public void subscribeToTagsFromBoard(int boardId){
+        boardOverviewCtrl.subscribeToTagsFromBoard(boardId);
+    }
+
+
+    /**
+     * calls methood from boardoverview to color board's font
+     * @param boardId
+     * @param color
+     */
+    public void colorBF(int boardId, int color){
+        boardOverviewCtrl.boardID = boardId;
+        boardOverviewCtrl.colorFont(color);
+    }
+
+//    public void colorLF(int boardId, int listId, int color){
+//        CardListComponent list = new CardListComponent(this, boardId, listId);
+//                list.colorFont(color);
+//    }
 
     /**
      * show card overview
@@ -400,6 +451,12 @@ public class MainCtrl {
     }
 
     /**
+     * refreshes
+     */
+    public void refreshListColours(){
+        customizationCtrl.colourlist();
+    }
+    /**
      * add event listener for the enter key, intermediate function
      * @param listID the list mouse is currently in
      */
@@ -463,6 +520,17 @@ public class MainCtrl {
      */
     public void refreshListView(int listID, CardListComponent component) {
         boardOverviewCtrl.refreshList(listID, component);
+    }
+
+    /**
+     * takes you to the customization scene
+     * @param boardId
+     */
+    public void showCustomization(int boardId){
+        primaryStage.setTitle("Customization");
+        primaryStage.setScene(customization);
+        customizationCtrl.boardId = boardId;
+        primaryStage.show();
     }
 
 }

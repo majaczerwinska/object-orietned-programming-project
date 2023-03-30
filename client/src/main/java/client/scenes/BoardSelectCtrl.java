@@ -226,6 +226,8 @@ public class BoardSelectCtrl{
         System.out.println("joining board #" + selection.id);
         System.out.println(selection);
         mainCtrl.showBoardOverview(selection.id);
+        mainCtrl.subscribeToBoard(selection.id);
+        mainCtrl.subscribeToTagsFromBoard(selection.id);
     }
 
     /**

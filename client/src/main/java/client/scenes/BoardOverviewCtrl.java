@@ -2,11 +2,13 @@ package client.scenes;
 import client.components.CardComponent;
 import client.components.CardListComponent;
 import client.utils.ServerUtils;
+import client.utils.WebsocketClient;
 import com.google.inject.Inject;
 import commons.Board;
 import commons.Card;
 import commons.CardList;
 import commons.Tag;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,17 +23,24 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ListCell;
+//import java.net.URL;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.util.*;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Comparator;
+<<<<<<< HEAD
 import java.util.List;
 import java.util.prefs.Preferences;
+=======
+>>>>>>> ea8b16f0dcff193d45792e187addaf7d98591652
 
 public class BoardOverviewCtrl /*implements Initializable*/ {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    private final WebsocketClient websocketClient;
     public int boardID = 0;
 
     private boolean isCreatingCard = false;
@@ -63,6 +72,11 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     @FXML
     private Label boardKey;
     @FXML
+    private Label boardKeyL;
+    @FXML
+    private Label tagL;
+
+    @FXML
     private Button addListButton;
 
     @FXML
@@ -82,12 +96,21 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      *
      * @param server -
      * @param mainCtrl -
+     * @param websocketClient -
      */
     @Inject
-    public BoardOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public BoardOverviewCtrl(ServerUtils server, MainCtrl mainCtrl, WebsocketClient websocketClient) {
         this.mainCtrl = mainCtrl;
         this.server = server;
+<<<<<<< HEAD
         this.pref = Preferences.userRoot().node("locking");
+=======
+        this.websocketClient = websocketClient;
+        System.out.println("Inject called in board overview");
+
+
+
+>>>>>>> ea8b16f0dcff193d45792e187addaf7d98591652
 //        Board board = this.server.getBoard(boardID);
 //        String title = board.getName();
 //        if(title == null){
@@ -115,8 +138,37 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 //            System.out.println("No server to connect to, halting tag init function");
 //            return;
 //        }
-//        displayCards();
 //    }
+
+    /**
+     * Creates stomp session
+     */
+    public void setStompSession(){
+        websocketClient.setStompSession(ServerUtils.SERVER);
+        System.out.println("StompSession created");
+    }
+
+    /**
+     * Subscribes to endpoint that listens to all updates of cards and lists from a specific board
+     * @param boardID the boarId from the board we want updates from
+     */
+    public void subscribeToBoard(int boardID){
+        websocketClient.registerForMessages("/topic/boards/"+boardID, String.class, update -> {
+            System.out.println("payload: "+ update);
+            refresh(null);
+        });
+    }
+
+    /**
+     * Subscribes to endpoint that listens to all updates of tags from a specific board
+     * @param boardID the boarId from the board we want updates from
+     */
+    public void subscribeToTagsFromBoard(int boardID){
+        websocketClient.registerForMessages("/topic/tags/"+boardID, String.class, update -> {
+                    System.out.println("payload: "+ update);
+                    refreshListViewTags();
+        });
+    }
 
     /**
      * Sets board name in the overview
@@ -132,11 +184,11 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public void setColor(){
         Board board = server.getBoard(boardID);
         scrollPaneOverview.setStyle("-fx-background: " + String.format("rgb(%d, %d, %d)",
-                (board.getColor() >> 16) & 0xFF,
-                (board.getColor() >> 8) & 0xFF, board.getColor()& 0xFF)+";");
+                (board.getbColor() >> 16) & 0xFF,
+                (board.getbColor() >> 8) & 0xFF, board.getbColor()& 0xFF)+";");
         vboxList1.setStyle("-fx-background-color: " + String.format("rgb(%d, %d, %d)",
-                (board.getColor() >> 16) & 0xFF,
-                (board.getColor() >> 8) & 0xFF, board.getColor()& 0xFF)+";");
+                (board.getbColor() >> 16) & 0xFF,
+                (board.getbColor() >> 8) & 0xFF, board.getbColor()& 0xFF)+";");
 
     }
 
@@ -196,6 +248,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public void back(ActionEvent actionEvent){
         System.out.println("going back");
         mainCtrl.showSelect();
+        websocketClient.unsubscribe("/topic/boards/"+boardID);
+        websocketClient.unsubscribe("/topic/tags/"+boardID);
     }
 
 //    /**
@@ -293,11 +347,14 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
             cardListComponent.setTitle(cardList.getName());
             cardListComponent.setStyle("-fx-background-color: " + String.format("rgb(%d, %d, %d)",
-                    (cardList.getColor() >> 16) & 0xFF,
-                    (cardList.getColor() >> 8) & 0xFF, cardList.getColor()& 0xFF)+";" );
+                    (cardList.getbColor() >> 16) & 0xFF,
+                    (cardList.getbColor() >> 8) & 0xFF, cardList.getbColor()& 0xFF)+";" );
+            System.out.println("List style: " + cardListComponent.getStyle());
             cardListComponent.setOnMouseEntered(event -> addEnterKeyListener(cardList.getId()));
             hboxCardLists.getChildren().add(cardListComponent);
             cardListComponent.setData(cardList);
+            String hexColor = String.format("#%06X", (0xFFFFFF & cardList.getfColor()));
+            cardListComponent.labelTitle.setStyle("-fx-text-fill: " + hexColor);
             displayCards(cardListComponent.getVboxCards(), cardList.getId(), allCards.get(i),c);
             i++;
         }
@@ -324,22 +381,26 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * Refreshes the list overview with the tags
      */
     public void refreshListViewTags(){
-        listViewTags.requestFocus();
-        listViewTags.setItems(getTagList(boardID));
-        listViewTags.setCellFactory(param -> new ListCell<Tag>() {
-            @Override
-            protected void updateItem(Tag tag, boolean empty) {
-                super.updateItem(tag, empty);
-
-                if (empty || tag == null || tag.getTitle() == null) {
-                    setText(null);
-                } else {
-                    setText(tag.getTitle());
-                    String hexColor = String.format("#%06X", (0xFFFFFF & tag.getColor()));
-                    setStyle("-fx-control-inner-background: " + hexColor);
-                }
+        Platform.runLater(new Runnable() {
+            @Override public void run() {
+                listViewTags.requestFocus();
+                listViewTags.setItems(getTagList(boardID));
+                listViewTags.setCellFactory(param -> new ListCell<Tag>() {
+                    @Override
+                    protected void updateItem(Tag tag, boolean empty) {
+                        super.updateItem(tag, empty);
+                        if (empty || tag == null || tag.getTitle() == null) {
+                            setText(null);
+                        } else {
+                            setText(tag.getTitle());
+                            String hexColor = String.format("#%06X", (0xFFFFFF & tag.getColor()));
+                            setStyle("-fx-control-inner-background: " + hexColor);
+                        }
+                    }
+                });
             }
         });
+
     }
 
     /**
@@ -358,35 +419,28 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         mainCtrl.showListCreate(boardID);
     }
 
-//    /**
-//     * refreshes the board's name field, board's key and tag list view
-//     * @param boardID
-//     */
-//    @FXML
-//    public void refreshName(int boardID){
-//        Board b = server.getBoard(boardID);
-//        //boardName.setText(b.getName());
-//        boardKey.setText(b.getBoardkey());
-//        boardKey.setVisible(false);
-//
-////        list.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-////        ObservableList<Tag> tagList = FXCollections.observableList(server.getTagsFromBoard(boardID));
-////        list.setItems(tagList);
-//    }
+    /**
+     * refreshes the board's key (tag list view and name not anymore)
+     * @param boardID
+     */
+    @FXML
+    public void refreshName(int boardID){
+        Board b = server.getBoard(boardID);
+        //boardName.setText(b.getName());
+        boardKey.setText(b.getBoardkey());
+
+//        list.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+//        ObservableList<Tag> tagList = FXCollections.observableList(server.getTagsFromBoard(boardID));
+//        list.setItems(tagList);
+    }
 
     /**
      * display and copy to clipboard the boardKey
      */
     public void getBoardKey(){
-        if(boardKey.isVisible()){
-            boardKey.setVisible(false);
-        }
-        else{
-            boardKey.setVisible(true);
             StringSelection selection = new StringSelection(boardKey.getText());
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(selection, selection);
-        }
     }
 
 
@@ -395,15 +449,18 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * @param c - card for focus
      */
     public void refresh(Card c) {
-        System.out.println("Refreshing board overview");
-        List<CardList> cardLists = getCardListsFromServer();
-        List<List<Card>> allCards = new ArrayList<>();
-        for (CardList cl : cardLists) {
-            allCards.add(getCardsOfListFromServer(cl.getId()));
-        }
-        clearBoard();
-        displayLists(cardLists, allCards, c);
-
+        Platform.runLater(new Runnable() {
+            @Override public void run() {
+                System.out.println("Refreshing board overview");
+                List<CardList> cardLists = getCardListsFromServer();
+                List<List<Card>> allCards = new ArrayList<>();
+                for (CardList cl : cardLists) {
+                    allCards.add(getCardsOfListFromServer(cl.getId()));
+                }
+                clearBoard();
+                displayLists(cardLists, allCards, c);
+            }
+        });
     }
 
     /**
@@ -432,7 +489,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public void createTestCard() {
         Card c = new Card("test card ..");
         System.out.println("creating test card "+c);
-        server.addCard(c, 0);
+        server.addCard(c, 0, 0);
         //refresh();
         mainCtrl.timeoutBoardRefresh();
     }
@@ -446,9 +503,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         Card c = new Card("title..");
         System.out.println("creating new card "+c+" in list id="+listID);
         c.setPosition(server.getListSize(listID) + 1);
-        c = server.addCard(c, listID);
+        c = server.addCard(c, boardID, listID);
         refresh(c);
-
         return c;
     }
 
@@ -499,6 +555,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         mainCtrl.showListCreate(boardID);
     }
 
+<<<<<<< HEAD
     public void clickLockInUnlockedBoard(){
         if(boardID==0){
             return;
@@ -512,7 +569,28 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     }
 
 
+=======
+    /**
+     * takes you to customization scene
+     * @param event
+     */
+    public void goCustomization(ActionEvent event){
+        mainCtrl.showCustomization(boardID);
+    }
+>>>>>>> ea8b16f0dcff193d45792e187addaf7d98591652
 
+    /**
+     * sets color of font for board components
+     * @param color - new color
+     */
+    @FXML
+    public void colorFont(int color){
+        String hexColor = String.format("#%06X", (0xFFFFFF & color));
+        labelBoardTitle.setStyle("-fx-text-fill: " + hexColor);
+        boardKey.setStyle("-fx-text-fill: " + hexColor);
+        boardKeyL.setStyle("-fx-text-fill: " + hexColor);
+        tagL.setStyle("-fx-text-fill: " + hexColor);
+    }
 
 
 }
