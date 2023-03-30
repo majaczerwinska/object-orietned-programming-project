@@ -19,27 +19,28 @@ public class WebsocketClient {
 
     /**
      * Creates a stomp session
-     * @param ip the server ip the client is connected to
+     * @param httpUrl the server url the client is connected to
      */
-    public void setStompSession(String ip) {
-        String url =ip.replace("http://", "").replaceAll("(/)", "");
-        this.session = connect("ws://" + url + "/websocket");
+    public void setStompSession(String httpUrl) {
+        String ip = httpUrl.replace("http://", "").replaceAll("(/)", "");
+        String wsUrl = "ws://" + ip + "/websocket";
+        this.session = connect(wsUrl);
     }
 
     private Map<String, StompSession.Subscription> subscriptions = new HashMap<>();
 
     /**
      * Connects to the websocket endpoint
-     * @param url the endpoint to be connected to
+     * @param wsUrl the endpoint to be connected to
      * @return a stomp session
      */
-    private StompSession connect(String url){
+    private StompSession connect(String wsUrl){
         StandardWebSocketClient client = new StandardWebSocketClient();
         WebSocketStompClient stompClient = new WebSocketStompClient(client);
         stompClient.setMessageConverter(new StringMessageConverter());
         try {
-            System.out.println("Connecting to WebSocket server...");
-            return stompClient.connect(url, new StompSessionHandlerAdapter() {
+            System.out.println("Connecting to WebSocket server " + wsUrl);
+            return stompClient.connect(wsUrl, new StompSessionHandlerAdapter() {
 
             }).get();
         } catch (InterruptedException e) {

@@ -57,9 +57,10 @@ public class CardService {
     public Card delete(Card card, int listId){
         if(!cl.existsById(listId)) return null;
         repo.delete(repo.getById(card.getId()));
-        CardList list = cl.getById(listId);
-        list.getCards().remove(card);
-        cl.save(list);
+        //not needed because of cascadeType.ALL
+//        CardList list = cl.getById(listId);
+//        list.getCards().remove(card);
+//        cl.save(list);
         return card;
     }
 
