@@ -1,8 +1,10 @@
 package client.scenes;
 import client.utils.ServerUtils;
+import client.utils.WebsocketClient;
 import com.google.inject.Inject;
 import commons.Board;
 import commons.Tag;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,7 +23,9 @@ public class TagManagerCtrl implements Initializable {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    private final WebsocketClient websocketClient;
     public int boardId = 0;
+    private ObservableList<Tag> tagList;
     @FXML
     private Label labelBoard;
     @FXML
@@ -36,11 +40,13 @@ public class TagManagerCtrl implements Initializable {
      *
      * @param server -
      * @param mainCtrl -
+     * @param websocketClient -
      */
     @Inject
-    public TagManagerCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public TagManagerCtrl(ServerUtils server, MainCtrl mainCtrl, WebsocketClient websocketClient) {
         this.mainCtrl = mainCtrl;
         this.server = server;
+        this.websocketClient = websocketClient;
 
     }
 
@@ -66,6 +72,25 @@ public class TagManagerCtrl implements Initializable {
     }
 
     /**
+     * Creates stomp session
+     */
+    public void setStompSession(){
+        websocketClient.setStompSession(ServerUtils.SERVER);
+        System.out.println("StompSession created");
+    }
+
+    /**
+     * Subscribes to endpoint that listens to all updates of tags from specific board
+     */
+    public void subscribe(){
+        websocketClient.registerForMessages("/topic/tags/"+boardId, String.class, update -> {
+            System.out.println("payload: " + update);
+            refresh();
+        });
+    }
+
+
+    /**
      * Creates an observable list with all tags
      * @param boardId the board id we are in
      * @return an observable list with all tags
@@ -76,7 +101,7 @@ public class TagManagerCtrl implements Initializable {
         for(Tag tag : tags){
             t.add(tag);
         }
-        ObservableList<Tag> tagList = FXCollections.observableList(t);
+        tagList = FXCollections.observableList(t);
         return tagList;
     }
 
@@ -84,19 +109,23 @@ public class TagManagerCtrl implements Initializable {
      * Refreshes the list overview
      */
     public void refresh(){
-        tagListView.setItems(getTagList(boardId));
-        tagListView.setCellFactory(param -> new ListCell<Tag>() {
-            @Override
-            protected void updateItem(Tag tag, boolean empty) {
-                super.updateItem(tag, empty);
+        Platform.runLater(new Runnable() {
+            @Override public void run() {
+                tagListView.setItems(getTagList(boardId));
+                tagListView.setCellFactory(param -> new ListCell<Tag>() {
+                    @Override
+                    protected void updateItem(Tag tag, boolean empty) {
+                        super.updateItem(tag, empty);
 
-                if (empty || tag == null || tag.getTitle() == null) {
-                    setText(null);
-                } else {
-                    setText(tag.getTitle());
-                    String hexColor = String.format("#%06X", (0xFFFFFF & tag.getColor()));
-                    setStyle("-fx-control-inner-background: " + hexColor);
-                }
+                        if (empty || tag == null || tag.getTitle() == null) {
+                            setText(null);
+                        } else {
+                            setText(tag.getTitle());
+                            String hexColor = String.format("#%06X", (0xFFFFFF & tag.getColor()));
+                            setStyle("-fx-control-inner-background: " + hexColor);
+                        }
+                    }
+                });
             }
         });
     }
@@ -130,8 +159,8 @@ public class TagManagerCtrl implements Initializable {
     public void deleteTag(ActionEvent actionEvent){
         Tag tag = tagListView.getSelectionModel().getSelectedItem();
         if(tag!=null){
+            System.out.println("deleting" + tag + "from board#"+boardId);
             server.deleteTag(tag, boardId);
-            System.out.println("deleting" + tag);
             refresh();
         }
 
@@ -148,7 +177,7 @@ public class TagManagerCtrl implements Initializable {
         int intColor = colorParseToInt(fxColor);
         Tag newTag = new Tag(title, intColor);
         if(oldTag!=null){
-            server.editTag(oldTag, newTag);
+            server.editTag(boardId, oldTag.getId(), newTag);
             refresh();
         }
 
@@ -185,5 +214,6 @@ public class TagManagerCtrl implements Initializable {
     public void backButton(ActionEvent actionEvent){
         System.out.println("going back to board with id #"+boardId);
         mainCtrl.showBoardOverview(boardId);
+        websocketClient.unsubscribe("/topic/tags/"+boardId);
     }
 }

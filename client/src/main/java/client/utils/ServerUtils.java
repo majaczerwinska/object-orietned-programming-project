@@ -87,13 +87,14 @@ public class ServerUtils {
 //    }
 
     /**
-     * @param card -
+     * @param card card o be added
      * @param listID the list id
+     * @param boardId the board the list is in
      * @return -
      */
-    public Card addCard(Card card, int listID) {
+    public Card addCard(Card card, int boardId, int listID) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/cards/" + listID) //
+                .target(SERVER).path("api/cards/" + boardId + "/" + listID) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(card, APPLICATION_JSON), Card.class);
@@ -203,14 +204,15 @@ public class ServerUtils {
 
     /**
      * Edit card with id to the new card
+     * @param boardId the board the card is in
      * @param id the id of the card to edit
      * @param card the new card the old card is replaced by
      * @return return the card edited
      */
-    public Card editCard(int id, Card card) {
+    public Card editCard(int boardId, int id, Card card) {
         try {
             return ClientBuilder.newClient(new ClientConfig())
-                    .target(SERVER).path("api/cards/" + id)
+                    .target(SERVER).path("api/cards/edit/" + boardId + "/" + id)
                     .request(APPLICATION_JSON)
                     .accept(APPLICATION_JSON)
                     .put(Entity.entity(card, APPLICATION_JSON), Card.class);
@@ -404,13 +406,14 @@ public class ServerUtils {
 
     /**
      * Edits a tag in the database (calls the edit method from the controller)
-     * @param oldTag the old tag
+     * @param boardId the board the card is in
+     * @param id the id of the tag to be edited
      * @param newTag the tag with de new attributes
      * @return the edited tag
      */
-    public Tag editTag(Tag oldTag, Tag newTag){
+    public Tag editTag(int boardId, int id, Tag newTag){
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/tags/" + oldTag.getId()) //
+                .target(SERVER).path("api/tags/edit/" + boardId + "/" + id) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .put(Entity.entity(newTag, APPLICATION_JSON), Tag.class);
@@ -528,27 +531,29 @@ public class ServerUtils {
 
     /**
      * renames your list
+     * @param boardId the board the list is in
      * @param listId - id of the list to be renamed
      * @param newName - new name
      * @return - edited list
      */
-    public CardList editList(int listId, String newName) {
+    public CardList editList(int boardId, int listId, String newName) {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/lists/" + listId)
+                .target(SERVER).path("api/lists/" + boardId + "/" + listId)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .put(Entity.entity(newName, APPLICATION_JSON), CardList.class);
     }
     /**
      * send a delete request for a card
+     * @param boardId the board the card is in
      * @param c the card instance
      * @param listID the list the card is in
      * @return the deleted card response
      */
-    public Card deleteCard(Card c, int listID) {
+    public Card deleteCard(Card c, int boardId, int listID) {
         System.out.println("Sending DELETE request to api/cards/"+listID+"/"+c.getId()+"\nCard for card element "+c);
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/cards/" + listID + "/" + c.getId()) //
+                .target(SERVER).path("api/cards/" + boardId + "/" + listID + "/" + c.getId()) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .delete(Card.class);

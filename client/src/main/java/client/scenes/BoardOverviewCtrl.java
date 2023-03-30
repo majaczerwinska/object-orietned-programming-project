@@ -2,11 +2,13 @@ package client.scenes;
 import client.components.CardComponent;
 import client.components.CardListComponent;
 import client.utils.ServerUtils;
+import client.utils.WebsocketClient;
 import com.google.inject.Inject;
 import commons.Board;
 import commons.Card;
 import commons.CardList;
 import commons.Tag;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -25,13 +27,19 @@ import javafx.scene.control.ListCell;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.util.*;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Comparator;
+
 import java.util.List;
+import java.util.prefs.Preferences;
+
 
 public class BoardOverviewCtrl /*implements Initializable*/ {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    private final WebsocketClient websocketClient;
     public int boardID = 0;
 
     private boolean isCreatingCard = false;
@@ -77,20 +85,27 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
     @FXML
     private Label labelBoardTitle;
+    @FXML
+    private Button lock;
+    private Preferences pref;
+
 
 
     /**
      *
      * @param server -
      * @param mainCtrl -
+     * @param websocketClient -
      */
     @Inject
-    public BoardOverviewCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public BoardOverviewCtrl(ServerUtils server, MainCtrl mainCtrl, WebsocketClient websocketClient) {
         this.mainCtrl = mainCtrl;
         this.server = server;
 
+        this.pref = Preferences.userRoot().node("locking");
 
-
+        this.websocketClient = websocketClient;
+        System.out.println("Inject called in board overview");
 
 //        Board board = this.server.getBoard(boardID);
 //        String title = board.getName();
@@ -119,8 +134,37 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 //            System.out.println("No server to connect to, halting tag init function");
 //            return;
 //        }
-//        displayCards();
 //    }
+
+    /**
+     * Creates stomp session
+     */
+    public void setStompSession(){
+        websocketClient.setStompSession(ServerUtils.SERVER);
+        System.out.println("StompSession created");
+    }
+
+    /**
+     * Subscribes to endpoint that listens to all updates of cards and lists from a specific board
+     * @param boardID the boarId from the board we want updates from
+     */
+    public void subscribeToBoard(int boardID){
+        websocketClient.registerForMessages("/topic/boards/"+boardID, String.class, update -> {
+            System.out.println("payload: "+ update);
+            refresh(null);
+        });
+    }
+
+    /**
+     * Subscribes to endpoint that listens to all updates of tags from a specific board
+     * @param boardID the boarId from the board we want updates from
+     */
+    public void subscribeToTagsFromBoard(int boardID){
+        websocketClient.registerForMessages("/topic/tags/"+boardID, String.class, update -> {
+                    System.out.println("payload: "+ update);
+                    refreshListViewTags();
+        });
+    }
 
     /**
      * Sets board name in the overview
@@ -148,7 +192,41 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         tagL.setStyle("-fx-text-fill: " + hexColor);
     }
 
+    /**
+     * sets the colour of the button
+     */
+    public void setLock(){
+        Board board = server.getBoard(boardID);
+        if(board.getPassword().equals("") || board.getPassword()==null ){
+            lock.setText("\uD83D\uDD13");
+            lock.setStyle("-fx-background-color: white");
+            return;
+        }
+        lock.setText("\uD83D\uDD12");
+        System.out.println("\n\n\n\n\n" + pref.get(String.valueOf(boardID),"notfound"));
+        checkForPref();
 
+        if(pref.get(String.valueOf(boardID),"").equals("")){
+            lock.setStyle("-fx-background-color: red");
+        }
+        else{
+            lock.setStyle("-fx-background-color: green");
+        }
+
+
+    }
+
+    /**
+     * Checks if the board is the correct board
+     */
+    public void checkForPref(){
+        for(Board b :server.getBoards()){
+            if(!pref.get(String.valueOf(b.getId()),"").equals("") &&
+                    !pref.get(String.valueOf(b.getId()),"notfound").equals(b.getPassword())) {
+                pref.remove(String.valueOf(b.getId()));
+            }
+        }
+    }
 
 
     /**
@@ -176,6 +254,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public void back(ActionEvent actionEvent){
         System.out.println("going back");
         mainCtrl.showSelect();
+        websocketClient.unsubscribe("/topic/boards/"+boardID);
+        websocketClient.unsubscribe("/topic/tags/"+boardID);
     }
 
 //    /**
@@ -307,22 +387,26 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * Refreshes the list overview with the tags
      */
     public void refreshListViewTags(){
-        listViewTags.requestFocus();
-        listViewTags.setItems(getTagList(boardID));
-        listViewTags.setCellFactory(param -> new ListCell<Tag>() {
-            @Override
-            protected void updateItem(Tag tag, boolean empty) {
-                super.updateItem(tag, empty);
-
-                if (empty || tag == null || tag.getTitle() == null) {
-                    setText(null);
-                } else {
-                    setText(tag.getTitle());
-                    String hexColor = String.format("#%06X", (0xFFFFFF & tag.getColor()));
-                    setStyle("-fx-control-inner-background: " + hexColor);
-                }
+        Platform.runLater(new Runnable() {
+            @Override public void run() {
+                listViewTags.requestFocus();
+                listViewTags.setItems(getTagList(boardID));
+                listViewTags.setCellFactory(param -> new ListCell<Tag>() {
+                    @Override
+                    protected void updateItem(Tag tag, boolean empty) {
+                        super.updateItem(tag, empty);
+                        if (empty || tag == null || tag.getTitle() == null) {
+                            setText(null);
+                        } else {
+                            setText(tag.getTitle());
+                            String hexColor = String.format("#%06X", (0xFFFFFF & tag.getColor()));
+                            setStyle("-fx-control-inner-background: " + hexColor);
+                        }
+                    }
+                });
             }
         });
+
     }
 
     /**
@@ -371,14 +455,18 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * @param c - card for focus
      */
     public void refresh(Card c) {
-        System.out.println("Refreshing board overview");
-        List<CardList> cardLists = getCardListsFromServer();
-        List<List<Card>> allCards = new ArrayList<>();
-        for (CardList cl : cardLists) {
-            allCards.add(getCardsOfListFromServer(cl.getId()));
-        }
-        clearBoard();
-        displayLists(cardLists, allCards,c);
+        Platform.runLater(new Runnable() {
+            @Override public void run() {
+                System.out.println("Refreshing board overview");
+                List<CardList> cardLists = getCardListsFromServer();
+                List<List<Card>> allCards = new ArrayList<>();
+                for (CardList cl : cardLists) {
+                    allCards.add(getCardsOfListFromServer(cl.getId()));
+                }
+                clearBoard();
+                displayLists(cardLists, allCards, c);
+            }
+        });
     }
 
     /**
@@ -407,7 +495,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public void createTestCard() {
         Card c = new Card("test card ..");
         System.out.println("creating test card "+c);
-        server.addCard(c, 0);
+        server.addCard(c, 0, 0);
         //refresh();
         mainCtrl.timeoutBoardRefresh();
     }
@@ -421,9 +509,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         Card c = new Card("title..");
         System.out.println("creating new card "+c+" in list id="+listID);
         c.setPosition(server.getListSize(listID) + 1);
-        c = server.addCard(c, listID);
+        c = server.addCard(c, boardID, listID);
         refresh(c);
-
         return c;
     }
 
@@ -473,6 +560,21 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 //    public void addListScene(ActionEvent event){
 //        mainCtrl.showListCreate(boardID);
 //    }
+
+    /**
+     * clicking the lock button
+     */
+    public void clickLockInUnlockedBoard(){
+        if(boardID==0){
+            return;
+        }
+        if(server.getBoard(boardID).getPassword().equals("")){
+            mainCtrl.showLockInUnlockedBoard(boardID);
+        } else if (pref.get(String.valueOf(boardID),"notfound").equals("notfound")) {
+            mainCtrl.showProvidePassword(boardID);
+        }
+
+    }
 
     /**
      * takes you to customization scene

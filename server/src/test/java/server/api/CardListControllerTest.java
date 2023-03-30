@@ -5,7 +5,18 @@ import commons.Card;
 import commons.CardList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.converter.StringMessageConverter;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.stomp.StompFrameHandler;
+import org.springframework.messaging.simp.stomp.StompHeaders;
+import org.springframework.messaging.simp.stomp.StompSession;
+import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.web.socket.client.standard.StandardWebSocketClient;
+import org.springframework.web.socket.messaging.WebSocketStompClient;
 import server.database.CardRepositoryTest;
 import server.service.CardListService;
 //import server.database.CardRepository;
@@ -14,11 +25,15 @@ import server.database.BoardRepositoryTest;
 import server.database.CardListRepositoryTest;
 import server.service.CardService;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//This annotation loads the WebsocketConfigTest to instantiate websocket server for testing
 public class CardListControllerTest {
     private CardListRepositoryTest repo;
     private BoardRepositoryTest br;
@@ -26,13 +41,15 @@ public class CardListControllerTest {
     private CardListService ser;
     private CardRepositoryTest cr;
     private CardService cardService;
+    @Autowired
+    private SimpMessagingTemplate msgs;
 
     @BeforeEach
     public void setup() {
         repo = new CardListRepositoryTest();
         br = new BoardRepositoryTest();
         ser = new CardListService(repo, br);
-        con = new CardListController(ser);
+        con = new CardListController(ser, msgs);
         cr = new CardRepositoryTest();
         cardService = new CardService(cr, repo);
     }
@@ -64,7 +81,7 @@ public class CardListControllerTest {
         br.save(board);
         CardList list = new CardList("title");
         con.addList(board.getId(), list);
-        con.renameList(list.getId(),"t");
+        con.renameList(board.getId(), list.getId(),"t");
         assertEquals(list.getName(),"t");
 
     }

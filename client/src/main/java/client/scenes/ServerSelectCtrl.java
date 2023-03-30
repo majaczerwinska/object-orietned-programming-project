@@ -257,6 +257,7 @@ public class ServerSelectCtrl {
         }
         System.out.println("entering server " + serverAddress);
         setServer(serverAddress);
+        mainCtrl.setStompSession();
         mainCtrl.showSelect();
     }
 
