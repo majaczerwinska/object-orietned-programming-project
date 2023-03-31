@@ -42,6 +42,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     private final MainCtrl mainCtrl;
     private final WebsocketClient websocketClient;
     public int boardID = 0;
+    public CardComponent highlightedCardComponent;
 
     private boolean isCreatingCard = false;
 
@@ -64,7 +65,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     private Button btnTagManager;
 
     @FXML
-    private ListView<Tag> listViewTags;
+    public ListView<Tag> listViewTags;
 
     @FXML
     private Button backbtn;
@@ -445,9 +446,22 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
                 }
                 clearBoard();
                 displayLists(cardLists, allCards, c);
+                shortcut();
             }
         });
     }
+
+    private void shortcut() {
+        listViewTags.getScene().setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.E) {
+                if (highlightedCardComponent != null) mainCtrl.showCard(highlightedCardComponent.cardID, boardID);
+            } else if (event.getCode() == KeyCode.DELETE) {
+                if (highlightedCardComponent != null) highlightedCardComponent.deleteCard();
+            }
+        });
+    }
+
+
 
     /**
      * refresh a specific list

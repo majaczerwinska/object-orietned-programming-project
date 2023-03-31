@@ -1,6 +1,7 @@
 package client.components;
 
 
+import client.scenes.BoardOverviewCtrl;
 import client.scenes.MainCtrl;
 import client.utils.ServerUtils;
 import commons.Card;
@@ -33,12 +34,17 @@ public class CardComponent extends HBox implements Initializable {
 
 
 
-    private int cardID;
+    public int cardID;
     public int boardID;
 
     private int cardListID;
 
     public Card self;
+
+    private boolean highlighted;
+
+    private BoardOverviewCtrl boardOverviewCtrl;
+
 
     @FXML
     public TextField tfTitle;
@@ -157,6 +163,27 @@ public class CardComponent extends HBox implements Initializable {
         dragging();
 
 
+        this.boardOverviewCtrl = mainCtrl.getBoardOverviewCtrl();
+
+        cardFrame.setOnMouseEntered(event -> {
+            BorderStroke borderStroke = new BorderStroke(Color.BLACK,
+                    BorderStrokeStyle.SOLID, null, new BorderWidths(2));
+            cardFrame.setBorder(new Border(borderStroke));
+            highlighted = true;
+            boardOverviewCtrl.highlightedCardComponent= this;
+        });
+        cardFrame.setOnMouseExited(event -> {
+            cardFrame.setBorder(null);
+            highlighted = false;
+            boardOverviewCtrl.highlightedCardComponent = null;
+        });
+
+
+//        this.cardFrame.getScene().setOnKeyPressed(event -> {
+//            if (event.getCode() == KeyCode.DELETE) {
+//                if (highlighted) mainCtrl.showCard(cardID, boardID);
+//            }
+//        });
     }
 
 
