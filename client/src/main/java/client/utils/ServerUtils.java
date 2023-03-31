@@ -551,7 +551,8 @@ public class ServerUtils {
      * @return the deleted card response
      */
     public Card deleteCard(Card c, int boardId, int listID) {
-        System.out.println("Sending DELETE request to api/cards/"+listID+"/"+c.getId()+"\nCard for card element "+c);
+        System.out.println("Sending DELETE request to api/cards/" +boardId+ "/" +listID+"/"+c.getId()+"" +
+                "\nCard for card element "+c);
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/cards/" + boardId + "/" + listID + "/" + c.getId()) //
                 .request(APPLICATION_JSON) //
