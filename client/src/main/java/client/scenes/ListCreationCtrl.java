@@ -52,8 +52,9 @@ public class ListCreationCtrl {
         else{
             CardList list = new CardList(name.getText());
             //list.setColor(MainCtrl.colorParseToInt(palette.getValue()));
-            mainCtrl.refreshListColours();
+
             server.createList(boardID, list);
+            mainCtrl.refreshListColours();
             name.setText("");
 
 

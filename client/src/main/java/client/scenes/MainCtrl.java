@@ -520,6 +520,7 @@ public class MainCtrl {
      * refreshes
      */
     public void refreshListColours(){
+        customizationCtrl.refresh();
         customizationCtrl.colourlist();
     }
     /**
