@@ -74,9 +74,10 @@ public class CustomizationCtrl {
         board.setbColor(mainCtrl.colorParseToInt(bb.getValue()));
         board.setfColor(mainCtrl.colorParseToInt(bf.getValue()));
         server.editBoard(boardId,board);
-        colourlist();
         listBt = lb.getValue();
         listFt = lf.getValue();
+        colourlist();
+
 
         mainCtrl.showBoardOverview(boardId);
         mainCtrl.colorBF(boardId, MainCtrl.colorParseToInt(bf.getValue()));
@@ -89,8 +90,10 @@ public class CustomizationCtrl {
     public void colourlist(){
         List<CardList> cardLists = server.getCardListsFromBoard(boardId);
         for(CardList list : cardLists){
-            list.setbColor(mainCtrl.colorParseToInt(lb.getValue()));
-            list.setfColor(mainCtrl.colorParseToInt(lf.getValue()));
+            list.setbColor(MainCtrl.colorParseToInt(listBt));
+            System.out.println("extracted value from color picker after setting lbcolor: " + lb.getValue());
+            list.setfColor(MainCtrl.colorParseToInt(listFt));
+            System.out.println("extracted value from color picker: " + lf.getValue());
             server.editCardListColour(list.getId(), list);
             //mainCtrl.colorLF(boardId, list.getId(), MainCtrl.colorParseToInt(lf.getValue()));
         }
@@ -100,7 +103,6 @@ public class CustomizationCtrl {
      * refreshes the page to set values for color pickers
      */
     public void refresh(){
-        clearPalette();
         Board b = server.getBoard(boardId);
         List<CardList> l = server.getCardListsFromBoard(boardId);
         bb.setValue(MainCtrl.colorParseToFXColor(b.getbColor()));
@@ -121,12 +123,7 @@ public class CustomizationCtrl {
             lb.setValue(MainCtrl.colorParseToFXColor(l.get(0).getbColor()));
             lf.setValue(MainCtrl.colorParseToFXColor(l.get(0).getfColor()));
         }
-        List<Palette> p = server.getPalettesFromBoard(boardId);
-        for(Palette pal : p){
-            PaletteComponent component = new PaletteComponent(this, boardId);
-            component.setData(pal);
-            palettes.getChildren().add(component);
-        }
+        displayPalettes();
 //        palettes.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 //        ObservableList<Palette> boardList = FXCollections.observableList(getPalettes());
 //        palettes.setItems(boardList);
@@ -166,6 +163,30 @@ public class CustomizationCtrl {
 ////    public void addPalette(MouseEvent event){
 ////        Palette p = new Palette()
 ////    }
+
+    /**
+     * adds new palette of colors for cards
+     * @param mouseEvent
+     */
+    public void addPalette(MouseEvent mouseEvent){
+        Palette p = new Palette("new palette", 0, 0);
+        server.addPaletteToBoard(boardId, p);
+        displayPalettes();
+    }
+
+    /**
+     * shows palettes from the board
+     */
+    public void displayPalettes(){
+        clearPalette();
+        List<Palette> p = server.getPalettesFromBoard(boardId);
+        for(Palette pal : p){
+            PaletteComponent component = new PaletteComponent(this, boardId);
+            component.setData(pal);
+            palettes.getChildren().add(component);
+        }
+    }
+
 
 
 }

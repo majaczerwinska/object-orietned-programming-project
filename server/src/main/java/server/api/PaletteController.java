@@ -33,7 +33,7 @@ public class PaletteController {
         System.out.println(palette);
         Palette saved = ps.save(palette, boardId);
         if(saved == null) return ResponseEntity.badRequest().build();
-        System.out.println(saved);
+        System.out.println(palette.getName());
         return ResponseEntity.ok(saved);
     }
 

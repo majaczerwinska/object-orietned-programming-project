@@ -635,7 +635,7 @@ public class ServerUtils {
      */
     public Palette addPaletteToBoard(int boardId, Palette palette){
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/boards/palettes/" + boardId)
+                .target(SERVER).path("api/palettes/" + boardId)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(palette, APPLICATION_JSON), Palette.class);
