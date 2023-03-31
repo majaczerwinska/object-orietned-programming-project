@@ -88,16 +88,10 @@ public class BoardCreationCtrl {
         newBoard.setBoardkey(boardKey);
        // newBoard.setfColor(13421772);
         //newBoard.setbColor(mainCtrl.colorParseToInt(palette.getValue()));
-        
-        // checks if the user wants a password for their board
-        if (passwordRequiredRadioButton.isSelected()) {
-            String passwordValue = passwordTextField.getText();
-            newBoard.setPassword(passwordValue);
-        }
-
         // add the board to the database and go back to select board page
         server.addBoard(newBoard);
         mainCtrl.saveBoardByKey(newBoard.getBoardkey());
+        refresh();
         mainCtrl.showSelect();
     }
 
@@ -106,7 +100,8 @@ public class BoardCreationCtrl {
      */
     @FXML
     public void stopCreatingBoardButtonHandler() {
-        // go back to the selection scene scene
+        // go back to the selection scene
+        refresh();
         mainCtrl.showSelect();
     }
 
@@ -114,6 +109,10 @@ public class BoardCreationCtrl {
      * refresh method
      */
     public void refresh() {
+        warningname.setText("");
+        warningkey.setText("");
+        boardTitleTextField.setText("");
+        boardKeyTextField.setText("");
 
     }
 }
