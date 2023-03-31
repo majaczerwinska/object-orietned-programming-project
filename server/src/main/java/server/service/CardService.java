@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import server.database.CardListRepository;
 import server.database.CardRepository;
+
+import java.util.HashSet;
 import java.util.Optional;
 
 
@@ -56,10 +58,9 @@ public class CardService {
      */
     public Card delete(Card card, int listId){
         if(!cl.existsById(listId)) return null;
-        repo.delete(repo.getById(card.getId()));
-        CardList list = cl.getById(listId);
-        list.getCards().remove(card);
-        cl.save(list);
+        card.getTags().forEach(tag -> tag.getCards().remove(card));
+        card.setTags(new HashSet<>());
+        repo.delete(card);
         return card;
     }
 
