@@ -79,8 +79,9 @@ public class CustomizationCtrl {
         colourlist();
 
 
+
         mainCtrl.showBoardOverview(boardId);
-        mainCtrl.colorBF(boardId, MainCtrl.colorParseToInt(bf.getValue()));
+       // mainCtrl.colorBF(boardId, MainCtrl.colorParseToInt(bf.getValue()));
 
     }
 
@@ -89,13 +90,25 @@ public class CustomizationCtrl {
      */
     public void colourlist(){
         List<CardList> cardLists = server.getCardListsFromBoard(boardId);
-        for(CardList list : cardLists){
-            list.setbColor(MainCtrl.colorParseToInt(listBt));
-            System.out.println("extracted value from color picker after setting lbcolor: " + lb.getValue());
-            list.setfColor(MainCtrl.colorParseToInt(listFt));
-            System.out.println("extracted value from color picker: " + lf.getValue());
-            server.editCardListColour(list.getId(), list);
-            //mainCtrl.colorLF(boardId, list.getId(), MainCtrl.colorParseToInt(lf.getValue()));
+        if (listBt == null) {
+            for(CardList list : cardLists){
+                list.setbColor(MainCtrl.colorParseToInt(listB));
+                System.out.println("extracted value from color picker after setting lbcolor: " + lb.getValue());
+                list.setfColor(MainCtrl.colorParseToInt(listF));
+                System.out.println("extracted value from color picker: " + lf.getValue());
+                server.editCardListColour(list.getId(), list);
+                //mainCtrl.colorLF(boardId, list.getId(), MainCtrl.colorParseToInt(lf.getValue()));
+            }
+        }
+        else{
+            for(CardList list : cardLists) {
+                list.setbColor(MainCtrl.colorParseToInt(listBt));
+                System.out.println("extracted value from color picker after setting lbcolor: " + lb.getValue());
+                list.setfColor(MainCtrl.colorParseToInt(listFt));
+                System.out.println("extracted value from color picker: " + lf.getValue());
+                server.editCardListColour(list.getId(), list);
+                //mainCtrl.colorLF(boardId, list.getId(), MainCtrl.colorParseToInt(lf.getValue()));
+            }
         }
     }
 
