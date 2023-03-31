@@ -40,6 +40,8 @@ public class CardComponent extends HBox implements Initializable {
 
     public Card self;
 
+    private boolean highlighted;
+
     @FXML
     public TextField tfTitle;
 
@@ -157,6 +159,15 @@ public class CardComponent extends HBox implements Initializable {
         dragging();
 
 
+        cardFrame.setOnMouseEntered(event -> {
+            BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(2));
+            cardFrame.setBorder(new Border(borderStroke));
+            highlighted = true;
+        });
+        cardFrame.setOnMouseExited(event -> {
+            cardFrame.setBorder(null);
+            highlighted = false;
+        });
     }
 
 
@@ -363,5 +374,16 @@ public class CardComponent extends HBox implements Initializable {
      */
     public void setFocusToTitleField() {
         tfTitle.requestFocus();
+    }
+
+    public void highlight(MouseEvent event) {
+        this.highlighted = true;
+        cardFrame.setStyle("-fx-border-color: yellow; -fx-border-width: 2px;");
+        cardFrame.getBackground();
+    }
+
+    public void deHighlight(MouseEvent event) {
+        this.highlighted = false;
+        cardFrame.setStyle("-fx-border-color: yellow; -fx-border-width: 0px;");
     }
 }
