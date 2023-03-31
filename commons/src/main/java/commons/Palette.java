@@ -27,8 +27,8 @@ public class Palette {
     @Column(name = "font_color")
     private int fColor;
 
-    @Column(name = "default")
-    private boolean isDefault;
+    @Column(name = "isdefault")
+    private boolean isdefault;
 
     /**
      * Default constructor
@@ -45,27 +45,23 @@ public class Palette {
         this.name = name;
         this.bColor = bColor;
         this.fColor = fColor;
-        this.isDefault = false;
+        this.isdefault = false;
     }
 
     /**
      * Checks whether the color palette is set as a default one
      * @return true if it is default, false otherwise
      */
-    public boolean isDefault(){
-        return isDefault;
+    public boolean isIsdefault(){
+        return isdefault;
     }
 
     /**
      * Change whether a palette is default or not
+     * @param isdefault
      */
-    public void setDefault(){
-        if(isDefault){
-            isDefault = false;
-        }
-        else{
-            isDefault = true;
-        }
+    public void setIsdefault(boolean isdefault) {
+        this.isdefault = isdefault;
     }
 
     /**
