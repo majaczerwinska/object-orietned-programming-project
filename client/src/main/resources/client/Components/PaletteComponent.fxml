@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+
+<fx:root alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="533.0" spacing="20.0" type="HBox" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="name" maxWidth="-Infinity" prefHeight="17.0" prefWidth="107.0" text="Label">
+         <HBox.margin>
+            <Insets right="15.0" />
+         </HBox.margin></Label>
+      <ColorPicker fx:id="background" prefHeight="25.0" prefWidth="95.0" />
+      <ColorPicker fx:id="font" prefHeight="25.0" prefWidth="95.0" />
+      <Button mnemonicParsing="false" text="X" />
+      <Button fx:id="setDef" mnemonicParsing="false" text="set as default">
+         <HBox.margin>
+            <Insets />
+         </HBox.margin></Button>
+   </children>
+</fx:root>

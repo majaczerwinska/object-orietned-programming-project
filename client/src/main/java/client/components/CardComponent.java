@@ -5,7 +5,6 @@ import client.scenes.MainCtrl;
 import client.utils.ServerUtils;
 import commons.Card;
 import commons.Tag;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -13,10 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
@@ -42,7 +38,7 @@ public class CardComponent extends HBox implements Initializable {
 
     private int cardListID;
 
-    private Card self;
+    public Card self;
 
     @FXML
     public TextField tfTitle;
@@ -92,13 +88,13 @@ public class CardComponent extends HBox implements Initializable {
 
         tfTitle.setOnKeyTyped(event -> updateCard());
         //tfDescription.setOnKeyTyped(event -> updateCard());
-        setOnMouseEntered(event -> {
-                tfTitle.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-alignment: center");
-            });
-        setOnMouseExited(event -> {
-            tfTitle.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; " +
-                    "-fx-alignment: center");
-        });
+//        setOnMouseEntered(event -> {
+//                tfTitle.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-alignment: center");
+//            });
+//        setOnMouseExited(event -> {
+//            tfTitle.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; " +
+//                    "-fx-alignment: center");
+//        });
 
     }
 
@@ -145,8 +141,18 @@ public class CardComponent extends HBox implements Initializable {
         setOnMouseEntered(event ->
             {tfTitle.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-alignment: center");});
         setOnMouseExited(event ->
-            {tfTitle.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; " +
-                    "-fx-alignment: center");});
+            {
+                tfTitle.focusedProperty().addListener((observable, oldValue, newValue) -> {
+                    if (newValue) {
+                        // TextField has received focus
+                        tfTitle.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-alignment: center");
+                    } else {
+                        // TextField has lost focus
+                        tfTitle.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; " +
+                                "-fx-alignment: center");
+                    }
+                });
+            });
         setOnMouseClicked(this::onElementClick);
         dragging();
 
@@ -166,7 +172,9 @@ public class CardComponent extends HBox implements Initializable {
      */
     public void dragging(){
         setOnDragDetected(event-> {
-            Dragboard db = this.startDragAndDrop(TransferMode.ANY);
+            System.setProperty("javafx.dnd.delayedDragCallback", "false");
+            Dragboard db = this.startDragAndDrop(TransferMode.MOVE);
+            // db.setDragView(this.snapshot(null, null)); // show a snapshot of the card while dragging
             ClipboardContent content = new ClipboardContent();
             content.putString(String.valueOf(cardID));
             db.setContent(content);
@@ -183,49 +191,45 @@ public class CardComponent extends HBox implements Initializable {
             event.consume();
 
         });
-        setOnDragOver(event ->{
-
-            if (event.getGestureSource() != this &&
-                    event.getDragboard().hasString()) {
-                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-            }
-
-            event.consume();
-
-        });
-        setOnDragEntered(event -> {
-            if (event.getGestureSource() != this &&
-                    event.getDragboard().hasString()) {
-                this.setStyle("-fx-background-color: green");
-            }
-            event.consume();
-
-        });
-        setOnDragExited(event -> {
-
-            this.setStyle("-fx-background-color: white");
-            event.consume();
-
-        });
-        setOnDragDropped(event -> {
-
-            Dragboard db = event.getDragboard();
-            boolean success = false;
-            if (db.hasString()) {
-                Card c = server.getCard(Integer.parseInt(db.getString()));
-                System.out.println(c);
-                System.out.println(cardListID);
-                server.changeListOfCard(cardListID,c);
-                success = true;
-            }
-            event.setDropCompleted(success);
-            Platform.runLater(()->{
-                mainCtrl.refreshBoardOverview();
-            });
-
-            event.consume();
-
-        });
+//        setOnDragOver(event ->{
+//            if (event.getGestureSource() != this &&
+//                    event.getDragboard().hasString()) {
+//                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+//            }
+//            event.consume();
+//        });
+//        setOnDragEntered(event -> {
+//            if (event.getGestureSource() != this &&
+//                    event.getDragboard().hasString()) {
+//                this.setStyle("-fx-background-color: green");
+//            }
+//            event.consume();
+//        });
+//        setOnDragExited(event -> {
+//
+//            this.setStyle("-fx-background-color: white");
+//            event.consume();
+//
+//        });
+//        setOnDragDropped(event -> {
+//
+//            Dragboard db = event.getDragboard();
+//            boolean success = false;
+//            if (db.hasString()) {
+//                Card c = server.getCard(Integer.parseInt(db.getString()));
+//                System.out.println(c);
+//                System.out.println(cardListID);
+//                server.changeListOfCard(cardListID,c);
+//                success = true;
+//            }
+//            event.setDropCompleted(success);
+//            Platform.runLater(()->{
+//                mainCtrl.refreshBoardOverview();
+//            });
+//
+//            event.consume();
+//
+//        });
 
     }
 
@@ -264,7 +268,7 @@ public class CardComponent extends HBox implements Initializable {
     }
 
     /**
-     * double clicking a card sends to cardoverview
+     * double-clicking a card sends to card-overview
      * @param event mouse event
      */
     @FXML
@@ -293,11 +297,11 @@ public class CardComponent extends HBox implements Initializable {
      * Update card if any text field is updated
      */
     public void updateCard() {
-        System.out.println("Text update card" + self);
+        System.out.println("Update card method called in card component for card=" + self);
         self.setTitle(tfTitle.getText());
-        //self.setDescription(tfDescription.getText());
+
         server.editCard(boardID, cardID,self);
-        System.out.println("exits method"+ self);
+        System.out.println("update card method exits with card="+ self);
     }
 
     /**
@@ -324,37 +328,12 @@ public class CardComponent extends HBox implements Initializable {
      */
     public void deleteCard() {
         // UI update code here
-        System.out.println("deleting card (CardComponent.deleteCard(self)) " + self);
-        server.deleteCard(self, boardID,  cardListID);
-        server.setListSize(cardListID, server.getListSize(cardListID) - 1);
+        System.out.println("deleting card on board#"+ boardID + " (CardComponent.deleteCard(self)) " + self);
+        server.deleteCard(self, boardID, cardListID);
         mainCtrl.refreshBoardOverview();
     }
 
 
-//    public void toggleTextFieldToText(Node node) {
-//        if (node instanceof TextField) {
-//            System.out.println("toggling from textfield to text");
-//            TextField textField = (TextField) node;
-//            Text text = new Text(textField.getText());
-//            text.setFont(textField.getFont());
-//            text.setStyle(textField.getStyle());
-//            text.setLayoutX(textField.getLayoutX());
-//            text.setLayoutY(textField.getLayoutY());
-//            textField.getParent().getChildrenUnmodifiable().set(textField.getParent()
-//            .getChildrenUnmodifiable().indexOf(textField), text);
-//        } else if (node instanceof Text) {
-//            System.out.println("toggling from text to textfield");
-//            Text text = (Text) node;
-//            TextField textField = new TextField(text.getText());
-//            textField.setFont(text.getFont());
-//            textField.setStyle(text.getStyle());
-//            textField.setLayoutX(text.getLayoutX());
-//            textField.setLayoutY(text.getLayoutY());
-//            text.getParent().getChildrenUnmodifiable().set(text.getParent()
-//            .getChildrenUnmodifiable().indexOf(text), textField);
-//            textField.requestFocus();
-//        }
-//    }
 
 
     /**

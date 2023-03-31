@@ -10,18 +10,39 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.25" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="814.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.BoardOverviewCtrl">
+<SplitPane fx:id="splitpane" dividerPositions="0.25" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="494.0" prefWidth="814.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.BoardOverviewCtrl">
   <items>
       <VBox fx:id="vboxList1" alignment="TOP_CENTER" prefHeight="493.0" prefWidth="200.0" spacing="10.0">
          <children>
-            <Label fx:id="labelBoardTitle" text="Board: ...">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <HBox prefHeight="31.0" prefWidth="179.0" spacing="10.0">
+
+
+            <HBox prefHeight="35.0" prefWidth="179.0">
                <children>
-                  <Label fx:id="boardKeyL" text="Board's key: ">
+                  <Button fx:id="lock" mnemonicParsing="false" onAction="#clickLockInUnlockedBoard" prefHeight="45.0" prefWidth="46.0" text="🔓">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Button>
+                  <Label fx:id="labelBoardTitle" text="Board: ...">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+
+            <HBox prefHeight="31.0" prefWidth="179.0" spacing="10.0">
+
+               <children>
+
+                  <Label fx:id="boardKeyL" text="Key: ">
+
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
@@ -31,10 +52,11 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                   </Label>
-                   <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onMouseClicked="#getBoardKey" text="Copy" />
+                   <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#getBoardKey" onMouseClicked="#getBoardKey" text="Copy" />
                </children>
             </HBox>
             <VBox alignment="TOP_CENTER" prefHeight="250.0" prefWidth="121.0" spacing="5.0" style="-fx-border-color: black;">
+
                <children>
                   <Label fx:id="tagL" text="Tags" />
                   <ListView fx:id="listViewTags" prefHeight="190.0" prefWidth="125.0" />
@@ -48,8 +70,10 @@
             <HBox alignment="CENTER" prefHeight="38.0" prefWidth="120.0" spacing="5.0">
                <children>
                   <Button fx:id="backbtn" mnemonicParsing="false" onAction="#back" text="Back" />
+
                   <Button fx:id="editBoardButton" mnemonicParsing="false" onAction="#showEditBoard" text="Edit board" />
-                  <Button fx:id="addListButton" alignment="CENTER" mnemonicParsing="false" onAction="#addList" text="Add list" />
+                  <Button fx:id="addListButton" alignment="CENTER" mnemonicParsing="false" onAction="#addListScene" text="Add list" />
+
                </children>
             </HBox>
          </children>

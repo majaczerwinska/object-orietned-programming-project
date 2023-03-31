@@ -113,7 +113,9 @@ public class CardListController {
         if (listId < 0 || !als.existsById(listId)) {
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(als.getListSize(listId));
+        int size = als.getListSize(listId);
+        System.out.println("Returning list size for list id="+listId+ " size="+size);
+        return ResponseEntity.ok(listId);
     }
 
     /**
@@ -124,9 +126,14 @@ public class CardListController {
      */
     @PutMapping("/{listId}/size/{size}")
     public ResponseEntity<Integer> setListSize(@PathVariable("listId") int listId, @PathVariable("size") int size) {
+        System.out.println("Received put request for list="+listId +" size="+size);
         if (listId < 0 || !als.existsById(listId)) {
+            System.out.println("List #"+listId+" doesn't seem to exist!");
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(als.setListSize(listId, size));
+        System.out.println("Changing list size of list#"+listId+" from "+als.getListSize(listId) +" to "+size);
+        als.setListSize(listId, size);
+        System.out.println("New size = "+als.getListSize(listId));
+        return ResponseEntity.ok().build();
     }
 }

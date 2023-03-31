@@ -24,14 +24,10 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import java.util.List;
 import java.util.Set;
 
-import commons.Board;
-import commons.Card;
-import commons.CardList;
+import commons.*;
 import jakarta.ws.rs.ProcessingException;
 import jakarta.ws.rs.client.Client;
-import commons.Task;
 import jakarta.ws.rs.core.GenericType;
-import commons.Tag;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 
@@ -254,12 +250,14 @@ public class ServerUtils {
     public Card changeListOfCard(int listid, Card card) {
         try {
             return ClientBuilder.newClient(new ClientConfig())
-                    .target(SERVER).path("api/cards/" + card.getId()+"/"+listid)
+                    .target(SERVER).path("api/cards/move/" + card.getId()+"/"+listid)
                     .request(APPLICATION_JSON)
                     .accept(APPLICATION_JSON)
-                    .put(Entity.entity(card, APPLICATION_JSON), Card.class);
+                    .post(Entity.entity(card, APPLICATION_JSON), Card.class);
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println(e.getMessage());
+            System.out.println("Bad request in changeListOfCard server utils");
         }
         return null;
     }
@@ -431,6 +429,7 @@ public class ServerUtils {
      */
     public Integer setListSize(int listId, int newSize) {
         // /{listId}/size/{size}
+        System.out.println("Sending PUT request to " + "api/lists/" + listId + "/size/"+ newSize);
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/lists/" + listId + "/size/"+ newSize) //
                 .request(APPLICATION_JSON) //
@@ -555,7 +554,8 @@ public class ServerUtils {
      * @return the deleted card response
      */
     public Card deleteCard(Card c, int boardId, int listID) {
-        System.out.println("Sending DELETE request to api/cards/"+listID+"/"+c.getId()+"\nCard for card element "+c);
+        System.out.println("Sending DELETE request to api/cards/" +boardId+ "/" +listID+"/"+c.getId()+"" +
+                "\nCard for card element "+c);
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/cards/" + boardId + "/" + listID + "/" + c.getId()) //
                 .request(APPLICATION_JSON) //
@@ -629,6 +629,34 @@ public class ServerUtils {
                     .get(new GenericType<CardList>() {
                     });
 
+    }
+
+    /**
+     *
+     * @param boardId
+     * @param palette
+     * @return - added palette ?
+     */
+    public Palette addPaletteToBoard(int boardId, Palette palette){
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/boards/palettes/" + boardId)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(palette, APPLICATION_JSON), Palette.class);
+
+    }
+
+    /**
+     *
+     * @param boardId
+     * @return - added palette?
+     */
+    public List<Palette> getPalettesFromBoard(int boardId){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/boards/palettes/" + boardId) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<Palette>>() {});
     }
 
 

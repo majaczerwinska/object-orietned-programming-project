@@ -81,13 +81,18 @@ public class Main extends Application {
             var listEdit = FXML.load(ListEditCtrl.class, "client", "scenes", "ListEdit.fxml");
             var editBoard = FXML.load(EditBoardCtrl.class, "client", "scenes", "EditBoard.fxml");
             var help = FXML.load(HelpCtrl.class, "client", "scenes", "HelpPage.fxml");
+            var unlocked = FXML.load(LockInUnlockedBoardCtrl.class, "client", "scenes", "LockInUnlockedBoard.fxml");
+            var providePassword = FXML.load(ProvidePasswordCtrl.class, "client", "scenes", "ProvidePassword.fxml");
+            var editPassword = FXML.load(EditPasswordCtrl.class, "client", "scenes", "EditPassword.fxml");
             var customization = FXML.load(CustomizationCtrl.class, "client", "scenes", "Customization.fxml");
             System.out.println("Done with loading scenes");
+            Stage locker = new Stage();
             var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
 
 
             mainCtrl.initialize(
                     primaryStage,
+                    locker,
                     landing,
                     card,
                     publicBoard,
@@ -102,7 +107,11 @@ public class Main extends Application {
                     listEdit,
                     editBoard,
                     help,
-                    customization);
+                    unlocked,
+                    providePassword,
+                    customization,
+                    editPassword);
+
 
         } catch (Exception e) {
             System.out.println("very sad exception :(\nin start method of client.main..");

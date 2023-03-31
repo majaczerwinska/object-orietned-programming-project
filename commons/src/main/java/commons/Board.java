@@ -51,12 +51,13 @@ public class Board {
      */
     public Board(String name){
         this.name = name;
-        this.bColor = 0xffffff;
-        this.fColor = 0x000000;
+        this.bColor = 2580;
+        this.fColor = 13421772;
         this.lists = new ArrayList<>();
         this.boardkey = "";
         this.tags = new ArrayList<>();
         this.password = "";
+        this.palettes = new ArrayList<>();
     }
 
     /**
@@ -222,7 +223,7 @@ public class Board {
      */
     @Override
     public String toString() {
-        return "Board #" + id + "\n name: " + name + "\n key: " + boardkey;
+        return  name ;
     }
 
     /**
