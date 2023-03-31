@@ -602,4 +602,20 @@ public class MainCtrl {
         primaryStage.show();
     }
 
+    /**
+     * gets the boardOverview Controller
+     * @return the boardOverview Controller
+     */
+    public BoardOverviewCtrl getBoardOverviewCtrl() {
+        return this.boardOverviewCtrl;
+    }
+
+    /**
+     * Gets the boardOverview Scene
+     * @return the boardOverview Scene
+     */
+    public Scene getBoardOverviewScene() {
+        return this.boardOverwiew;
+    }
+
 }
