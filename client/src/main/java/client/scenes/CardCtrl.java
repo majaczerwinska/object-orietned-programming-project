@@ -8,6 +8,7 @@ import commons.Task;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -122,6 +123,16 @@ public class CardCtrl {
         displayTasks();
         showTags();
         showDropDown();
+        escShortcut();
+    }
+
+    private void escShortcut() {
+        Scene scene = taglist.getScene();
+        scene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ESCAPE) {
+                exit();
+            }
+        });
     }
 
     /**
