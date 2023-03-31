@@ -59,6 +59,9 @@ public class ProvidePasswordCtrl {
         mainCtrl.showBoardOverview(boardID);
     }
 
+    /**
+     * clear
+     */
     public void clear(){
         password.setText("");
         warning.setText("");

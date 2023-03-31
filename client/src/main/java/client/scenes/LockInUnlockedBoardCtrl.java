@@ -82,6 +82,10 @@ public class LockInUnlockedBoardCtrl {
         mainCtrl.showBoardOverview(boardID);
 
     }
+
+    /**
+     * clear
+     */
     public void clear(){
         password1.setText("");
         password2.setText("");

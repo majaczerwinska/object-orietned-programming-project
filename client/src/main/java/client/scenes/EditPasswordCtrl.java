@@ -30,6 +30,11 @@ public class EditPasswordCtrl {
     @FXML
     private Label warning2;
 
+    /**
+     * Constructor
+     * @param server the server
+     * @param mainCtrl the main controller
+     */
     @Inject
     public EditPasswordCtrl(ServerUtils server, MainCtrl mainCtrl){
         this.server = server;
@@ -77,6 +82,9 @@ public class EditPasswordCtrl {
         mainCtrl.showBoardOverview(boardID);
     }
 
+    /**
+     * removes the password
+     */
     public void removePassword(){
         Board board = server.getBoard(boardID);
         board.setPassword("");
@@ -87,10 +95,17 @@ public class EditPasswordCtrl {
         mainCtrl.showBoardOverview(boardID);
     }
 
+    /**
+     * refresh
+     */
     public void refresh(){
         Board board = server.getBoard(boardID);
         password1.setText(board.getPassword());
     }
+
+    /**
+     * clear
+     */
     public void clear(){
         password1.setText("");
         password2.setText("");
