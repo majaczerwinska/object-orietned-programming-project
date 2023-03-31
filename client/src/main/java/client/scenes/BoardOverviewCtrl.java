@@ -553,13 +553,13 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         scrollPaneOverview.setOnKeyPressed(event -> onEnterKeyPressed(event, listID));
     }
 
-//    /**
-//     * Adds a list
-//     * @param event touching the add list button
-//     */
-//    public void addListScene(ActionEvent event){
-//        mainCtrl.showListCreate(boardID);
-//    }
+    /**
+     * Adds a list
+     * @param event touching the add list button
+     */
+    public void addListScene(ActionEvent event){
+        mainCtrl.showListCreate(boardID);
+    }
 
     /**
      * clicking the lock button
@@ -572,6 +572,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             mainCtrl.showLockInUnlockedBoard(boardID);
         } else if (pref.get(String.valueOf(boardID),"notfound").equals("notfound")) {
             mainCtrl.showProvidePassword(boardID);
+        } else {
+            mainCtrl.showEditPassword(boardID);
         }
 
     }

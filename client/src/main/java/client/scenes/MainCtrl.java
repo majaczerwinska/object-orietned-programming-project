@@ -75,6 +75,9 @@ public class MainCtrl {
     private ProvidePasswordCtrl providePasswordCtrl;
     private Scene providePassword;
 
+    private EditPasswordCtrl editPasswordCtrl;
+    private Scene editPassword;
+
     private CustomizationCtrl customizationCtrl;
     private Scene customization;
 
@@ -96,13 +99,11 @@ public class MainCtrl {
      * @param help
      * @param taskCreator
      * @param listEdit
-
      * @param unlocked
      * @param locker
      * @param providePassword
-
+     * @param editPassword
      * @param customization
-
      */
     public void initialize(Stage primaryStage,
                            Stage locker,
@@ -122,8 +123,8 @@ public class MainCtrl {
                            Pair<HelpCtrl, Parent> help,
                            Pair<LockInUnlockedBoardCtrl, Parent> unlocked,
                            Pair<ProvidePasswordCtrl, Parent> providePassword,
-                           Pair<CustomizationCtrl, Parent> customization
-
+                           Pair<CustomizationCtrl, Parent> customization,
+                           Pair<EditPasswordCtrl, Parent> editPassword
                            ) {
         this.primaryStage = primaryStage;
         this.locker = locker;
@@ -179,6 +180,9 @@ public class MainCtrl {
         this.providePasswordCtrl = providePassword.getKey();
         this.providePassword = new Scene(providePassword.getValue());
 
+        this.editPasswordCtrl = editPassword.getKey();
+        this.editPassword = new Scene(editPassword.getValue());
+
         this.customizationCtrl = customization.getKey();
         this.customization = new Scene(customization.getValue());
 
@@ -223,6 +227,18 @@ public class MainCtrl {
         locker.setTitle("Provide password!!");
         locker.setScene(providePassword);
         providePasswordCtrl.boardID = boardID;
+        locker.showAndWait();
+    }
+
+    /**
+     * Shows the popup for providing a password
+     * @param boardID the id of the board
+     */
+    public void showEditPassword(int boardID) {
+        locker.setTitle("Edit password!!");
+        locker.setScene(editPassword);
+        editPasswordCtrl.boardID = boardID;
+        editPasswordCtrl.refresh();
         locker.showAndWait();
     }
 
