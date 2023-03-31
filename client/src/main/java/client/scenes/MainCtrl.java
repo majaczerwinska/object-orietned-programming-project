@@ -601,4 +601,12 @@ public class MainCtrl {
         primaryStage.show();
     }
 
+    public BoardOverviewCtrl getBoardOverviewCtrl() {
+        return this.boardOverviewCtrl;
+    }
+
+    public Scene getBoardOverviewScene() {
+        return this.boardOverwiew;
+    }
+
 }
