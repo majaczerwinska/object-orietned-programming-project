@@ -457,8 +457,10 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
                 if (highlightedCardComponent != null) mainCtrl.showCard(highlightedCardComponent.cardID, boardID);
             } else if (event.getCode() == KeyCode.DELETE) {
                 if (highlightedCardComponent != null) highlightedCardComponent.deleteCard();
-            } if (event.getCode() == KeyCode.T) {
+            } else if (event.getCode() == KeyCode.T) {
                 mainCtrl.showTagPopUp(this.boardID);
+            } else if (event.getCode() == KeyCode.SLASH) {
+                mainCtrl.showHelpScene();
             }
         });
     }
