@@ -58,6 +58,7 @@ public class Palette {
 
     /**
      * Change whether a palette is default or not
+     * @param isdefault
      */
     public void setIsdefault(boolean isdefault) {
         this.isdefault = isdefault;

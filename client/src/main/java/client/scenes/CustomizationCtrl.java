@@ -6,12 +6,9 @@ import com.google.inject.Inject;
 import commons.Board;
 import commons.CardList;
 import commons.Palette;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ColorPicker;
-import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -144,6 +141,10 @@ public class CustomizationCtrl {
         bb.setValue(boardB);
         bf.setValue(boardF);
     }
+
+    /**
+     * clears
+     */
     public void clearPalette(){
         palettes.getChildren().clear();
     }
