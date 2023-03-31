@@ -5,7 +5,7 @@ import commons.Tag;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.stage.Stage;
+
 
 import javax.inject.Inject;
 import java.awt.*;
@@ -21,7 +21,7 @@ public class TagPopUpCtrl {
     private Label title;
 
     @FXML
-    private TextField name;
+    private javafx.scene.control.TextField name;
 
 
 
@@ -58,22 +58,29 @@ public class TagPopUpCtrl {
     /**
      * Adds a tag to the database and empties the textField.
      */
+    @FXML
     public void addTag() {
-        if (!name.getText().isEmpty()) {
+        if (name.getText() != null) {
             Tag tag = new Tag(name.getText());
             server.addTag(tag, boardID);
             name.setText("");
         }
     }
 
+//    /**
+//     * Closes the pop-up
+//     */
+//    public void back() {
+//        Stage stage = (Stage) title.getScene().getWindow();
+//        stage.close();
+//    }
+
     /**
      * Closes the pop-up
      */
     public void back() {
-        Stage stage = (Stage) title.getScene().getWindow();
-        stage.close();
+        mainCtrl.showBoardOverview(boardID);
     }
-
 
 
 
