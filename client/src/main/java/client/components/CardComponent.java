@@ -328,7 +328,7 @@ public class CardComponent extends HBox implements Initializable {
      */
     public void deleteCard() {
         // UI update code here
-        System.out.println("deleting card (CardComponent.deleteCard(self)) " + self);
+        System.out.println("deleting card on board#"+ boardID + " (CardComponent.deleteCard(self)) " + self);
         server.deleteCard(self, boardID, cardListID);
         mainCtrl.refreshBoardOverview();
     }

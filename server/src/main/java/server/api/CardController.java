@@ -65,7 +65,7 @@ public class CardController {
     @DeleteMapping("/{boardId}/{listId}/{id}")
     public ResponseEntity<Card> deleteCard(@PathVariable("boardId") int boardId,
                                            @PathVariable("listId") int listId, @PathVariable("id") int id) {
-        System.out.println("Received DELETE request for listID="+listId+" card id="+id);
+        System.out.println("Received DELETE request for boardId="+boardId+ " listID="+listId+" card id="+id);
         if(!acs.existsById(id)) return ResponseEntity.badRequest().build();
         Card card = acs.delete(acs.getById(id), listId);
         msgs.convertAndSend("/topic/boards/"+boardId, "Card deleted on board#" + boardId);
