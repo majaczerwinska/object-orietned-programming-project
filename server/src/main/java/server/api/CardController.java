@@ -109,7 +109,7 @@ public class CardController {
      * @param card the card
      * @return the card
      */
-    @PostMapping("/{id}/{listid}")
+    @PostMapping("/move/{id}/{listid}")
     public ResponseEntity<Card> changeListforCard(@PathVariable("id") int id, @PathVariable("listid") int listid,
                                                   @RequestBody Card card) {
         System.out.println("Changing list for card="+id+" to list="+listid);

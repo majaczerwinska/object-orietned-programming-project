@@ -126,7 +126,9 @@ public class CardListController {
      */
     @PutMapping("/{listId}/size/{size}")
     public ResponseEntity<Integer> setListSize(@PathVariable("listId") int listId, @PathVariable("size") int size) {
+        System.out.println("Received put request for list="+listId +" size="+size);
         if (listId < 0 || !als.existsById(listId)) {
+            System.out.println("List #"+listId+" doesn't seem to exist!");
             return ResponseEntity.badRequest().build();
         }
         System.out.println("Changing list size of list#"+listId+" from "+als.getListSize(listId) +" to "+size);
