@@ -90,9 +90,9 @@ public class CustomizationCtrl {
     public void colourlist(){
         List<CardList> cardLists = server.getCardListsFromBoard(boardId);
         for(CardList list : cardLists){
-            list.setbColor(MainCtrl.colorParseToInt(listBt));
+            list.setbColor(MainCtrl.colorParseToInt(lb.getValue()));
             System.out.println("extracted value from color picker after setting lbcolor: " + lb.getValue());
-            list.setfColor(MainCtrl.colorParseToInt(listFt));
+            list.setfColor(MainCtrl.colorParseToInt(lf.getValue()));
             System.out.println("extracted value from color picker: " + lf.getValue());
             server.editCardListColour(list.getId(), list);
             //mainCtrl.colorLF(boardId, list.getId(), MainCtrl.colorParseToInt(lf.getValue()));
@@ -113,6 +113,8 @@ public class CustomizationCtrl {
             if(listBt == null){
                 lb.setValue(listB);
                 lf.setValue(listF);
+//                listBt = listB;
+//                listFt = listF;
             }
             else{
                 lb.setValue(listBt);
