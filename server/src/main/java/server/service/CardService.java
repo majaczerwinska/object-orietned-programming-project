@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import server.database.CardListRepository;
 import server.database.CardRepository;
+
+import java.util.HashSet;
 import java.util.Optional;
 
 
@@ -56,10 +58,9 @@ public class CardService {
      */
     public Card delete(Card card, int listId){
         if(!cl.existsById(listId)) return null;
-        repo.delete(repo.getById(card.getId()));
-        CardList list = cl.getById(listId);
-        list.getCards().remove(card);
-        cl.save(list);
+        card.getTags().forEach(tag -> tag.getCards().remove(card));
+        card.setTags(new HashSet<>());
+        repo.delete(card);
         return card;
     }
 
@@ -99,6 +100,7 @@ public class CardService {
         c.setDescription(card.getDescription());
         c.setTitle(card.getTitle());
         c.setColor(card.getColor());
+        c.setPosition(card.getPosition());
         repo.save(c);
     }
 
@@ -123,17 +125,21 @@ public class CardService {
      * @return the card
      */
     public Card changeListOfCard(Card card, int listID){
+        int id = card.getId();
         CardList oldlist = getListForCard(card);
 
         oldlist.getCards().remove(card);
         cl.save(oldlist);
-        cl.getById(listID).getCards().add(card);
-        cl.save(cl.getById(listID));
+        CardList newlist = cl.getById(listID);
+        newlist.getCards().add(card);
+//        int size = cl.getById(listID).getCards().size();
+        System.out.println("List with id="+listID+"\n\n"+cl.getById(listID)+"\n\n\n");
+        System.out.println(card+"\n\n");
+        cl.save(newlist);
+        System.out.println(cl.getById(listID)+"\n\n\n");
 
-
-        System.out.println(cl.getById(listID));
         System.out.println(oldlist);
-        return card;
+        return newlist.getCards().get(newlist.getCards().size()-1);
     }
 
 

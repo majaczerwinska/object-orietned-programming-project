@@ -126,6 +126,8 @@ public class CustomizationCtrl {
             if(listBt == null){
                 lb.setValue(listB);
                 lf.setValue(listF);
+//                listBt = listB;
+//                listFt = listF;
             }
             else{
                 lb.setValue(listBt);

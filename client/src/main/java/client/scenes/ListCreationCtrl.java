@@ -68,6 +68,7 @@ public class ListCreationCtrl {
      * @param event - click
      */
     public void cancel(ActionEvent event){
+        name.setText("");
         mainCtrl.showBoardOverview(boardID);
 
 

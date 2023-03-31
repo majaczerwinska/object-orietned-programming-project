@@ -15,6 +15,7 @@
  */
 package client.scenes;
 
+import client.components.CardComponent;
 import client.components.CardListComponent;
 import commons.Card;
 import javafx.scene.Parent;
@@ -24,6 +25,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.*;
 
 public class MainCtrl {
@@ -75,9 +78,14 @@ public class MainCtrl {
     private ProvidePasswordCtrl providePasswordCtrl;
     private Scene providePassword;
 
+    private EditPasswordCtrl editPasswordCtrl;
+    private Scene editPassword;
+
     private CustomizationCtrl customizationCtrl;
     private Scene customization;
 
+
+    public Map<Integer, CardComponent> cardIdComponentMap;
 
     /**
      * 
@@ -96,13 +104,11 @@ public class MainCtrl {
      * @param help
      * @param taskCreator
      * @param listEdit
-
      * @param unlocked
      * @param locker
      * @param providePassword
-
+     * @param editPassword
      * @param customization
-
      */
     public void initialize(Stage primaryStage,
                            Stage locker,
@@ -122,9 +128,13 @@ public class MainCtrl {
                            Pair<HelpCtrl, Parent> help,
                            Pair<LockInUnlockedBoardCtrl, Parent> unlocked,
                            Pair<ProvidePasswordCtrl, Parent> providePassword,
-                           Pair<CustomizationCtrl, Parent> customization
-
+                           Pair<CustomizationCtrl, Parent> customization,
+                           Pair<EditPasswordCtrl, Parent> editPassword
                            ) {
+
+        this.cardIdComponentMap = new HashMap<>();
+        System.setProperty("javafx.dnd.delayedDragCallback", "false");
+
         this.primaryStage = primaryStage;
         this.locker = locker;
 
@@ -179,6 +189,9 @@ public class MainCtrl {
         this.providePasswordCtrl = providePassword.getKey();
         this.providePassword = new Scene(providePassword.getValue());
 
+        this.editPasswordCtrl = editPassword.getKey();
+        this.editPassword = new Scene(editPassword.getValue());
+
         this.customizationCtrl = customization.getKey();
         this.customization = new Scene(customization.getValue());
 
@@ -201,7 +214,6 @@ public class MainCtrl {
     public void showLanding() {
         primaryStage.setTitle("Landing page!!");
         primaryStage.setScene(landing);
-
     }
 
     /**
@@ -223,6 +235,18 @@ public class MainCtrl {
         locker.setTitle("Provide password!!");
         locker.setScene(providePassword);
         providePasswordCtrl.boardID = boardID;
+        locker.showAndWait();
+    }
+
+    /**
+     * Shows the popup for providing a password
+     * @param boardID the id of the board
+     */
+    public void showEditPassword(int boardID) {
+        locker.setTitle("Edit password!!");
+        locker.setScene(editPassword);
+        editPasswordCtrl.boardID = boardID;
+        editPasswordCtrl.refresh();
         locker.showAndWait();
     }
 
@@ -279,6 +303,35 @@ public class MainCtrl {
         tagManagerCtrl.subscribe();
         primaryStage.show();
     }
+
+
+    /**
+     *
+     * @param cardComponent card component instance
+     * @return int card id
+     */
+    public Integer cardComponentToCardId(CardComponent cardComponent) {
+        for (int i : this.cardIdComponentMap.keySet()) {
+            if (this.cardIdComponentMap.get(i).equals(cardComponent)) {
+                return i;
+            }
+        }
+        return null;
+    }
+
+//    /**
+//     *
+//     * @param hbox card component hbox
+//     * @return int card id
+//     */
+//    public Integer cardComponentToCardId(HBox hbox) {
+//        for (int i : this.cardIdComponentMap.keySet()) {
+//            if (this.cardIdComponentMap.get(i).equals(cardComponent)) {
+//                return i;
+//            }
+//        }
+//        return null;
+//    }
 
     /**
      * Method that parses fxColor to int

@@ -13,6 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -106,16 +107,6 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
         this.websocketClient = websocketClient;
         System.out.println("Inject called in board overview");
-
-//        Board board = this.server.getBoard(boardID);
-//        String title = board.getName();
-//        if(title == null){
-//            boardName.setText("Board: " + board.getId());
-//        }
-//        else{
-//            boardName.setText(board.getName());
-//        }
-
     }
 
 //    /**
@@ -231,7 +222,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
     /**
      * Shows the tag manager scene
-     * @param actionEvent the event when clicking the "tag manager" button
+     * @param actionEvent the event when clicking the "tag manager" button58
      */
     public void showTagManager(ActionEvent actionEvent){
         System.out.println("showTagManger with id #" + boardID);
@@ -280,6 +271,10 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
             CardComponent cardComponent = new CardComponent(mainCtrl);
 
+            mainCtrl.cardIdComponentMap.remove(card.getId());
+            mainCtrl.cardIdComponentMap.remove(cardComponent);
+            mainCtrl.cardIdComponentMap.put(card.getId(), cardComponent);
+
             cardComponent.boardID = boardID;
             cardComponent.setData(card, listId);
             cardComponent.setStyle("-fx-background-color: " +
@@ -289,37 +284,12 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             vbox.getChildren().add(cardComponent);
             if(card.equals(c)){
                 cardComponent.tfTitle.requestFocus();
-
             }
         }
     }
 
 
 
-
-
-//    /**
-//     * displays cards in vboxes
-//     * @param vbox the vbox in the list where the cards need to be showed
-//     * @param listId the list we need to populate with cards
-//     * @param focusCard f
-//     */
-//    public void displayCardsWithFocus(VBox vbox, int listId, Card focusCard){
-//        List<Card> cards = server.getCardsFromList(listId);
-//
-//        for (Card card : cards) {
-//            CardComponent cardComponent = new CardComponent(mainCtrl);
-//            System.out.println(card +"<=card, focuscard=>" + focusCard);
-//            System.out.println(card.softEquals(focusCard));
-//            if (card.softEquals(focusCard)) {
-//                System.out.println("Card is getting focus");
-//                cardComponent.getTfTitle().requestFocus();
-//            }
-//            cardComponent.boardID = boardID;
-//            cardComponent.setData(card, listId);
-//            vbox.getChildren().add(cardComponent);
-//        }
-//    }
 
     /**
      * gets the list of cardlists with serverutils
@@ -352,9 +322,9 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             CardListComponent cardListComponent = new CardListComponent(mainCtrl, boardID,cardList.getId());
 
             cardListComponent.setTitle(cardList.getName());
-            cardListComponent.setStyle("-fx-background-color: " + String.format("rgb(%d, %d, %d)",
+            cardListComponent.setStyle(String.format("-fx-background-color: rgb(%d, %d, %d);",
                     (cardList.getbColor() >> 16) & 0xFF,
-                    (cardList.getbColor() >> 8) & 0xFF, cardList.getbColor()& 0xFF)+";" );
+                    (cardList.getbColor() >> 8) & 0xFF, cardList.getbColor()& 0xFF));
             System.out.println("List style: " + cardListComponent.getStyle());
             cardListComponent.setOnMouseEntered(event -> addEnterKeyListener(cardList.getId()));
             hboxCardLists.getChildren().add(cardListComponent);
@@ -362,7 +332,16 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             String hexColor = String.format("#%06X", (0xFFFFFF & cardList.getfColor()));
             cardListComponent.labelTitle.setStyle("-fx-text-fill: " + hexColor);
             displayCards(cardListComponent.getVboxCards(), cardList.getId(), allCards.get(i),c);
+            server.setListSize(cardList.getId(), cardListComponent.getVboxCards().getChildren().size());
             i++;
+            int j = 1;
+            for (Node cardComponent : cardListComponent.getVboxCards().getChildren()) {
+                if (cardComponent instanceof CardComponent) {
+                    CardComponent cc = (CardComponent) cardComponent;
+                    cc.self.setPosition(j++);
+                    server.editCard(cc.self.getId(), boardID, cc.self);
+                }
+            }
         }
 
     }
@@ -424,6 +403,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         System.out.println("going to list creation for board "+boardID);
         mainCtrl.showListCreate(boardID);
     }
+
 
     /**
      * refreshes the board's key (tag list view and name not anymore)
@@ -507,8 +487,10 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      */
     public Card createCard(int listID) {
         Card c = new Card("title..");
+        //int size = server.getListSize(listID) + 1;
+        c.setPosition(99999);
         System.out.println("creating new card "+c+" in list id="+listID);
-        c.setPosition(server.getListSize(listID) + 1);
+
         c = server.addCard(c, boardID, listID);
         refresh(c);
         return c;
@@ -553,13 +535,13 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         scrollPaneOverview.setOnKeyPressed(event -> onEnterKeyPressed(event, listID));
     }
 
-//    /**
-//     * Adds a list
-//     * @param event touching the add list button
-//     */
-//    public void addListScene(ActionEvent event){
-//        mainCtrl.showListCreate(boardID);
-//    }
+    /**
+     * Adds a list
+     * @param event touching the add list button
+     */
+    public void addListScene(ActionEvent event){
+        mainCtrl.showListCreate(boardID);
+    }
 
     /**
      * clicking the lock button
@@ -572,6 +554,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             mainCtrl.showLockInUnlockedBoard(boardID);
         } else if (pref.get(String.valueOf(boardID),"notfound").equals("notfound")) {
             mainCtrl.showProvidePassword(boardID);
+        } else {
+            mainCtrl.showEditPassword(boardID);
         }
 
     }
