@@ -218,7 +218,8 @@ public class Card {
      */
     @Override
     public String toString() {
-        return "Card #" + id + "\n title: " + title + "\n description: " + description + "\n color: " + color;
+        return "Card #" + id + "\n title: " + title + "\n description: " + description + "\n color: "
+                + color + "\n position: " + position;
     }
 
 

@@ -83,6 +83,11 @@ public class CardController {
      * @return a response entity with the card object
      */
 
+//<<<<<<< HEAD
+//    @PutMapping("/{id}")
+//    public ResponseEntity<Card> editCard(@PathVariable("id") int id, @RequestBody Card card) {
+//        System.out.println("editing card with id="+id+" to card="+card);
+//=======
     @PutMapping("/edit/{boardId}/{id}")
     public ResponseEntity<Card> editCard(@PathVariable("boardId") int boardId,
                                          @PathVariable("id") int id, @RequestBody Card card) {
@@ -104,20 +109,27 @@ public class CardController {
      * @param card the card
      * @return the card
      */
-    @PutMapping("/{id}/{listid}")
+    @PostMapping("/move/{id}/{listid}")
     public ResponseEntity<Card> changeListforCard(@PathVariable("id") int id, @PathVariable("listid") int listid,
                                                   @RequestBody Card card) {
-        card.setId(id);
+        System.out.println("Changing list for card="+id+" to list="+listid);
+//        card.setId(id);
         System.out.println(card);
         System.out.println(acs.getListForCard(card));
 
         if(!acs.existsById(id) || card.getTitle() == null || acs.getListForCard(card)==null){
+            System.out.println("ChangeList for card id="+id+" failed!");
+            System.out.println(!acs.existsById(id));
+            System.out.println(card.getTitle() == null);
+            System.out.println(acs.getListForCard(card)==null);
             return ResponseEntity.badRequest().build();
+        } else {
+            System.out.println("No issue with card existence");
         }
 
         Card newcard = acs.changeListOfCard(card, listid);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(newcard);
     }
 
     /**
