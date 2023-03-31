@@ -187,12 +187,7 @@ public class CardComponent extends HBox implements Initializable {
     }
 
 
-    /**
-     * test method
-     */
-    public void addtesttagtocard() {
-        server.addTagToCard(boardID,0,cardID);
-    }
+
 
     /**
      * Method for all the dragging

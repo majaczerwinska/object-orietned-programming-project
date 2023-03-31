@@ -144,6 +144,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         websocketClient.registerForMessages("/topic/boards/"+boardID, String.class, update -> {
             System.out.println("payload: "+ update);
             refresh(null);
+//            mainCtrl.timeoutBoardRefresh(1000);
         });
     }
 
@@ -339,8 +340,9 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             for (Node cardComponent : cardListComponent.getVboxCards().getChildren()) {
                 if (cardComponent instanceof CardComponent) {
                     CardComponent cc = (CardComponent) cardComponent;
+                    System.out.println("For loop in displaylist now at card: " + cc);
                     cc.self.setPosition(j++);
-                    server.editCard(cc.self.getId(), boardID, cc.self);
+                    server.editCard(boardID, cc.self.getId(), cc.self);
                 }
             }
         }
