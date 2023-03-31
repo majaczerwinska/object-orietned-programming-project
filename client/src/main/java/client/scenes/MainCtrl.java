@@ -84,6 +84,11 @@ public class MainCtrl {
     private CustomizationCtrl customizationCtrl;
     private Scene customization;
 
+    private TagPopUpCtrl tagPopUpCtrl;
+    private Scene tagPopUpScene;
+
+
+
 
     public Map<Integer, CardComponent> cardIdComponentMap;
 
@@ -102,6 +107,7 @@ public class MainCtrl {
      * @param editBoard
      * @param boardCreation
      * @param help
+     * @param tagPopUp
      * @param taskCreator
      * @param listEdit
      * @param unlocked
@@ -126,6 +132,7 @@ public class MainCtrl {
                            Pair<ListEditCtrl, Parent> listEdit,
                            Pair<EditBoardCtrl, Parent> editBoard,
                            Pair<HelpCtrl, Parent> help,
+                           Pair<TagPopUpCtrl, Parent> tagPopUp,
                            Pair<LockInUnlockedBoardCtrl, Parent> unlocked,
                            Pair<ProvidePasswordCtrl, Parent> providePassword,
                            Pair<CustomizationCtrl, Parent> customization,
@@ -181,6 +188,9 @@ public class MainCtrl {
         
         this.helpCtrl = help.getKey();
         this.helpScene = new Scene(help.getValue());
+
+        this.tagPopUpCtrl = tagPopUp.getKey();
+        this.tagPopUpScene = new Scene(tagPopUp.getValue());
 
 
         this.lockInUnlockedBoardCtrl = unlocked.getKey();
@@ -600,6 +610,26 @@ public class MainCtrl {
         customizationCtrl.refresh();
 
         primaryStage.show();
+    }
+
+    /**
+     * shows board selection scene
+     */
+    public void showTagPopUp() {
+        primaryStage.setTitle("Tag pop-up");
+        primaryStage.setScene(tagPopUpScene);
+        primaryStage.show();
+        tagPopUpCtrl.refresh();
+    }
+
+    /**
+     * shows board selection scene
+     */
+    public void showHelpScene() {
+        primaryStage.setTitle("Help Scene");
+        primaryStage.setScene(helpScene);
+        primaryStage.show();
+        helpCtrl.refresh();
     }
 
 }

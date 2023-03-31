@@ -29,6 +29,12 @@ public class LandingCtrl {
         mainCtrl.showServerSelect();
     }
 
+    /**
+     * Shows the help scene
+     */
+    public void showHelpScene() {
+        mainCtrl.showHelpScene();
+    }
 
 
     /**
