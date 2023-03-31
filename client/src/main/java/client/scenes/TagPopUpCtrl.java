@@ -1,20 +1,27 @@
 package client.scenes;
 
 import client.utils.ServerUtils;
+import commons.Tag;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
 import javax.inject.Inject;
+import java.awt.*;
 
 
 public class TagPopUpCtrl {
     private final MainCtrl mainCtrl;
     private final ServerUtils server;
 
+    private int boardID;
+
     @FXML
     private Label title;
-    // title of the help page
+
+    @FXML
+    private TextField name;
 
 
 
@@ -39,6 +46,35 @@ public class TagPopUpCtrl {
      */
     public void refresh() {
     }
+
+    /**
+     * Sets boardID to the ID of the board
+     * @param boardID the ID of the board
+     */
+    public void setBoardID(int boardID) {
+        this.boardID = boardID;
+    }
+
+    /**
+     * Adds a tag to the database and empties the textField.
+     */
+    public void addTag() {
+        if (!name.getText().isEmpty()) {
+            Tag tag = new Tag(name.getText());
+            server.addTag(tag, boardID);
+            name.setText("");
+        }
+    }
+
+    /**
+     * Closes the pop-up
+     */
+    public void back() {
+        Stage stage = (Stage) title.getScene().getWindow();
+        stage.close();
+    }
+
+
 
 
 }

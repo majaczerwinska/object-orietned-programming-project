@@ -614,12 +614,15 @@ public class MainCtrl {
 
     /**
      * shows board selection scene
+     * @param  boardID the ID of the board
      */
-    public void showTagPopUp() {
+    public void showTagPopUp(int boardID) {
         primaryStage.setTitle("Tag pop-up");
         primaryStage.setScene(tagPopUpScene);
         primaryStage.show();
         tagPopUpCtrl.refresh();
+        tagPopUpCtrl.setBoardID(boardID);
+
     }
 
     /**
