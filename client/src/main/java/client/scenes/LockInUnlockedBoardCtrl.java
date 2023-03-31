@@ -45,6 +45,7 @@ public class LockInUnlockedBoardCtrl {
      * cancel method
      */
     public void cancel(){
+        clear();
         mainCtrl.closeLocker();
         mainCtrl.showBoardOverview(boardID);
     }
@@ -76,9 +77,16 @@ public class LockInUnlockedBoardCtrl {
         board.setPassword(password);
         server.editBoard(boardID,board);
         pref.put(String.valueOf(boardID),password);
+        clear();
         mainCtrl.closeLocker();
         mainCtrl.showBoardOverview(boardID);
 
+    }
+    public void clear(){
+        password1.setText("");
+        password2.setText("");
+        warning1.setText("");
+        warning2.setText("");
     }
 
 }

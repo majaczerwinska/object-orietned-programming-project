@@ -4,6 +4,7 @@ import commons.Board;
 
 //import commons.Card;
 import commons.CardList;
+import commons.Palette;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -124,6 +125,7 @@ public class BoardService {
         b.setName(board.getName());
         b.setPassword(board.getPassword());
         b.setbColor(board.getbColor());
+        b.setfColor(board.getfColor());
         repo.save(b);
     }
 
@@ -142,4 +144,15 @@ public class BoardService {
         }
         return null;
     }*/
+
+    /**
+     * tries to get palettes from a board with given id
+     * @param boardId
+     * @return - list of palettes from that board
+     */
+    public List<Palette> getPalettesFromBoard(int boardId){
+        Board b = repo.getById(boardId);
+        return b.getPalettes();
+    }
+
 }

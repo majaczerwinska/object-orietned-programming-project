@@ -24,14 +24,10 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import java.util.List;
 import java.util.Set;
 
-import commons.Board;
-import commons.Card;
-import commons.CardList;
+import commons.*;
 import jakarta.ws.rs.ProcessingException;
 import jakarta.ws.rs.client.Client;
-import commons.Task;
 import jakarta.ws.rs.core.GenericType;
-import commons.Tag;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 
@@ -629,6 +625,34 @@ public class ServerUtils {
                     .get(new GenericType<CardList>() {
                     });
 
+    }
+
+    /**
+     *
+     * @param boardId
+     * @param palette
+     * @return - added palette ?
+     */
+    public Palette addPaletteToBoard(int boardId, Palette palette){
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/boards/palettes/" + boardId)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(palette, APPLICATION_JSON), Palette.class);
+
+    }
+
+    /**
+     *
+     * @param boardId
+     * @return - added palette?
+     */
+    public List<Palette> getPalettesFromBoard(int boardId){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/boards/palettes/" + boardId) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<Palette>>() {});
     }
 
 

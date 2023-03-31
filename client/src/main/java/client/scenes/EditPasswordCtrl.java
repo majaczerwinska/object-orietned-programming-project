@@ -72,6 +72,7 @@ public class EditPasswordCtrl {
         board.setPassword(password);
         server.editBoard(boardID,board);
         pref.put(String.valueOf(boardID),password);
+        clear();
         mainCtrl.closeLocker();
         mainCtrl.showBoardOverview(boardID);
     }
@@ -81,9 +82,23 @@ public class EditPasswordCtrl {
         board.setPassword("");
         server.editBoard(boardID, board);
         pref.remove(String.valueOf(boardID));
+        clear();
         mainCtrl.closeLocker();
         mainCtrl.showBoardOverview(boardID);
     }
+
+    public void refresh(){
+        Board board = server.getBoard(boardID);
+        password1.setText(board.getPassword());
+    }
+    public void clear(){
+        password1.setText("");
+        password2.setText("");
+        warning1.setText("");
+        warning2.setText("");
+    }
+
+
 
 
 }

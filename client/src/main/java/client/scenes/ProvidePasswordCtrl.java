@@ -39,7 +39,9 @@ public class ProvidePasswordCtrl {
      * cancels the popup
      */
     public void cancel(){
+        clear();
         mainCtrl.closeLocker();
+
     }
 
     /**
@@ -52,8 +54,15 @@ public class ProvidePasswordCtrl {
             return;
         }
         pref.put(String.valueOf(boardID),pass);
+        clear();
         mainCtrl.closeLocker();
         mainCtrl.showBoardOverview(boardID);
+    }
+
+    public void clear(){
+        password.setText("");
+        warning.setText("");
+
     }
 
 

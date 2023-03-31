@@ -14,15 +14,35 @@
   <items>
       <VBox fx:id="vboxList1" alignment="TOP_CENTER" prefHeight="493.0" prefWidth="200.0" spacing="10.0">
          <children>
-            <Label fx:id="labelBoardTitle" text="Board: ...">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
+
+
+            <HBox prefHeight="35.0" prefWidth="179.0">
+               <children>
+                  <Button fx:id="lock" mnemonicParsing="false" onAction="#clickLockInUnlockedBoard" prefHeight="45.0" prefWidth="46.0" text="🔓">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </Button>
+                  <Label fx:id="labelBoardTitle" text="Board: ...">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="15.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
 
             <HBox prefHeight="31.0" prefWidth="179.0" spacing="10.0">
+
                <children>
-                  <Label text="Board's key: ">
+
+                  <Label fx:id="boardKeyL" text="Key: ">
+
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
@@ -32,13 +52,13 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                   </Label>
-                   <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onMouseClicked="#getBoardKey" text="Copy" />
+                   <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#getBoardKey" onMouseClicked="#getBoardKey" text="Copy" />
                </children>
             </HBox>
             <VBox alignment="TOP_CENTER" prefHeight="250.0" prefWidth="121.0" spacing="5.0" style="-fx-border-color: black;">
 
                <children>
-                  <Label text="Tags" />
+                  <Label fx:id="tagL" text="Tags" />
                   <ListView fx:id="listViewTags" prefHeight="190.0" prefWidth="125.0" />
                   <Button fx:id="btnTagManager" mnemonicParsing="false" onAction="#showTagManager" text="Tag manager" />
                </children>
@@ -46,7 +66,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </VBox>
-            <Button mnemonicParsing="false" text="Customization" />
+            <Button mnemonicParsing="false" onAction="#goCustomization" text="Customization" />
             <HBox alignment="CENTER" prefHeight="38.0" prefWidth="120.0" spacing="5.0">
                <children>
                   <Button fx:id="backbtn" mnemonicParsing="false" onAction="#back" text="Back" />

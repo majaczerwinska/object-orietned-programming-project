@@ -231,6 +231,18 @@ public class MainCtrl {
     }
 
     /**
+     * Shows the popup for providing a password
+     * @param boardID the id of the board
+     */
+    public void showEditPassword(int boardID) {
+        locker.setTitle("Edit password!!");
+        locker.setScene(editPassword);
+        editPasswordCtrl.boardID = boardID;
+        editPasswordCtrl.refresh();
+        locker.showAndWait();
+    }
+
+    /**
      * closes the pop up of locker
      */
     public void closeLocker(){
@@ -547,6 +559,8 @@ public class MainCtrl {
         primaryStage.setTitle("Customization");
         primaryStage.setScene(customization);
         customizationCtrl.boardId = boardId;
+        customizationCtrl.refresh();
+
         primaryStage.show();
     }
 

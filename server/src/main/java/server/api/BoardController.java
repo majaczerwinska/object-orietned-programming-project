@@ -5,6 +5,7 @@ import commons.Board;
 
 //import commons.Card;
 import commons.CardList;
+import commons.Palette;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -132,4 +133,19 @@ public class BoardController {
         Board res = abs.findByName(name);
         return res;
     }*/
+
+    /**
+     * hopefully retrieves palettes from a board whose id is prvided
+     * @param boardId
+     * @return - list of palettes
+     */
+    @GetMapping("/palettes/{boardId}")
+    public ResponseEntity<List<Palette>> getPalettesFromBoard(@PathVariable("boardId") int boardId) {
+        if (boardId < 0 || !abs.existsById(boardId)) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(abs.getPalettesFromBoard(boardId));
+    }
+
+
 }
