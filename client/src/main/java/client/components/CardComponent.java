@@ -166,7 +166,8 @@ public class CardComponent extends HBox implements Initializable {
         this.boardOverviewCtrl = mainCtrl.getBoardOverviewCtrl();
 
         cardFrame.setOnMouseEntered(event -> {
-            BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(2));
+            BorderStroke borderStroke = new BorderStroke(Color.BLACK,
+                    BorderStrokeStyle.SOLID, null, new BorderWidths(2));
             cardFrame.setBorder(new Border(borderStroke));
             highlighted = true;
             boardOverviewCtrl.highlightedCardComponent= this;
