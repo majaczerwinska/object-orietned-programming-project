@@ -53,16 +53,20 @@ public class PaletteComponent extends HBox {
 
     }
 
+    /**
+     * sets data for sth idk
+     * @param p
+     */
     public void setData(Palette p){
         name.setText(p.getName());
         background.setValue(MainCtrl.colorParseToFXColor(p.getbColor()));
         font.setValue(MainCtrl.colorParseToFXColor(p.getfColor()));
-//        if(p.isIsdefault()){
-//            setDef.setVisible(false);
-//        }
-//        else{
-//            setDef.setVisible(true);
-//        }
+        if(p.isIsdefault()){
+            setDef.setVisible(false);
+        }
+        else{
+            setDef.setVisible(true);
+        }
     }
 
 

@@ -141,6 +141,10 @@ public class CustomizationCtrl {
         bb.setValue(boardB);
         bf.setValue(boardF);
     }
+
+    /**
+     * clears
+     */
     public void clearPalette(){
         palettes.getChildren().clear();
     }
