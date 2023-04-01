@@ -280,6 +280,9 @@ public class CardComponent extends HBox implements Initializable {
     }
 
 
+    /**
+     * get tasks, update card component to show how many are completed
+     */
     public void setTaskProgress() {
         List<Task> tasks = server.getTasksFromCard(cardID);
         double completed = 0;
@@ -290,6 +293,9 @@ public class CardComponent extends HBox implements Initializable {
         taskProgress.setProgress(progress);
     }
 
+    /**
+     * get tags and add their colours to the card component
+     */
     public void borderColorInit() {
         System.out.println("\n\n\nInitialising border colors");
 //        Set<Tag> tags = getTagColors();
