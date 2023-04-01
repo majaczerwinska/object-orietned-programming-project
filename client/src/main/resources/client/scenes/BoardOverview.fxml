@@ -66,7 +66,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </VBox>
-            <Button mnemonicParsing="false" onAction="#goCustomization" text="Customization" />
+            <Button fx:id="btncustomization" mnemonicParsing="false" onAction="#goCustomization" text="Customization" />
             <HBox alignment="CENTER" prefHeight="38.0" prefWidth="120.0" spacing="5.0">
                <children>
                   <Button fx:id="backbtn" mnemonicParsing="false" onAction="#back" text="Back" />

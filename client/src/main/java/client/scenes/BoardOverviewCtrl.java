@@ -28,12 +28,10 @@ import javafx.scene.control.ListCell;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.util.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-import java.util.List;
 import java.util.prefs.Preferences;
 
 
@@ -69,6 +67,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
     @FXML
     private Button backbtn;
+    @FXML
+    private Button btncustomization;
 
     @FXML
     private Label boardKey;
@@ -90,6 +90,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     @FXML
     private Button lock;
     private Preferences pref;
+    private boolean isLocked;
 
 
 
@@ -103,9 +104,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public BoardOverviewCtrl(ServerUtils server, MainCtrl mainCtrl, WebsocketClient websocketClient) {
         this.mainCtrl = mainCtrl;
         this.server = server;
-
+        this.isLocked=false;
         this.pref = Preferences.userRoot().node("locking");
-
         this.websocketClient = websocketClient;
         System.out.println("Inject called in board overview");
     }
@@ -192,22 +192,70 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         Board board = server.getBoard(boardID);
         if(board.getPassword().equals("") || board.getPassword()==null ){
             lock.setText("\uD83D\uDD13");
+            isLocked=false;
             lock.setStyle("-fx-background-color: white");
+            enable();
             return;
-        }
-        lock.setText("\uD83D\uDD12");
-        System.out.println("\n\n\n\n\n" + pref.get(String.valueOf(boardID),"notfound"));
-        checkForPref();
+        }else{
+            lock.setText("\uD83D\uDD12");
+            checkForPref();
+            if(pref.get(String.valueOf(boardID),"").equals("")){
+                lock.setStyle("-fx-background-color: red");
+                isLocked=true;
+                disable();
+            }
+            else{
+                isLocked=false;
+                enable();
+                lock.setStyle("-fx-background-color: green");
+            }
 
-        if(pref.get(String.valueOf(boardID),"").equals("")){
-            lock.setStyle("-fx-background-color: red");
         }
-        else{
-            lock.setStyle("-fx-background-color: green");
-        }
-
 
     }
+
+    /**
+     * Disables the write mode on the board
+     */
+    public void disable(){
+
+        btnTagManager.setOnAction(event -> {
+            return;
+        });
+        btncustomization.setOnAction(event -> {
+            return;
+        });
+        editBoardButton.setOnAction(event -> {
+            return;
+        });
+        addListButton.setOnAction(event -> {
+            return;
+        });
+
+    }
+
+    /**
+     * Enables the write mode on the board
+     */
+    public void enable(){
+
+        btnTagManager.setOnAction(event -> {
+            showTagManager(event);
+        });
+        btncustomization.setOnAction(event -> {
+            goCustomization(event);
+        });
+        editBoardButton.setOnAction(event -> {
+            showEditBoard(event);
+        });
+        addListButton.setOnAction(event -> {
+            addListScene(event);
+        });
+
+    }
+
+
+
 
     /**
      * Checks if the board is the correct board
@@ -270,20 +318,19 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         //List<Card> cards = server.getCardsFromList(listId);
         cards.sort(Comparator.comparing(Card::getPosition));
         for (Card card : cards) {
-
-            CardComponent cardComponent = new CardComponent(mainCtrl);
-
+            CardComponent cardComponent = new CardComponent(mainCtrl, isLocked);
             mainCtrl.cardIdComponentMap.remove(card.getId());
             mainCtrl.cardIdComponentMap.remove(cardComponent);
             mainCtrl.cardIdComponentMap.put(card.getId(), cardComponent);
-
             cardComponent.boardID = boardID;
             cardComponent.setData(card, listId);
+            if(isLocked) cardComponent.readmode();
             cardComponent.setStyle("-fx-background-color: " +
                     String.format("rgb(%d, %d, %d)", (card.getColor() >> 16) & 0xFF,
                     (card.getColor() >> 8) & 0xFF, card.getColor()& 0xFF)+";" );
 
             vbox.getChildren().add(cardComponent);
+
             if(card.equals(c)){
                 cardComponent.tfTitle.requestFocus();
             }
@@ -328,7 +375,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
                     (cardList.getbColor() >> 16) & 0xFF,
                     (cardList.getbColor() >> 8) & 0xFF, cardList.getbColor()& 0xFF));
             System.out.println("List style: " + cardListComponent.getStyle());
-            cardListComponent.setOnMouseEntered(event -> addEnterKeyListener(cardList.getId()));
+            if(!isLocked) cardListComponent.setOnMouseEntered(event -> addEnterKeyListener(cardList.getId()));
             hboxCardLists.getChildren().add(cardListComponent);
             cardListComponent.setData(cardList);
             String hexColor = String.format("#%06X", (0xFFFFFF & cardList.getfColor()));
@@ -345,6 +392,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
                     server.editCard(boardID, cc.self.getId(), cc.self);
                 }
             }
+            if(isLocked) cardListComponent.readonly();
         }
 
     }

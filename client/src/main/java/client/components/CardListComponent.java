@@ -8,6 +8,7 @@ import commons.Card;
 import commons.CardList;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -265,9 +266,9 @@ public class CardListComponent extends VBox{
 
     /**
      * takes you to scene for editing the list's name
-     * @param mouseEvent - click
+     * @param e - click
      */
-    public void editTitle(MouseEvent mouseEvent) {
+    public void editTitle(ActionEvent e) {
         mainCtrl.showListEdit(listId, boardId);
     }
 
@@ -298,6 +299,22 @@ public class CardListComponent extends VBox{
     public void colorFont(int color){
         String hexColor = String.format("#%06X", (0xFFFFFF & color));
         labelTitle.setStyle("-fx-text-fill: " + hexColor);
+    }
+
+    /**
+     * Disables the write mode on lists
+     */
+    public void readonly(){
+        addcard.setOnAction(event->{
+            return;
+        });
+        deletebutton.setOnAction(event->{
+            return;
+        });
+        editlist.setOnAction(event->{
+            return;
+        });
+
     }
 
 }

@@ -29,7 +29,7 @@
 
                     <Button fx:id="addcard" alignment="CENTER" mnemonicParsing="false" onAction="#addCard" text="Add card" />
 
-                    <Button mnemonicParsing="false" onMouseClicked="#editTitle" text="Edit list" />
+                    <Button fx:id="editlist" mnemonicParsing="false" onAction="#editTitle" text="Edit list" />
 
 
                 </children>
