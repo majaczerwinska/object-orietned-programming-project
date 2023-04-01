@@ -368,7 +368,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
                     (cardList.getbColor() >> 16) & 0xFF,
                     (cardList.getbColor() >> 8) & 0xFF, cardList.getbColor()& 0xFF));
             System.out.println("List style: " + cardListComponent.getStyle());
-            cardListComponent.setOnMouseEntered(event -> addEnterKeyListener(cardList.getId()));
+            if(!isLocked) cardListComponent.setOnMouseEntered(event -> addEnterKeyListener(cardList.getId()));
             hboxCardLists.getChildren().add(cardListComponent);
             cardListComponent.setData(cardList);
             String hexColor = String.format("#%06X", (0xFFFFFF & cardList.getfColor()));
