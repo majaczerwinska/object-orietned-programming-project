@@ -301,6 +301,9 @@ public class CardListComponent extends VBox{
         labelTitle.setStyle("-fx-text-fill: " + hexColor);
     }
 
+    /**
+     * Disables the write mode on lists
+     */
     public void readonly(){
         addcard.setOnAction(event->{
             return;

@@ -213,6 +213,9 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
     }
 
+    /**
+     * Disables the write mode on the board
+     */
     public void disable(){
 
         btnTagManager.setOnAction(event -> {
@@ -230,6 +233,9 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
     }
 
+    /**
+     * Enables the write mode on the board
+     */
     public void enable(){
 
         btnTagManager.setOnAction(event -> {

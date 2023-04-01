@@ -373,6 +373,9 @@ public class CardComponent extends HBox implements Initializable {
         mainCtrl.refreshBoardOverview();
     }
 
+    /**
+     * Disables the write mode on card
+     */
     public void readmode(){
         if(isLocked){
             btnDelete.setOnAction(e->{
