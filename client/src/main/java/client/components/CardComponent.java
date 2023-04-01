@@ -6,13 +6,11 @@ import client.scenes.MainCtrl;
 import client.utils.ServerUtils;
 import commons.Card;
 import commons.Tag;
+import commons.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -72,7 +70,8 @@ public class CardComponent extends HBox implements Initializable {
     private CheckBox checkMark;
     private boolean isLocked;
 
-
+    @FXML
+    private ProgressBar taskProgress;
 
     /**
      * The constructor for the component
@@ -193,6 +192,8 @@ public class CardComponent extends HBox implements Initializable {
 
 
         borderColorInit();
+        //TODO: debug 400 BAD REQUEST for this \/
+//        setTaskProgress();
 
 //        this.cardFrame.getScene().setOnKeyPressed(event -> {
 //            if (event.getCode() == KeyCode.DELETE) {
@@ -278,6 +279,17 @@ public class CardComponent extends HBox implements Initializable {
 
     }
 
+
+    public void setTaskProgress() {
+        List<Task> tasks = server.getTasksFromCard(cardID);
+        double completed = 0;
+        for (Task t : tasks) {
+            if (t.isChecked()) completed++;
+        }
+        double progress = completed / tasks.size();
+        taskProgress.setProgress(progress);
+    }
+
     public void borderColorInit() {
         System.out.println("\n\n\nInitialising border colors");
 //        Set<Tag> tags = getTagColors();
@@ -285,8 +297,8 @@ public class CardComponent extends HBox implements Initializable {
 //        for (Tag t : tags) {
 //            c.add(MainCtrl.colorParseToFXColor(t.getColor()));
 //        }
-        c.add(Color.TEAL);
         c.add(Color.YELLOWGREEN);
+        c.add(Color.LIGHTGOLDENRODYELLOW);
         c.add(Color.LIGHTBLUE);
         c.add(Color.HOTPINK);
         c.add(Color.CORAL);
