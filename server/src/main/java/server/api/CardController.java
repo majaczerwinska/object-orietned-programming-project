@@ -163,8 +163,9 @@ public class CardController {
      */
     @GetMapping("/{id}/tags")
     public ResponseEntity<Set<Tag>> getTags(@PathVariable("id") int id) {
+        System.out.println("Received request at api/cards/"+id+"/tags");
         if(id < 0 || !acs.existsById(id)) return ResponseEntity.badRequest().body(null);
-        Card c =acs.findById(id).get();
+        Card c = acs.findById(id).get();
         Set<Tag> tags = c.getTags();
         return ResponseEntity.ok(tags);
     }

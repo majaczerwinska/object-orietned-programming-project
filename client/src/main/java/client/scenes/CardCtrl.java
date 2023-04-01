@@ -93,7 +93,7 @@ public class CardCtrl {
      */
     public void exit(){
         System.out.println(boardID + "cardexit");
-        mainCtrl.showBoardOverview(boardID);
+        mainCtrl.showBoardOverview(boardID, true);
     }
 
     /**

@@ -138,6 +138,7 @@ public class CardListComponent extends VBox{
             CardComponent cardComponent = mainCtrl.cardIdComponentMap.get(c.getId());
             Card newcard = server.changeListOfCard(listId,c);
             newcard.setPosition(getDroppedPosition(event));
+            System.out.println("\n\nSetting new card position to p="+newcard.getPosition()+" for card="+newcard+"\n\n");
             server.editCard(newcard.getId(), boardId, newcard);
             mainCtrl.cardIdComponentMap.remove(c.getId());
             mainCtrl.cardIdComponentMap.put(newcard.getId(), cardComponent);
@@ -146,7 +147,7 @@ public class CardListComponent extends VBox{
         }
         event.setDropCompleted(success);
         Platform.runLater(()->{
-            mainCtrl.refreshBoardOverview();
+            mainCtrl.refreshBoardOverview(true);
             System.out.println(mainCtrl.cardIdComponentMap.toString());
             System.out.println(vboxCards.getChildren());
             //updateCardPositionAttributes();
@@ -241,7 +242,7 @@ public class CardListComponent extends VBox{
 
 
         server.deleteCardList(listId,boardId);
-        mainCtrl.refreshBoardOverview();
+        mainCtrl.refreshBoardOverview(true);
     }
 
 
