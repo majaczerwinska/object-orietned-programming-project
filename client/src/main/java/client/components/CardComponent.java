@@ -67,15 +67,21 @@ public class CardComponent extends HBox implements Initializable {
 
     @FXML
     private CheckBox checkMark;
+    private boolean isLocked;
+
+
 
     /**
      * The constructor for the component
      * @param mainCtrl the main controller instance
+     * @param isLocked
      */
-    public CardComponent(MainCtrl mainCtrl) {
+    @SuppressWarnings("checkstyle:JavadocMethod")
+    public CardComponent(MainCtrl mainCtrl, boolean isLocked) {
         super();
         server = new ServerUtils();
         this.mainCtrl = mainCtrl;
+        this.isLocked = isLocked;
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/components/CardComponent.fxml"));
         fxmlLoader.setRoot(this);
@@ -90,9 +96,11 @@ public class CardComponent extends HBox implements Initializable {
 //        setOnKeyPressed(event -> updateCard());
 
         TextField titleTextField = (TextField) lookup("#tfTitle");
-        titleTextField.requestFocus();
+//        if(!isLocked){
+//           // tfTitle.setOnKeyTyped(event -> updateCard());
+//
+//        }
 
-        tfTitle.setOnKeyTyped(event -> updateCard());
         //tfDescription.setOnKeyTyped(event -> updateCard());
 //        setOnMouseEntered(event -> {
 //                tfTitle.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-alignment: center");
@@ -116,37 +124,30 @@ public class CardComponent extends HBox implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        tfTitle.requestFocus();
-        checkMark.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                System.out.println("Checkbox is checked");
-                markAsCompleted();
-            } else {
-                System.out.println("Checkbox is unchecked");
-                unMarkCompleted();
-            }
-        });
-        descriptionLabel.setOnMouseEntered(event -> {
-            descriptionLabel.setStyle("-fx-underline: true");
-
-        });
-        descriptionLabel.setOnMouseExited(event -> {
-            descriptionLabel.setStyle("-fx-underline: false");
-        });
-        tfTitle.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                // TextField has received focus
-                tfTitle.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-alignment: center");
-            } else {
-                // TextField has lost focus
-                tfTitle.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; " +
-                        "-fx-alignment: center");
-            }
-        });
-
-        setOnMouseEntered(event ->
+        if(!isLocked) {
+            //tfTitle.requestFocus();
+//            checkMark.selectedProperty().addListener((observable, oldValue, newValue) -> {
+//                if (newValue) {
+//                    System.out.println("Checkbox is checked");
+//                    markAsCompleted();
+//                } else {
+//                    System.out.println("Checkbox is unchecked");
+//                    unMarkCompleted();
+//                }
+//            });
+            tfTitle.focusedProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue) {
+                    // TextField has received focus
+                    tfTitle.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-alignment: center");
+                } else {
+                    // TextField has lost focus
+                    tfTitle.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; " +
+                            "-fx-alignment: center");
+                }
+            });
+            setOnMouseEntered(event ->
             {tfTitle.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-alignment: center");});
-        setOnMouseExited(event ->
+            setOnMouseExited(event ->
             {
                 tfTitle.focusedProperty().addListener((observable, oldValue, newValue) -> {
                     if (newValue) {
@@ -159,9 +160,18 @@ public class CardComponent extends HBox implements Initializable {
                     }
                 });
             });
-        setOnMouseClicked(this::onElementClick);
-        dragging();
 
+            dragging();
+
+        }
+        setOnMouseClicked(this::onElementClick);
+        descriptionLabel.setOnMouseEntered(event -> {
+            descriptionLabel.setStyle("-fx-underline: true");
+
+        });
+        descriptionLabel.setOnMouseExited(event -> {
+            descriptionLabel.setStyle("-fx-underline: false");
+        });
 
         this.boardOverviewCtrl = mainCtrl.getBoardOverviewCtrl();
 
@@ -187,12 +197,15 @@ public class CardComponent extends HBox implements Initializable {
     }
 
 
-    /**
-     * test method
-     */
-    public void addtesttagtocard() {
-        server.addTagToCard(boardID,0,cardID);
-    }
+
+
+
+//    /**
+//     * test method
+//     */
+//    public void addtesttagtocard() {
+//        server.addTagToCard(boardID,0,cardID);
+//    }
 
     /**
      * Method for all the dragging
@@ -359,6 +372,24 @@ public class CardComponent extends HBox implements Initializable {
         server.deleteCard(self, boardID, cardListID);
         mainCtrl.refreshBoardOverview();
     }
+
+    /**
+     * Disables the write mode on card
+     */
+    public void readmode(){
+        if(isLocked){
+            btnDelete.setOnAction(e->{
+                return;
+            });
+            tfTitle.setOnKeyTyped(event -> {
+                return ;
+            });
+            tfTitle.setEditable(false);
+
+
+        }
+    }
+
 
 
 
