@@ -3,7 +3,9 @@ package client.scenes;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Button;
 import commons.Board;
 
 public class BoardCreationCtrl {
@@ -13,34 +15,25 @@ public class BoardCreationCtrl {
 
     @FXML
     private Label titleLabel;
-    @FXML
-    private ColorPicker palette;
+
     @FXML
     private Label warningname;
+
     @FXML
     private Label warningkey;
+
     @FXML
     private Label boardTitleLabel;
+
     @FXML
     private TextField boardTitleTextField;
+
     @FXML
     private Label boardKeyLabel;
+
     @FXML
     private TextField boardKeyTextField;
-    @FXML
-    private Label colorLabel;
-    @FXML
-    private TextField colorTextField;
-    @FXML
-    private Label passwordRequireLabel;
-    @FXML
-    private RadioButton passwordRequiredRadioButton;
-    @FXML
-    private Label passwordLabel;
-    @FXML
-    private TextField passwordTextField;
-    @FXML
-    private Button createBoardButton;
+
     @FXML
     private Button stopCreatingBoardButton;
 
@@ -113,6 +106,125 @@ public class BoardCreationCtrl {
         warningkey.setText("");
         boardTitleTextField.setText("");
         boardKeyTextField.setText("");
-
     }
+
+    /**
+     * title label getter
+     * @return label
+     */
+    public Label getTitleLabel() {
+        return titleLabel;
+    }
+
+    /**
+     * warning name label getter
+     * @return label
+     */
+    public Label getWarningNameLabel() {
+        return warningname;
+    }
+
+    /**
+     * warning key label getter
+     * @return label
+     */
+    public Label getWarningKeyLabel() {
+        return warningkey;
+    }
+
+    /**
+     * board title label getter
+     * @return label
+     */
+    public Label getBoardTitleLabel() {
+        return boardTitleLabel;
+    }
+
+    /**
+     * board key label getter
+     * @return label
+     */
+    public Label getBoardKeyLabel() {
+        return boardKeyLabel;
+    }
+
+    /**
+     * board title text field getter
+     * @return textfield
+     */
+    public TextField getBoardTitleTextField() {
+        return boardTitleTextField;
+    }
+
+    /**
+     * board key text field getter
+     * @return textfield
+     */
+    public TextField getBoardKeyTextField() {
+        return boardKeyTextField;
+    }
+
+    /**
+     * title string getter
+     * @return String
+     */
+    public String getTitleLabelString() {
+        String label = titleLabel.getText();
+        return label;
+    }
+
+    /**
+     * warning name string getter
+     * @return String
+     */
+    public String getWarningNameLabelString() {
+        String label = warningname.getText();
+        return label;
+    }
+
+    /**
+     * warning key string getter
+     * @return String
+     */
+    public String getWarningKeyLabelString() {
+        String label = warningkey.getText();
+        return label;
+    }
+
+    /**
+     * board title label getter
+     * @return String
+     */
+    public String getBoardTitleLabelString() {
+        String label = boardTitleLabel.getText();
+        return label;
+    }
+
+    /**
+     * board key label getter
+     * @return String
+     */
+    public String getBoardKeyLabelString() {
+        String label = boardKeyLabel.getText();
+        return label;
+    }
+
+    /**
+     * board title text field string getter
+     * @return String
+     */
+    public String getBoardTitleTextFieldString() {
+        String label = boardTitleTextField.getText();
+        return label;
+    }
+
+    /**
+     * board key text field getter
+     * @return String
+     */
+    public String getBoardKeyTextFieldString() {
+        String title = boardKeyTextField.getText();
+        return title;
+    }
+
 }

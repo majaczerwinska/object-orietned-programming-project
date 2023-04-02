@@ -24,6 +24,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import javafx.stage.Screen;
+import javafx.scene.text.Font;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -468,13 +470,13 @@ public class MainCtrl {
 
     }
 
-
-
     /**
      * Shows board creation scene
      */
     public void showBoardCreation(){
         primaryStage.setTitle("Board creation overview :)");
+        double screenWidth = Screen.getPrimary().getBounds().getWidth();
+        boardCreationCtrl.getTitleLabel().setFont(Font.font(screenWidth * 0.05));
         primaryStage.setScene(boardCreation);
         primaryStage.show();
     }
