@@ -476,8 +476,21 @@ public class MainCtrl {
     public void showBoardCreation(){
         primaryStage.setTitle("Board creation overview :)");
         // styling the page
+
+        // setting the font size for the labels
         double screenWidth = Screen.getPrimary().getBounds().getWidth();
-        boardCreationCtrl.getTitleLabel().setFont(Font.font(screenWidth * 0.05));
+        boardCreationCtrl.getTitleLabel().setFont(Font.font(screenWidth * 0.03));
+        boardCreationCtrl.getBoardKeyLabel().setFont(Font.font(screenWidth * 0.01));
+        boardCreationCtrl.getBoardTitleLabel().setFont(Font.font(screenWidth * 0.01));
+
+        // round the corners for the text areas
+        boardCreationCtrl.getBoardKeyTextField().setStyle("-fx-background-radius: 10;");
+        boardCreationCtrl.getBoardTitleTextField().setStyle("-fx-background-radius: 10;");
+
+        // round the corners of the buttons
+        boardCreationCtrl.getCreateBoardButton().setStyle("-fx-background-radius: 10;");
+        boardCreationCtrl.getStopCreatingBoardButton().setStyle("-fx-background-radius: 10;");
+
         primaryStage.setScene(boardCreation);
         primaryStage.show();
     }

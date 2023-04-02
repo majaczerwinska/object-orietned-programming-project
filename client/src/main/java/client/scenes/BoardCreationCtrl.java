@@ -37,6 +37,9 @@ public class BoardCreationCtrl {
     @FXML
     private Button stopCreatingBoardButton;
 
+    @FXML
+    private Button createBoardButton;
+
     /**
      * board creator controller constructor
      * 
@@ -162,6 +165,22 @@ public class BoardCreationCtrl {
      */
     public TextField getBoardKeyTextField() {
         return boardKeyTextField;
+    }
+
+    /**
+     * stop creating board button getter
+     * @return button
+     */
+    public Button getStopCreatingBoardButton() {
+        return stopCreatingBoardButton;
+    }
+
+    /**
+     * create board button getter
+     * @return button
+     */
+    public Button getCreateBoardButton() {
+        return createBoardButton;
     }
 
     /**
