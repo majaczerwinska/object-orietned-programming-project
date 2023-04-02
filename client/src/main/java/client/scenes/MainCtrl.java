@@ -476,6 +476,8 @@ public class MainCtrl {
     public void showBoardCreation(){
         primaryStage.setTitle("Board creation overview :)");
         // styling the page
+        double screenWidth = Screen.getPrimary().getBounds().getWidth();
+        boardCreationCtrl.getTitleLabel().setFont(Font.font(screenWidth * 0.05));
         primaryStage.setScene(boardCreation);
         primaryStage.show();
     }
