@@ -127,16 +127,6 @@ public class CardComponent extends HBox implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         if(!isLocked) {
-            //tfTitle.requestFocus();
-//            checkMark.selectedProperty().addListener((observable, oldValue, newValue) -> {
-//                if (newValue) {
-//                    System.out.println("Checkbox is checked");
-//                    markAsCompleted();
-//                } else {
-//                    System.out.println("Checkbox is unchecked");
-//                    unMarkCompleted();
-//                }
-//            });
             tfTitle.focusedProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue) {
                     // TextField has received focus
@@ -145,7 +135,8 @@ public class CardComponent extends HBox implements Initializable {
                     // TextField has lost focus
                     System.out.println("originalValue = " + originalValue + "\nnew value = " + tfTitle.getText());
                     if(!tfTitle.getText().equals(originalValue)){
-                        boardOverviewCtrl.sendMessage("/app/update/card/"+boardID, "Done updating card in component");
+                        boardOverviewCtrl.sendMessage("/app/update/card/"+boardID,
+                                "Done updating card in component");
                         originalValue = tfTitle.getText();
                     }
                     tfTitle.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; " +

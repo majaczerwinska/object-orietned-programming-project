@@ -39,6 +39,10 @@ public class CardController {
     }
 
 
+    /**
+     * Receives messages from /app/update/card/{boardId}
+     * @param boardId the boardId the message is coming from
+     */
     @MessageMapping("/update/card/{boardId}")
     public void messageClient(@DestinationVariable("boardId") int boardId){
         System.out.println("done editing card so refresh");

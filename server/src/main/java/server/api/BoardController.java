@@ -26,6 +26,7 @@ public class BoardController {
     /**
      *Constructor
      * @param abs - the service we use
+     * @param msgs the messaging template for messages
      */
     @Autowired
     public BoardController(BoardService abs, SimpMessagingTemplate msgs) {

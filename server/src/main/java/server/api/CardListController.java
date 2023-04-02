@@ -30,6 +30,10 @@ public class CardListController {
         this.msgs = msgs;
     }
 
+    /**
+     * Receives messages from /app/update/list/{boardId}
+     * @param boardId the boardId the message is coming from
+     */
     @MessageMapping("/update/list/{boardId}")
     public void messageClient(@DestinationVariable("boardId") int boardId){
         msgs.convertAndSend("/topic/boards/"+boardId, "CardList added on board#" + boardId);

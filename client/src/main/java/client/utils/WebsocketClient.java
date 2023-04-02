@@ -84,6 +84,11 @@ public class WebsocketClient {
         System.out.println("Unsubscribed from: " + dest);
     }
 
+    /**
+     * Sends message to /app/dest
+     * @param dest destination to send message to
+     * @param payload message to send
+     */
     public void sendMessage(String dest, String payload){
         session.send(dest, payload);
 //        System.out.println(session.getSessionId());
