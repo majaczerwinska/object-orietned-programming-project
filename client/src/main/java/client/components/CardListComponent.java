@@ -232,7 +232,7 @@ public class CardListComponent extends VBox{
         System.out.println(vboxCards.getHeight());
          Card c = mainCtrl.createCard(listId);
         System.out.println(boardId + "carlistcomp");
-         mainCtrl.showCard(c.getId(), boardId);
+         mainCtrl.showCard(c.getId(), boardId, false);
     }
 
     /**
@@ -307,12 +307,15 @@ public class CardListComponent extends VBox{
      */
     public void readonly(){
         addcard.setOnAction(event->{
+            mainCtrl.showWarning(boardId);
             return;
         });
         deletebutton.setOnAction(event->{
+            mainCtrl.showWarning(boardId);
             return;
         });
         editlist.setOnAction(event->{
+            mainCtrl.showWarning(boardId);
             return;
         });
 

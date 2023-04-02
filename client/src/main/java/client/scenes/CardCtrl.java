@@ -7,6 +7,7 @@ import commons.Tag;
 import commons.Task;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -24,6 +25,8 @@ public class CardCtrl {
 
     @FXML
     private Label label;
+    @FXML
+    private Label readonly;
     @FXML
     private Label warning;
     @FXML
@@ -55,6 +58,7 @@ public class CardCtrl {
     private TextField newTask;
     public int cardID;
     public int boardID;
+    public boolean isLocked;
 
 
     /**
@@ -76,8 +80,43 @@ public class CardCtrl {
         for (Task task : tasks) {
             SubTaskComponent taskComponent = new SubTaskComponent(cardID, this);
             taskComponent.setData(task);
+            if(isLocked) taskComponent.disable();
+            else taskComponent.enable();
+
             vbox.getChildren().add(taskComponent);
         }
+    }
+
+    /**
+     * Disables write-mode
+     */
+    public void disable(){
+        removetag.setOnAction(e ->{
+            return;
+        });
+        boardtags.setOnMouseClicked(e ->{
+            return;
+        });
+        text.setEditable(false);
+        area.setEditable(false);
+        newTask.setEditable(false);
+        readonly.setText("This is read-only mode. You cannot edit.");
+    }
+
+    /**
+     * Enables write-mode
+     */
+    public void enable(){
+        removetag.setOnAction(e ->{
+            removeTagFromCard();
+        });
+        boardtags.setOnMouseClicked(e ->{
+            addTagToCard(e);
+        });
+        text.setEditable(true);
+        area.setEditable(true);
+        newTask.setEditable(true);
+        readonly.setText("");
     }
 
     /**
