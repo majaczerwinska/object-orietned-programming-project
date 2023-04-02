@@ -51,7 +51,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="97.0" prefWidth="559.0">
                <children>
-                  <Label fx:id="boardKeyLabel" prefHeight="27.0" prefWidth="89.0" text="Board Key:">
+                  <Label fx:id="boardKeyLabel" text="Board Key:">
                      <font>
                         <Font size="18.0" />
                      </font>

@@ -183,6 +183,14 @@ public class TagManagerCtrl implements Initializable {
     public void editTag(ActionEvent actionEvent){
         Tag oldTag = tagListView.getSelectionModel().getSelectedItem();
         String title = tfTitle.getText();
+        // checks if the edited tag has a name
+        if(title.length() == 0)
+        {
+            // shows the warning text and doesn't change the tag
+            warningLabel.setText("You cannot have a\ntag without a name");
+            refresh();
+            return;
+        }
         Color fxColor = colorPicker.getValue();
         int intColor = colorParseToInt(fxColor);
         Tag newTag = new Tag(title, intColor);
