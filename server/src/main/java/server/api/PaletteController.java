@@ -37,4 +37,30 @@ public class PaletteController {
         return ResponseEntity.ok(saved);
     }
 
+    /**
+     * deletes the palette from the board
+     * @param boardId
+     * @param id
+     * @return - response entity
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Palette> deletePalette(@PathVariable int id) {
+        if(!ps.existsById(id)) return ResponseEntity.badRequest().build();
+        Palette p = ps.delete(id);
+        return ResponseEntity.ok(p);
+    }
+
+    /**
+     * edits palette (sets default)
+     * @param id
+     * @param palette
+     * @return - response entity
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<Palette> editPalette(@PathVariable("id") int id, @RequestBody Palette palette){
+        if(!ps.existsById(id)) return ResponseEntity.badRequest().build();
+        Palette updated = ps.updatePalette(ps.getById(id), palette);
+        return ResponseEntity.ok().build();
+    }
+
 }

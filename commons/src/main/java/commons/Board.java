@@ -58,6 +58,8 @@ public class Board {
         this.tags = new ArrayList<>();
         this.password = "";
         this.palettes = new ArrayList<>();
+        palettes.add(new Palette("default", 16777215, 0));
+        palettes.get(0).setIsdefault(true);
     }
 
     /**
