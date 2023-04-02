@@ -5,7 +5,10 @@ import commons.Card;
 import commons.CardList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import server.database.CardListRepositoryTest;
 import server.service.BoardService;
 import server.database.BoardRepositoryTest;
@@ -17,18 +20,21 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class BoardControllerTest {
     private BoardRepositoryTest repo;
     private BoardController con;
     private BoardService ser;
     private CardListRepositoryTest cl;
     private CardListService cardListService;
+    @Autowired
+    private SimpMessagingTemplate msgs;
 
     @BeforeEach
     public void setup() {
         repo = new BoardRepositoryTest();
         ser = new BoardService(repo);
-        con = new BoardController(ser);
+        con = new BoardController(ser, msgs);
         cl = new CardListRepositoryTest();
         cardListService = new CardListService(cl, repo);
     }

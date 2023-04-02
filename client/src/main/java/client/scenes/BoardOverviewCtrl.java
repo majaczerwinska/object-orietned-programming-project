@@ -133,7 +133,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      */
     public void setStompSession(){
         websocketClient.setStompSession(ServerUtils.SERVER);
-        System.out.println("StompSession created");
+        System.out.println("StompSession created in board overview");
     }
 
     /**
@@ -143,7 +143,12 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public void subscribeToBoard(int boardID){
         websocketClient.registerForMessages("/topic/boards/"+boardID, String.class, update -> {
             System.out.println("payload: "+ update);
-            refresh(null, false);
+            if(update.contains("refreshnamecolor")){
+                refreshName(boardID);
+                setColor();
+            } else {
+                refresh(null, false);
+            }
 //            mainCtrl.timeoutBoardRefresh(1000);
         });
     }

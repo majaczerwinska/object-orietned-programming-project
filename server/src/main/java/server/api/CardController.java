@@ -97,7 +97,7 @@ public class CardController {
 
         card.setId(id);
         acs.setCardInfo(card);
-        msgs.convertAndSend("/topic/boards/"+boardId , "Card edited on board#" + boardId);
+        msgs.convertAndSend("/topic/boards/"+boardId , "Card#" +id+ " edited on board#" + boardId);
 
         return ResponseEntity.ok().build();
     }
