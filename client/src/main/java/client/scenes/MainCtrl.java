@@ -83,6 +83,8 @@ public class MainCtrl {
 
     private CustomizationCtrl customizationCtrl;
     private Scene customization;
+    private WarningCtrl warningCtrl;
+    private Scene warning;
 
 
     public Map<Integer, CardComponent> cardIdComponentMap;
@@ -109,6 +111,7 @@ public class MainCtrl {
      * @param providePassword
      * @param editPassword
      * @param customization
+     * @param warning
      */
     public void initialize(Stage primaryStage,
                            Stage locker,
@@ -129,7 +132,8 @@ public class MainCtrl {
                            Pair<LockInUnlockedBoardCtrl, Parent> unlocked,
                            Pair<ProvidePasswordCtrl, Parent> providePassword,
                            Pair<CustomizationCtrl, Parent> customization,
-                           Pair<EditPasswordCtrl, Parent> editPassword
+                           Pair<EditPasswordCtrl, Parent> editPassword,
+                           Pair<WarningCtrl, Parent> warning
                            ) {
 
         this.cardIdComponentMap = new HashMap<>();
@@ -192,6 +196,9 @@ public class MainCtrl {
         this.editPasswordCtrl = editPassword.getKey();
         this.editPassword = new Scene(editPassword.getValue());
 
+        this.warningCtrl = warning.getKey();
+        this.warning = new Scene(warning.getValue());
+
         this.customizationCtrl = customization.getKey();
         this.customization = new Scene(customization.getValue());
 
@@ -247,6 +254,17 @@ public class MainCtrl {
         locker.setScene(editPassword);
         editPasswordCtrl.boardID = boardID;
         editPasswordCtrl.refresh();
+        locker.showAndWait();
+    }
+
+    /**
+     * Shows the popup for alerting that the board is rtead-only
+     * @param boardID the id of the board
+     */
+    public void showWarning(int boardID) {
+        locker.setTitle("Read-only!!");
+        locker.setScene(warning);
+        warningCtrl.boardID = boardID;
         locker.showAndWait();
     }
 
@@ -472,12 +490,16 @@ public class MainCtrl {
      * show card overview
      * @param cardID card id
      * @param boardID board id
+     * @param isLocked whether toe board is locked
      */
-    public  void showCard(int cardID, int boardID){
+    public  void showCard(int cardID, int boardID, boolean isLocked){
         primaryStage.setTitle("Card overview :)");
         primaryStage.setScene(card);
         cardCtrl.cardID = cardID;
         cardCtrl.boardID = boardID;
+        cardCtrl.isLocked = isLocked;
+        if(isLocked) cardCtrl.disable();
+        else cardCtrl.enable();
 
         primaryStage.show();
         cardCtrl.setInfo();

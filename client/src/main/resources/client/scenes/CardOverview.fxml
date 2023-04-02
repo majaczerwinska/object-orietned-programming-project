@@ -25,7 +25,7 @@
             <Font size="25.0" />
          </font>
       </Label>
-      <TextField fx:id="newTask" layoutX="30.0" layoutY="349.0" onKeyPressed="#createTask" />
+      <TextField fx:id="newTask" layoutX="29.0" layoutY="328.0" onKeyPressed="#createTask" />
       <Button fx:id="exit" layoutX="574.0" layoutY="1.0" mnemonicParsing="false" onAction="#exit" text="X" />
       <Label fx:id="label" layoutX="30.0" layoutY="333.0" textFill="#c92222">
          <font>
@@ -66,5 +66,6 @@
          </panes>
       </Accordion>
       <Label layoutX="248.0" layoutY="164.0" prefHeight="18.0" prefWidth="34.0" text="Tags:" />
+      <Label fx:id="readonly" layoutX="27.0" layoutY="366.0" prefHeight="18.0" prefWidth="266.0" textFill="#d11212" />
    </children>
 </AnchorPane>

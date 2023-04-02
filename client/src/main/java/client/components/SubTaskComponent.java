@@ -83,6 +83,21 @@ public class SubTaskComponent extends HBox {
         checkbox.setSelected(task.isChecked());
     }
 
+    public void disable(){
+        textField.setEditable(false);
+        delete.setOnAction(e ->{
+            return;
+        });
+        checkbox.setDisable(true);
+    }
+    public void enable(){
+        textField.setEditable(true);
+        delete.setOnAction(e ->{
+            delete();
+        });
+        checkbox.setDisable(false);
+    }
+
     /**
      * delete a subtask
      */

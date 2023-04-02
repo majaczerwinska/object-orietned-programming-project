@@ -377,7 +377,7 @@ public class CardComponent extends HBox implements Initializable {
         }
         System.out.println("joining card #" + cardID);
         System.out.println(self);
-        mainCtrl.showCard(cardID, boardID);
+        mainCtrl.showCard(cardID, boardID, isLocked);
     }
 
     /**
@@ -426,6 +426,7 @@ public class CardComponent extends HBox implements Initializable {
     public void readmode(){
         if(isLocked){
             btnDelete.setOnAction(e->{
+                mainCtrl.showWarning(boardID);
                 return;
             });
             tfTitle.setOnKeyTyped(event -> {

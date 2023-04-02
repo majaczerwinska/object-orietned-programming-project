@@ -220,15 +220,19 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public void disable(){
 
         btnTagManager.setOnAction(event -> {
+            mainCtrl.showWarning(boardID);
             return;
         });
         btncustomization.setOnAction(event -> {
+            mainCtrl.showWarning(boardID);
             return;
         });
         editBoardButton.setOnAction(event -> {
+            mainCtrl.showWarning(boardID);
             return;
         });
         addListButton.setOnAction(event -> {
+            mainCtrl.showWarning(boardID);
             return;
         });
 
@@ -510,7 +514,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     private void shortcut() {
         listViewTags.getScene().setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.E) {
-                if (highlightedCardComponent != null) mainCtrl.showCard(highlightedCardComponent.cardID, boardID);
+                if (highlightedCardComponent != null) mainCtrl.showCard(highlightedCardComponent.cardID, boardID,isLocked);
             } else if (event.getCode() == KeyCode.DELETE) {
                 if (highlightedCardComponent != null) highlightedCardComponent.deleteCard();
             }
@@ -575,6 +579,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     @FXML
     public void onEnterKeyPressed(KeyEvent event, int listID) {
         System.out.println("On enter key pressed called in boardoverviewcontroller with event "+event);
+        if(isLocked) return;
         if (event.getCode() == KeyCode.ENTER && !isCreatingCard) {
             isCreatingCard = true;
             // when the user presses the enter button

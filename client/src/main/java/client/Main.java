@@ -84,6 +84,7 @@ public class Main extends Application {
             var unlocked = FXML.load(LockInUnlockedBoardCtrl.class, "client", "scenes", "LockInUnlockedBoard.fxml");
             var providePassword = FXML.load(ProvidePasswordCtrl.class, "client", "scenes", "ProvidePassword.fxml");
             var editPassword = FXML.load(EditPasswordCtrl.class, "client", "scenes", "EditPassword.fxml");
+            var warning = FXML.load(WarningCtrl.class, "client", "scenes", "Warning.fxml");
             var customization = FXML.load(CustomizationCtrl.class, "client", "scenes", "Customization.fxml");
             System.out.println("Done with loading scenes");
             Stage locker = new Stage();
@@ -110,7 +111,8 @@ public class Main extends Application {
                     unlocked,
                     providePassword,
                     customization,
-                    editPassword);
+                    editPassword,
+                    warning);
 
 
         } catch (Exception e) {
