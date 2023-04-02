@@ -34,6 +34,8 @@ public class TagManagerCtrl implements Initializable {
     private TextField tfTitle;
     @FXML
     private ColorPicker colorPicker;
+    @FXML
+    private Label warningLabel;
 
 
     /**
@@ -145,6 +147,14 @@ public class TagManagerCtrl implements Initializable {
      */
     public void addTag(ActionEvent actionEvent){
         String title = tfTitle.getText();
+        // checks if the tag has a name
+        if(title.length() == 0)
+        {
+            // shows the warning text and doesn't create the tag
+            warningLabel.setText("You cannot create \na tag without a name");
+            refresh();
+            return;
+        }
         Color fxColor = colorPicker.getValue();
         int intColor = colorParseToInt(fxColor);
         Tag tag = new Tag(title, intColor);
@@ -173,6 +183,14 @@ public class TagManagerCtrl implements Initializable {
     public void editTag(ActionEvent actionEvent){
         Tag oldTag = tagListView.getSelectionModel().getSelectedItem();
         String title = tfTitle.getText();
+        // checks if the edited tag has a name
+        if(title.length() == 0)
+        {
+            // shows the warning text and doesn't change the tag
+            warningLabel.setText("You cannot have a\ntag without a name");
+            refresh();
+            return;
+        }
         Color fxColor = colorPicker.getValue();
         int intColor = colorParseToInt(fxColor);
         Tag newTag = new Tag(title, intColor);
