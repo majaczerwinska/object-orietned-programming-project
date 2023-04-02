@@ -140,16 +140,23 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * Subscribes to endpoint that listens to all updates of cards and lists from a specific board
      * @param boardID the boarId from the board we want updates from
      */
-    public void subscribeToBoard(int boardID){
-        websocketClient.registerForMessages("/topic/boards/"+boardID, String.class, update -> {
-            System.out.println("payload: "+ update);
-            if(update.contains("refreshnamecolor")){
-                refreshName(boardID);
-                setColor();
-            } else {
-                refresh(null, false);
-            }
-//            mainCtrl.timeoutBoardRefresh(1000);
+    public void subscribeToBoard(int boardID) {
+        websocketClient.registerForMessages("/topic/boards/" + boardID, String.class, update -> {
+            Platform.runLater(() -> {
+                System.out.println("payload: " + update);
+                if (update.contains("refreshnamecolor")) {
+                    setBoardName();
+                    setColor();
+                } else if(update.contains("Added card")) {
+                    String[] words = update.split(" ");
+                    Card c = server.getCard(Integer.parseInt(words[2]));
+                    System.out.println("refresh with focus to card#" + words[1]);
+                    refresh(c, false);
+                } else {
+                    refresh(null, false);
+                }
+                //            mainCtrl.timeoutBoardRefresh(1000);
+            });
         });
     }
 
@@ -162,6 +169,15 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
                     System.out.println("payload: "+ update);
                     refreshListViewTags();
         });
+    }
+
+    /**
+     * Sends message to /app/dest
+     * @param dest destination to send message to
+     * @param payload message to send
+     */
+    public void sendMessage(String dest, String payload){
+        websocketClient.sendMessage(dest, payload);
     }
 
     /**
@@ -402,7 +418,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
                         System.out.println("For loop in displaylist now at card: " + cc);
                         cc.self.setPosition(j++);
                         System.out.println("Set card's position ->"+cc);
-                        server.editCard(boardID, cc.self.getId(), cc.self);
+                        server.editCard(boardID, cc.self.getId(), cc.self, true);
                     }
                 }
             }

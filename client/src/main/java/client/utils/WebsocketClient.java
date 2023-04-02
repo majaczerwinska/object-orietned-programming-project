@@ -86,6 +86,6 @@ public class WebsocketClient {
 
     public void sendMessage(String dest, String payload){
         session.send(dest, payload);
-        System.out.println(session.getSessionId());
+//        System.out.println(session.getSessionId());
     }
 }

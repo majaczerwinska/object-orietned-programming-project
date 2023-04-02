@@ -4,6 +4,8 @@ import commons.Card;
 import commons.CardList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import server.service.CardListService;
@@ -26,6 +28,12 @@ public class CardListController {
     public CardListController(CardListService l, SimpMessagingTemplate msgs) {
         this.als = l;
         this.msgs = msgs;
+    }
+
+    @MessageMapping("/update/list/{boardId}")
+    public void messageClient(@DestinationVariable("boardId") int boardId){
+        msgs.convertAndSend("/topic/boards/"+boardId, "CardList added on board#" + boardId);
+
     }
 
     /**
@@ -69,7 +77,6 @@ public class CardListController {
     public ResponseEntity<CardList> addList(@PathVariable("boardId") int boardId, @RequestBody CardList list) {
         if(list.getName()==null) return ResponseEntity.badRequest().build();
         CardList saved = als.save(list, boardId);
-        msgs.convertAndSend("/topic/boards/"+boardId, "CardList added on board#" + boardId);
         if(saved == null) return ResponseEntity.badRequest().build();
 
         return ResponseEntity.ok(saved);

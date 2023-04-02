@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-//TODO
 public class CardComponent extends HBox implements Initializable {
 
 
@@ -46,6 +45,7 @@ public class CardComponent extends HBox implements Initializable {
 
     private BoardOverviewCtrl boardOverviewCtrl;
 
+    String originalValue = "title..";
 
     @FXML
     public TextField tfTitle;
@@ -143,6 +143,11 @@ public class CardComponent extends HBox implements Initializable {
                     tfTitle.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-alignment: center");
                 } else {
                     // TextField has lost focus
+                    System.out.println("originalValue = " + originalValue + "\nnew value = " + tfTitle.getText());
+                    if(!tfTitle.getText().equals(originalValue)){
+                        boardOverviewCtrl.sendMessage("/app/update/card/"+boardID, "Done updating card in component");
+                        originalValue = tfTitle.getText();
+                    }
                     tfTitle.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; " +
                             "-fx-alignment: center");
                 }
@@ -387,7 +392,7 @@ public class CardComponent extends HBox implements Initializable {
         System.out.println("Update card method called in card component for card=" + self);
         self.setTitle(tfTitle.getText());
 
-        server.editCard(boardID, cardID,self);
+        server.editCard(boardID, cardID,self, true);
         System.out.println("update card method exits with card="+ self);
     }
 
