@@ -32,7 +32,7 @@
          <children>
             <TextField fx:id="tfTitle" />
             <ColorPicker fx:id="colorPicker" />
-            <Label textAlignment="CENTER" />
+            <Label fx:id="warningLabel" textAlignment="CENTER" />
          </children>
       </VBox>
       <Button fx:id="btnUpdate" alignment="CENTER" layoutX="417.0" layoutY="350.0" mnemonicParsing="false" onAction="#editTag" prefHeight="30.0" prefWidth="90.0" text="Edit" />
