@@ -397,6 +397,25 @@ public class MainCtrl {
      * @param boardID the id of the board to join
      */
     public void showBoardOverview(int boardID){
+        prepareBoard(boardID);
+        boardOverviewCtrl.refresh(null, false);
+    }
+
+    /**
+     * show board overview
+     * @param boardID the id of the board to join
+     * @param saveCardPositions whether to update card position attributes in the server
+     */
+    public void showBoardOverview(int boardID, Boolean saveCardPositions) {
+        prepareBoard(boardID);
+        boardOverviewCtrl.refresh(null, saveCardPositions);
+    }
+
+    /**
+     * show board overview util function, prevent duplicate code
+     * @param boardID the board's id
+     */
+    private void prepareBoard(int boardID) {
         primaryStage.setTitle("Board overview :)");
         boardOverviewCtrl.boardID = boardID;
         primaryStage.setScene(boardOverwiew);
@@ -407,7 +426,6 @@ public class MainCtrl {
         boardOverviewCtrl.setColor();
         boardOverviewCtrl.setLock();
         boardOverviewCtrl.refreshListViewTags();
-        boardOverviewCtrl.refresh(null);
     }
 
     /**
@@ -511,9 +529,10 @@ public class MainCtrl {
     }
         /**
      * refresh board overview scene with newly polled data from the database
+         * @param saveCardPositions whether to save card position attributes
      */
-    public void refreshBoardOverview()  {
-        boardOverviewCtrl.refresh(null);
+    public void refreshBoardOverview(Boolean saveCardPositions)  {
+        boardOverviewCtrl.refresh(null, saveCardPositions);
     }
 
     /**
@@ -538,7 +557,7 @@ public class MainCtrl {
     public void timeoutBoardRefresh() {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Future<?> future = executor.submit(() -> {
-            boardOverviewCtrl.refresh(null);
+            boardOverviewCtrl.refresh(null, false);
         });
         try {
             future.get(200, TimeUnit.MILLISECONDS); // set a timeout of 5 seconds
@@ -559,7 +578,7 @@ public class MainCtrl {
     public void timeoutBoardRefresh(int mil) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Future<?> future = executor.submit(() -> {
-            boardOverviewCtrl.refresh(null);
+            boardOverviewCtrl.refresh(null, false);
         });
         try {
             future.get(mil, TimeUnit.MILLISECONDS); // set a timeout of 5 seconds

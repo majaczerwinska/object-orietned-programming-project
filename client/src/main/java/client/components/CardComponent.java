@@ -6,16 +6,17 @@ import client.scenes.MainCtrl;
 import client.utils.ServerUtils;
 import commons.Card;
 import commons.Tag;
+import commons.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 
 import java.io.IOException;
 import java.net.URL;
@@ -69,7 +70,8 @@ public class CardComponent extends HBox implements Initializable {
     private CheckBox checkMark;
     private boolean isLocked;
 
-
+    @FXML
+    private ProgressBar taskProgress;
 
     /**
      * The constructor for the component
@@ -189,6 +191,10 @@ public class CardComponent extends HBox implements Initializable {
         });
 
 
+        borderColorInit();
+        //TODO: debug 400 BAD REQUEST for this \/
+//        setTaskProgress();
+
 //        this.cardFrame.getScene().setOnKeyPressed(event -> {
 //            if (event.getCode() == KeyCode.DELETE) {
 //                if (highlighted) mainCtrl.showCard(cardID, boardID);
@@ -273,30 +279,71 @@ public class CardComponent extends HBox implements Initializable {
 
     }
 
+
+    /**
+     * get tasks, update card component to show how many are completed
+     */
+    public void setTaskProgress() {
+        List<Task> tasks = server.getTasksFromCard(cardID);
+        double completed = 0;
+        for (Task t : tasks) {
+            if (t.isChecked()) completed++;
+        }
+        double progress = completed / tasks.size();
+        taskProgress.setProgress(progress);
+    }
+
+    /**
+     * get tags and add their colours to the card component
+     */
+    public void borderColorInit() {
+        System.out.println("\n\n\nInitialising border colors");
+//        Set<Tag> tags = getTagColors();
+        List<Color> c = new ArrayList<>();
+//        for (Tag t : tags) {
+//            c.add(MainCtrl.colorParseToFXColor(t.getColor()));
+//        }
+        c.add(Color.YELLOWGREEN);
+        c.add(Color.LIGHTGOLDENRODYELLOW);
+        c.add(Color.LIGHTBLUE);
+        c.add(Color.HOTPINK);
+        c.add(Color.CORAL);
+        setMulticolouredBorder(c);
+    }
+
     /**
      * get list of colors for a specific tag
-     * //todo here
+     * //todo debug server method, currently gives bad request
+     * @return set of tags for this card
      */
-    public void getTagColors() {
-        Set<Tag> tags = server.getTagsForCard(cardID);
-        System.out.println(tags);
+    public Set<Tag> getTagColors() {
+        return server.getTagsForCard(cardID);
     }
 
     /**
      * //todo make this set the border to every color of the tags in this card
-     * @param pane the cards hbox
      * @param colors the list of javafx color elements
      */
-    public void setMulticolouredBorder(Pane pane, List<Color> colors) {
-        BorderStrokeStyle style = BorderStrokeStyle.SOLID;
-        double borderWidth = 3;
-
-        List<BorderStroke> borders = new ArrayList<>();
-        for (int i = 0; i < pane.getChildren().size(); i++) {
-            borders.add(new BorderStroke(colors.get(i % colors.size()), style, null, new BorderWidths(borderWidth)));
+    public void setMulticolouredBorder(List<Color> colors) {
+        List<Stop> stops = new ArrayList<>();
+        double size = colors.size();
+        double i = 0;
+        for (Color c : colors) {
+            double offset1 = i++ / size;
+            double offset2 = i / size;
+            stops.add(new Stop(offset1, c));
+            stops.add(new Stop(offset2, c));
         }
+        // Create a custom border with a LinearGradient stroke
+        Border border = new Border(
+                new BorderStroke(
+                        new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, stops),
+                        BorderStrokeStyle.SOLID,
+                        null,
+                        new BorderWidths(3)));
 
-        pane.setBorder(new Border((BorderStroke) borders));
+        // Set the HBox's border to the custom border
+        this.setBorder(border);
     }
 
     /**
@@ -370,7 +417,7 @@ public class CardComponent extends HBox implements Initializable {
         // UI update code here
         System.out.println("deleting card on board#"+ boardID + " (CardComponent.deleteCard(self)) " + self);
         server.deleteCard(self, boardID, cardListID);
-        mainCtrl.refreshBoardOverview();
+        mainCtrl.refreshBoardOverview(true);
     }
 
     /**

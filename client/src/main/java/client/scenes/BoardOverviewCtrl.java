@@ -143,7 +143,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public void subscribeToBoard(int boardID){
         websocketClient.registerForMessages("/topic/boards/"+boardID, String.class, update -> {
             System.out.println("payload: "+ update);
-            refresh(null);
+            refresh(null, false);
 //            mainCtrl.timeoutBoardRefresh(1000);
         });
     }
@@ -363,8 +363,10 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * @param cardLists card lists
      * @param allCards list of lists of cards
      * @param c - card for focus
+     * @param saveCardPositions whether to update the cards' positions in the database.
+     *                          only true when called from the client (in drag dropped)
      */
-    public void displayLists(List<CardList> cardLists, List<List<Card>> allCards, Card c){
+    public void displayLists(List<CardList> cardLists, List<List<Card>> allCards, Card c, Boolean saveCardPositions){
         int i = 0;
         for (CardList cardList : cardLists) {
 
@@ -383,13 +385,16 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             displayCards(cardListComponent.getVboxCards(), cardList.getId(), allCards.get(i),c);
             server.setListSize(cardList.getId(), cardListComponent.getVboxCards().getChildren().size());
             i++;
-            int j = 1;
-            for (Node cardComponent : cardListComponent.getVboxCards().getChildren()) {
-                if (cardComponent instanceof CardComponent) {
-                    CardComponent cc = (CardComponent) cardComponent;
-                    System.out.println("For loop in displaylist now at card: " + cc);
-                    cc.self.setPosition(j++);
-                    server.editCard(boardID, cc.self.getId(), cc.self);
+            if (saveCardPositions) {
+                int j = 1;
+                for (Node cardComponent : cardListComponent.getVboxCards().getChildren()) {
+                    if (cardComponent instanceof CardComponent) {
+                        CardComponent cc = (CardComponent) cardComponent;
+                        System.out.println("For loop in displaylist now at card: " + cc);
+                        cc.self.setPosition(j++);
+                        System.out.println("Set card's position ->"+cc);
+                        server.editCard(boardID, cc.self.getId(), cc.self);
+                    }
                 }
             }
             if(isLocked) cardListComponent.readonly();
@@ -484,8 +489,9 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     /**
      * Refresh scene from database
      * @param c - card for focus
+     * @param saveCardPositions whether to save card position attributes to server
      */
-    public void refresh(Card c) {
+    public void refresh(Card c, Boolean saveCardPositions) {
         Platform.runLater(new Runnable() {
             @Override public void run() {
                 System.out.println("Refreshing board overview");
@@ -495,7 +501,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
                     allCards.add(getCardsOfListFromServer(cl.getId()));
                 }
                 clearBoard();
-                displayLists(cardLists, allCards, c);
+                displayLists(cardLists, allCards, c, saveCardPositions);
                 shortcut();
             }
         });
@@ -556,7 +562,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         System.out.println("creating new card "+c+" in list id="+listID);
 
         c = server.addCard(c, boardID, listID);
-        refresh(c);
+        refresh(c, true);
         return c;
     }
 
