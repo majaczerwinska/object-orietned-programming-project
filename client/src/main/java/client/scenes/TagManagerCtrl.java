@@ -147,14 +147,6 @@ public class TagManagerCtrl implements Initializable {
      */
     public void addTag(ActionEvent actionEvent){
         String title = tfTitle.getText();
-        // checks if the tag has a name
-        if(title.length() == 0)
-        {
-            // shows the warning text and doesn't create the tag
-            warningLabel.setText("You cannot create \na tag without a name");
-            refresh();
-            return;
-        }
         Color fxColor = colorPicker.getValue();
         int intColor = colorParseToInt(fxColor);
         Tag tag = new Tag(title, intColor);
