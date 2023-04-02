@@ -7,7 +7,7 @@ import commons.Tag;
 import commons.Task;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
+
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -87,6 +87,9 @@ public class CardCtrl {
         }
     }
 
+    /**
+     * Disables write-mode
+     */
     public void disable(){
         removetag.setOnAction(e ->{
             return;
@@ -99,6 +102,10 @@ public class CardCtrl {
         newTask.setEditable(false);
         readonly.setText("This is read-only mode. You cannot edit.");
     }
+
+    /**
+     * Enables write-mode
+     */
     public void enable(){
         removetag.setOnAction(e ->{
             removeTagFromCard();

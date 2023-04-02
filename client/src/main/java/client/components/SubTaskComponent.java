@@ -83,6 +83,9 @@ public class SubTaskComponent extends HBox {
         checkbox.setSelected(task.isChecked());
     }
 
+    /**
+     * Disables write-mode
+     */
     public void disable(){
         textField.setEditable(false);
         delete.setOnAction(e ->{
@@ -90,6 +93,10 @@ public class SubTaskComponent extends HBox {
         });
         checkbox.setDisable(true);
     }
+
+    /**
+     * Enables write-mode
+     */
     public void enable(){
         textField.setEditable(true);
         delete.setOnAction(e ->{

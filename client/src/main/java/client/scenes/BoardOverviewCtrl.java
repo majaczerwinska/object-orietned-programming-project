@@ -514,7 +514,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     private void shortcut() {
         listViewTags.getScene().setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.E) {
-                if (highlightedCardComponent != null) mainCtrl.showCard(highlightedCardComponent.cardID, boardID,isLocked);
+                if (highlightedCardComponent != null)
+                    mainCtrl.showCard(highlightedCardComponent.cardID, boardID,isLocked);
             } else if (event.getCode() == KeyCode.DELETE) {
                 if (highlightedCardComponent != null) highlightedCardComponent.deleteCard();
             }

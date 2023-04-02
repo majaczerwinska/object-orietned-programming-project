@@ -9,6 +9,11 @@ public class WarningCtrl {
     private MainCtrl mainCtrl;
     public int boardID;
 
+    /**
+     * Constructor
+     * @param server the server
+     * @param mainCtrl the main controller
+     */
     @Inject
     public WarningCtrl(ServerUtils server, MainCtrl mainCtrl){
         this.mainCtrl = mainCtrl;
