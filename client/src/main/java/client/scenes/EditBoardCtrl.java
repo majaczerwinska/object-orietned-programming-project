@@ -122,7 +122,7 @@ public class EditBoardCtrl {
      * @return TextField
      */
     @FXML
-    private TextField getName() {
+    public TextField getName() {
         return name;
     }
 
@@ -131,7 +131,7 @@ public class EditBoardCtrl {
      * @return TextField
      */
     @FXML
-    private TextField getColor() {
+    public TextField getColor() {
         return color;
     }
 
@@ -140,7 +140,7 @@ public class EditBoardCtrl {
      * @return The Button object for the save button.
      */
     @FXML
-    private Button getSave() {
+    public Button getSave() {
         return save;
     }
 
@@ -149,7 +149,7 @@ public class EditBoardCtrl {
      * @return The Button object for the exit button.
      */
     @FXML
-    private Button getExit() {
+    public Button getExit() {
         return exit;
     }
 
@@ -158,7 +158,7 @@ public class EditBoardCtrl {
      * @return The Text object for the text field.
      */
     @FXML
-    private Text getText() {
+    public Text getText() {
         return text;
     }
 
@@ -167,7 +167,7 @@ public class EditBoardCtrl {
      * @return The Label object for the name label.
      */
     @FXML
-    private Label getNameLabel() {
+    public Label getNameLabel() {
         return nameLabel;
     }
 
@@ -176,7 +176,7 @@ public class EditBoardCtrl {
      * @return The Label object for the color label.
      */
     @FXML
-    private Label getColorLabel() {
+    public Label getColorLabel() {
         return colorLabel;
     }
 

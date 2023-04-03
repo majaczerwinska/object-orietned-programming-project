@@ -463,6 +463,21 @@ public class MainCtrl {
      */
     public void showEditBoard(int boardID) {
         primaryStage.setTitle("Show edit board :)");
+        // styling the edit board page
+
+        // changing the font family for the texts
+        editBoardCtrl.getColorLabel().setStyle("-fx-font-family: Avenir Book;");
+        editBoardCtrl.getExit().setStyle("-fx-font-family: Avenir Book;");
+        editBoardCtrl.getNameLabel().setStyle("-fx-font-family: Avenir Book;");
+        editBoardCtrl.getSave().setStyle("-fx-font-family: Avenir Book;");
+        editBoardCtrl.getText().setStyle("-fx-font-family: Avenir Book;");
+
+        // rounding the buttons and text fields
+        editBoardCtrl.getExit().setStyle("-fx-background-radius: 15;");
+        editBoardCtrl.getName().setStyle("-fx-background-radius: 7;");
+        editBoardCtrl.getSave().setStyle("-fx-background-radius: 7;");
+        editBoardCtrl.getColor().setStyle("-fx-background-radius: 7;");
+
         primaryStage.setScene(editBoard);
         editBoardCtrl.boardId = boardID;
         primaryStage.show();
