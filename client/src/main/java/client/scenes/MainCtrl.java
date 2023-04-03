@@ -24,6 +24,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import javafx.stage.Screen;
+import javafx.scene.text.Font;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -452,6 +454,9 @@ public class MainCtrl {
     public void setStompSession(){
         boardOverviewCtrl.setStompSession();
         tagManagerCtrl.setStompSession();
+        cardCtrl.setStompSession();
+        listCreationCtrl.setStompSession();
+        customizationCtrl.setStompSession();
     }
 
     /**
@@ -508,14 +513,38 @@ public class MainCtrl {
 
     }
 
-
-
     /**
      * Shows board creation scene
      */
     public void showBoardCreation(){
         primaryStage.setTitle("Board creation overview :)");
+        // styling the page
+
+        // setting the font size for the text
+        double screenWidth = Screen.getPrimary().getBounds().getWidth();
+        boardCreationCtrl.getTitleLabel().setFont(Font.font(screenWidth * 0.03));
+        boardCreationCtrl.getBoardKeyLabel().setFont(Font.font(screenWidth * 0.015));
+        boardCreationCtrl.getBoardTitleLabel().setFont(Font.font(screenWidth * 0.015));
+        boardCreationCtrl.getStopCreatingBoardButton().setFont(Font.font(screenWidth * 0.012));
+        boardCreationCtrl.getCreateBoardButton().setFont(Font.font(screenWidth * 0.015));
+
+        // setting the font family for the text
+        boardCreationCtrl.getTitleLabel().setStyle("-fx-font-family: Avenir Book;");
+        boardCreationCtrl.getBoardKeyLabel().setStyle("-fx-font-family: Avenir Book;");
+        boardCreationCtrl.getBoardTitleLabel().setStyle("-fx-font-family: Avenir Book;");
+        boardCreationCtrl.getCreateBoardButton().setStyle("-fx-font-family: Avenir Book;");
+        boardCreationCtrl.getStopCreatingBoardButton().setStyle("-fx-font-family: Avenir Book;");
+
+        // round the corners for the text areas
+        boardCreationCtrl.getBoardKeyTextField().setStyle("-fx-background-radius: 7;");
+        boardCreationCtrl.getBoardTitleTextField().setStyle("-fx-background-radius: 7;");
+
+        // round the corners of the buttons
+        boardCreationCtrl.getCreateBoardButton().setStyle("-fx-background-radius: 7;");
+        boardCreationCtrl.getStopCreatingBoardButton().setStyle("-fx-background-radius: 7;");
+
         primaryStage.setScene(boardCreation);
+        primaryStage.setFullScreen(true);
         primaryStage.show();
     }
 

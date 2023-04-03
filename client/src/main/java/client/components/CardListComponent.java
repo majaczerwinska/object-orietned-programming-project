@@ -135,12 +135,18 @@ public class CardListComponent extends VBox{
             Card c = server.getCard(Integer.parseInt(db.getString()));
             CardComponent cardComponent = mainCtrl.cardIdComponentMap.get(c.getId());
             Card newcard = server.changeListOfCard(listId,c);
+
             System.out.println("\n\n\n\n\n\n "+getDroppedPosition(event));
             server.setPosition(newcard,getDroppedPosition(event));
             //newcard.setPosition(getDroppedPosition(event));
             System.out.println("\n\nSetting new card position to " +
                     "p="+getDroppedPosition(event)+" for card="+newcard+"\n\n");
             //server.editCard(newcard.getId(), boardId, newcard);
+
+//            newcard.setPosition(getDroppedPosition(event));
+//            System.out.println("\n\nSetting new card position to p="+newcard.getPosition()+" for card="+newcard+"\n\n");
+//            server.editCard(newcard.getId(), boardId, newcard, true);
+
             mainCtrl.cardIdComponentMap.remove(c.getId());
             mainCtrl.cardIdComponentMap.put(newcard.getId(), cardComponent);
             success = true;
@@ -195,34 +201,6 @@ public class CardListComponent extends VBox{
     public void hideDropLine(Line l) {
         vboxCards.getChildren().remove(l);
     }
-
-
-//    /**
-//     * set the position attribute of every card in the vbox
-//     * to its position in the vbox
-//     */
-//    public void updateCardPositionAttributes() {
-//        ObservableList<Node> vboxChildren = vboxCards.getChildren();
-//        for (int i = 0; i < vboxChildren.size(); i++) {
-//            Node node = vboxChildren.get(i);
-//            System.out.println(node);
-//            System.out.println(i);
-//            Integer id = mainCtrl.cardComponentToCardId((CardComponent) node);
-//            if (id == null) {
-//                System.out.println(mainCtrl.cardIdComponentMap);
-//                throw new RuntimeException("card component to card id " +
-//                        "returned null in updatecardpositions for node="+node);
-//            }
-//            System.out.println("card id="+id);
-//
-//            Card c = server.getCard(id);
-//            c.setPosition(i);
-//            server.editCard(id, boardId, c);
-//        }
-//    }
-
-
-
 
 
     /**

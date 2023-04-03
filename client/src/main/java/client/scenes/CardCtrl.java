@@ -22,6 +22,7 @@ import java.util.Set;
 public class CardCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    private final WebsocketClient websocketClient;
 
     @FXML
     private Label label;
@@ -65,11 +66,21 @@ public class CardCtrl {
      *
      * @param server -
      * @param mainCtrl -
+     * @param websocketClient -
      */
     @Inject
-    public CardCtrl(ServerUtils server, MainCtrl mainCtrl){
+    public CardCtrl(ServerUtils server, MainCtrl mainCtrl, WebsocketClient websocketClient){
         this.mainCtrl = mainCtrl;
         this.server = server;
+        this.websocketClient = websocketClient;
+    }
+
+    /**
+     * Creates stomp session
+     */
+    public void setStompSession(){
+        websocketClient.setStompSession(ServerUtils.SERVER);
+        System.out.println("StompSession created in card overview");
     }
 
     /**
@@ -133,6 +144,7 @@ public class CardCtrl {
     public void exit(){
         System.out.println(boardID + "cardexit");
         mainCtrl.showBoardOverview(boardID, true);
+        websocketClient.sendMessage("/app/update/card/"+boardID, "Done updating card in CardOverview");
     }
 
     /**
@@ -191,7 +203,7 @@ public class CardCtrl {
             Card card= new Card(text.getText());
             card.setDescription(area.getText());
             card.setColor(MainCtrl.colorParseToInt(palette.getValue()));
-            server.editCard(boardID, cardID,card);
+            server.editCard(boardID, cardID,card, true);
             warning.setText("");
         }
     }

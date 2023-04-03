@@ -205,12 +205,13 @@ public class ServerUtils {
      * @param boardId the board the card is in
      * @param id the id of the card to edit
      * @param card the new card the old card is replaced by
+     * @param ignore indicates whether websockets should ignore this update
      * @return return the card edited
      */
-    public Card editCard(int boardId, int id, Card card) {
+    public Card editCard(int boardId, int id, Card card, boolean ignore) {
         try {
             return ClientBuilder.newClient(new ClientConfig())
-                    .target(SERVER).path("api/cards/edit/" + boardId + "/" + id)
+                    .target(SERVER).path("api/cards/edit/" + boardId + "/" + id + "/" + ignore)
                     .request(APPLICATION_JSON)
                     .accept(APPLICATION_JSON)
                     .put(Entity.entity(card, APPLICATION_JSON), Card.class);

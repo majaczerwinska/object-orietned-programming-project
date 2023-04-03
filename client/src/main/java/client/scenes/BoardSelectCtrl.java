@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.prefs.Preferences;
 
-public class BoardSelectCtrl{
+public class BoardSelectCtrl {
 
     private final String saveID = "boardSave";
     private Preferences prefs;
@@ -50,7 +50,7 @@ public class BoardSelectCtrl{
      * @param mainCtrl
      */
     @Inject
-    public BoardSelectCtrl(ServerUtils server, MainCtrl mainCtrl){
+    public BoardSelectCtrl(ServerUtils server, MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
         this.prefs = Preferences.userRoot().node(this.getClass().getName());
@@ -162,10 +162,8 @@ public class BoardSelectCtrl{
      * !not tested!
      * checks if the board you want to join exists, if yes saves and joins it,
      * otherwise throws exception and popup window
-     * @param mouseEvent - click
      */
-    @FXML
-    public void saveBoardButton(MouseEvent mouseEvent){
+    public void saveBoardButton(){
         String key = boardKey.getText();
         try {
             Board board = server.getBoardByKey(key);
@@ -186,19 +184,15 @@ public class BoardSelectCtrl{
 
     /**
      * (should) take you to board creation scene
-     * @param mouseEvent - click
      */
-    @FXML
-    public void goCreate(MouseEvent mouseEvent){
+    public void goCreate(){
         mainCtrl.showBoardCreation();
     }
 
     /**
      * takes you back to the landing page
-     * @param mouseEvent - click
      */
-    @FXML
-    public void back(MouseEvent mouseEvent){
+    public void back(){
         mainCtrl.showServerSelect();
     }
 

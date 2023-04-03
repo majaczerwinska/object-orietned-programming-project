@@ -28,10 +28,11 @@
             <Insets top="5.0" />
          </padding>
       </VBox>
-      <VBox layoutX="465.0" layoutY="79.0" prefHeight="242.0" prefWidth="127.0" spacing="10.0">
+      <VBox alignment="TOP_CENTER" layoutX="465.0" layoutY="79.0" prefHeight="242.0" prefWidth="127.0" spacing="10.0">
          <children>
             <TextField fx:id="tfTitle" />
             <ColorPicker fx:id="colorPicker" />
+            <Label fx:id="warningLabel" textAlignment="CENTER" />
          </children>
       </VBox>
       <Button fx:id="btnUpdate" alignment="CENTER" layoutX="417.0" layoutY="350.0" mnemonicParsing="false" onAction="#editTag" prefHeight="30.0" prefWidth="90.0" text="Edit" />
