@@ -16,7 +16,7 @@
       <Label fx:id="selectedServerLabel" text="Selected server:" AnchorPane.bottomAnchor="225.0" AnchorPane.rightAnchor="215.0" />
       <Label fx:id="selectedServer" text="http://localhost:8080" AnchorPane.bottomAnchor="225.0" AnchorPane.rightAnchor="75.0" />
       <Button fx:id="testConnection" layoutX="300.0" layoutY="222.0" mnemonicParsing="false" onAction="#onTestConnection" text="Test Connection" AnchorPane.bottomAnchor="150.0" AnchorPane.rightAnchor="200.0" />
-      <Label fx:id="connectionStatus" text="Unknown" AnchorPane.bottomAnchor="185.0" AnchorPane.rightAnchor="175.0" />
+      <Label fx:id="connectionStatus" text="Unknown" AnchorPane.bottomAnchor="185.0" AnchorPane.rightAnchor="100.0" />
       <Label fx:id="connectionLabel" text="Connection:" AnchorPane.bottomAnchor="185.0" AnchorPane.rightAnchor="235.0" />
       <Label fx:id="selectTalioServer" text="Please select a  talio server" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="30.0" />
       <Button fx:id="goBackButton" layoutX="510.0" layoutY="349.0" mnemonicParsing="false" onAction="#goBackToMainMenuButtonHandler" text="Go back to main menu" textFill="#a81b1b" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
