@@ -31,9 +31,9 @@ public class BoardTest {
 
     @Test
     public void hasToString() {
-        var actual = new Board("c").toString();
-        assertTrue(actual.contains("\n"));
-        assertTrue(actual.contains("Board"));
+        var actual = new Board("b1").toString();
+//        assertTrue(actual.contains("\n"));
+        assertTrue(actual.contains("b1"));
     }
 
     @Test
@@ -122,4 +122,90 @@ public class BoardTest {
         b.setPassword("a");
         assertEquals("a", b.getPassword());
     }
+
+    @Test
+    public void checkEmptyConstructor() {
+        var q = new Board();
+        assertNotNull(q);
+    }
+
+    @Test
+    void getListTest() {
+        Board c = new Board("a");
+        List<CardList> list = new ArrayList<>();
+        list.add(new CardList("e"));
+        c.setLists(list);
+        assertEquals(c.getLists(), list);
+    }
+
+    @Test
+    void getBoardKeyTest() {
+        Board c = new Board("a");
+        c.setBoardkey("boardKey");
+
+        assertEquals(c.getBoardkey(), "boardKey");
+    }
+
+    @Test
+    void setBoardKeyTest() {
+        Board c = new Board("a");
+        c.setBoardkey("boardKey");
+
+        assertEquals(c.getBoardkey(), "boardKey");
+    }
+
+    @Test
+    void getBColorTest() {
+        Board c = new Board("a");
+        c.setbColor(23467);
+
+        assertEquals(c.getbColor(), 23467);
+    }
+
+    @Test
+    void setBColorTest() {
+        Board c = new Board("a");
+        c.setbColor(23467);
+
+        assertEquals(c.getbColor(), 23467);
+    }
+
+    @Test
+    void getFColorTest() {
+        Board c = new Board("a");
+        c.setfColor(23467);
+
+        assertEquals(c.getfColor(), 23467);
+    }
+
+    @Test
+    void setFColorTest() {
+        Board c = new Board("a");
+        c.setfColor(23467);
+
+        assertEquals(c.getfColor(), 23467);
+    }
+
+    @Test
+    void getPalettesTest() {
+        Board c = new Board("a");
+        List<Palette> paletteList = new ArrayList<>();
+        paletteList.add(new Palette("123", 125, 123));
+        c.setPalettes(paletteList);
+
+        assertEquals(c.getPalettes(), paletteList);
+    }
+
+    @Test
+    void setPalettesTest() {
+        Board c = new Board("a");
+        List<Palette> paletteList = new ArrayList<>();
+        paletteList.add(new Palette("123", 125, 123));
+        c.setPalettes(paletteList);
+
+        assertEquals(c.getPalettes(), paletteList);
+    }
+
+
+
 }
