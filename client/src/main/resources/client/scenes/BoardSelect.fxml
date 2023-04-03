@@ -45,6 +45,7 @@
                               <Insets top="-61.0" />
                            </VBox.margin>
                         </Label>
+                        <Label fx:id="warning" prefHeight="18.0" prefWidth="263.0" textFill="#d40b0b" />
                         <Label prefWidth="187.0" text="Enter the key">
                            <padding>
                               <Insets bottom="3.0" right="10.0" />

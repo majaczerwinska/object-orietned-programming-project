@@ -90,7 +90,7 @@ public class CardListComponent extends VBox{
         // undo the highlight. called when a dragged card leaves the bounds of list
         setOnDragExited(event -> {
             String style = getStyle();
-            style.replace("-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 13, 0, 0, 6);", "");
+            style =style.replace("-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 13, 0, 0, 6);", "");
             setStyle(style);
             hideDropLine(this.highlight);
         });

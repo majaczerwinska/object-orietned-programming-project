@@ -19,7 +19,7 @@
       <Text fx:id="connectionStatus" layoutX="375.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Unknown" />
       <Text layoutX="300.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Connection:" />
       <Text layoutX="25.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select a  talio server" />
-      <Button fx:id="exitBtn" layoutX="510.0" layoutY="349.0" mnemonicParsing="false" onAction="#exitApp" text="Exit App" textFill="#a81b1b" />
+      <Button fx:id="exitBtn" layoutX="510.0" layoutY="349.0" mnemonicParsing="false" onAction="#exitApp" text="Back" />
       <Button fx:id="removeServer" layoutX="301.0" layoutY="257.0" mnemonicParsing="false" onAction="#onDeleteAddress" text="Remove Server" />
    </children>
 </AnchorPane>

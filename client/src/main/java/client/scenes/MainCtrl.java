@@ -304,6 +304,7 @@ public class MainCtrl {
     public void showSelect() {
         primaryStage.setTitle("Board selection");
         primaryStage.setScene(boardSelect);
+        boardSelectCtrl.warning.setText("");
         primaryStage.show();
         boardSelectCtrl.refresh();
     }
@@ -312,9 +313,9 @@ public class MainCtrl {
      * shows a popup
      */
     public void showPopup() {
-        primaryStage.setTitle("Something went wrong");
-        primaryStage.setScene(popupJoin);
-        primaryStage.show();
+        locker.setTitle("Something went wrong");
+        locker.setScene(popupJoin);
+        locker.show();
         popupJoinCtrl.refresh();
     }
 
