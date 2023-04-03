@@ -70,6 +70,7 @@ public class Main extends Application {
             var landing = FXML.load(LandingCtrl.class, "client", "scenes", "Landing.fxml");
             var publicBoard = FXML.load(PublicBoardCtrl.class, "client", "scenes", "PublicBoard.fxml");
             var card = FXML.load(CardCtrl.class, "client", "scenes", "CardOverview.fxml");
+            var tagPopUp = FXML.load(TagPopUpCtrl.class, "client", "scenes", "TagPopUp.fxml");
             var selectBoard = FXML.load(BoardSelectCtrl.class, "client", "scenes", "BoardSelect.fxml");
             var popupJoin = FXML.load(PopupJoinCtrl.class, "client", "scenes", "popupJoin.fxml");
             var listCreate = FXML.load(ListCreationCtrl.class, "client", "scenes", "ListCreate.fxml");
@@ -108,6 +109,7 @@ public class Main extends Application {
                     listEdit,
                     editBoard,
                     help,
+                    tagPopUp,
                     unlocked,
                     providePassword,
                     customization,

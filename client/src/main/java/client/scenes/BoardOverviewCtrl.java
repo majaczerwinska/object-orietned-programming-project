@@ -539,6 +539,10 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
                     mainCtrl.showCard(highlightedCardComponent.cardID, boardID,isLocked);
             } else if (event.getCode() == KeyCode.DELETE) {
                 if (highlightedCardComponent != null) highlightedCardComponent.deleteCard();
+            } else if (event.getCode() == KeyCode.T) {
+                mainCtrl.showTagPopUp(this.boardID);
+            } else if (event.getCode() == KeyCode.SLASH) {
+                mainCtrl.showHelpScene();
             }
         });
     }

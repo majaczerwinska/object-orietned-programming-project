@@ -88,11 +88,13 @@ public class MainCtrl {
     private WarningCtrl warningCtrl;
     private Scene warning;
 
+    private TagPopUpCtrl tagPopUpCtrl;
+    private Scene tagPopUpScene;
+
 
     public Map<Integer, CardComponent> cardIdComponentMap;
 
     /**
-     * 
      * @param landing
      * @param primaryStage
      * @param card
@@ -106,6 +108,7 @@ public class MainCtrl {
      * @param editBoard
      * @param boardCreation
      * @param help
+     * @param tagPopUp
      * @param taskCreator
      * @param listEdit
      * @param unlocked
@@ -131,6 +134,7 @@ public class MainCtrl {
                            Pair<ListEditCtrl, Parent> listEdit,
                            Pair<EditBoardCtrl, Parent> editBoard,
                            Pair<HelpCtrl, Parent> help,
+                           Pair<TagPopUpCtrl, Parent> tagPopUp,
                            Pair<LockInUnlockedBoardCtrl, Parent> unlocked,
                            Pair<ProvidePasswordCtrl, Parent> providePassword,
                            Pair<CustomizationCtrl, Parent> customization,
@@ -184,9 +188,12 @@ public class MainCtrl {
 
         this.editBoardCtrl = editBoard.getKey();
         this.editBoard = new Scene(editBoard.getValue());
-        
+
         this.helpCtrl = help.getKey();
         this.helpScene = new Scene(help.getValue());
+
+        this.tagPopUpCtrl = tagPopUp.getKey();
+        this.tagPopUpScene = new Scene(tagPopUp.getValue());
 
 
         this.lockInUnlockedBoardCtrl = unlocked.getKey();
@@ -227,6 +234,7 @@ public class MainCtrl {
 
     /**
      * Shows the popup when choosing to lock it
+     *
      * @param boardID the id of the board
      */
     public void showLockInUnlockedBoard(int boardID) {
@@ -238,6 +246,7 @@ public class MainCtrl {
 
     /**
      * Shows the popup for providing a password
+     *
      * @param boardID the id of the board
      */
     public void showProvidePassword(int boardID) {
@@ -249,6 +258,7 @@ public class MainCtrl {
 
     /**
      * Shows the popup for providing a password
+     *
      * @param boardID the id of the board
      */
     public void showEditPassword(int boardID) {
@@ -273,7 +283,7 @@ public class MainCtrl {
     /**
      * closes the pop up of locker
      */
-    public void closeLocker(){
+    public void closeLocker() {
         locker.close();
     }
 
@@ -311,6 +321,7 @@ public class MainCtrl {
 
     /**
      * Shows the tag manager scene
+     *
      * @param boardID the board id for which to show the tag manager
      */
     public void showTagManager(int boardID) {
@@ -326,7 +337,6 @@ public class MainCtrl {
 
 
     /**
-     *
      * @param cardComponent card component instance
      * @return int card id
      */
@@ -359,18 +369,19 @@ public class MainCtrl {
      * @param fxColor the color to be parsed
      * @return return the color awtColor
      */
-    public static int colorParseToInt(Color fxColor){
-        return ((int)(fxColor.getRed() * 255) << 16)
-                | ((int)(fxColor.getGreen() * 255) << 8)
-                | (int)(fxColor.getBlue() * 255);
+    public static int colorParseToInt(Color fxColor) {
+        return ((int) (fxColor.getRed() * 255) << 16)
+                | ((int) (fxColor.getGreen() * 255) << 8)
+                | (int) (fxColor.getBlue() * 255);
     }
 
     /**
      * Method that parses int to fxColor
+     *
      * @param intColor the color to be parsed
      * @return return the color fxColor
      */
-    public static Color colorParseToFXColor(int intColor){
+    public static Color colorParseToFXColor(int intColor) {
         return Color.rgb(
                 (intColor >> 16) & 0xFF, // red component
                 (intColor >> 8) & 0xFF, // green component
@@ -381,9 +392,10 @@ public class MainCtrl {
 
     /**
      * shows a scene where you can create a new list and add it to the public board
+     *
      * @param boardId - board id
      */
-    public void showListCreate(int boardId){
+    public void showListCreate(int boardId) {
         primaryStage.setTitle("List creation");
         primaryStage.setScene(listCreate);
         listCreationCtrl.boardID = boardId;
@@ -402,6 +414,7 @@ public class MainCtrl {
 
     /**
      * Edit board with given boardID
+     *
      * @param boardID the boardID of the board
      */
     public void showEditBoard(int boardID) {
@@ -414,6 +427,7 @@ public class MainCtrl {
 
     /**
      * Shows board overview
+     *
      * @param boardID the id of the board to join
      */
     public void showBoardOverview(int boardID){
@@ -451,7 +465,7 @@ public class MainCtrl {
     /**
      * Calls the methods to create a stomp session in boardOverviewCtrl and tagManagerCtrl
      */
-    public void setStompSession(){
+    public void setStompSession() {
         boardOverviewCtrl.setStompSession();
         tagManagerCtrl.setStompSession();
         cardCtrl.setStompSession();
@@ -461,27 +475,30 @@ public class MainCtrl {
 
     /**
      * Subscribes to endpoint that listens to all updates of cards and lists from a specific board
+     *
      * @param boardId the boarId from the board we want updates from
      */
-    public void subscribeToBoard(int boardId){
+    public void subscribeToBoard(int boardId) {
         boardOverviewCtrl.subscribeToBoard(boardId);
     }
 
     /**
      * Subscribes to endpoint that listens to all updates of tags from a specific board
+     *
      * @param boardId the boarId from the board we want updates from
      */
-    public void subscribeToTagsFromBoard(int boardId){
+    public void subscribeToTagsFromBoard(int boardId) {
         boardOverviewCtrl.subscribeToTagsFromBoard(boardId);
     }
 
 
     /**
      * calls methood from boardoverview to color board's font
+     *
      * @param boardId
      * @param color
      */
-    public void colorBF(int boardId, int color){
+    public void colorBF(int boardId, int color) {
         boardOverviewCtrl.boardID = boardId;
         boardOverviewCtrl.colorFont(color);
     }
@@ -493,7 +510,8 @@ public class MainCtrl {
 
     /**
      * show card overview
-     * @param cardID card id
+     *
+     * @param cardID  card id
      * @param boardID board id
      * @param isLocked whether toe board is locked
      */
@@ -516,7 +534,7 @@ public class MainCtrl {
     /**
      * Shows board creation scene
      */
-    public void showBoardCreation(){
+    public void showBoardCreation() {
         primaryStage.setTitle("Board creation overview :)");
         // styling the page
 
@@ -559,6 +577,7 @@ public class MainCtrl {
 
     /**
      * call the select ctrl savekey method to update after creating a board
+     *
      * @param boardkey the board key to be saved to the client
      */
     public void saveBoardByKey(String boardkey) {
@@ -568,17 +587,19 @@ public class MainCtrl {
 
     /**
      * shows scene for editing the list
+     *
      * @param listId
      * @param boardId
      */
-    public void showListEdit(int listId, int boardId){
+    public void showListEdit(int listId, int boardId) {
         primaryStage.setTitle("List edit");
         primaryStage.setScene(listEdit);
         listEditCtrl.listId = listId;
         listEditCtrl.boardId = boardId;
         primaryStage.show();
     }
-        /**
+
+    /**
      * refresh board overview scene with newly polled data from the database
          * @param saveCardPositions whether to save card position attributes
      */
@@ -589,12 +610,14 @@ public class MainCtrl {
     /**
      * refreshes
      */
-    public void refreshListColours(){
+    public void refreshListColours() {
         customizationCtrl.refresh();
         customizationCtrl.colourlist();
     }
+
     /**
      * add event listener for the enter key, intermediate function
+     *
      * @param listID the list mouse is currently in
      */
     public void addEnterKeyListener(int listID) {
@@ -624,6 +647,7 @@ public class MainCtrl {
 
     /**
      * refresh board overview after custom timeout
+     *
      * @param mil the timeout in milliseconds
      */
     public void timeoutBoardRefresh(int mil) {
@@ -644,15 +668,18 @@ public class MainCtrl {
 
     /**
      * Creates a card
+     *
      * @param listID the id of the list the card is added to
      * @return the card that was created
      */
     public Card createCard(int listID) {
         return boardOverviewCtrl.createCard(listID);
     }
+
     /**
      * refresh a specific list
-     * @param listID the lists id
+     *
+     * @param listID    the lists id
      * @param component the cardlist component
      */
     public void refreshListView(int listID, CardListComponent component) {
@@ -661,9 +688,10 @@ public class MainCtrl {
 
     /**
      * takes you to the customization scene
+     *
      * @param boardId
      */
-    public void showCustomization(int boardId){
+    public void showCustomization(int boardId) {
         primaryStage.setTitle("Customization");
         primaryStage.setScene(customization);
         customizationCtrl.boardId = boardId;
@@ -673,19 +701,44 @@ public class MainCtrl {
     }
 
     /**
-     * gets the boardOverview Controller
-     * @return the boardOverview Controller
+     * shows board selection scene
+     *
+     * @param boardID the ID of the board
      */
-    public BoardOverviewCtrl getBoardOverviewCtrl() {
-        return this.boardOverviewCtrl;
+    public void showTagPopUp(int boardID) {
+        primaryStage.setTitle("Tag pop-up");
+        primaryStage.setScene(tagPopUpScene);
+        primaryStage.show();
+        tagPopUpCtrl.refresh();
+        tagPopUpCtrl.setBoardID(boardID);
+
     }
 
     /**
-     * Gets the boardOverview Scene
-     * @return the boardOverview Scene
+     * shows board selection scene
      */
-    public Scene getBoardOverviewScene() {
-        return this.boardOverwiew;
+    public void showHelpScene() {
+        primaryStage.setTitle("Help Scene");
+        primaryStage.setScene(helpScene);
+        primaryStage.show();
+        helpCtrl.refresh();
     }
 
-}
+        /** gets the boardOverview Controller
+         * @return the boardOverview Controller
+         */
+        public BoardOverviewCtrl getBoardOverviewCtrl() {
+            return this.boardOverviewCtrl;
+        }
+
+        /**
+         * Gets the boardOverview Scene
+         * @return the boardOverview Scene
+         */
+        public Scene getBoardOverviewScene() {
+            return this.boardOverwiew;
+        }
+
+    }
+
+
