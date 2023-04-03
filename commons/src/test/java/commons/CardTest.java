@@ -100,8 +100,8 @@ public class CardTest {
     @Test
     void setPosition() {
         Card c = new Card("a");
-        c.setPosition(1.0);
-        assertEquals(c.getPosition(), 1.0);
+        c.setPosition(1);
+        assertEquals(c.getPosition(), 1);
     }
 
     @Test

@@ -77,7 +77,10 @@ public class CardController {
     public ResponseEntity<Card> deleteCard(@PathVariable("boardId") int boardId,
                                            @PathVariable("listId") int listId, @PathVariable("id") int id) {
         System.out.println("Received DELETE request for boardId="+boardId+ " listID="+listId+" card id="+id);
-        if(!acs.existsById(id)) return ResponseEntity.badRequest().build();
+        if(!acs.existsById(id)) {
+
+            return ResponseEntity.badRequest().build();
+        }
         Card card = acs.delete(acs.getById(id), listId);
         msgs.convertAndSend("/topic/boards/"+boardId, "Card deleted on board#" + boardId);
 
@@ -119,6 +122,25 @@ public class CardController {
     }
 
     /**
+     * Sets the position
+     * @param cardId the id of the card
+     * @param position the position
+     * @param card the card
+     * @return the card
+     */
+    @PostMapping("/position/{cardId}/{position}")
+    public ResponseEntity<Card> setPosition(@PathVariable("cardId") int cardId,
+                                         @PathVariable("position") int position, @RequestBody Card card) {
+        if(!acs.existsById(cardId) || card.getTitle() == null){
+            return ResponseEntity.badRequest().build();
+        }
+        card.setId(cardId);
+        acs.setPosition(card,position);
+       // acs.setCardInfo(card);
+        return ResponseEntity.ok().build();
+    }
+
+    /**
      * Chanhges the list to which the card belongs to
      * @param id the id of the card
      * @param listid the id of the new list
@@ -130,18 +152,19 @@ public class CardController {
                                                   @RequestBody Card card) {
         System.out.println("Changing list for card="+id+" to list="+listid);
 //        card.setId(id);
-        System.out.println(card);
-        System.out.println(acs.getListForCard(card));
+    //    System.out.println(card);
+     //   System.out.println(acs.getListForCard(card));
 
         if(!acs.existsById(id) || card.getTitle() == null || acs.getListForCard(card)==null){
-            System.out.println("ChangeList for card id="+id+" failed!");
-            System.out.println(!acs.existsById(id));
-            System.out.println(card.getTitle() == null);
-            System.out.println(acs.getListForCard(card)==null);
+//            System.out.println("ChangeList for card id="+id+" failed!");
+//            System.out.println(!acs.existsById(id));
+//            System.out.println(card.getTitle() == null);
+//            System.out.println(acs.getListForCard(card)==null);
             return ResponseEntity.badRequest().build();
         } else {
             System.out.println("No issue with card existence");
         }
+        if(acs.getListForCard(card).getId() == listid)  return ResponseEntity.ok(card);
 
         Card newcard = acs.changeListOfCard(card, listid);
 
