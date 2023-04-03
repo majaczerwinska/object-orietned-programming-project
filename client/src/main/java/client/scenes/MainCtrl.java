@@ -629,7 +629,6 @@ public class MainCtrl {
         boardCreationCtrl.getStopCreatingBoardButton().setStyle("-fx-background-radius: 7;");
 
         primaryStage.setScene(boardCreation);
-        primaryStage.setFullScreen(true);
         primaryStage.show();
     }
 
