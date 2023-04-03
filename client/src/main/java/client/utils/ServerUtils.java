@@ -26,6 +26,7 @@ import java.util.Set;
 
 import commons.*;
 import jakarta.ws.rs.ProcessingException;
+import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
@@ -33,6 +34,7 @@ import org.glassfish.jersey.client.ClientConfig;
 //import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
+import org.springframework.web.client.HttpClientErrorException;
 //import java.io.BufferedReader;
 //import java.io.IOException;
 //import java.io.InputStreamReader;
@@ -59,30 +61,30 @@ public class ServerUtils {
 //        }
 //    }
 
-//    /**
-//     *
-//     * @return -
-//     */
-//    public List<Quote> getQuotes() {
-//        return ClientBuilder.newClient(new ClientConfig()) //
-//                .target(SERVER).path("api/quotes") //
-//                .request(APPLICATION_JSON) //
-//                .accept(APPLICATION_JSON) //
-//                .get(new GenericType<List<Quote>>() {});
-//    }
 
-//    /**
-//     *
-//     * @param quote -
-//     * @return -
-//     */
-//    public Quote addQuote(Quote quote) {
-//        return ClientBuilder.newClient(new ClientConfig()) //
-//                .target(SERVER).path("api/quotes") //
-//                .request(APPLICATION_JSON) //j
-//                .accept(APPLICATION_JSON) //
-//                .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
-//    }
+    public boolean checkPassword(String pwd) {
+        try {
+            String response =
+                    ClientBuilder.newClient(new ClientConfig()) //
+                    .target(SERVER).path("admin") //
+                    .request(APPLICATION_JSON) //
+                    .accept(APPLICATION_JSON) //
+                    .post(Entity.entity(pwd, APPLICATION_JSON), String.class);
+            if (response.contains("Password is correct")) return true;
+        } catch (WebApplicationException u) {
+            if (u.getResponse().getStatus() == Response.Status.UNAUTHORIZED.getStatusCode()) {
+                System.out.println("User unauthorised: "+u.getMessage());
+//                u.printStackTrace();
+            } else if (u.getResponse().getStatus() == Response.Status.BAD_REQUEST.getStatusCode()) {
+                System.out.println("Bad Request at server password endpoint");
+            } else {
+                System.out.println("Unknown error: "+u.getMessage());
+                u.printStackTrace();
+            }
+            return false;
+        }
+        return false;
+    }
 
     /**
      * @param card card o be added
@@ -157,29 +159,6 @@ public class ServerUtils {
                     });
 
     }
-
-//    /**
-//     * returns the board with the given name
-//     * @param name the name of the board to be searched for
-//     * @return the board
-//     */
-    /*public Board getBoardByName(String name) {
-        try {
-            System.out.println("sending request in api/boards/name/"+name);
-            return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/boards/name/"+name)
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .get(new GenericType<Board>() {});
-            } 
-            catch (Exception e)
-            {
-                System.out.println("Exception raised in getBoardByName() in ServerUtils " + name);
-                System.out.println(e.getMessage());
-                e.printStackTrace();
-            }
-            return null;
-    }*/
 
     /**
      * Get card by id

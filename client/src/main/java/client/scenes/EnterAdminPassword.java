@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import javax.inject.Inject;
@@ -40,12 +41,19 @@ public class EnterAdminPassword {
 
     public void enterAdminPanel() {
         String pwd = password.getText();
-        if (pwd.equals("hello")) {
+        boolean response = server.checkPassword(pwd);
+        if (response) {
             System.out.println("Opening admin panel for server "+ip);
             mainCtrl.openAdminPanel(ip);
         } else {
             errorMessage.setText("Incorrect password!");
+            errorMessage.setFill(Color.INDIANRED);
         }
+    }
+
+
+    public void resetErrorMessage() {
+        errorMessage.setText("");
     }
 
     public void goBack() {
