@@ -236,7 +236,31 @@ public class MainCtrl {
      */
     public void showServerSelect() {
         primaryStage.setTitle("Select Talio Server");
+        // styling the page 
+
+        // setting the font family for the text
+        serverSelectCtrl.getSelectedServerLabel().setStyle("-fx-font-family: Avenir Book;");
+        serverSelectCtrl.getConnectionLabel().setStyle("-fx-font-family: Avenir Book;");
+        serverSelectCtrl.getSelectTalioServer().setStyle("-fx-font-family: Avenir Book;");
+        serverSelectCtrl.getIpFieldHeader().setStyle("-fx-font-family: Avenir Book;");
+        serverSelectCtrl.getConnectionStatus().setStyle("-fx-font-family: Avenir Book;");
+        serverSelectCtrl.getSelectedServer().setStyle("-fx-font-family: Avenir Book;");
+        serverSelectCtrl.getTestConnection().setStyle("-fx-font-family: Avenir Book;");
+        serverSelectCtrl.getAddServer().setStyle("-fx-font-family: Avenir Book;");
+        serverSelectCtrl.getEnterServer().setStyle("-fx-font-family: Avenir Book;");
+        serverSelectCtrl.getGoBackButton().setStyle("-fx-font-family: Avenir Book;");
+        serverSelectCtrl.getRemoveServer().setStyle("-fx-font-family: Avenir Book;");
+
+        // round the corners for the buttons and text fields
+        serverSelectCtrl.getIpField().setStyle("-fx-background-radius: 7;");
+        serverSelectCtrl.getTestConnection().setStyle("-fx-background-radius: 7;");
+        serverSelectCtrl.getAddServer().setStyle("-fx-background-radius: 7;");
+        serverSelectCtrl.getEnterServer().setStyle("-fx-background-radius: 7;");
+        serverSelectCtrl.getGoBackButton().setStyle("-fx-background-radius: 7;");
+        serverSelectCtrl.getRemoveServer().setStyle("-fx-background-radius: 7;");
+
         primaryStage.setScene(serverSelect);
+        primaryStage.setResizable(true);
         serverSelectCtrl.refresh();
     }
 
@@ -257,6 +281,7 @@ public class MainCtrl {
         locker.setTitle("Do you want to lock!!");
         locker.setScene(unlocked);
         lockInUnlockedBoardCtrl.boardID = boardID;
+        locker.setResizable(false);
         locker.showAndWait();
     }
 
@@ -269,6 +294,7 @@ public class MainCtrl {
         locker.setTitle("Provide password!!");
         locker.setScene(providePassword);
         providePasswordCtrl.boardID = boardID;
+        locker.setResizable(false);
         locker.showAndWait();
     }
 
@@ -282,6 +308,7 @@ public class MainCtrl {
         locker.setScene(editPassword);
         editPasswordCtrl.boardID = boardID;
         editPasswordCtrl.refresh();
+        locker.setResizable(false);
         locker.showAndWait();
     }
 
@@ -293,6 +320,7 @@ public class MainCtrl {
         locker.setTitle("Read-only!!");
         locker.setScene(warning);
         warningCtrl.boardID = boardID;
+        locker.setResizable(false);
         locker.showAndWait();
     }
 
@@ -319,7 +347,28 @@ public class MainCtrl {
      */
     public void showSelect() {
         primaryStage.setTitle("Board selection");
+        // styling the board selection page
+
+        // setting the font family for the text
+        boardSelectCtrl.getCreateButton().setStyle("-fx-font-family: Avenir Book;");
+        boardSelectCtrl.getRemoveButton().setStyle("-fx-font-family: Avenir Book;");
+        boardSelectCtrl.getJoinButton().setStyle("-fx-font-family: Avenir Book;");
+        boardSelectCtrl.getBackButton().setStyle("-fx-font-family: Avenir Book;");
+//        boardSelectCtrl.getDoubleClickText().setStyle("-fx-font-family: Avenir Book;");
+        boardSelectCtrl.getJoinExistingLabel().setStyle("-fx-font-family: Avenir Book;");
+        boardSelectCtrl.getEnterKeyLabel().setStyle("-fx-font-family: Avenir Book;");
+        boardSelectCtrl.getCreateButton().setStyle("-fx-font-family: Avenir Book;");
+        boardSelectCtrl.getOrYouLabel().setStyle("-fx-font-family: Avenir Book;");
+
+        // rounding the corners of the buttons and text fields
+        boardSelectCtrl.getCreateButton().setStyle("-fx-background-radius: 7;");
+        boardSelectCtrl.getRemoveButton().setStyle("-fx-background-radius: 7;");
+        boardSelectCtrl.getJoinButton().setStyle("-fx-background-radius: 7;");
+        boardSelectCtrl.getBackButton().setStyle("-fx-background-radius: 7;");
+        boardSelectCtrl.getBoardKeyTextField().setStyle("-fx-background-radius: 7;");
+
         primaryStage.setScene(boardSelect);
+        boardSelectCtrl.warning.setText("");
         primaryStage.show();
         boardSelectCtrl.refresh();
     }
@@ -328,9 +377,9 @@ public class MainCtrl {
      * shows a popup
      */
     public void showPopup() {
-        primaryStage.setTitle("Something went wrong");
-        primaryStage.setScene(popupJoin);
-        primaryStage.show();
+        locker.setTitle("Something went wrong");
+        locker.setScene(popupJoin);
+        locker.show();
         popupJoinCtrl.refresh();
     }
 
@@ -412,10 +461,11 @@ public class MainCtrl {
      * @param boardId - board id
      */
     public void showListCreate(int boardId) {
-        primaryStage.setTitle("List creation");
-        primaryStage.setScene(listCreate);
+        locker.setTitle("List creation");
+        locker.setScene(listCreate);
         listCreationCtrl.boardID = boardId;
-        primaryStage.show();
+        locker.setResizable(false);
+        locker.showAndWait();
     }
 
 
@@ -434,10 +484,11 @@ public class MainCtrl {
      * @param boardID the boardID of the board
      */
     public void showEditBoard(int boardID) {
-        primaryStage.setTitle("Show edit board :)");
-        primaryStage.setScene(editBoard);
+        locker.setTitle("Show edit board :)");
+        locker.setScene(editBoard);
         editBoardCtrl.boardId = boardID;
-        primaryStage.show();
+        locker.setResizable(false);
+        locker.showAndWait();
         editBoardCtrl.openScene(boardID);
     }
 
@@ -532,15 +583,15 @@ public class MainCtrl {
      * @param isLocked whether toe board is locked
      */
     public  void showCard(int cardID, int boardID, boolean isLocked){
-        primaryStage.setTitle("Card overview :)");
-        primaryStage.setScene(card);
+        locker.setTitle("Card overview :)");
+        locker.setScene(card);
         cardCtrl.cardID = cardID;
         cardCtrl.boardID = boardID;
         cardCtrl.isLocked = isLocked;
         if(isLocked) cardCtrl.disable();
         else cardCtrl.enable();
-
-        primaryStage.show();
+        locker.setResizable(false);
+        locker.showAndWait();
         cardCtrl.setInfo();
         cardCtrl.refresh();
 
@@ -551,7 +602,7 @@ public class MainCtrl {
      * Shows board creation scene
      */
     public void showBoardCreation() {
-        primaryStage.setTitle("Board creation overview :)");
+        locker.setTitle("Board creation overview :)");
         // styling the page
 
         // setting the font size for the text
@@ -577,9 +628,9 @@ public class MainCtrl {
         boardCreationCtrl.getCreateBoardButton().setStyle("-fx-background-radius: 7;");
         boardCreationCtrl.getStopCreatingBoardButton().setStyle("-fx-background-radius: 7;");
 
-        primaryStage.setScene(boardCreation);
-        primaryStage.setFullScreen(true);
-        primaryStage.show();
+        locker.setScene(boardCreation);
+        locker.setResizable(false);
+        locker.showAndWait();
     }
 
     /**
@@ -608,11 +659,12 @@ public class MainCtrl {
      * @param boardId
      */
     public void showListEdit(int listId, int boardId) {
-        primaryStage.setTitle("List edit");
-        primaryStage.setScene(listEdit);
+        locker.setTitle("List edit");
+        locker.setScene(listEdit);
         listEditCtrl.listId = listId;
         listEditCtrl.boardId = boardId;
-        primaryStage.show();
+        locker.setResizable(false);
+        locker.showAndWait();
     }
 
     /**
@@ -722,9 +774,10 @@ public class MainCtrl {
      * @param boardID the ID of the board
      */
     public void showTagPopUp(int boardID) {
-        primaryStage.setTitle("Tag pop-up");
-        primaryStage.setScene(tagPopUpScene);
-        primaryStage.show();
+        locker.setTitle("Tag pop-up");
+        locker.setScene(tagPopUpScene);
+        locker.setResizable(false);
+        locker.showAndWait();
         tagPopUpCtrl.refresh();
         tagPopUpCtrl.setBoardID(boardID);
 

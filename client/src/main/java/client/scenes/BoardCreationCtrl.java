@@ -88,6 +88,7 @@ public class BoardCreationCtrl {
         server.addBoard(newBoard);
         mainCtrl.saveBoardByKey(newBoard.getBoardkey());
         refresh();
+        mainCtrl.closeLocker();
         mainCtrl.showSelect();
     }
 
@@ -98,6 +99,7 @@ public class BoardCreationCtrl {
     public void stopCreatingBoardButtonHandler() {
         // go back to the selection scene
         refresh();
+        mainCtrl.closeLocker();
         mainCtrl.showSelect();
     }
 

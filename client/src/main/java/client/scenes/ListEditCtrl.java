@@ -37,6 +37,7 @@ public class ListEditCtrl {
         String newName = name.getText();
         server.editList(boardId, listId, newName);
         name.setText("");
+        mainCtrl.closeLocker();
         mainCtrl.showBoardOverview(boardId);
     }
 
@@ -46,6 +47,7 @@ public class ListEditCtrl {
      */
     public void cancel(MouseEvent mouseEvent){
         name.setText("");
+        mainCtrl.closeLocker();
         mainCtrl.showBoardOverview(boardId);
     }
 
