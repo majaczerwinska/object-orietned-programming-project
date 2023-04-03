@@ -78,6 +78,7 @@ public class TagPopUpCtrl {
      * Closes the pop-up
      */
     public void back() {
+        mainCtrl.closeLocker();
         mainCtrl.showBoardOverview(boardID);
     }
 
