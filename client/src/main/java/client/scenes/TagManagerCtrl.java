@@ -78,7 +78,7 @@ public class TagManagerCtrl implements Initializable {
      */
     public void setStompSession(){
         websocketClient.setStompSession(ServerUtils.SERVER);
-        System.out.println("StompSession created");
+        System.out.println("StompSession created in tag manager");
     }
 
     /**

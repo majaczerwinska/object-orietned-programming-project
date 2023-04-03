@@ -1,6 +1,7 @@
 package client.scenes;
 
 import client.utils.ServerUtils;
+import client.utils.WebsocketClient;
 import com.google.inject.Inject;
 import commons.CardList;
 import javafx.event.ActionEvent;
@@ -27,17 +28,28 @@ public class ListCreationCtrl {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    private final WebsocketClient websocketClient;
     public int boardID;
 
     /**
      *Creates a list
      * @param server the server
      * @param mainCtrl the controller
+     * @param websocketClient the board overview ctrl
      */
     @Inject
-    public ListCreationCtrl(ServerUtils server, MainCtrl mainCtrl){
+    public ListCreationCtrl(ServerUtils server, MainCtrl mainCtrl, WebsocketClient websocketClient){
         this.mainCtrl = mainCtrl;
         this.server = server;
+        this.websocketClient = websocketClient;
+    }
+
+    /**
+     * Creates stomp session
+     */
+    public void setStompSession(){
+        websocketClient.setStompSession(ServerUtils.SERVER);
+        System.out.println("StompSession created in list creation");
     }
 
 
@@ -56,7 +68,7 @@ public class ListCreationCtrl {
             server.createList(boardID, list);
             mainCtrl.refreshListColours();
             name.setText("");
-
+            websocketClient.sendMessage("/app/update/list/"+boardID, "Done updating card in component");
 
             mainCtrl.showBoardOverview(boardID);
         }

@@ -20,11 +20,13 @@ public class WebsocketClient {
     /**
      * Creates a stomp session
      * @param httpUrl the server url the client is connected to
+     * @return sessionId
      */
-    public void setStompSession(String httpUrl) {
+    public String setStompSession(String httpUrl) {
         String ip = httpUrl.replace("http://", "").replaceAll("(/)", "");
         String wsUrl = "ws://" + ip + "/websocket";
         this.session = connect(wsUrl);
+        return session.getSessionId();
     }
 
     private Map<String, StompSession.Subscription> subscriptions = new HashMap<>();
@@ -82,7 +84,13 @@ public class WebsocketClient {
         System.out.println("Unsubscribed from: " + dest);
     }
 
-//    public void sendMessage(String dest, Object o){
-//        session.send(dest, o);
-//    }
+    /**
+     * Sends message to /app/dest
+     * @param dest destination to send message to
+     * @param payload message to send
+     */
+    public void sendMessage(String dest, String payload){
+        session.send(dest, payload);
+//        System.out.println(session.getSessionId());
+    }
 }

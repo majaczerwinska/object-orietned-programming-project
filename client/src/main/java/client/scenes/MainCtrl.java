@@ -454,6 +454,9 @@ public class MainCtrl {
     public void setStompSession(){
         boardOverviewCtrl.setStompSession();
         tagManagerCtrl.setStompSession();
+        cardCtrl.setStompSession();
+        listCreationCtrl.setStompSession();
+        customizationCtrl.setStompSession();
     }
 
     /**

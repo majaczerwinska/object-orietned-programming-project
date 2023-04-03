@@ -97,8 +97,8 @@ public class EditBoardCtrl {
         int boardColor = Integer.parseInt(this.color.getText());
 
 
-        Board board = new Board(name);
-        board.setId(boardId);
+        Board board = server.getBoard(boardId);
+        board.setName(name);
         board.setbColor(boardColor);
 
         if (name.isEmpty() || color.getText().isEmpty()) {
