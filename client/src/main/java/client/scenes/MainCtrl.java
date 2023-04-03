@@ -505,11 +505,11 @@ public class MainCtrl {
     /**
      * show board overview
      * @param boardID the id of the board to join
-     * @param saveCardPositions whether to update card position attributes in the server
+     * @param isAdmin whether the user is in the board as an admin
      */
-    public void showBoardOverview(int boardID, Boolean saveCardPositions) {
+    public void showBoardOverview(int boardID, Boolean isAdmin) {
         prepareBoard(boardID);
-        boardOverviewCtrl.refresh(null, saveCardPositions);
+        boardOverviewCtrl.refresh(null, isAdmin);
     }
 
     /**
@@ -669,10 +669,10 @@ public class MainCtrl {
 
     /**
      * refresh board overview scene with newly polled data from the database
-         * @param saveCardPositions whether to save card position attributes
+         * @param isAdmin whether the user is an admin
      */
-    public void refreshBoardOverview(Boolean saveCardPositions)  {
-        boardOverviewCtrl.refresh(null, saveCardPositions);
+    public void refreshBoardOverview(Boolean isAdmin)  {
+        boardOverviewCtrl.refresh(null, isAdmin);
     }
 
     /**
@@ -814,9 +814,9 @@ public class MainCtrl {
             primaryStage.setScene(adminScene);
             if (adminCtrl==null){
                 throw new RuntimeException("admin panel is null for some reason");
-            } else {
+            } /*else {
                 System.out.println("admin ctrl is not null");
-            }
+            }*/
             adminCtrl.refresh(ip);
         }
 

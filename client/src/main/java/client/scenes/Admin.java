@@ -13,46 +13,67 @@ import javax.inject.Inject;
 import java.util.*;
 
 public class Admin {
+
     private MainCtrl mainCtrl;
+
     private ServerUtils server;
+
     private String ip;
+
     private List<Board> boardElementList;
+
 
     @FXML
     private Text titleText;
 
+
     @FXML
     private TextArea sqlOutput;
+
 
     @FXML
     private TextField boardName;
 
+
     @FXML
     private TextField boardKey;
+
 
     @FXML
     private TextField boardPassword;
 
+
     @FXML
     private ListView<String> boardList;
+
 
     @FXML
     private TextField sqlQuery;
 
+
     @FXML
     private Button sqlSend;
+
 
     @FXML
     private Button saveChangesButton;
 
+
     @FXML
     private Button deleteBoardButton;
+
 
     @FXML
     private Button backButton;
 
+
     @FXML
     private Text saveText;
+
+
+    @FXML
+    private Button enterBoard;
+
 
     @Inject
     public Admin(ServerUtils serverUtils, MainCtrl mainCtrl) {
@@ -141,5 +162,28 @@ public class Admin {
 
     public void goBack() {
         mainCtrl.showServerSelect();
+    }
+
+
+    public void enterBoard() {
+        Board b = getBoardFromString(boardList.getSelectionModel().getSelectedItem());
+        if (b==null) {
+            this.refresh(this.ip);
+            saveText.setText("Invalid board selected");
+            saveText.setFill(Color.ORANGERED);
+            return;
+        }
+        try {
+            System.out.println("joining board #" + b.getId());
+            System.out.println(b);
+            mainCtrl.showBoardOverview(b.getId(), true);
+            mainCtrl.subscribeToBoard(b.getId());
+            mainCtrl.subscribeToTagsFromBoard(b.getId());
+        } catch (Exception e) {
+            refresh(this.ip);
+            saveText.setText("Could not join: "+e.getMessage());
+            saveText.setFill(Color.INDIANRED);
+            e.printStackTrace();
+        }
     }
 }

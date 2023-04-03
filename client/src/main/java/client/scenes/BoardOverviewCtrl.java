@@ -92,6 +92,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     private Preferences pref;
     private boolean isLocked;
 
+    private boolean isAdmin;
 
 
     /**
@@ -105,6 +106,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         this.mainCtrl = mainCtrl;
         this.server = server;
         this.isLocked=false;
+        this.isAdmin=false;
         this.pref = Preferences.userRoot().node("locking");
         this.websocketClient = websocketClient;
         System.out.println("Inject called in board overview");
@@ -222,7 +224,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             checkForPref();
             if(pref.get(String.valueOf(boardID),"").equals("")){
                 lock.setStyle("-fx-background-color: red");
-                isLocked=true;
+                isLocked= !isAdmin;
                 disable();
             }
             else{
@@ -391,10 +393,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * displays cards in vboxes
      * @param cardLists card lists
      * @param c - card for focus
-     * @param saveCardPositions whether to update the cards' positions in the database.
-     *                          only true when called from the client (in drag dropped)
      */
-    public void displayLists(List<CardList> cardLists, Card c, Boolean saveCardPositions){
+    public void displayLists(List<CardList> cardLists, Card c){
 
         for (CardList cardList : cardLists) {
 
@@ -503,15 +503,16 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     /**
      * Refresh scene from database
      * @param c - card for focus
-     * @param saveCardPositions whether to save card position attributes to server
+     * @param isAdmin whether the user entered the board as an admin
      */
-    public void refresh(Card c, Boolean saveCardPositions) {
+    public void refresh(Card c, Boolean isAdmin) {
+
         Platform.runLater(new Runnable() {
             @Override public void run() {
                 System.out.println("Refreshing board overview");
                 List<CardList> cardLists = getCardListsFromServer();
                 clearBoard();
-                displayLists(cardLists, c, saveCardPositions);
+                displayLists(cardLists, c);
                 shortcut();
             }
         });
@@ -577,7 +578,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         System.out.println("creating new card "+c+" in list id="+listID);
 
         c = server.addCard(c, boardID, listID);
-        refresh(c, true);
+        refresh(c, false);
         return c;
     }
 

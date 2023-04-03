@@ -47,7 +47,7 @@
                         <Font size="18.0" />
                      </font>
                   </Text>
-                  <Button fx:id="saveChangesButton" mnemonicParsing="false" onAction="#saveTextFields" text="Save Changes" textFill="#0b1713">
+                  <Button fx:id="saveChangesButton" mnemonicParsing="false" onAction="#saveTextFields" text="Save Changes" textFill="#0b170b">
                      <VBox.margin>
                         <Insets top="3.0" />
                      </VBox.margin>
@@ -55,16 +55,24 @@
                   <Button fx:id="deleteBoardButton" mnemonicParsing="false" onAction="#deleteBoard" text="Delete Board" textFill="#a10101" />
                </children>
             </VBox>
-            <VBox prefHeight="285.0" prefWidth="294.0" spacing="15.0">
+            <VBox alignment="TOP_RIGHT" prefHeight="285.0" prefWidth="294.0" spacing="15.0">
                <children>
                   <TextField fx:id="boardName" />
                   <TextField fx:id="boardKey" />
                   <TextField fx:id="boardPassword" />
-                  <Text fx:id="saveText" strokeType="OUTSIDE" strokeWidth="0.0">
+                  <Text fx:id="saveText" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="295.56219482421875">
                      <VBox.margin>
                         <Insets top="6.0" />
                      </VBox.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
                   </Text>
+                  <Button fx:id="enterBoard" mnemonicParsing="false" onAction="#enterBoard" text="Enter Board as admin" textFill="#0d1a3c">
+                     <VBox.margin>
+                        <Insets top="12.0" />
+                     </VBox.margin>
+                  </Button>
                </children>
             </VBox>
          </children>
