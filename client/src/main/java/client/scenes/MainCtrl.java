@@ -265,6 +265,7 @@ public class MainCtrl {
         locker.setTitle("Do you want to lock!!");
         locker.setScene(unlocked);
         lockInUnlockedBoardCtrl.boardID = boardID;
+        locker.setResizable(false);
         locker.showAndWait();
     }
 
@@ -277,6 +278,7 @@ public class MainCtrl {
         locker.setTitle("Provide password!!");
         locker.setScene(providePassword);
         providePasswordCtrl.boardID = boardID;
+        locker.setResizable(false);
         locker.showAndWait();
     }
 
@@ -290,6 +292,7 @@ public class MainCtrl {
         locker.setScene(editPassword);
         editPasswordCtrl.boardID = boardID;
         editPasswordCtrl.refresh();
+        locker.setResizable(false);
         locker.showAndWait();
     }
 
@@ -301,6 +304,7 @@ public class MainCtrl {
         locker.setTitle("Read-only!!");
         locker.setScene(warning);
         warningCtrl.boardID = boardID;
+        locker.setResizable(false);
         locker.showAndWait();
     }
 
@@ -441,10 +445,11 @@ public class MainCtrl {
      * @param boardId - board id
      */
     public void showListCreate(int boardId) {
-        primaryStage.setTitle("List creation");
-        primaryStage.setScene(listCreate);
+        locker.setTitle("List creation");
+        locker.setScene(listCreate);
         listCreationCtrl.boardID = boardId;
-        primaryStage.show();
+        locker.setResizable(false);
+        locker.showAndWait();
     }
 
 
@@ -463,10 +468,11 @@ public class MainCtrl {
      * @param boardID the boardID of the board
      */
     public void showEditBoard(int boardID) {
-        primaryStage.setTitle("Show edit board :)");
-        primaryStage.setScene(editBoard);
+        locker.setTitle("Show edit board :)");
+        locker.setScene(editBoard);
         editBoardCtrl.boardId = boardID;
-        primaryStage.show();
+        locker.setResizable(false);
+        locker.showAndWait();
         editBoardCtrl.openScene(boardID);
     }
 
@@ -561,15 +567,15 @@ public class MainCtrl {
      * @param isLocked whether toe board is locked
      */
     public  void showCard(int cardID, int boardID, boolean isLocked){
-        primaryStage.setTitle("Card overview :)");
-        primaryStage.setScene(card);
+        locker.setTitle("Card overview :)");
+        locker.setScene(card);
         cardCtrl.cardID = cardID;
         cardCtrl.boardID = boardID;
         cardCtrl.isLocked = isLocked;
         if(isLocked) cardCtrl.disable();
         else cardCtrl.enable();
-
-        primaryStage.show();
+        locker.setResizable(false);
+        locker.showAndWait();
         cardCtrl.setInfo();
         cardCtrl.refresh();
 
@@ -580,7 +586,7 @@ public class MainCtrl {
      * Shows board creation scene
      */
     public void showBoardCreation() {
-        primaryStage.setTitle("Board creation overview :)");
+        locker.setTitle("Board creation overview :)");
         // styling the page
 
         // setting the font size for the text
@@ -606,9 +612,9 @@ public class MainCtrl {
         boardCreationCtrl.getCreateBoardButton().setStyle("-fx-background-radius: 7;");
         boardCreationCtrl.getStopCreatingBoardButton().setStyle("-fx-background-radius: 7;");
 
-        primaryStage.setScene(boardCreation);
-        primaryStage.setFullScreen(true);
-        primaryStage.show();
+        locker.setScene(boardCreation);
+        locker.setResizable(false);
+        locker.showAndWait();
     }
 
     /**
@@ -637,11 +643,12 @@ public class MainCtrl {
      * @param boardId
      */
     public void showListEdit(int listId, int boardId) {
-        primaryStage.setTitle("List edit");
-        primaryStage.setScene(listEdit);
+        locker.setTitle("List edit");
+        locker.setScene(listEdit);
         listEditCtrl.listId = listId;
         listEditCtrl.boardId = boardId;
-        primaryStage.show();
+        locker.setResizable(false);
+        locker.showAndWait();
     }
 
     /**
@@ -751,9 +758,10 @@ public class MainCtrl {
      * @param boardID the ID of the board
      */
     public void showTagPopUp(int boardID) {
-        primaryStage.setTitle("Tag pop-up");
-        primaryStage.setScene(tagPopUpScene);
-        primaryStage.show();
+        locker.setTitle("Tag pop-up");
+        locker.setScene(tagPopUpScene);
+        locker.setResizable(false);
+        locker.showAndWait();
         tagPopUpCtrl.refresh();
         tagPopUpCtrl.setBoardID(boardID);
 
