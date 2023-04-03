@@ -3,6 +3,7 @@ package server.api;
 import commons.Board;
 import commons.Card;
 import commons.CardList;
+import commons.Palette;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,6 +114,15 @@ public class BoardControllerTest {
         assertEquals(con.getBoards(), boardList);
     }
 
-
+    @Test
+    public void getPalettesFromBoardTest(){
+        Board board = new Board("board");
+        List<Palette> list = new ArrayList<>();
+        list.add(new Palette("p", 1, 2));
+        board.setPalettes(list);
+        repo.save(board);
+        ResponseEntity<List<Palette>> cardLists = ResponseEntity.ok(list);
+        assertEquals(con.getPalettesFromBoard(board.getId()), cardLists);
+    }
 
 }
