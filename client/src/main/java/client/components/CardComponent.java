@@ -45,7 +45,7 @@ public class CardComponent extends HBox implements Initializable {
 
 
     @FXML
-    private Label descriptionLabel;
+    public Label descriptionLabel;
 
     @FXML
     private HBox hboxTags;

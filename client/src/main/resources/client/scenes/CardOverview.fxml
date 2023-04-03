@@ -79,5 +79,6 @@
           </TitledPane>
         </panes>
       </Accordion>
+      <Button layoutX="656.0" layoutY="323.0" mnemonicParsing="false" onMouseClicked="#save" text="save" />
    </children>
 </AnchorPane>

@@ -152,6 +152,10 @@ public class Palette {
         return Objects.hash(id, name, bColor, fColor, isdefault);
     }
 
+    /**
+     * to string
+     * @return - string representation of palette
+     */
     @Override
     public String toString() {
         return "Palette{" +

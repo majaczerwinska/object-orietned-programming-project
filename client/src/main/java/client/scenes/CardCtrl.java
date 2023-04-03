@@ -125,6 +125,7 @@ public class CardCtrl {
         showTags();
         showDropDown();
         showDropDownColors();
+        theme.setText("");
     }
 
     /**
@@ -299,15 +300,41 @@ public class CardCtrl {
     public void choose(MouseEvent event){
         Palette palette = palettes.getSelectionModel().getSelectedItem();
         if(event.getClickCount()==2 && palette!=null ){
-            Card card = server.getCard(cardID);
-            //TODO: card.setBColor(palette.getbColor());
-            //TODO: card.setFColor(palette.getfColor());
-            //TODO: update all methods for card class to accommodate the two color fields
-            //card.setColor();
-            server.editCard(boardID, cardID, card);
             showDropDownColors();
         }
         theme.setText(palette.getName());
+    }
+
+    /**
+     * saves cards colors to the db
+     * @param event
+     */
+    public void save(MouseEvent event){
+        List<Palette> palettes = server.getPalettesFromBoard(boardID);
+        if(theme.getText().equals("")){
+            for(Palette pal : palettes){
+                if(pal.isIsdefault()){
+                    theme.setText(pal.getName());
+                    Card card = server.getCard(cardID);
+                    card.setColor(pal.getbColor());
+                    card.setFcolor(pal.getfColor());
+                    server.editCard(boardID, cardID, card);
+                    break;
+                }
+            }
+        }
+        else{
+            for(Palette pal : palettes){
+                if(pal.getName().equals(theme.getText())){
+                    Card card = server.getCard(cardID);
+                    card.setColor(pal.getbColor());
+                    card.setFcolor(pal.getfColor());
+                    server.editCard(boardID, cardID, card);
+                    break;
+                }
+            }
+
+        }
     }
 
 }

@@ -9,9 +9,6 @@ import org.springframework.stereotype.Service;
 import server.database.BoardRepository;
 import server.database.PaletteRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
 public class PaletteService {
 
@@ -67,7 +64,6 @@ public class PaletteService {
     /**
      *
      * @param paletteId
-     * @param boardId
      * @return - deleted palette
      */
     public Palette delete(int paletteId){

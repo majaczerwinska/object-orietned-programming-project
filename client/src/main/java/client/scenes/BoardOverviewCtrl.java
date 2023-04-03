@@ -91,7 +91,6 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     private Preferences pref;
 
 
-
     /**
      *
      * @param server -
@@ -279,7 +278,10 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             cardComponent.setData(card, listId);
             cardComponent.setStyle("-fx-background-color: " +
                     String.format("rgb(%d, %d, %d)", (card.getColor() >> 16) & 0xFF,
-                    (card.getColor() >> 8) & 0xFF, card.getColor()& 0xFF)+";" );
+                    (card.getColor() >> 8) & 0xFF, card.getColor() & 0xFF)+";" );
+            String hexColor = String.format("#%06X", (0xFFFFFF & card.getFcolor()));
+            cardComponent.tfTitle.setStyle("-fx-text-fill: " + hexColor);
+            cardComponent.descriptionLabel.setStyle("-fx-text-fill: " + hexColor);
 
             vbox.getChildren().add(cardComponent);
             if(card.equals(c)){

@@ -661,7 +661,6 @@ public class ServerUtils {
 
     /**
      * deletes palette from the board
-     * @param boardId
      * @param paletteId
      * @return - deleted palette
      */

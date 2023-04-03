@@ -39,7 +39,6 @@ public class PaletteController {
 
     /**
      * deletes the palette from the board
-     * @param boardId
      * @param id
      * @return - response entity
      */
