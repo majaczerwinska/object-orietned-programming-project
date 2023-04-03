@@ -18,7 +18,9 @@ package commons;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -141,5 +143,23 @@ public class CardTest {
     void hasDescriptionTest() {
         Card c = new Card("a");
         assertFalse(c.hasDescription());
+    }
+
+    @Test
+    void softEqualsTest() {
+        Card c = new Card("a");
+        c.setDescription("ab");
+        Card b = new Card("a");
+        b.setDescription("ab");
+        assertTrue(c.softEquals(b));
+    }
+
+    @Test
+    void setTags() {
+        Card c = new Card("a");
+        Set<Tag> tags = new HashSet<>();
+        tags.add(new Tag("a"));
+        c.setTags(tags);
+        assertEquals(c.getTags(), tags);
     }
 }

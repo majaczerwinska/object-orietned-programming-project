@@ -50,7 +50,12 @@ public class TaskTest {
     }
 
 
-
+    @Test
+    public void setCheckedTest(){
+        Task task = new Task("test");
+        task.setChecked(true);
+        assertTrue(task.isChecked());
+    }
 
 
 
