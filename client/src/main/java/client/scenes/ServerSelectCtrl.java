@@ -1,24 +1,28 @@
 package client.scenes;
 
-import client.utils.ServerUtils;
+//import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+//import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
+
 import com.google.inject.Inject;
-import javafx.application.Platform;
+
+import client.utils.ServerUtils;
+//import javafx.application.Platform;
 //import javafx.collections.FXCollections;
 //import javafx.collections.ObservableList;
 //import javafx.event.ActionEvent;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+//import javafx.scene.text.Text;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-
-//import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-//import java.util.ResourceBundle;
-import java.util.prefs.Preferences;
 
 
 public class ServerSelectCtrl {
@@ -33,15 +37,25 @@ public class ServerSelectCtrl {
     public String serverAddress = "http://localhost:8080";
 
     @FXML
+    private Label selectedServerLabel;
+
+    @FXML
+    private Label connectionLabel;
+
+    @FXML
+    private Label selectTalioServer;
+
+    @FXML
     private TextField ipField;
 
     @FXML
-    private Text ipFieldHeader;
-    @FXML
-    public Text connectionStatus;
+    private Label ipFieldHeader;
 
     @FXML
-    private Text selectedServer;
+    public Label connectionStatus;
+
+    @FXML
+    private Label selectedServer;
 
     @FXML
     private Button testConnection;
@@ -53,7 +67,7 @@ public class ServerSelectCtrl {
     private Button enterServer;
 
     @FXML
-    private Button exitBtn;
+    private Button goBackButton;
 
     @FXML
     private Button removeServer;
@@ -120,7 +134,7 @@ public class ServerSelectCtrl {
         List<String> knownIPs = getIPs();
         if (knownIPs.contains(address)) {
             ipFieldHeader.setText("That address is already saved!");
-            ipFieldHeader.setFill(Color.YELLOWGREEN);
+            ipFieldHeader.setTextFill(Color.YELLOWGREEN);
             refresh();
             return;
         }
@@ -204,31 +218,31 @@ public class ServerSelectCtrl {
         switch (status) {
             case 1: // unknown
                 connectionStatus.setText("Unknown");
-                connectionStatus.setFill(Color.BLACK);
+                connectionStatus.setTextFill(Color.BLACK);
                 break;
             case 0: // loading
                 connectionStatus.setText("Loading...");
-                connectionStatus.setFill(Color.BLACK);
+                connectionStatus.setTextFill(Color.BLACK);
                 break;
             case 200: // Connection Successful
                 connectionStatus.setText("200 Successful");
-                connectionStatus.setFill(Color.GREEN);
+                connectionStatus.setTextFill(Color.GREEN);
                 break;
             case 301:
                 connectionStatus.setText("301 Moved Permanently");
-                connectionStatus.setFill(Color.CORAL);
+                connectionStatus.setTextFill(Color.CORAL);
                 break;
             case 404: // Not found
                 connectionStatus.setText("404 Not Found");
-                connectionStatus.setFill(Color.RED);
+                connectionStatus.setTextFill(Color.RED);
                 break;
             case -1: // Timeout
                 connectionStatus.setText("Server not found (408 timeout)");
-                connectionStatus.setFill(Color.ORANGERED);
+                connectionStatus.setTextFill(Color.ORANGERED);
                 break;
             case -2: // not a talio server
                 connectionStatus.setText("Not a talio server");
-                connectionStatus.setFill(Color.GOLDENROD);
+                connectionStatus.setTextFill(Color.GOLDENROD);
                 break;
         }
     }
@@ -284,9 +298,12 @@ public class ServerSelectCtrl {
     }
 
     /**
-     * event handler for the exit app button
+     * event handler for the go back to main menu button
      */
-    public void exitApp() {
-        Platform.exit();
+    public void goBackToMainMenuButtonHandler() {
+        // refreshes the page and goes back to Landing
+        refresh();
+        mainCtrl.showLanding();
+        // colour of the button is #a81b1b
     }
 }
