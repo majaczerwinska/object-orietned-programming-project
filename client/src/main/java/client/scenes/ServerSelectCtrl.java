@@ -1,25 +1,28 @@
 package client.scenes;
 
-import client.utils.ServerUtils;
-import com.google.inject.Inject;
-import javafx.application.Platform;
-//import javafx.collections.FXCollections;
-//import javafx.collections.ObservableList;
-//import javafx.event.ActionEvent;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-
 //import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 //import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
+import com.google.inject.Inject;
+
+import client.utils.ServerUtils;
+//import javafx.application.Platform;
+//import javafx.collections.FXCollections;
+//import javafx.collections.ObservableList;
+//import javafx.event.ActionEvent;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+//import javafx.scene.text.Text;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 
 public class ServerSelectCtrl {
 
@@ -33,15 +36,25 @@ public class ServerSelectCtrl {
     public String serverAddress = "http://localhost:8080";
 
     @FXML
+    private Label selectedServerLabel;
+
+    @FXML
+    private Label connectionLabel;
+
+    @FXML
+    private Label selectTalioServer;
+
+    @FXML
     private TextField ipField;
 
     @FXML
-    private Text ipFieldHeader;
-    @FXML
-    public Text connectionStatus;
+    private Label ipFieldHeader;
 
     @FXML
-    private Text selectedServer;
+    public Label connectionStatus;
+
+    @FXML
+    private Label selectedServer;
 
     @FXML
     private Button testConnection;
@@ -53,7 +66,7 @@ public class ServerSelectCtrl {
     private Button enterServer;
 
     @FXML
-    private Button exitBtn;
+    private Button goBackButton;
 
     @FXML
     private Button removeServer;
@@ -61,10 +74,9 @@ public class ServerSelectCtrl {
     @FXML
     private ListView<String> servers;
 
-
     /**
      *
-     * @param server -
+     * @param server   -
      * @param mainCtrl -
      */
     @Inject
@@ -74,9 +86,9 @@ public class ServerSelectCtrl {
         this.prefs = Preferences.userRoot().node(this.getClass().getName());
     }
 
-
     /**
      * Sets the server to which the client sends the http requests
+     * 
      * @param ip ip of the server
      */
     public void setServer(String ip) {
@@ -92,6 +104,7 @@ public class ServerSelectCtrl {
 
     /**
      * updates public variable address
+     * 
      * @param ip address
      * @return same address
      */
@@ -103,9 +116,10 @@ public class ServerSelectCtrl {
 
     /**
      * get observableList instance for address list
+     * 
      * @return ObservableList<IP Address Strings>
      */
-    public ObservableList<String> getAddressList(){
+    public ObservableList<String> getAddressList() {
         List<String> ips = getIPs();
         ObservableList<String> addressList = FXCollections.observableList(ips);
         return addressList;
@@ -115,12 +129,12 @@ public class ServerSelectCtrl {
      * Event handler
      * Adds the address from the ipField to the list of known addresses
      */
-    public void addIP(){
+    public void addIP() {
         String address = ipField.getText();
         List<String> knownIPs = getIPs();
         if (knownIPs.contains(address)) {
             ipFieldHeader.setText("That address is already saved!");
-            ipFieldHeader.setFill(Color.YELLOWGREEN);
+            ipFieldHeader.setTextFill(Color.YELLOWGREEN);
             refresh();
             return;
         }
@@ -132,6 +146,7 @@ public class ServerSelectCtrl {
 
     /**
      * save another ip to the list of known servers
+     * 
      * @param ip the address to be saved
      */
     public void saveIP(String ip) {
@@ -143,7 +158,6 @@ public class ServerSelectCtrl {
         ips += "," + ip;
         prefs.put(ipID, ips);
     }
-
 
     /**
      * event handler for the remove address button
@@ -158,18 +172,19 @@ public class ServerSelectCtrl {
     /**
      * Selects a server from the list
      */
-    public void changeSelectedServer(){
+    public void changeSelectedServer() {
         String address = servers.getSelectionModel().getSelectedItem();
-        System.out.println("selected address "+address);
-        if(address!=null){
+        System.out.println("selected address " + address);
+        if (address != null) {
             updateAddress(address);
             setConnectionStatus(1);
         }
-        System.out.println("Server "+address+" selected");
+        System.out.println("Server " + address + " selected");
     }
 
     /**
      * removes the ip from the list of known addresses
+     * 
      * @param ip the address to remove
      */
     public void removeIP(String ip) {
@@ -183,14 +198,15 @@ public class ServerSelectCtrl {
             return;
         }
         System.out.println("removing ip. before: " + ips);
-        ips = ips.replace(ip+",", "");
-        ips = ips.replace(","+ip, "");
+        ips = ips.replace(ip + ",", "");
+        ips = ips.replace("," + ip, "");
         System.out.println("after: " + ips);
         prefs.put(ipID, ips);
     }
 
     /**
      * Get the list of known server addresses
+     * 
      * @return a list of IP addresses
      */
     public List<String> getIPs() {
@@ -204,31 +220,31 @@ public class ServerSelectCtrl {
         switch (status) {
             case 1: // unknown
                 connectionStatus.setText("Unknown");
-                connectionStatus.setFill(Color.BLACK);
+                connectionStatus.setTextFill(Color.BLACK);
                 break;
             case 0: // loading
                 connectionStatus.setText("Loading...");
-                connectionStatus.setFill(Color.BLACK);
+                connectionStatus.setTextFill(Color.BLACK);
                 break;
             case 200: // Connection Successful
                 connectionStatus.setText("200 Successful");
-                connectionStatus.setFill(Color.GREEN);
+                connectionStatus.setTextFill(Color.GREEN);
                 break;
             case 301:
                 connectionStatus.setText("301 Moved Permanently");
-                connectionStatus.setFill(Color.CORAL);
+                connectionStatus.setTextFill(Color.CORAL);
                 break;
             case 404: // Not found
                 connectionStatus.setText("404 Not Found");
-                connectionStatus.setFill(Color.RED);
+                connectionStatus.setTextFill(Color.RED);
                 break;
             case -1: // Timeout
                 connectionStatus.setText("Server not found (408 timeout)");
-                connectionStatus.setFill(Color.ORANGERED);
+                connectionStatus.setTextFill(Color.ORANGERED);
                 break;
             case -2: // not a talio server
                 connectionStatus.setText("Not a talio server");
-                connectionStatus.setFill(Color.GOLDENROD);
+                connectionStatus.setTextFill(Color.GOLDENROD);
                 break;
         }
     }
@@ -238,21 +254,21 @@ public class ServerSelectCtrl {
      */
     public void onTestConnection() {
         String ip = serverAddress;
-        System.out.println("testing connection to server "+ip);
+        System.out.println("testing connection to server " + ip);
         setConnectionStatus(0);
         int res = server.testConnection(ip);
-        System.out.println("Server responded with status code : "+res);
+        System.out.println("Server responded with status code : " + res);
         setConnectionStatus(res);
     }
 
     /**
      * Enters the server (goes to select board scene)
      */
-    public void enterServer(){
+    public void enterServer() {
         onTestConnection();
         if (!connectionStatus.textProperty().get().equals("200 Successful")) {
             System.out.println(connectionStatus.textProperty().get());
-            System.out.println("Tried to enter invalid server ("+serverAddress+"), aborting");
+            System.out.println("Tried to enter invalid server (" + serverAddress + "), aborting");
             return;
         }
         System.out.println("entering server " + serverAddress);
@@ -263,6 +279,7 @@ public class ServerSelectCtrl {
 
     /**
      * general event listener, calls subsequent action functions
+     * 
      * @param event mouse event
      */
     @FXML
@@ -273,6 +290,7 @@ public class ServerSelectCtrl {
 
     /**
      * event handler for clicking
+     * 
      * @param event click details
      */
     @FXML
@@ -284,9 +302,117 @@ public class ServerSelectCtrl {
     }
 
     /**
-     * event handler for the exit app button
+     * event handler for the go back to main menu button
      */
-    public void exitApp() {
-        Platform.exit();
+    public void goBackToMainMenuButtonHandler() {
+        // refreshes the page and goes back to Landing
+        refresh();
+        mainCtrl.showLanding();
+        // colour of the button is #a81b1b
     }
+
+    /**
+     * selected server label getter
+     * @return Label
+     */
+    public Label getSelectedServerLabel() {
+        return selectedServerLabel;
+    }
+
+    /**
+     * connection label getter
+     * @return Label
+     */
+    public Label getConnectionLabel() {
+        return connectionLabel;
+    }
+
+    /**
+     * select Talio server label getter
+     * @return Label
+     */
+    public Label getSelectTalioServer() {
+        return selectTalioServer;
+    }
+
+    /**
+     * IP address field getter
+     * @return TextField
+     */
+    public TextField getIpField() {
+        return ipField;
+    }
+
+    /**
+     * IP address label getter
+     * @return Label
+     */
+    public Label getIpFieldHeader() {
+        return ipFieldHeader;
+    }
+
+    /**
+     * connection status label getter
+     * @return Label
+     */
+    public Label getConnectionStatus() {
+        return connectionStatus;
+    }
+
+    /**
+     * selected server label getter
+     * @return Label
+     */
+    public Label getSelectedServer() {
+        return selectedServer;
+    }
+
+    /**
+     * test connection button getter
+     * @return Button
+     */
+    public Button getTestConnection() {
+        return testConnection;
+    }
+
+    /**
+     * add server button getter
+     * @return Button
+     */
+    public Button getAddServer() {
+        return addServer;
+    }
+
+    /**
+     * enter server button getter
+     * @return Button
+     */
+    public Button getEnterServer() {
+        return enterServer;
+    }
+
+    /**
+     * go back button getter
+     * @return Button
+     */
+    public Button getGoBackButton() {
+        return goBackButton;
+    }
+
+    /**
+     * remove server button getter
+     * @return Button
+     */
+    public Button getRemoveServer() {
+        return removeServer;
+    }
+
+    /**
+     * list view of servers getter
+     * @return ListView
+     */
+    public ListView<String> getServers() {
+        return servers;
+    }
+
 }

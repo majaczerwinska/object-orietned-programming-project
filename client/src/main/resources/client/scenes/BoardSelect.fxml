@@ -10,16 +10,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.BoardSelectCtrl">
+<AnchorPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.BoardSelectCtrl">
    <children>
-      <HBox prefHeight="400.0" prefWidth="600.0">
+      <HBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0">
          <children>
             <VBox alignment="TOP_CENTER" prefHeight="380.0" prefWidth="291.0">
                <opaqueInsets>
                   <Insets right="20.0" />
                </opaqueInsets>
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Double click to enter one of your boards" textAlignment="CENTER" wrappingWidth="123.525390625">
+                  <Text fx:id="doubleClickText" strokeType="OUTSIDE" strokeWidth="0.0" text="Double click to enter one of your boards" textAlignment="CENTER" wrappingWidth="123.525390625">
                      <VBox.margin>
                         <Insets bottom="6.0" top="-9.0" />
                      </VBox.margin>
@@ -37,7 +37,7 @@
                <children>
                   <VBox prefHeight="73.0" prefWidth="343.0">
                      <children>
-                        <Label prefHeight="19.0" prefWidth="164.0" text="Join an already exisiting board">
+                        <Label fx:id="joinExistingLabel" prefHeight="19.0" prefWidth="164.0" text="Join an already exisiting board">
                            <padding>
                               <Insets bottom="2.0" />
                            </padding>
@@ -45,7 +45,7 @@
                               <Insets top="-61.0" />
                            </VBox.margin>
                         </Label>
-                        <Label prefWidth="187.0" text="Enter the key">
+                        <Label fx:id="enterKeyLabel" prefWidth="187.0" text="Enter the key">
                            <padding>
                               <Insets bottom="3.0" right="10.0" />
                            </padding>
@@ -77,7 +77,7 @@
                   </VBox>
                   <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
-                        <Label prefHeight="31.0" prefWidth="76.0" text="Or you can">
+                        <Label fx:id="orYouLabel" prefHeight="31.0" prefWidth="76.0" text="Or you can">
                            <padding>
                               <Insets bottom="10.0" top="4.0" />
                            </padding>
@@ -102,7 +102,7 @@
                   <VBox prefHeight="200.0" prefWidth="69.0" />
                   <VBox alignment="TOP_RIGHT" prefHeight="55.0" prefWidth="403.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#back" text="Back">
+                        <Button fx:id="back" mnemonicParsing="false" onAction="#back" text="Back">
                            <VBox.margin>
                               <Insets right="2.0" top="10.0" />
                            </VBox.margin></Button>
