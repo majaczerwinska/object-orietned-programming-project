@@ -28,6 +28,10 @@ public class EditBoardCtrl {
     private ListView<String> tags;
     @FXML
     private Text text;
+    @FXML
+    private Label nameLabel;
+    @FXML
+    private Label colorLabel;
 
 
     public int boardId;
@@ -112,6 +116,70 @@ public class EditBoardCtrl {
         }
         mainCtrl.showBoardOverview(boardId);
     }
+
+    /**
+     * name textfield getter
+     * @return TextField
+     */
+    @FXML
+    private TextField getName() {
+        return name;
+    }
+
+    /**
+     * color textfield getter
+     * @return TextField
+     */
+    @FXML
+    private TextField getColor() {
+        return color;
+    }
+
+    /**
+     * Getter for the save Button.
+     * @return The Button object for the save button.
+     */
+    @FXML
+    private Button getSave() {
+        return save;
+    }
+
+    /**
+     * Getter for the exit Button.
+     * @return The Button object for the exit button.
+     */
+    @FXML
+    private Button getExit() {
+        return exit;
+    }
+
+    /**
+     * Getter for the text Text.
+     * @return The Text object for the text field.
+     */
+    @FXML
+    private Text getText() {
+        return text;
+    }
+
+    /**
+     * Getter for the nameLabel Label.
+     * @return The Label object for the name label.
+     */
+    @FXML
+    private Label getNameLabel() {
+        return nameLabel;
+    }
+
+    /**
+     * Getter for the colorLabel Label.
+     * @return The Label object for the color label.
+     */
+    @FXML
+    private Label getColorLabel() {
+        return colorLabel;
+    }
+
 
 
 }
