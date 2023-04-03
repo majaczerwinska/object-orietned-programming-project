@@ -8,7 +8,6 @@ import javafx.scene.control.Label;
 
 
 import javax.inject.Inject;
-import java.awt.*;
 
 
 public class TagPopUpCtrl {
