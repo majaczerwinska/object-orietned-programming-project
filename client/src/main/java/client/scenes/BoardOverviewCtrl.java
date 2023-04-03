@@ -13,7 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
+
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -315,12 +315,14 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * displays cards in vboxes
      * @param vbox the vbox in the list where the cards need to be showed
      * @param listId the list we need to populate with cards
-     * @param cards the list of cards
      * @param c card for focus
      */
-    public void displayCards(VBox vbox, int listId, List<Card> cards, Card c){
+    public void displayCards(VBox vbox, int listId, Card c){
         //List<Card> cards = server.getCardsFromList(listId);
+
+        List<Card> cards = server.getCardsFromList(listId);
         cards.sort(Comparator.comparing(Card::getPosition));
+        System.out.println("\n\n\n\n\n=======================================\n"+cards);
         for (Card card : cards) {
             CardComponent cardComponent = new CardComponent(mainCtrl, isLocked);
             mainCtrl.cardIdComponentMap.remove(card.getId());
@@ -365,13 +367,12 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     /**
      * displays cards in vboxes
      * @param cardLists card lists
-     * @param allCards list of lists of cards
      * @param c - card for focus
      * @param saveCardPositions whether to update the cards' positions in the database.
      *                          only true when called from the client (in drag dropped)
      */
-    public void displayLists(List<CardList> cardLists, List<List<Card>> allCards, Card c, Boolean saveCardPositions){
-        int i = 0;
+    public void displayLists(List<CardList> cardLists, Card c, Boolean saveCardPositions){
+
         for (CardList cardList : cardLists) {
 
             CardListComponent cardListComponent = new CardListComponent(mainCtrl, boardID,cardList.getId());
@@ -386,21 +387,20 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             cardListComponent.setData(cardList);
             String hexColor = String.format("#%06X", (0xFFFFFF & cardList.getfColor()));
             cardListComponent.labelTitle.setStyle("-fx-text-fill: " + hexColor);
-            displayCards(cardListComponent.getVboxCards(), cardList.getId(), allCards.get(i),c);
-            server.setListSize(cardList.getId(), cardListComponent.getVboxCards().getChildren().size());
-            i++;
-            if (saveCardPositions) {
-                int j = 1;
-                for (Node cardComponent : cardListComponent.getVboxCards().getChildren()) {
-                    if (cardComponent instanceof CardComponent) {
-                        CardComponent cc = (CardComponent) cardComponent;
-                        System.out.println("For loop in displaylist now at card: " + cc);
-                        cc.self.setPosition(j++);
-                        System.out.println("Set card's position ->"+cc);
-                        server.editCard(boardID, cc.self.getId(), cc.self);
-                    }
-                }
-            }
+            displayCards(cardListComponent.getVboxCards(), cardList.getId(),c);
+           // server.setListSize(cardList.getId(), cardListComponent.getVboxCards().getChildren().size());
+//            if (saveCardPositions) {
+//                int j = 1;
+//                for (Node cardComponent : cardListComponent.getVboxCards().getChildren()) {
+//                    if (cardComponent instanceof CardComponent) {
+//                        CardComponent cc = (CardComponent) cardComponent;
+//                        System.out.println("For loop in displaylist now at card: " + cc);
+//                        cc.self.setPosition(j++);
+//                        System.out.println("Set card's position ->"+cc);
+//                        server.editCard(boardID, cc.self.getId(), cc.self);
+//                    }
+//                }
+//            }
             if(isLocked) cardListComponent.readonly();
         }
 
@@ -500,12 +500,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             @Override public void run() {
                 System.out.println("Refreshing board overview");
                 List<CardList> cardLists = getCardListsFromServer();
-                List<List<Card>> allCards = new ArrayList<>();
-                for (CardList cl : cardLists) {
-                    allCards.add(getCardsOfListFromServer(cl.getId()));
-                }
                 clearBoard();
-                displayLists(cardLists, allCards, c, saveCardPositions);
+                displayLists(cardLists, c, saveCardPositions);
                 shortcut();
             }
         });
@@ -563,7 +559,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public Card createCard(int listID) {
         Card c = new Card("title..");
         //int size = server.getListSize(listID) + 1;
-        c.setPosition(99999);
+       // c.setPosition(99999);
         System.out.println("creating new card "+c+" in list id="+listID);
 
         c = server.addCard(c, boardID, listID);

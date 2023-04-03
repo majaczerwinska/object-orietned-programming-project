@@ -30,11 +30,9 @@ import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
-
 //import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
-
 //import java.io.BufferedReader;
 //import java.io.IOException;
 //import java.io.InputStreamReader;
@@ -221,6 +219,26 @@ public class ServerUtils {
         }
         return null;
     }
+
+    /**
+     * Sets the position
+     * @param card the card
+     * @param position the position
+     * @return the card
+     */
+    public Card setPosition(Card card, int position) {
+        try {
+            return ClientBuilder.newClient(new ClientConfig())
+                    .target(SERVER).path("api/cards/position/" +card.getId()+ "/" + position)
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .post(Entity.entity(card, APPLICATION_JSON), Card.class);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
 
     /**
      * Edit list colour
