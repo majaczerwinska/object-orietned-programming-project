@@ -679,4 +679,11 @@ public class ServerUtils {
     }
 
 
+    public Board deleteBoard(int id) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/boards/" + id) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .delete(Board.class);
+    }
 }

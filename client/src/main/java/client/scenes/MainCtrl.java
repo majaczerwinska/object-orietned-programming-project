@@ -92,6 +92,12 @@ public class MainCtrl {
     private Scene tagPopUpScene;
 
 
+    private EnterAdminPassword adminPasswordCtrl;
+    private Scene enterPasswordScene;
+
+
+    private Admin adminCtrl;
+    private Scene adminScene;
     public Map<Integer, CardComponent> cardIdComponentMap;
 
     /**
@@ -117,6 +123,8 @@ public class MainCtrl {
      * @param editPassword
      * @param customization
      * @param warning
+     * @param adminPwd
+     * @param adminPage
      */
     public void initialize(Stage primaryStage,
                            Stage locker,
@@ -139,7 +147,9 @@ public class MainCtrl {
                            Pair<ProvidePasswordCtrl, Parent> providePassword,
                            Pair<CustomizationCtrl, Parent> customization,
                            Pair<EditPasswordCtrl, Parent> editPassword,
-                           Pair<WarningCtrl, Parent> warning
+                           Pair<WarningCtrl, Parent> warning,
+                           Pair<EnterAdminPassword, Parent> adminPwd,
+                           Pair<Admin, Parent> adminPage
                            ) {
 
         this.cardIdComponentMap = new HashMap<>();
@@ -210,6 +220,12 @@ public class MainCtrl {
 
         this.customizationCtrl = customization.getKey();
         this.customization = new Scene(customization.getValue());
+
+        this.adminPasswordCtrl = adminPwd.getKey();
+        this.enterPasswordScene = new Scene(adminPwd.getValue());
+
+        this.adminCtrl = adminPage.getKey();
+        this.adminScene = new Scene(adminPage.getValue());
 
         showLanding();
         primaryStage.show();
@@ -739,6 +755,23 @@ public class MainCtrl {
             return this.boardOverwiew;
         }
 
+
+        public void openAdminPanel(String ip) {
+            primaryStage.setTitle("Admin panel for server "+ip);
+            primaryStage.setScene(adminScene);
+            if (adminCtrl==null){
+                throw new RuntimeException("admin panel is null for some reason");
+            } else {
+                System.out.println("admin ctrl is not null");
+            }
+            adminCtrl.refresh(ip);
+        }
+
+        public void showAdminPasswordEnter(String ip) {
+            primaryStage.setTitle("Admin pwd for "+ip);
+            primaryStage.setScene(enterPasswordScene);
+            adminPasswordCtrl.refresh(ip);
+        }
     }
 
 

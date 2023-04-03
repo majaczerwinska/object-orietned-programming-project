@@ -41,6 +41,9 @@ public class BoardSelectCtrl {
     @FXML
     private Button back;
 
+    @FXML
+    private Button adminButton;
+
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 

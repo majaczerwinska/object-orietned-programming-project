@@ -61,6 +61,8 @@ public class ServerSelectCtrl {
     @FXML
     private ListView<String> servers;
 
+    @FXML
+    private Button enterAsAdmin;
 
     /**
      *
@@ -249,15 +251,7 @@ public class ServerSelectCtrl {
      * Enters the server (goes to select board scene)
      */
     public void enterServer(){
-        onTestConnection();
-        if (!connectionStatus.textProperty().get().equals("200 Successful")) {
-            System.out.println(connectionStatus.textProperty().get());
-            System.out.println("Tried to enter invalid server ("+serverAddress+"), aborting");
-            return;
-        }
-        System.out.println("entering server " + serverAddress);
-        setServer(serverAddress);
-        mainCtrl.setStompSession();
+        if (!verifyServerConnection()) return;
         mainCtrl.showSelect();
     }
 
@@ -288,5 +282,24 @@ public class ServerSelectCtrl {
      */
     public void exitApp() {
         Platform.exit();
+    }
+
+
+    public void enterAdminPage() {
+        if (!verifyServerConnection()) return;
+        mainCtrl.showAdminPasswordEnter(serverAddress);
+    }
+
+    private boolean verifyServerConnection() {
+        onTestConnection();
+        if (!connectionStatus.textProperty().get().equals("200 Successful")) {
+            System.out.println(connectionStatus.textProperty().get());
+            System.out.println("Tried to enter invalid server ("+serverAddress+"), aborting");
+            return false;
+        }
+        System.out.println("entering server " + serverAddress);
+        setServer(serverAddress);
+        mainCtrl.setStompSession();
+        return true;
     }
 }
