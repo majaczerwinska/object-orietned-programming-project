@@ -8,6 +8,7 @@ import commons.Card;
 import commons.CardList;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -137,7 +138,8 @@ public class CardListComponent extends VBox{
             CardComponent cardComponent = mainCtrl.cardIdComponentMap.get(c.getId());
             Card newcard = server.changeListOfCard(listId,c);
             newcard.setPosition(getDroppedPosition(event));
-            server.editCard(newcard.getId(), boardId, newcard);
+            System.out.println("\n\nSetting new card position to p="+newcard.getPosition()+" for card="+newcard+"\n\n");
+            server.editCard(newcard.getId(), boardId, newcard, true);
             mainCtrl.cardIdComponentMap.remove(c.getId());
             mainCtrl.cardIdComponentMap.put(newcard.getId(), cardComponent);
             success = true;
@@ -145,7 +147,7 @@ public class CardListComponent extends VBox{
         }
         event.setDropCompleted(success);
         Platform.runLater(()->{
-            mainCtrl.refreshBoardOverview();
+            mainCtrl.refreshBoardOverview(true);
             System.out.println(mainCtrl.cardIdComponentMap.toString());
             System.out.println(vboxCards.getChildren());
             //updateCardPositionAttributes();
@@ -214,7 +216,7 @@ public class CardListComponent extends VBox{
 
             Card c = server.getCard(id);
             c.setPosition(i);
-            server.editCard(id, boardId, c);
+            server.editCard(id, boardId, c, true);
         }
     }
 
@@ -230,7 +232,7 @@ public class CardListComponent extends VBox{
         System.out.println(vboxCards.getHeight());
          Card c = mainCtrl.createCard(listId);
         System.out.println(boardId + "carlistcomp");
-         mainCtrl.showCard(c.getId(), boardId);
+         mainCtrl.showCard(c.getId(), boardId, false);
     }
 
     /**
@@ -240,7 +242,7 @@ public class CardListComponent extends VBox{
 
 
         server.deleteCardList(listId,boardId);
-        mainCtrl.refreshBoardOverview();
+        mainCtrl.refreshBoardOverview(true);
     }
 
 
@@ -265,9 +267,9 @@ public class CardListComponent extends VBox{
 
     /**
      * takes you to scene for editing the list's name
-     * @param mouseEvent - click
+     * @param e - click
      */
-    public void editTitle(MouseEvent mouseEvent) {
+    public void editTitle(ActionEvent e) {
         mainCtrl.showListEdit(listId, boardId);
     }
 
@@ -298,6 +300,25 @@ public class CardListComponent extends VBox{
     public void colorFont(int color){
         String hexColor = String.format("#%06X", (0xFFFFFF & color));
         labelTitle.setStyle("-fx-text-fill: " + hexColor);
+    }
+
+    /**
+     * Disables the write mode on lists
+     */
+    public void readonly(){
+        addcard.setOnAction(event->{
+            mainCtrl.showWarning(boardId);
+            return;
+        });
+        deletebutton.setOnAction(event->{
+            mainCtrl.showWarning(boardId);
+            return;
+        });
+        editlist.setOnAction(event->{
+            mainCtrl.showWarning(boardId);
+            return;
+        });
+
     }
 
 }

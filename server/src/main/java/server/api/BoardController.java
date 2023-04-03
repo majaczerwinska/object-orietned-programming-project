@@ -8,6 +8,7 @@ import commons.CardList;
 import commons.Palette;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import server.service.BoardService;
 
@@ -19,15 +20,18 @@ import java.util.List;
 public class BoardController {
 
     private BoardService abs;
+    private SimpMessagingTemplate msgs;
 
 
     /**
      *Constructor
      * @param abs - the service we use
+     * @param msgs the messaging template for messages
      */
     @Autowired
-    public BoardController(BoardService abs) {
+    public BoardController(BoardService abs, SimpMessagingTemplate msgs) {
         this.abs = abs;
+        this.msgs = msgs;
     }
 
 
@@ -119,6 +123,7 @@ public class BoardController {
         }
         board.setId(id);
         abs.setBoardInfo(board);
+        msgs.convertAndSend("/topic/boards/"+id, "Edited board#" + id + " refreshnamecolor");
         return ResponseEntity.ok().build();
     }
 

@@ -6,16 +6,17 @@ import client.scenes.MainCtrl;
 import client.utils.ServerUtils;
 import commons.Card;
 import commons.Tag;
+import commons.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 
 import java.io.IOException;
 import java.net.URL;
@@ -24,7 +25,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-//TODO
 public class CardComponent extends HBox implements Initializable {
 
 
@@ -45,6 +45,7 @@ public class CardComponent extends HBox implements Initializable {
 
     private BoardOverviewCtrl boardOverviewCtrl;
 
+    String originalValue = "title..";
 
     @FXML
     public TextField tfTitle;
@@ -67,15 +68,22 @@ public class CardComponent extends HBox implements Initializable {
 
     @FXML
     private CheckBox checkMark;
+    private boolean isLocked;
+
+    @FXML
+    private ProgressBar taskProgress;
 
     /**
      * The constructor for the component
      * @param mainCtrl the main controller instance
+     * @param isLocked
      */
-    public CardComponent(MainCtrl mainCtrl) {
+    @SuppressWarnings("checkstyle:JavadocMethod")
+    public CardComponent(MainCtrl mainCtrl, boolean isLocked) {
         super();
         server = new ServerUtils();
         this.mainCtrl = mainCtrl;
+        this.isLocked = isLocked;
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/components/CardComponent.fxml"));
         fxmlLoader.setRoot(this);
@@ -90,9 +98,11 @@ public class CardComponent extends HBox implements Initializable {
 //        setOnKeyPressed(event -> updateCard());
 
         TextField titleTextField = (TextField) lookup("#tfTitle");
-        titleTextField.requestFocus();
+//        if(!isLocked){
+//           // tfTitle.setOnKeyTyped(event -> updateCard());
+//
+//        }
 
-        tfTitle.setOnKeyTyped(event -> updateCard());
         //tfDescription.setOnKeyTyped(event -> updateCard());
 //        setOnMouseEntered(event -> {
 //                tfTitle.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-alignment: center");
@@ -116,37 +126,26 @@ public class CardComponent extends HBox implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        tfTitle.requestFocus();
-        checkMark.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                System.out.println("Checkbox is checked");
-                markAsCompleted();
-            } else {
-                System.out.println("Checkbox is unchecked");
-                unMarkCompleted();
-            }
-        });
-        descriptionLabel.setOnMouseEntered(event -> {
-            descriptionLabel.setStyle("-fx-underline: true");
-
-        });
-        descriptionLabel.setOnMouseExited(event -> {
-            descriptionLabel.setStyle("-fx-underline: false");
-        });
-        tfTitle.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                // TextField has received focus
-                tfTitle.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-alignment: center");
-            } else {
-                // TextField has lost focus
-                tfTitle.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; " +
-                        "-fx-alignment: center");
-            }
-        });
-
-        setOnMouseEntered(event ->
+        if(!isLocked) {
+            tfTitle.focusedProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue) {
+                    // TextField has received focus
+                    tfTitle.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-alignment: center");
+                } else {
+                    // TextField has lost focus
+                    System.out.println("originalValue = " + originalValue + "\nnew value = " + tfTitle.getText());
+                    if(!tfTitle.getText().equals(originalValue)){
+                        boardOverviewCtrl.sendMessage("/app/update/card/"+boardID,
+                                "Done updating card in component");
+                        originalValue = tfTitle.getText();
+                    }
+                    tfTitle.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; " +
+                            "-fx-alignment: center");
+                }
+            });
+            setOnMouseEntered(event ->
             {tfTitle.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-alignment: center");});
-        setOnMouseExited(event ->
+            setOnMouseExited(event ->
             {
                 tfTitle.focusedProperty().addListener((observable, oldValue, newValue) -> {
                     if (newValue) {
@@ -159,9 +158,18 @@ public class CardComponent extends HBox implements Initializable {
                     }
                 });
             });
-        setOnMouseClicked(this::onElementClick);
-        dragging();
 
+            dragging();
+
+        }
+        setOnMouseClicked(this::onElementClick);
+        descriptionLabel.setOnMouseEntered(event -> {
+            descriptionLabel.setStyle("-fx-underline: true");
+
+        });
+        descriptionLabel.setOnMouseExited(event -> {
+            descriptionLabel.setStyle("-fx-underline: false");
+        });
 
         this.boardOverviewCtrl = mainCtrl.getBoardOverviewCtrl();
 
@@ -179,6 +187,10 @@ public class CardComponent extends HBox implements Initializable {
         });
 
 
+        borderColorInit();
+        //TODO: debug 400 BAD REQUEST for this \/
+//        setTaskProgress();
+
 //        this.cardFrame.getScene().setOnKeyPressed(event -> {
 //            if (event.getCode() == KeyCode.DELETE) {
 //                if (highlighted) mainCtrl.showCard(cardID, boardID);
@@ -187,12 +199,15 @@ public class CardComponent extends HBox implements Initializable {
     }
 
 
-    /**
-     * test method
-     */
-    public void addtesttagtocard() {
-        server.addTagToCard(boardID,0,cardID);
-    }
+
+
+
+//    /**
+//     * test method
+//     */
+//    public void addtesttagtocard() {
+//        server.addTagToCard(boardID,0,cardID);
+//    }
 
     /**
      * Method for all the dragging
@@ -260,30 +275,71 @@ public class CardComponent extends HBox implements Initializable {
 
     }
 
+
+    /**
+     * get tasks, update card component to show how many are completed
+     */
+    public void setTaskProgress() {
+        List<Task> tasks = server.getTasksFromCard(cardID);
+        double completed = 0;
+        for (Task t : tasks) {
+            if (t.isChecked()) completed++;
+        }
+        double progress = completed / tasks.size();
+        taskProgress.setProgress(progress);
+    }
+
+    /**
+     * get tags and add their colours to the card component
+     */
+    public void borderColorInit() {
+        System.out.println("\n\n\nInitialising border colors");
+//        Set<Tag> tags = getTagColors();
+        List<Color> c = new ArrayList<>();
+//        for (Tag t : tags) {
+//            c.add(MainCtrl.colorParseToFXColor(t.getColor()));
+//        }
+        c.add(Color.YELLOWGREEN);
+        c.add(Color.LIGHTGOLDENRODYELLOW);
+        c.add(Color.LIGHTBLUE);
+        c.add(Color.HOTPINK);
+        c.add(Color.CORAL);
+        setMulticolouredBorder(c);
+    }
+
     /**
      * get list of colors for a specific tag
-     * //todo here
+     * //todo debug server method, currently gives bad request
+     * @return set of tags for this card
      */
-    public void getTagColors() {
-        Set<Tag> tags = server.getTagsForCard(cardID);
-        System.out.println(tags);
+    public Set<Tag> getTagColors() {
+        return server.getTagsForCard(cardID);
     }
 
     /**
      * //todo make this set the border to every color of the tags in this card
-     * @param pane the cards hbox
      * @param colors the list of javafx color elements
      */
-    public void setMulticolouredBorder(Pane pane, List<Color> colors) {
-        BorderStrokeStyle style = BorderStrokeStyle.SOLID;
-        double borderWidth = 3;
-
-        List<BorderStroke> borders = new ArrayList<>();
-        for (int i = 0; i < pane.getChildren().size(); i++) {
-            borders.add(new BorderStroke(colors.get(i % colors.size()), style, null, new BorderWidths(borderWidth)));
+    public void setMulticolouredBorder(List<Color> colors) {
+        List<Stop> stops = new ArrayList<>();
+        double size = colors.size();
+        double i = 0;
+        for (Color c : colors) {
+            double offset1 = i++ / size;
+            double offset2 = i / size;
+            stops.add(new Stop(offset1, c));
+            stops.add(new Stop(offset2, c));
         }
+        // Create a custom border with a LinearGradient stroke
+        Border border = new Border(
+                new BorderStroke(
+                        new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, stops),
+                        BorderStrokeStyle.SOLID,
+                        null,
+                        new BorderWidths(3)));
 
-        pane.setBorder(new Border((BorderStroke) borders));
+        // Set the HBox's border to the custom border
+        this.setBorder(border);
     }
 
     /**
@@ -317,7 +373,7 @@ public class CardComponent extends HBox implements Initializable {
         }
         System.out.println("joining card #" + cardID);
         System.out.println(self);
-        mainCtrl.showCard(cardID, boardID);
+        mainCtrl.showCard(cardID, boardID, isLocked);
     }
 
     /**
@@ -327,7 +383,7 @@ public class CardComponent extends HBox implements Initializable {
         System.out.println("Update card method called in card component for card=" + self);
         self.setTitle(tfTitle.getText());
 
-        server.editCard(boardID, cardID,self);
+        server.editCard(boardID, cardID,self, true);
         System.out.println("update card method exits with card="+ self);
     }
 
@@ -357,8 +413,27 @@ public class CardComponent extends HBox implements Initializable {
         // UI update code here
         System.out.println("deleting card on board#"+ boardID + " (CardComponent.deleteCard(self)) " + self);
         server.deleteCard(self, boardID, cardListID);
-        mainCtrl.refreshBoardOverview();
+        mainCtrl.refreshBoardOverview(true);
     }
+
+    /**
+     * Disables the write mode on card
+     */
+    public void readmode(){
+        if(isLocked){
+            btnDelete.setOnAction(e->{
+                mainCtrl.showWarning(boardID);
+                return;
+            });
+            tfTitle.setOnKeyTyped(event -> {
+                return ;
+            });
+            tfTitle.setEditable(false);
+
+
+        }
+    }
+
 
 
 

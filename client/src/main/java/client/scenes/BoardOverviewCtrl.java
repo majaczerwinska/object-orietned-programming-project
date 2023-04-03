@@ -28,12 +28,10 @@ import javafx.scene.control.ListCell;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.util.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-import java.util.List;
 import java.util.prefs.Preferences;
 
 
@@ -69,6 +67,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
 
     @FXML
     private Button backbtn;
+    @FXML
+    private Button btncustomization;
 
     @FXML
     private Label boardKey;
@@ -90,6 +90,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     @FXML
     private Button lock;
     private Preferences pref;
+    private boolean isLocked;
 
 
 
@@ -103,9 +104,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public BoardOverviewCtrl(ServerUtils server, MainCtrl mainCtrl, WebsocketClient websocketClient) {
         this.mainCtrl = mainCtrl;
         this.server = server;
-
+        this.isLocked=false;
         this.pref = Preferences.userRoot().node("locking");
-
         this.websocketClient = websocketClient;
         System.out.println("Inject called in board overview");
     }
@@ -133,17 +133,30 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      */
     public void setStompSession(){
         websocketClient.setStompSession(ServerUtils.SERVER);
-        System.out.println("StompSession created");
+        System.out.println("StompSession created in board overview");
     }
 
     /**
      * Subscribes to endpoint that listens to all updates of cards and lists from a specific board
      * @param boardID the boarId from the board we want updates from
      */
-    public void subscribeToBoard(int boardID){
-        websocketClient.registerForMessages("/topic/boards/"+boardID, String.class, update -> {
-            System.out.println("payload: "+ update);
-            refresh(null);
+    public void subscribeToBoard(int boardID) {
+        websocketClient.registerForMessages("/topic/boards/" + boardID, String.class, update -> {
+            Platform.runLater(() -> {
+                System.out.println("payload: " + update);
+                if (update.contains("refreshnamecolor")) {
+                    setBoardName();
+                    setColor();
+                } else if(update.contains("Added card")) {
+                    String[] words = update.split(" ");
+                    Card c = server.getCard(Integer.parseInt(words[2]));
+                    System.out.println("refresh with focus to card#" + words[1]);
+                    refresh(c, false);
+                } else {
+                    refresh(null, false);
+                }
+                //            mainCtrl.timeoutBoardRefresh(1000);
+            });
         });
     }
 
@@ -156,6 +169,15 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
                     System.out.println("payload: "+ update);
                     refreshListViewTags();
         });
+    }
+
+    /**
+     * Sends message to /app/dest
+     * @param dest destination to send message to
+     * @param payload message to send
+     */
+    public void sendMessage(String dest, String payload){
+        websocketClient.sendMessage(dest, payload);
     }
 
     /**
@@ -191,22 +213,74 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         Board board = server.getBoard(boardID);
         if(board.getPassword().equals("") || board.getPassword()==null ){
             lock.setText("\uD83D\uDD13");
+            isLocked=false;
             lock.setStyle("-fx-background-color: white");
+            enable();
             return;
-        }
-        lock.setText("\uD83D\uDD12");
-        System.out.println("\n\n\n\n\n" + pref.get(String.valueOf(boardID),"notfound"));
-        checkForPref();
+        }else{
+            lock.setText("\uD83D\uDD12");
+            checkForPref();
+            if(pref.get(String.valueOf(boardID),"").equals("")){
+                lock.setStyle("-fx-background-color: red");
+                isLocked=true;
+                disable();
+            }
+            else{
+                isLocked=false;
+                enable();
+                lock.setStyle("-fx-background-color: green");
+            }
 
-        if(pref.get(String.valueOf(boardID),"").equals("")){
-            lock.setStyle("-fx-background-color: red");
         }
-        else{
-            lock.setStyle("-fx-background-color: green");
-        }
-
 
     }
+
+    /**
+     * Disables the write mode on the board
+     */
+    public void disable(){
+
+        btnTagManager.setOnAction(event -> {
+            mainCtrl.showWarning(boardID);
+            return;
+        });
+        btncustomization.setOnAction(event -> {
+            mainCtrl.showWarning(boardID);
+            return;
+        });
+        editBoardButton.setOnAction(event -> {
+            mainCtrl.showWarning(boardID);
+            return;
+        });
+        addListButton.setOnAction(event -> {
+            mainCtrl.showWarning(boardID);
+            return;
+        });
+
+    }
+
+    /**
+     * Enables the write mode on the board
+     */
+    public void enable(){
+
+        btnTagManager.setOnAction(event -> {
+            showTagManager(event);
+        });
+        btncustomization.setOnAction(event -> {
+            goCustomization(event);
+        });
+        editBoardButton.setOnAction(event -> {
+            showEditBoard(event);
+        });
+        addListButton.setOnAction(event -> {
+            addListScene(event);
+        });
+
+    }
+
+
+
 
     /**
      * Checks if the board is the correct board
@@ -269,20 +343,19 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         //List<Card> cards = server.getCardsFromList(listId);
         cards.sort(Comparator.comparing(Card::getPosition));
         for (Card card : cards) {
-
-            CardComponent cardComponent = new CardComponent(mainCtrl);
-
+            CardComponent cardComponent = new CardComponent(mainCtrl, isLocked);
             mainCtrl.cardIdComponentMap.remove(card.getId());
             mainCtrl.cardIdComponentMap.remove(cardComponent);
             mainCtrl.cardIdComponentMap.put(card.getId(), cardComponent);
-
             cardComponent.boardID = boardID;
             cardComponent.setData(card, listId);
+            if(isLocked) cardComponent.readmode();
             cardComponent.setStyle("-fx-background-color: " +
                     String.format("rgb(%d, %d, %d)", (card.getColor() >> 16) & 0xFF,
                     (card.getColor() >> 8) & 0xFF, card.getColor()& 0xFF)+";" );
 
             vbox.getChildren().add(cardComponent);
+
             if(card.equals(c)){
                 cardComponent.tfTitle.requestFocus();
             }
@@ -315,8 +388,10 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * @param cardLists card lists
      * @param allCards list of lists of cards
      * @param c - card for focus
+     * @param saveCardPositions whether to update the cards' positions in the database.
+     *                          only true when called from the client (in drag dropped)
      */
-    public void displayLists(List<CardList> cardLists, List<List<Card>> allCards, Card c){
+    public void displayLists(List<CardList> cardLists, List<List<Card>> allCards, Card c, Boolean saveCardPositions){
         int i = 0;
         for (CardList cardList : cardLists) {
 
@@ -327,7 +402,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
                     (cardList.getbColor() >> 16) & 0xFF,
                     (cardList.getbColor() >> 8) & 0xFF, cardList.getbColor()& 0xFF));
             System.out.println("List style: " + cardListComponent.getStyle());
-            cardListComponent.setOnMouseEntered(event -> addEnterKeyListener(cardList.getId()));
+            if(!isLocked) cardListComponent.setOnMouseEntered(event -> addEnterKeyListener(cardList.getId()));
             hboxCardLists.getChildren().add(cardListComponent);
             cardListComponent.setData(cardList);
             String hexColor = String.format("#%06X", (0xFFFFFF & cardList.getfColor()));
@@ -335,14 +410,19 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             displayCards(cardListComponent.getVboxCards(), cardList.getId(), allCards.get(i),c);
             server.setListSize(cardList.getId(), cardListComponent.getVboxCards().getChildren().size());
             i++;
-            int j = 1;
-            for (Node cardComponent : cardListComponent.getVboxCards().getChildren()) {
-                if (cardComponent instanceof CardComponent) {
-                    CardComponent cc = (CardComponent) cardComponent;
-                    cc.self.setPosition(j++);
-                    server.editCard(cc.self.getId(), boardID, cc.self);
+            if (saveCardPositions) {
+                int j = 1;
+                for (Node cardComponent : cardListComponent.getVboxCards().getChildren()) {
+                    if (cardComponent instanceof CardComponent) {
+                        CardComponent cc = (CardComponent) cardComponent;
+                        System.out.println("For loop in displaylist now at card: " + cc);
+                        cc.self.setPosition(j++);
+                        System.out.println("Set card's position ->"+cc);
+                        server.editCard(boardID, cc.self.getId(), cc.self, true);
+                    }
                 }
             }
+            if(isLocked) cardListComponent.readonly();
         }
 
     }
@@ -434,8 +514,9 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     /**
      * Refresh scene from database
      * @param c - card for focus
+     * @param saveCardPositions whether to save card position attributes to server
      */
-    public void refresh(Card c) {
+    public void refresh(Card c, Boolean saveCardPositions) {
         Platform.runLater(new Runnable() {
             @Override public void run() {
                 System.out.println("Refreshing board overview");
@@ -445,7 +526,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
                     allCards.add(getCardsOfListFromServer(cl.getId()));
                 }
                 clearBoard();
-                displayLists(cardLists, allCards, c);
+                displayLists(cardLists, allCards, c, saveCardPositions);
                 shortcut();
             }
         });
@@ -454,7 +535,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     private void shortcut() {
         listViewTags.getScene().setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.E) {
-                if (highlightedCardComponent != null) mainCtrl.showCard(highlightedCardComponent.cardID, boardID);
+                if (highlightedCardComponent != null)
+                    mainCtrl.showCard(highlightedCardComponent.cardID, boardID,isLocked);
             } else if (event.getCode() == KeyCode.DELETE) {
                 if (highlightedCardComponent != null) highlightedCardComponent.deleteCard();
             } else if (event.getCode() == KeyCode.T) {
@@ -510,7 +592,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         System.out.println("creating new card "+c+" in list id="+listID);
 
         c = server.addCard(c, boardID, listID);
-        refresh(c);
+        refresh(c, true);
         return c;
     }
 
@@ -523,6 +605,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     @FXML
     public void onEnterKeyPressed(KeyEvent event, int listID) {
         System.out.println("On enter key pressed called in boardoverviewcontroller with event "+event);
+        if(isLocked) return;
         if (event.getCode() == KeyCode.ENTER && !isCreatingCard) {
             isCreatingCard = true;
             // when the user presses the enter button

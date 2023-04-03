@@ -7,6 +7,7 @@ import commons.Tag;
 import commons.Task;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -21,9 +22,12 @@ import java.util.Set;
 public class CardCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    private final WebsocketClient websocketClient;
 
     @FXML
     private Label label;
+    @FXML
+    private Label readonly;
     @FXML
     private Label warning;
     @FXML
@@ -55,17 +59,28 @@ public class CardCtrl {
     private TextField newTask;
     public int cardID;
     public int boardID;
+    public boolean isLocked;
 
 
     /**
      *
      * @param server -
      * @param mainCtrl -
+     * @param websocketClient -
      */
     @Inject
-    public CardCtrl(ServerUtils server, MainCtrl mainCtrl){
+    public CardCtrl(ServerUtils server, MainCtrl mainCtrl, WebsocketClient websocketClient){
         this.mainCtrl = mainCtrl;
         this.server = server;
+        this.websocketClient = websocketClient;
+    }
+
+    /**
+     * Creates stomp session
+     */
+    public void setStompSession(){
+        websocketClient.setStompSession(ServerUtils.SERVER);
+        System.out.println("StompSession created in card overview");
     }
 
     /**
@@ -76,8 +91,43 @@ public class CardCtrl {
         for (Task task : tasks) {
             SubTaskComponent taskComponent = new SubTaskComponent(cardID, this);
             taskComponent.setData(task);
+            if(isLocked) taskComponent.disable();
+            else taskComponent.enable();
+
             vbox.getChildren().add(taskComponent);
         }
+    }
+
+    /**
+     * Disables write-mode
+     */
+    public void disable(){
+        removetag.setOnAction(e ->{
+            return;
+        });
+        boardtags.setOnMouseClicked(e ->{
+            return;
+        });
+        text.setEditable(false);
+        area.setEditable(false);
+        newTask.setEditable(false);
+        readonly.setText("This is read-only mode. You cannot edit.");
+    }
+
+    /**
+     * Enables write-mode
+     */
+    public void enable(){
+        removetag.setOnAction(e ->{
+            removeTagFromCard();
+        });
+        boardtags.setOnMouseClicked(e ->{
+            addTagToCard(e);
+        });
+        text.setEditable(true);
+        area.setEditable(true);
+        newTask.setEditable(true);
+        readonly.setText("");
     }
 
     /**
@@ -93,7 +143,8 @@ public class CardCtrl {
      */
     public void exit(){
         System.out.println(boardID + "cardexit");
-        mainCtrl.showBoardOverview(boardID);
+        mainCtrl.showBoardOverview(boardID, true);
+        websocketClient.sendMessage("/app/update/card/"+boardID, "Done updating card in CardOverview");
     }
 
     /**
@@ -152,7 +203,7 @@ public class CardCtrl {
             Card card= new Card(text.getText());
             card.setDescription(area.getText());
             card.setColor(MainCtrl.colorParseToInt(palette.getValue()));
-            server.editCard(boardID, cardID,card);
+            server.editCard(boardID, cardID,card, true);
             warning.setText("");
         }
     }

@@ -74,7 +74,7 @@ public class CardControllerTest {
         Card card = new Card("title");
         Card card2 = new Card("title2");
         con.addCard(0, list.getId(), card);
-        con.editCard(0, card.getId(), card2);
+        con.editCard(0, card.getId(), true, card2);
         assertEquals(card, card2);
 
     }
@@ -87,7 +87,7 @@ public class CardControllerTest {
         Card card = new Card("title");
         Card card2 = new Card();
         con.addCard(0, list.getId(),card);
-        con.editCard(0, card.getId(), card2);
+        con.editCard(0, card.getId(), true, card2);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
 
     }

@@ -63,7 +63,7 @@
                                     <Insets right="14.0" top="2.0" />
                                  </HBox.margin>
                               </TextField>
-                              <Button fx:id="join" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#saveBoardButton" prefHeight="26.0" prefWidth="51.0" text="Save">
+                              <Button fx:id="join" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#saveBoardButton" prefHeight="26.0" prefWidth="51.0" text="Save">
                                  <HBox.margin>
                                     <Insets left="18.0" right="-8.0" />
                                  </HBox.margin>
@@ -85,7 +85,7 @@
                               <Insets />
                            </HBox.margin>
                         </Label>
-                        <Button fx:id="create" mnemonicParsing="false" onMouseClicked="#goCreate" prefHeight="26.0" prefWidth="146.0" text="Create a new board" />
+                        <Button fx:id="create" mnemonicParsing="false" onAction="#goCreate" prefHeight="26.0" prefWidth="146.0" text="Create a new board" />
                         <Button fx:id="btnRemove" mnemonicParsing="false" onAction="#removeBoard" text="Remove" textFill="#fc0505">
                            <HBox.margin>
                               <Insets left="40.0" />
@@ -102,7 +102,7 @@
                   <VBox prefHeight="200.0" prefWidth="69.0" />
                   <VBox alignment="TOP_RIGHT" prefHeight="55.0" prefWidth="403.0">
                      <children>
-                        <Button mnemonicParsing="false" onMouseClicked="#back" text="Back">
+                        <Button mnemonicParsing="false" onAction="#back" text="Back">
                            <VBox.margin>
                               <Insets right="2.0" top="10.0" />
                            </VBox.margin></Button>

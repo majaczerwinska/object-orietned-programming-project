@@ -24,6 +24,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import javafx.stage.Screen;
+import javafx.scene.text.Font;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -83,6 +85,8 @@ public class MainCtrl {
 
     private CustomizationCtrl customizationCtrl;
     private Scene customization;
+    private WarningCtrl warningCtrl;
+    private Scene warning;
 
     private TagPopUpCtrl tagPopUpCtrl;
     private Scene tagPopUpScene;
@@ -112,6 +116,7 @@ public class MainCtrl {
      * @param providePassword
      * @param editPassword
      * @param customization
+     * @param warning
      */
     public void initialize(Stage primaryStage,
                            Stage locker,
@@ -133,8 +138,9 @@ public class MainCtrl {
                            Pair<LockInUnlockedBoardCtrl, Parent> unlocked,
                            Pair<ProvidePasswordCtrl, Parent> providePassword,
                            Pair<CustomizationCtrl, Parent> customization,
-                           Pair<EditPasswordCtrl, Parent> editPassword
-    ) {
+                           Pair<EditPasswordCtrl, Parent> editPassword,
+                           Pair<WarningCtrl, Parent> warning
+                           ) {
 
         this.cardIdComponentMap = new HashMap<>();
         System.setProperty("javafx.dnd.delayedDragCallback", "false");
@@ -199,6 +205,9 @@ public class MainCtrl {
         this.editPasswordCtrl = editPassword.getKey();
         this.editPassword = new Scene(editPassword.getValue());
 
+        this.warningCtrl = warning.getKey();
+        this.warning = new Scene(warning.getValue());
+
         this.customizationCtrl = customization.getKey();
         this.customization = new Scene(customization.getValue());
 
@@ -257,6 +266,17 @@ public class MainCtrl {
         locker.setScene(editPassword);
         editPasswordCtrl.boardID = boardID;
         editPasswordCtrl.refresh();
+        locker.showAndWait();
+    }
+
+    /**
+     * Shows the popup for alerting that the board is rtead-only
+     * @param boardID the id of the board
+     */
+    public void showWarning(int boardID) {
+        locker.setTitle("Read-only!!");
+        locker.setScene(warning);
+        warningCtrl.boardID = boardID;
         locker.showAndWait();
     }
 
@@ -410,7 +430,26 @@ public class MainCtrl {
      *
      * @param boardID the id of the board to join
      */
-    public void showBoardOverview(int boardID) {
+    public void showBoardOverview(int boardID){
+        prepareBoard(boardID);
+        boardOverviewCtrl.refresh(null, false);
+    }
+
+    /**
+     * show board overview
+     * @param boardID the id of the board to join
+     * @param saveCardPositions whether to update card position attributes in the server
+     */
+    public void showBoardOverview(int boardID, Boolean saveCardPositions) {
+        prepareBoard(boardID);
+        boardOverviewCtrl.refresh(null, saveCardPositions);
+    }
+
+    /**
+     * show board overview util function, prevent duplicate code
+     * @param boardID the board's id
+     */
+    private void prepareBoard(int boardID) {
         primaryStage.setTitle("Board overview :)");
         boardOverviewCtrl.boardID = boardID;
         primaryStage.setScene(boardOverwiew);
@@ -421,7 +460,6 @@ public class MainCtrl {
         boardOverviewCtrl.setColor();
         boardOverviewCtrl.setLock();
         boardOverviewCtrl.refreshListViewTags();
-        boardOverviewCtrl.refresh(null);
     }
 
     /**
@@ -430,6 +468,9 @@ public class MainCtrl {
     public void setStompSession() {
         boardOverviewCtrl.setStompSession();
         tagManagerCtrl.setStompSession();
+        cardCtrl.setStompSession();
+        listCreationCtrl.setStompSession();
+        customizationCtrl.setStompSession();
     }
 
     /**
@@ -472,12 +513,16 @@ public class MainCtrl {
      *
      * @param cardID  card id
      * @param boardID board id
+     * @param isLocked whether toe board is locked
      */
-    public void showCard(int cardID, int boardID) {
+    public  void showCard(int cardID, int boardID, boolean isLocked){
         primaryStage.setTitle("Card overview :)");
         primaryStage.setScene(card);
         cardCtrl.cardID = cardID;
         cardCtrl.boardID = boardID;
+        cardCtrl.isLocked = isLocked;
+        if(isLocked) cardCtrl.disable();
+        else cardCtrl.enable();
 
         primaryStage.show();
         cardCtrl.setInfo();
@@ -486,13 +531,38 @@ public class MainCtrl {
 
     }
 
-
     /**
      * Shows board creation scene
      */
     public void showBoardCreation() {
         primaryStage.setTitle("Board creation overview :)");
+        // styling the page
+
+        // setting the font size for the text
+        double screenWidth = Screen.getPrimary().getBounds().getWidth();
+        boardCreationCtrl.getTitleLabel().setFont(Font.font(screenWidth * 0.03));
+        boardCreationCtrl.getBoardKeyLabel().setFont(Font.font(screenWidth * 0.015));
+        boardCreationCtrl.getBoardTitleLabel().setFont(Font.font(screenWidth * 0.015));
+        boardCreationCtrl.getStopCreatingBoardButton().setFont(Font.font(screenWidth * 0.012));
+        boardCreationCtrl.getCreateBoardButton().setFont(Font.font(screenWidth * 0.015));
+
+        // setting the font family for the text
+        boardCreationCtrl.getTitleLabel().setStyle("-fx-font-family: Avenir Book;");
+        boardCreationCtrl.getBoardKeyLabel().setStyle("-fx-font-family: Avenir Book;");
+        boardCreationCtrl.getBoardTitleLabel().setStyle("-fx-font-family: Avenir Book;");
+        boardCreationCtrl.getCreateBoardButton().setStyle("-fx-font-family: Avenir Book;");
+        boardCreationCtrl.getStopCreatingBoardButton().setStyle("-fx-font-family: Avenir Book;");
+
+        // round the corners for the text areas
+        boardCreationCtrl.getBoardKeyTextField().setStyle("-fx-background-radius: 7;");
+        boardCreationCtrl.getBoardTitleTextField().setStyle("-fx-background-radius: 7;");
+
+        // round the corners of the buttons
+        boardCreationCtrl.getCreateBoardButton().setStyle("-fx-background-radius: 7;");
+        boardCreationCtrl.getStopCreatingBoardButton().setStyle("-fx-background-radius: 7;");
+
         primaryStage.setScene(boardCreation);
+        primaryStage.setFullScreen(true);
         primaryStage.show();
     }
 
@@ -531,9 +601,10 @@ public class MainCtrl {
 
     /**
      * refresh board overview scene with newly polled data from the database
+         * @param saveCardPositions whether to save card position attributes
      */
-    public void refreshBoardOverview() {
-        boardOverviewCtrl.refresh(null);
+    public void refreshBoardOverview(Boolean saveCardPositions)  {
+        boardOverviewCtrl.refresh(null, saveCardPositions);
     }
 
     /**
@@ -560,7 +631,7 @@ public class MainCtrl {
     public void timeoutBoardRefresh() {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Future<?> future = executor.submit(() -> {
-            boardOverviewCtrl.refresh(null);
+            boardOverviewCtrl.refresh(null, false);
         });
         try {
             future.get(200, TimeUnit.MILLISECONDS); // set a timeout of 5 seconds
@@ -582,7 +653,7 @@ public class MainCtrl {
     public void timeoutBoardRefresh(int mil) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Future<?> future = executor.submit(() -> {
-            boardOverviewCtrl.refresh(null);
+            boardOverviewCtrl.refresh(null, false);
         });
         try {
             future.get(mil, TimeUnit.MILLISECONDS); // set a timeout of 5 seconds
