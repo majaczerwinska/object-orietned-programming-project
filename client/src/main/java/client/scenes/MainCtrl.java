@@ -327,6 +327,26 @@ public class MainCtrl {
      */
     public void showSelect() {
         primaryStage.setTitle("Board selection");
+        // styling the board selection page
+
+        // setting the font family for the text
+        boardSelectCtrl.getCreateButton().setStyle("-fx-font-family: Avenir Book;");
+        boardSelectCtrl.getRemoveButton().setStyle("-fx-font-family: Avenir Book;");
+        boardSelectCtrl.getJoinButton().setStyle("-fx-font-family: Avenir Book;");
+        boardSelectCtrl.getBackButton().setStyle("-fx-font-family: Avenir Book;");
+        boardSelectCtrl.getDoubleClickText().setStyle("-fx-font-family: Avenir Book;");
+        boardSelectCtrl.getJoinExistingLabel().setStyle("-fx-font-family: Avenir Book;");
+        boardSelectCtrl.getEnterKeyLabel().setStyle("-fx-font-family: Avenir Book;");
+        boardSelectCtrl.getCreateButton().setStyle("-fx-font-family: Avenir Book;");
+        boardSelectCtrl.getOrYouLabel().setStyle("-fx-font-family: Avenir Book;");
+
+        // rounding the corners of the buttons and text fields
+        boardSelectCtrl.getCreateButton().setStyle("-fx-background-radius: 7;");
+        boardSelectCtrl.getRemoveButton().setStyle("-fx-background-radius: 7;");
+        boardSelectCtrl.getJoinButton().setStyle("-fx-background-radius: 7;");
+        boardSelectCtrl.getBackButton().setStyle("-fx-background-radius: 7;");
+        boardSelectCtrl.getBoardKeyTextField().setStyle("-fx-background-radius: 7;");
+
         primaryStage.setScene(boardSelect);
         primaryStage.show();
         boardSelectCtrl.refresh();
