@@ -1,14 +1,16 @@
 package client.scenes;
 
-//import java.net.URL;
+import client.utils.ServerUtils;
+import com.google.inject.Inject;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.List;
-//import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
-import com.google.inject.Inject;
-
-import client.utils.ServerUtils;
 //import javafx.application.Platform;
 //import javafx.collections.FXCollections;
 //import javafx.collections.ObservableList;
@@ -304,11 +306,13 @@ public class ServerSelectCtrl {
     /**
      * event handler for the go back to main menu button
      */
+
     public void goBackToMainMenuButtonHandler() {
         // refreshes the page and goes back to Landing
         refresh();
         mainCtrl.showLanding();
         // colour of the button is #a81b1b
+
     }
 
     /**

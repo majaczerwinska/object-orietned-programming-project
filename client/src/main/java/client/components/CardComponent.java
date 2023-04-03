@@ -17,13 +17,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 
 public class CardComponent extends HBox implements Initializable {
 
@@ -65,13 +63,10 @@ public class CardComponent extends HBox implements Initializable {
 
     @FXML
     private HBox cardFrame;
-
-    @FXML
-    private CheckBox checkMark;
     private boolean isLocked;
 
     @FXML
-    private ProgressBar taskProgress;
+    private Text text;
 
     /**
      * The constructor for the component
@@ -174,40 +169,21 @@ public class CardComponent extends HBox implements Initializable {
         this.boardOverviewCtrl = mainCtrl.getBoardOverviewCtrl();
 
         cardFrame.setOnMouseEntered(event -> {
-            BorderStroke borderStroke = new BorderStroke(Color.BLACK,
-                    BorderStrokeStyle.SOLID, null, new BorderWidths(2));
-            cardFrame.setBorder(new Border(borderStroke));
+            String style = getStyle();
+            style += "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.9), 5, 0, 0, 5);";
+            setStyle(style);
             highlighted = true;
             boardOverviewCtrl.highlightedCardComponent= this;
         });
         cardFrame.setOnMouseExited(event -> {
-            cardFrame.setBorder(null);
+            String style = getStyle();
+            style = style.replace("-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.9), 5, 0, 0, 5);", "");
+            setStyle(style);
             highlighted = false;
             boardOverviewCtrl.highlightedCardComponent = null;
         });
-
-
-        borderColorInit();
-        //TODO: debug 400 BAD REQUEST for this \/
-//        setTaskProgress();
-
-//        this.cardFrame.getScene().setOnKeyPressed(event -> {
-//            if (event.getCode() == KeyCode.DELETE) {
-//                if (highlighted) mainCtrl.showCard(cardID, boardID);
-//            }
-//        });
     }
 
-
-
-
-
-//    /**
-//     * test method
-//     */
-//    public void addtesttagtocard() {
-//        server.addTagToCard(boardID,0,cardID);
-//    }
 
     /**
      * Method for all the dragging
@@ -233,45 +209,7 @@ public class CardComponent extends HBox implements Initializable {
             event.consume();
 
         });
-//        setOnDragOver(event ->{
-//            if (event.getGestureSource() != this &&
-//                    event.getDragboard().hasString()) {
-//                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-//            }
-//            event.consume();
-//        });
-//        setOnDragEntered(event -> {
-//            if (event.getGestureSource() != this &&
-//                    event.getDragboard().hasString()) {
-//                this.setStyle("-fx-background-color: green");
-//            }
-//            event.consume();
-//        });
-//        setOnDragExited(event -> {
-//
-//            this.setStyle("-fx-background-color: white");
-//            event.consume();
-//
-//        });
-//        setOnDragDropped(event -> {
-//
-//            Dragboard db = event.getDragboard();
-//            boolean success = false;
-//            if (db.hasString()) {
-//                Card c = server.getCard(Integer.parseInt(db.getString()));
-//                System.out.println(c);
-//                System.out.println(cardListID);
-//                server.changeListOfCard(cardListID,c);
-//                success = true;
-//            }
-//            event.setDropCompleted(success);
-//            Platform.runLater(()->{
-//                mainCtrl.refreshBoardOverview();
-//            });
-//
-//            event.consume();
-//
-//        });
+
 
     }
 
@@ -281,39 +219,22 @@ public class CardComponent extends HBox implements Initializable {
      */
     public void setTaskProgress() {
         List<Task> tasks = server.getTasksFromCard(cardID);
-        double completed = 0;
+        int completed = 0;
         for (Task t : tasks) {
             if (t.isChecked()) completed++;
         }
-        double progress = completed / tasks.size();
-        taskProgress.setProgress(progress);
-    }
+        text.setText(completed+"/"+tasks.size());
 
-    /**
-     * get tags and add their colours to the card component
-     */
-    public void borderColorInit() {
-        System.out.println("\n\n\nInitialising border colors");
-//        Set<Tag> tags = getTagColors();
-        List<Color> c = new ArrayList<>();
-//        for (Tag t : tags) {
-//            c.add(MainCtrl.colorParseToFXColor(t.getColor()));
-//        }
-        c.add(Color.YELLOWGREEN);
-        c.add(Color.LIGHTGOLDENRODYELLOW);
-        c.add(Color.LIGHTBLUE);
-        c.add(Color.HOTPINK);
-        c.add(Color.CORAL);
-        setMulticolouredBorder(c);
     }
-
     /**
      * get list of colors for a specific tag
-     * //todo debug server method, currently gives bad request
-     * @return set of tags for this card
      */
-    public Set<Tag> getTagColors() {
-        return server.getTagsForCard(cardID);
+    public void getTagColors() {
+        List<Color> l = new ArrayList<>();
+        for(Tag t : server.getTagsForCard(cardID)){
+            l.add(MainCtrl.colorParseToFXColor(t.getColor()));
+        }
+        setMulticolouredBorder(l);
     }
 
     /**
@@ -434,30 +355,6 @@ public class CardComponent extends HBox implements Initializable {
         }
     }
 
-
-
-
-
-    /**
-     * mark a card as completed
-     * listener for the checkbox
-     * //todo make it work
-     */
-    public void markAsCompleted() {
-        //tfTitle.setStyle("-fx-strikethrough: true");
-
-        descriptionLabel.setStyle("-fx-strikethrough: true");
-    }
-
-    /**
-     * unmark a card as completed
-     * listener for the checkbox
-     * //todo make it work
-     */
-    public void unMarkCompleted() {
-        //tfTitle.setStyle("-fx-strikethrough: false");
-        descriptionLabel.setStyle("-fx-strikethrough: false");
-    }
 
     /**
      * set caret to title field of card
