@@ -351,10 +351,12 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             mainCtrl.cardIdComponentMap.put(card.getId(), cardComponent);
             cardComponent.boardID = boardID;
             cardComponent.setData(card, listId);
+            cardComponent.getTagColors();
             if(isLocked) cardComponent.readmode();
             cardComponent.setStyle("-fx-background-color: " +
                     String.format("rgb(%d, %d, %d)", (card.getColor() >> 16) & 0xFF,
                     (card.getColor() >> 8) & 0xFF, card.getColor()& 0xFF)+";" );
+            cardComponent.setTaskProgress();
 
             vbox.getChildren().add(cardComponent);
 

@@ -21,5 +21,6 @@
       <Label fx:id="selectTalioServer" text="Please select a  talio server" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="30.0" />
       <Button fx:id="goBackButton" layoutX="510.0" layoutY="349.0" mnemonicParsing="false" onAction="#goBackToMainMenuButtonHandler" text="Go back to main menu" textFill="#a81b1b" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
       <Button fx:id="removeServer" layoutX="301.0" layoutY="257.0" mnemonicParsing="false" onAction="#onDeleteAddress" text="Remove Server" AnchorPane.bottomAnchor="120.0" AnchorPane.rightAnchor="200.0" />
+
    </children>
 </AnchorPane>

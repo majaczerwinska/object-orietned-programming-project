@@ -11,11 +11,13 @@ import commons.Board;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
+
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 
@@ -30,6 +32,8 @@ public class BoardSelectCtrl {
 
     @FXML
     private Button create;
+    @FXML
+    public Label warning;
 
     @FXML
     private Button btnRemove;
@@ -177,16 +181,21 @@ public class BoardSelectCtrl {
      */
     public void saveBoardButton() {
         String key = boardKey.getText();
+        if(key.equals("") || key==null){
+           warning.setText("The board with given key cannot be found!");
+            return;
+        }
         try {
             Board board = server.getBoardByKey(key);
             if (board == null) {
-                System.out.println("Tried to add & join board with key '" + key + "' but server returned null");
-                mainCtrl.showPopup();
+
+                warning.setText("The board with given key cannot be found!");
                 return;
             }
             saveBoardKey(board.getBoardkey());
-            System.out.println("saved board key " + key + " and entering board. details:\n" + board);
-            // mainCtrl.showBoardOverview(board.id);
+            warning.setText("");
+            System.out.println("saved board key " + key + " and entering board. details:\n"+board);
+
         } catch (Exception e) {
             e.printStackTrace();
             mainCtrl.showPopup();
