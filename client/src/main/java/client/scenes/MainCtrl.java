@@ -650,14 +650,9 @@ public class MainCtrl {
         boardCreationCtrl.getCreateBoardButton().setStyle("-fx-background-radius: 7;");
         boardCreationCtrl.getStopCreatingBoardButton().setStyle("-fx-background-radius: 7;");
 
-<<<<<<< client/src/main/java/client/scenes/MainCtrl.java
-        primaryStage.setScene(boardCreation);
-        primaryStage.show();
-=======
         locker.setScene(boardCreation);
         locker.setResizable(false);
         locker.showAndWait();
->>>>>>> client/src/main/java/client/scenes/MainCtrl.java
     }
 
     /**
