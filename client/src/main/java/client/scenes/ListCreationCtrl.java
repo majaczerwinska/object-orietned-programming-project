@@ -69,6 +69,7 @@ public class ListCreationCtrl {
             mainCtrl.refreshListColours();
             name.setText("");
             websocketClient.sendMessage("/app/update/list/"+boardID, "Done updating card in component");
+            mainCtrl.closeLocker();
 
             mainCtrl.showBoardOverview(boardID);
         }
@@ -81,6 +82,7 @@ public class ListCreationCtrl {
      */
     public void cancel(ActionEvent event){
         name.setText("");
+        mainCtrl.closeLocker();
         mainCtrl.showBoardOverview(boardID);
 
 
