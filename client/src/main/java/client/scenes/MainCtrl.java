@@ -363,8 +363,8 @@ public class MainCtrl {
     public void showPopup() {
         locker.setTitle("Something went wrong");
         locker.setScene(popupJoin);
-        locker.show();
         popupJoinCtrl.refresh();
+        locker.show();
     }
 
 
@@ -472,8 +472,8 @@ public class MainCtrl {
         locker.setScene(editBoard);
         editBoardCtrl.boardId = boardID;
         locker.setResizable(false);
-        locker.showAndWait();
         editBoardCtrl.openScene(boardID);
+        locker.showAndWait();
     }
 
     /**
@@ -574,11 +574,12 @@ public class MainCtrl {
         cardCtrl.isLocked = isLocked;
         if(isLocked) cardCtrl.disable();
         else cardCtrl.enable();
+        cardCtrl.setInfo();
+        cardCtrl.registerForDeleted();
+        locker.setOnCloseRequest(e -> cardCtrl.stopPollingForDeletedCard());
+        cardCtrl.refresh();
         locker.setResizable(false);
         locker.showAndWait();
-        cardCtrl.setInfo();
-        cardCtrl.refresh();
-
 
     }
 
@@ -761,9 +762,9 @@ public class MainCtrl {
         locker.setTitle("Tag pop-up");
         locker.setScene(tagPopUpScene);
         locker.setResizable(false);
-        locker.showAndWait();
         tagPopUpCtrl.refresh();
         tagPopUpCtrl.setBoardID(boardID);
+        locker.showAndWait();
 
     }
 

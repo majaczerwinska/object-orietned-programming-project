@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import commons.Card;
 import commons.Tag;
 import commons.Task;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -83,6 +84,29 @@ public class CardCtrl {
         System.out.println("StompSession created in card overview");
     }
 
+    public void registerForDeleted(){
+        server.registerForDeletedCard(cardID, deleted -> {
+            System.out.println("Card Deleted! -> show board overview");
+            Platform.runLater(() -> {
+                System.out.println("Closing pop up");
+                mainCtrl.closeLocker();
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Card deleted");
+                alert.setHeaderText("This card got deleted!");
+                alert.setContentText("You were viewing a card that someone just deleted");
+                alert.show();
+            });
+        });
+    }
+
+    public void stopPollingForDeletedCard(){
+        server.stopPollingForDeletedCard();
+    }
+
+    public void stopExecuterService(){
+        server.stopExecuterService();
+    }
+
     /**
      * displays tasks in vbox
      */
@@ -146,6 +170,7 @@ public class CardCtrl {
         mainCtrl.closeLocker();
         mainCtrl.showBoardOverview(boardID, true);
         websocketClient.sendMessage("/app/update/card/"+boardID, "Done updating card in CardOverview");
+        server.stopPollingForDeletedCard();
     }
 
     /**

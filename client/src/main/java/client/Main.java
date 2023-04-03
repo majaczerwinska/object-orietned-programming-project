@@ -116,6 +116,10 @@ public class Main extends Application {
                     editPassword,
                     warning);
 
+            primaryStage.setOnCloseRequest(e -> {
+                System.out.println("Executer service shut down");
+                card.getKey().stopExecuterService();
+            });
 
         } catch (Exception e) {
             System.out.println("very sad exception :(\nin start method of client.main..");

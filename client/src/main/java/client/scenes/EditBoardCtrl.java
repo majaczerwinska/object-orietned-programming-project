@@ -71,6 +71,7 @@ public class EditBoardCtrl {
     @FXML
     private void exitButton(){
         mainCtrl.showBoardOverview(boardId);
+        mainCtrl.closeLocker();
     }
 
 //    /**
