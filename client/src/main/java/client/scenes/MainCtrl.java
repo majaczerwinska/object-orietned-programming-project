@@ -220,7 +220,31 @@ public class MainCtrl {
      */
     public void showServerSelect() {
         primaryStage.setTitle("Select Talio Server");
+        // styling the page 
+
+        // setting the font family for the text
+        serverSelectCtrl.getSelectedServerLabel().setStyle("-fx-font-family: Avenir Book;");
+        serverSelectCtrl.getConnectionLabel().setStyle("-fx-font-family: Avenir Book;");
+        serverSelectCtrl.getSelectTalioServer().setStyle("-fx-font-family: Avenir Book;");
+        serverSelectCtrl.getIpFieldHeader().setStyle("-fx-font-family: Avenir Book;");
+        serverSelectCtrl.getConnectionStatus().setStyle("-fx-font-family: Avenir Book;");
+        serverSelectCtrl.getSelectedServer().setStyle("-fx-font-family: Avenir Book;");
+        serverSelectCtrl.getTestConnection().setStyle("-fx-font-family: Avenir Book;");
+        serverSelectCtrl.getAddServer().setStyle("-fx-font-family: Avenir Book;");
+        serverSelectCtrl.getEnterServer().setStyle("-fx-font-family: Avenir Book;");
+        serverSelectCtrl.getGoBackButton().setStyle("-fx-font-family: Avenir Book;");
+        serverSelectCtrl.getRemoveServer().setStyle("-fx-font-family: Avenir Book;");
+
+        // round the corners for the buttons and text fields
+        serverSelectCtrl.getIpField().setStyle("-fx-background-radius: 7;");
+        serverSelectCtrl.getTestConnection().setStyle("-fx-background-radius: 7;");
+        serverSelectCtrl.getAddServer().setStyle("-fx-background-radius: 7;");
+        serverSelectCtrl.getEnterServer().setStyle("-fx-background-radius: 7;");
+        serverSelectCtrl.getGoBackButton().setStyle("-fx-background-radius: 7;");
+        serverSelectCtrl.getRemoveServer().setStyle("-fx-background-radius: 7;");
+
         primaryStage.setScene(serverSelect);
+        primaryStage.setResizable(true);
         serverSelectCtrl.refresh();
     }
 
@@ -303,6 +327,26 @@ public class MainCtrl {
      */
     public void showSelect() {
         primaryStage.setTitle("Board selection");
+        // styling the board selection page
+
+        // setting the font family for the text
+        boardSelectCtrl.getCreateButton().setStyle("-fx-font-family: Avenir Book;");
+        boardSelectCtrl.getRemoveButton().setStyle("-fx-font-family: Avenir Book;");
+        boardSelectCtrl.getJoinButton().setStyle("-fx-font-family: Avenir Book;");
+        boardSelectCtrl.getBackButton().setStyle("-fx-font-family: Avenir Book;");
+        boardSelectCtrl.getDoubleClickText().setStyle("-fx-font-family: Avenir Book;");
+        boardSelectCtrl.getJoinExistingLabel().setStyle("-fx-font-family: Avenir Book;");
+        boardSelectCtrl.getEnterKeyLabel().setStyle("-fx-font-family: Avenir Book;");
+        boardSelectCtrl.getCreateButton().setStyle("-fx-font-family: Avenir Book;");
+        boardSelectCtrl.getOrYouLabel().setStyle("-fx-font-family: Avenir Book;");
+
+        // rounding the corners of the buttons and text fields
+        boardSelectCtrl.getCreateButton().setStyle("-fx-background-radius: 7;");
+        boardSelectCtrl.getRemoveButton().setStyle("-fx-background-radius: 7;");
+        boardSelectCtrl.getJoinButton().setStyle("-fx-background-radius: 7;");
+        boardSelectCtrl.getBackButton().setStyle("-fx-background-radius: 7;");
+        boardSelectCtrl.getBoardKeyTextField().setStyle("-fx-background-radius: 7;");
+
         primaryStage.setScene(boardSelect);
         boardSelectCtrl.warning.setText("");
         primaryStage.show();
