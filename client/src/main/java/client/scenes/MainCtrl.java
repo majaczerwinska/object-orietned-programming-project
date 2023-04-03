@@ -499,11 +499,34 @@ public class MainCtrl {
         primaryStage.setScene(boardOverwiew);
         boardOverviewCtrl.refreshName(boardID);
         primaryStage.show();
-        //We later have to combine all these methods we call into one refresh method in boardOverviewCtrl
+        // We later have to combine all these methods we call into one refresh method in boardOverviewCtrl
         boardOverviewCtrl.setBoardName();
         boardOverviewCtrl.setColor();
         boardOverviewCtrl.setLock();
         boardOverviewCtrl.refreshListViewTags();
+
+        // adding some styling to the board overview
+
+        // changing the fonts to the labels and buttons
+        boardOverviewCtrl.getAddListButton().setStyle("-fx-font-family: Avenir Book;");
+        boardOverviewCtrl.getBackButton().setStyle("-fx-font-family: Avenir Book;");        
+        boardOverviewCtrl.getBoardLabel().setStyle("-fx-font-family: Avenir Book;");
+        boardOverviewCtrl.getBoardKeyLabel().setStyle("-fx-font-family: Avenir Book;");
+        boardOverviewCtrl.getBoardTitleLabel().setStyle("-fx-font-family: Avenir Book;");
+        boardOverviewCtrl.getCustomizationButton().setStyle("-fx-font-family: Avenir Book;");
+        boardOverviewCtrl.getEditBoardButton().setStyle("-fx-font-family: Avenir Book;");
+        boardOverviewCtrl.getRefreshButton().setStyle("-fx-font-family: Avenir Book;");
+        boardOverviewCtrl.getTagLabel().setStyle("-fx-font-family: Avenir Book;");
+        boardOverviewCtrl.getTagManagerButton().setStyle("-fx-font-family: Avenir Book;");
+
+        // rounding the buttons
+        boardOverviewCtrl.getAddListButton().setStyle("-fx-background-radius: 7;");
+        boardOverviewCtrl.getBackButton().setStyle("-fx-background-radius: 7;");
+        boardOverviewCtrl.getCustomizationButton().setStyle("-fx-background-radius: 7;");
+        boardOverviewCtrl.getEditBoardButton().setStyle("-fx-background-radius: 7;");
+        boardOverviewCtrl.getLockButton().setStyle("-fx-background-radius: 7;");
+        boardOverviewCtrl.getRefreshButton().setStyle("-fx-background-radius: 7;");
+        boardOverviewCtrl.getTagManagerButton().setStyle("-fx-background-radius: 7;");
     }
 
     /**
