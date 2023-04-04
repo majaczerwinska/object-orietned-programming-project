@@ -79,11 +79,15 @@ public class BoardCreationCtrl {
             return;
         }
 
+        if (boardKey.contains(",")) {
+            warningkey.setText("Board key cannot contain\nspecial characters");
+            return;
+        }
+
         // creates the board
         Board newBoard = new Board(boardTitle);
         newBoard.setBoardkey(boardKey);
-       // newBoard.setfColor(13421772);
-        //newBoard.setbColor(mainCtrl.colorParseToInt(palette.getValue()));
+
         // add the board to the database and go back to select board page
         server.addBoard(newBoard);
         mainCtrl.saveBoardByKey(newBoard.getBoardkey());

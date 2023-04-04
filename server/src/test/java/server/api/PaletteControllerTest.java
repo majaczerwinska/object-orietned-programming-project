@@ -12,8 +12,7 @@ import server.service.CardListService;
 import server.service.CardService;
 import server.service.PaletteService;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -44,14 +43,55 @@ public class PaletteControllerTest {
 
     @Test
     public void addPaletteToBoardTest(){
-        Board board = new Board("b");
-        br.save(board);
+        Board board = new Board("test");
+
         Palette palette = new Palette("p", 4, 4);
         List<Palette> palettes = new ArrayList<>();
         palettes.add(palette);
+        board.setPalettes(palettes);
+        br.save(board);
+
         pat.addPaletteToBoard(board.getId(), palette);
         assertEquals(br.getById(board.getId()).getPalettes(), palettes);
 
     }
+
+    @Test
+    public void deletePaletteEmptyTest(){
+        Board board = new Board("test");
+
+        Palette palette = new Palette("p", 4, 4);
+        br.save(board);
+
+        assertEquals(pat.deletePalette(palette.getId()), ResponseEntity.badRequest().build());
+
+    }
+
+    @Test
+    public void deletePaletteTest(){
+        Board board = new Board("test");
+
+        Palette palette = new Palette("p", 4, 4);
+        br.save(board);
+        pat.addPaletteToBoard(board.getId(), palette);
+        pat.deletePalette(palette.getId());
+
+        assertEquals(pat.deletePalette(palette.getId()), ResponseEntity.badRequest().build());
+    }
+
+    @Test
+    public void editPaletteTest(){
+        Board board = new Board("test");
+
+        Palette palette = new Palette("p", 4, 4);
+        Palette palette1 = new Palette("a", 1, 2);
+        br.save(board);
+        pas.save(palette, board.getId());
+        pat.editPalette(palette.getId(), palette1);
+
+        assertEquals(Objects.requireNonNull(pat.deletePalette(palette.getId()).getBody()).getName(), "a");
+    }
+
+
 
 }

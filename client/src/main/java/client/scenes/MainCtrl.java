@@ -462,19 +462,6 @@ public class MainCtrl {
         return null;
     }
 
-//    /**
-//     *
-//     * @param hbox card component hbox
-//     * @return int card id
-//     */
-//    public Integer cardComponentToCardId(HBox hbox) {
-//        for (int i : this.cardIdComponentMap.keySet()) {
-//            if (this.cardIdComponentMap.get(i).equals(cardComponent)) {
-//                return i;
-//            }
-//        }
-//        return null;
-//    }
 
     /**
      * Method that parses fxColor to int
@@ -784,26 +771,6 @@ public class MainCtrl {
      */
     public void addEnterKeyListener(int listID) {
         boardOverviewCtrl.addEnterKeyListener(listID);
-    }
-
-    /**
-     * refresh board after 200 milliseconds
-     * waits for database to update before pulling data again and showing in client
-     */
-    public void timeoutBoardRefresh() {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Future<?> future = executor.submit(() -> {
-            boardOverviewCtrl.refresh(null);
-        });
-        try {
-            future.get(200, TimeUnit.MILLISECONDS); // set a timeout of 5 seconds
-        } catch (InterruptedException | ExecutionException | TimeoutException e) {
-            future.cancel(true); // cancel the task if it takes too long
-            // handle the timeout exception here
-            e.printStackTrace();
-            System.out.println("time out exception in main controller");
-        }
-        executor.shutdown();
     }
 
 
