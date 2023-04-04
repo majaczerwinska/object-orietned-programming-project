@@ -21,6 +21,8 @@ public class EditBoardCtrl {
     @FXML
     private Label titleLabel;
 
+    @FXML
+    private Button deleteBoardButton;
 
     public int boardId;
 
@@ -45,7 +47,7 @@ public class EditBoardCtrl {
     public void openScene(int boardId) {
         this.boardId = boardId;
         Board board = server.getBoard(this.boardId);
-
+        name.requestFocus();
         name.setText(board.getName());
     }
 
@@ -79,6 +81,36 @@ public class EditBoardCtrl {
         }
         mainCtrl.showBoardOverview(boardId);
     }
+
+
+    /**
+     * button handler for delete
+     */
+    @FXML
+    public void handleDeleteButtonClick() {
+        if (deleteBoardButton.getText().equals("Are you sure?")){
+            deleteBoardButton.setText("Delete Board");
+            deleteBoard();
+        } else {
+            deleteBoardButton.setText("Are you sure?");
+        }
+    }
+
+    /**
+     *
+     */
+    @FXML
+    public void mouseExitCancelDelete() {
+        deleteBoardButton.setText("Delete Board");
+    }
+
+
+    public void deleteBoard() {
+        server.deleteBoard(boardId);
+        mainCtrl.showSelect();
+        mainCtrl.closeLocker();
+    }
+
 
     /**
      * name textfield getter
