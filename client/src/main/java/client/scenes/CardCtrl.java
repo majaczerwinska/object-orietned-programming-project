@@ -84,6 +84,9 @@ public class CardCtrl {
         System.out.println("StompSession created in card overview");
     }
 
+    /**
+     * Registers deletion for the card you are viewing
+     */
     public void registerForDeleted(){
         server.registerForDeletedCard(cardID, deleted -> {
             System.out.println("Card Deleted! -> show board overview");
@@ -99,12 +102,18 @@ public class CardCtrl {
         });
     }
 
+    /**
+     * Cancels the future of the polling
+     */
     public void stopPollingForDeletedCard(){
         server.stopPollingForDeletedCard();
     }
 
-    public void stopExecuterService(){
-        server.stopExecuterService();
+    /**
+     * Shuts down the executor service
+     */
+    public void stopExecutorService(){
+        server.stopExecutorService();
     }
 
     /**

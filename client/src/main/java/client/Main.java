@@ -118,7 +118,7 @@ public class Main extends Application {
 
             primaryStage.setOnCloseRequest(e -> {
                 System.out.println("Executer service shut down");
-                card.getKey().stopExecuterService();
+                card.getKey().stopExecutorService();
             });
 
         } catch (Exception e) {

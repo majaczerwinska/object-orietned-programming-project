@@ -684,6 +684,12 @@ public class ServerUtils {
 
     private static final ExecutorService EXEC = Executors.newSingleThreadExecutor();
     private Future<?> deletionPollingFuture;
+
+    /**
+     * Registers deletion for the card you are viewing
+     * @param cardId the id of the card you are viewing
+     * @param consumer consumer that is consumed whenever the card is deleted
+     */
     public void registerForDeletedCard(int cardId, Consumer<String> consumer){
         stopPollingForDeletedCard();
         deletionPollingFuture = EXEC.submit(()->{
@@ -703,6 +709,9 @@ public class ServerUtils {
         });
     }
 
+    /**
+     * Cancels the future of the polling
+     */
     public void stopPollingForDeletedCard() {
         if (deletionPollingFuture != null && !deletionPollingFuture.isDone()) {
             System.out.println("Canceling polling");
@@ -710,7 +719,10 @@ public class ServerUtils {
         }
     }
 
-    public void stopExecuterService(){
+    /**
+     * Shuts down the executor service
+     */
+    public void stopExecutorService(){
         EXEC.shutdownNow();
     }
 
