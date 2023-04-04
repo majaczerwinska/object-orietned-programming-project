@@ -499,7 +499,7 @@ public class MainCtrl {
      */
     public void showBoardOverview(int boardID){
         prepareBoard(boardID);
-        boardOverviewCtrl.refresh(null, false);
+        boardOverviewCtrl.refresh(null);
     }
 
     /**
@@ -508,8 +508,9 @@ public class MainCtrl {
      * @param isAdmin whether the user is in the board as an admin
      */
     public void showBoardOverview(int boardID, Boolean isAdmin) {
+        boardOverviewCtrl.setAdmin(isAdmin);
         prepareBoard(boardID);
-        boardOverviewCtrl.refresh(null, isAdmin);
+        boardOverviewCtrl.refresh(null);
     }
 
     /**
@@ -669,10 +670,9 @@ public class MainCtrl {
 
     /**
      * refresh board overview scene with newly polled data from the database
-         * @param isAdmin whether the user is an admin
      */
-    public void refreshBoardOverview(Boolean isAdmin)  {
-        boardOverviewCtrl.refresh(null, isAdmin);
+    public void refreshBoardOverview()  {
+        boardOverviewCtrl.refresh(null);
     }
 
     /**
@@ -699,7 +699,7 @@ public class MainCtrl {
     public void timeoutBoardRefresh() {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Future<?> future = executor.submit(() -> {
-            boardOverviewCtrl.refresh(null, false);
+            boardOverviewCtrl.refresh(null);
         });
         try {
             future.get(200, TimeUnit.MILLISECONDS); // set a timeout of 5 seconds
@@ -721,7 +721,7 @@ public class MainCtrl {
     public void timeoutBoardRefresh(int mil) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Future<?> future = executor.submit(() -> {
-            boardOverviewCtrl.refresh(null, false);
+            boardOverviewCtrl.refresh(null);
         });
         try {
             future.get(mil, TimeUnit.MILLISECONDS); // set a timeout of 5 seconds

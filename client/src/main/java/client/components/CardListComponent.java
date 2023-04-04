@@ -151,7 +151,7 @@ public class CardListComponent extends VBox{
         }
         event.setDropCompleted(success);
         Platform.runLater(()->{
-            mainCtrl.refreshBoardOverview(false);
+            mainCtrl.refreshBoardOverview();
             System.out.println(mainCtrl.cardIdComponentMap.toString());
             System.out.println(vboxCards.getChildren());
             //updateCardPositionAttributes();
@@ -216,7 +216,7 @@ public class CardListComponent extends VBox{
      */
     public void delete(){
         server.deleteCardList(listId,boardId);
-        mainCtrl.refreshBoardOverview(false);
+        mainCtrl.refreshBoardOverview();
     }
 
 

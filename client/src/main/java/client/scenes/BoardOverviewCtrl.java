@@ -153,9 +153,9 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
                     String[] words = update.split(" ");
                     Card c = server.getCard(Integer.parseInt(words[2]));
                     System.out.println("refresh with focus to card#" + words[1]);
-                    refresh(c, false);
+                    refresh(c);
                 } else {
-                    refresh(null, false);
+                    refresh(null);
                 }
                 //            mainCtrl.timeoutBoardRefresh(1000);
             });
@@ -222,9 +222,15 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         }else{
             lock.setText("\uD83D\uDD12");
             checkForPref();
+            if (isAdmin) {
+                isLocked=false;
+                enable();
+                lock.setStyle("-fx-background-color: green");
+                return;
+            }
             if(pref.get(String.valueOf(boardID),"").equals("")){
                 lock.setStyle("-fx-background-color: red");
-                isLocked= !isAdmin;
+                isLocked= true;
                 disable();
             }
             else{
@@ -503,9 +509,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     /**
      * Refresh scene from database
      * @param c - card for focus
-     * @param isAdmin whether the user entered the board as an admin
      */
-    public void refresh(Card c, Boolean isAdmin) {
+    public void refresh(Card c) {
 
         Platform.runLater(new Runnable() {
             @Override public void run() {
@@ -578,7 +583,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         System.out.println("creating new card "+c+" in list id="+listID);
 
         c = server.addCard(c, boardID, listID);
-        refresh(c, false);
+        refresh(c);
         return c;
     }
 
@@ -669,4 +674,11 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     }
 
 
+    /**
+     * set admin access rights
+     * @param isAdmin bool
+     */
+    public void setAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
 }
