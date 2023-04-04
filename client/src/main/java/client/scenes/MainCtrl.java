@@ -762,7 +762,6 @@ public class MainCtrl {
     }
 
     /**
-<<<<<<< HEAD
      * goes to scene for creating a new palette for that board's cards
      * @param boardId
      */
