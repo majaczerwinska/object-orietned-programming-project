@@ -530,6 +530,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
                 if (highlightedCardComponent != null); mainCtrl.showTagPopUp(this.boardID, highlightedCardComponent.cardID);
             } else if (event.getCode() == KeyCode.SLASH) {
                 mainCtrl.showHelpScene();
+            }  else if (event.getCode() == KeyCode.C) {
+                if (highlightedCardComponent != null); mainCtrl.showColorPopUp(this.boardID, highlightedCardComponent.cardID);
             }
         });
     }

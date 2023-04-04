@@ -92,6 +92,9 @@ public class MainCtrl {
     private TagPopUpCtrl tagPopUpCtrl;
     private Scene tagPopUpScene;
 
+    private ColorPopUpCtrl colorPopUpCtrl;
+    private Scene colorPopUpScene;
+
     private PaletteCreationCtrl paletteCreationCtrl;
     private Scene paletteCreation;
 
@@ -122,6 +125,7 @@ public class MainCtrl {
      * @param editBoard
      * @param help
      * @param tagPopUp
+     * @param colorPopUp
      * @param unlocked
      * @param providePassword
      * @param customization
@@ -147,6 +151,7 @@ public class MainCtrl {
                            Pair<EditBoardCtrl, Parent> editBoard,
                            Pair<HelpCtrl, Parent> help,
                            Pair<TagPopUpCtrl, Parent> tagPopUp,
+                           Pair<ColorPopUpCtrl, Parent> colorPopUp,
                            Pair<LockInUnlockedBoardCtrl, Parent> unlocked,
                            Pair<ProvidePasswordCtrl, Parent> providePassword,
                            Pair<CustomizationCtrl, Parent> customization,
@@ -206,6 +211,9 @@ public class MainCtrl {
 
         this.tagPopUpCtrl = tagPopUp.getKey();
         this.tagPopUpScene = new Scene(tagPopUp.getValue());
+
+        this.colorPopUpCtrl = colorPopUp.getKey();
+        this.colorPopUpScene = new Scene(colorPopUp.getValue());
 
 
         this.lockInUnlockedBoardCtrl = unlocked.getKey();
@@ -877,6 +885,7 @@ public class MainCtrl {
      * shows board selection scene
      *
      * @param boardID the ID of the board
+     * @param cardID the ID of the card
      */
     public void showTagPopUp(int boardID, int cardID) {
         locker.setTitle("Tag pop-up");
@@ -902,6 +911,27 @@ public class MainCtrl {
 
     }
 
+
+    /**
+     * shows board selection scene
+     *
+     * @param boardID the ID of the board
+     * @param cardID the ID of the card
+     */
+    public void showColorPopUp(int boardID, int cardID) {
+        locker.setTitle("Color pop-up");
+        // styling the pop up
+
+
+
+        locker.setScene(colorPopUpScene);
+        locker.setResizable(false);
+        colorPopUpCtrl.setBoardAndCardID(boardID, cardID);
+        colorPopUpCtrl.refresh();
+        locker.setOnCloseRequest(e -> colorPopUpCtrl.back());
+        locker.showAndWait();
+
+    }
     /**
      * shows board selection scene
      */
