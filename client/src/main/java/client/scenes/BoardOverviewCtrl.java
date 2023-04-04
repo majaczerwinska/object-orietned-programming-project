@@ -211,7 +211,6 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             isLocked=false;
             lock.setStyle("-fx-background-color: white;");
             enable();
-            return;
         }else{
             lock.setText("\uD83D\uDD12");
             checkForPref();
@@ -219,9 +218,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
                 isLocked=false;
                 enable();
                 lock.setStyle("-fx-background-color: green;");
-                return;
-            }
-            if(pref.get(String.valueOf(boardID),"").equals("")){
+            } else if (pref.get(String.valueOf(boardID),"").equals("")){
                 lock.setStyle("-fx-background-color: red;");
                 isLocked=true;
                 disable();
@@ -240,24 +237,18 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * Disables the write mode on the board
      */
     public void disable(){
-
         btnTagManager.setOnAction(event -> {
             mainCtrl.showWarning(boardID);
-            return;
         });
         btncustomization.setOnAction(event -> {
             mainCtrl.showWarning(boardID);
-            return;
         });
         editBoardButton.setOnAction(event -> {
             mainCtrl.showWarning(boardID);
-            return;
         });
         addListButton.setOnAction(event -> {
             mainCtrl.showWarning(boardID);
-            return;
         });
-
     }
 
     /**
@@ -265,18 +256,10 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      */
     public void enable(){
 
-        btnTagManager.setOnAction(event -> {
-            showTagManager(event);
-        });
-        btncustomization.setOnAction(event -> {
-            goCustomization(event);
-        });
-        editBoardButton.setOnAction(event -> {
-            showEditBoard(event);
-        });
-        addListButton.setOnAction(event -> {
-            addListScene(event);
-        });
+        btnTagManager.setOnAction(this::showTagManager);
+        btncustomization.setOnAction(this::goCustomization);
+        editBoardButton.setOnAction(this::showEditBoard);
+        addListButton.setOnAction(this::addListScene);
 
     }
 
@@ -544,27 +527,6 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public void refreshList(int listID, CardListComponent listComponent) {
         System.out.println("Refreshing list #"+listID);
         listComponent.getVboxCards().getChildren().clear();
-    }
-
-//    /**
-//     * Refresh scene from database
-//     * @param focusCard the card
-//     */
-//    public void refresh(Card focusCard) {
-//        System.out.println("Refreshing board overview");
-//        clearBoard();
-//        displayListsWithFocus(getCardListsFromServer(), focusCard);
-//    }
-
-    /**
-     * test method
-     */
-    public void createTestCard() {
-        Card c = new Card("test card ..");
-        System.out.println("creating test card "+c);
-        server.addCard(c, 0, 0);
-        //refresh();
-        mainCtrl.timeoutBoardRefresh();
     }
 
     /**

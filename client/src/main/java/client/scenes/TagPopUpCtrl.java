@@ -66,14 +66,6 @@ public class TagPopUpCtrl {
         }
     }
 
-//    /**
-//     * Closes the pop-up
-//     */
-//    public void back() {
-//        Stage stage = (Stage) title.getScene().getWindow();
-//        stage.close();
-//    }
-
     /**
      * Closes the pop-up
      */

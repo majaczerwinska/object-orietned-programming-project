@@ -43,9 +43,7 @@ public class CustomizationCtrl {
     @FXML
     private ColorPicker lf;
 
-//    @FXML
-//    private ListView<Palette> palettes;
-//    private ObservableList<Palette> items = FXCollections.observableArrayList();
+
 
     @FXML
     private VBox palettes;
