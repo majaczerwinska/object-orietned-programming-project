@@ -287,6 +287,7 @@ public class MainCtrl {
         locker.setScene(unlocked);
         lockInUnlockedBoardCtrl.boardID = boardID;
         locker.setResizable(false);
+        locker.setOnCloseRequest(e -> lockInUnlockedBoardCtrl.cancel());
         locker.showAndWait();
     }
 
@@ -300,6 +301,7 @@ public class MainCtrl {
         locker.setScene(providePassword);
         providePasswordCtrl.boardID = boardID;
         locker.setResizable(false);
+        locker.setOnCloseRequest(e -> providePasswordCtrl.cancel());
         locker.showAndWait();
     }
 
@@ -333,6 +335,7 @@ public class MainCtrl {
         editPasswordCtrl.boardID = boardID;
         editPasswordCtrl.refresh();
         locker.setResizable(false);
+        locker.setOnCloseRequest(e -> editPasswordCtrl.cancel());
         locker.showAndWait();
     }
 
@@ -345,6 +348,7 @@ public class MainCtrl {
         locker.setScene(warning);
         warningCtrl.boardID = boardID;
         locker.setResizable(false);
+        locker.setOnCloseRequest(e -> locker.close());
         locker.showAndWait();
     }
 
@@ -404,7 +408,8 @@ public class MainCtrl {
         locker.setTitle("Something went wrong");
         locker.setScene(popupJoin);
         popupJoinCtrl.refresh();
-        locker.show();
+        locker.setOnCloseRequest(e -> locker.close());
+        locker.showAndWait();
     }
 
 
@@ -508,6 +513,7 @@ public class MainCtrl {
         locker.setScene(listCreate);
         listCreationCtrl.boardID = boardId;
         locker.setResizable(false);
+        locker.setOnCloseRequest(e -> listCreationCtrl.cancel());
         locker.showAndWait();
     }
 
@@ -535,6 +541,7 @@ public class MainCtrl {
         editBoardCtrl.getName().setStyle("-fx-background-radius: 7;");
         editBoardCtrl.getSave().setStyle("-fx-background-radius: 7;");
 
+        locker.setOnCloseRequest(e -> editBoardCtrl.exitButton());
         locker.showAndWait();
     }
 
@@ -672,6 +679,7 @@ public class MainCtrl {
         else cardCtrl.enable();
         cardCtrl.setInfo();
         cardCtrl.registerForDeleted();
+        cardCtrl.isViewed = true;
         locker.setOnCloseRequest(e -> {
             cardCtrl.stopPollingForDeletedCard();
             cardCtrl.exit();
@@ -714,6 +722,7 @@ public class MainCtrl {
 
         locker.setScene(boardCreation);
         locker.setResizable(false);
+        locker.setOnCloseRequest(e -> boardCreationCtrl.stopCreatingBoardButtonHandler());
         locker.showAndWait();
     }
 
@@ -747,7 +756,9 @@ public class MainCtrl {
         locker.setScene(listEdit);
         listEditCtrl.listId = listId;
         listEditCtrl.boardId = boardId;
+        listEditCtrl.setName();
         locker.setResizable(false);
+        locker.setOnCloseRequest(e -> listEditCtrl.cancel());
         locker.showAndWait();
     }
 
@@ -886,6 +897,7 @@ public class MainCtrl {
         locker.setResizable(false);
         tagPopUpCtrl.refresh();
         tagPopUpCtrl.setBoardID(boardID);
+        locker.setOnCloseRequest(e -> tagPopUpCtrl.back());
         locker.showAndWait();
 
     }

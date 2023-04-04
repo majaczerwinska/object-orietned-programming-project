@@ -29,6 +29,10 @@ public class ListEditCtrl {
         this.server = server;
     }
 
+    public void setName(){
+        name.setText(server.getCardList(listId).getName());
+    }
+
     /**
      * renames your list
      * @param mouseEvent - click
@@ -36,17 +40,14 @@ public class ListEditCtrl {
     public void rename(MouseEvent mouseEvent){
         String newName = name.getText();
         server.editList(boardId, listId, newName);
-        name.setText("");
         mainCtrl.closeLocker();
         mainCtrl.showBoardOverview(boardId);
     }
 
     /**
      * takes you back to the board overview
-     * @param mouseEvent
      */
-    public void cancel(MouseEvent mouseEvent){
-        name.setText("");
+    public void cancel(){
         mainCtrl.closeLocker();
         mainCtrl.showBoardOverview(boardId);
     }

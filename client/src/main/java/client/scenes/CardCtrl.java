@@ -22,6 +22,7 @@ public class CardCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private final WebsocketClient websocketClient;
+    public boolean isViewed = false;
 
     @FXML
     private Label label;
@@ -92,15 +93,19 @@ public class CardCtrl {
     public void registerForDeleted(){
         server.registerForDeletedCard(cardID, deleted -> {
             System.out.println("Card Deleted! -> show board overview");
-            Platform.runLater(() -> {
-                System.out.println("Closing pop up");
-                mainCtrl.closeLocker();
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Card deleted");
-                alert.setHeaderText("This card got deleted!");
-                alert.setContentText("You were viewing a card that someone just deleted");
-                alert.show();
-            });
+            if(isViewed){
+                Platform.runLater(() -> {
+                    System.out.println("Closing pop up");
+                    isViewed = false;
+                    mainCtrl.closeLocker();
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Card deleted");
+                    alert.setHeaderText("This card got deleted!");
+                    alert.setContentText("You were viewing a card that someone just deleted");
+                    alert.show();
+                });
+            }
+
         });
     }
 
@@ -182,6 +187,7 @@ public class CardCtrl {
         mainCtrl.closeLocker();
         mainCtrl.showBoardOverview(boardID);
         websocketClient.sendMessage("/app/update/card/"+boardID, "Done updating card in CardOverview");
+        isViewed = false;
         server.stopPollingForDeletedCard();
     }
 
