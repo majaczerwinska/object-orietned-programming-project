@@ -41,10 +41,10 @@ public class EnterAdminPassword {
 
     public void enterAdminPanel() {
         String pwd = password.getText();
-        boolean response = server.checkPassword(pwd);
-        if (response) {
+        String response = server.checkPassword(pwd);
+        if (!response.equals("error")) {
             System.out.println("Opening admin panel for server "+ip);
-            mainCtrl.openAdminPanel(ip);
+            mainCtrl.openAdminPanel(ip, response);
         } else {
             errorMessage.setText("Incorrect password!");
             errorMessage.setFill(Color.INDIANRED);

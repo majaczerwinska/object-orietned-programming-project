@@ -15,6 +15,8 @@
  */
 package server;
 
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -31,6 +33,19 @@ public class Config {
     public String adminPassword() {
         return adminPassword;
     }
+
+
+    @Bean
+    public String authToken() {
+        SecureRandom random = new SecureRandom();
+        byte[] bytes = new byte[32];
+        random.nextBytes(bytes);
+
+        String token = Base64.getEncoder().encodeToString(bytes);
+
+        return token;
+    }
+
 
     /**
      * @return random instance

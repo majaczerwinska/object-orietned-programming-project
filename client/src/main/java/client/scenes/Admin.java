@@ -1,11 +1,15 @@
 package client.scenes;
 
+import ch.qos.logback.core.encoder.EchoEncoder;
 import client.utils.ServerUtils;
 import commons.Board;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.MapValueFactory;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -13,6 +17,8 @@ import javax.inject.Inject;
 import java.util.*;
 
 public class Admin {
+
+    private String token;
 
     private MainCtrl mainCtrl;
 
@@ -28,8 +34,11 @@ public class Admin {
 
 
     @FXML
-    private TextArea sqlOutput;
+    private ScrollPane sqlOutput;
 
+
+    @FXML
+    private VBox vboxTableContent;
 
     @FXML
     private TextField boardName;
@@ -99,17 +108,16 @@ public class Admin {
         saveText.setFill(Color.BLACK);
     }
 
-    public void sendQuery() {
-        String query = sqlQuery.getText();
-    }
 
 
     public void updateTextFields() {
         String item = boardList.getSelectionModel().getSelectedItem();
         Board board = getBoardFromString(item);
-        boardName.setText(board.getName());
-        boardKey.setText(board.getBoardkey());
-        boardPassword.setText(board.getPassword());
+        if (board != null) {
+            boardName.setText(board.getName());
+            boardKey.setText(board.getBoardkey());
+            boardPassword.setText(board.getPassword());
+        }
     }
 
     public void saveTextFields() {
@@ -185,5 +193,103 @@ public class Admin {
             saveText.setFill(Color.INDIANRED);
             e.printStackTrace();
         }
+    }
+
+
+
+    public void sendQuery() {
+        String query = sqlQuery.getText();
+        //List<List<Map<String, Object>>> res = server.executeSQLQuery(query, this.token);
+        List<Map<String, Object>> outputTable = server.executeSQLQuery(query, this.token);
+        vboxTableContent.getChildren().clear();
+        if (outputTable == null) {
+            Text errorText = new Text("Invalid sql query");
+            errorText.setFill(Color.ORANGERED);
+            vboxTableContent.getChildren().add(errorText);
+            return;
+        }
+        //for (List<Map<String, Object>> outputTable : res) {
+            TableView<Map<String, Object>> table = new TableView<>();
+            ObservableList<Map<String, Object>> tableData = FXCollections.observableArrayList(outputTable);
+            table.setItems(tableData);
+            for (Map<String, Object> t : outputTable) {
+                for (String column : t.keySet()) {
+                    TableColumn<Map<String, Object>, Object> tableColumn = findColumn(table, column);
+                    tableColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().get(column)));
+                    if (!doesColumnExist(table, tableColumn.getText())) table.getColumns().add(tableColumn);
+                    //                    try {
+//                        table.getColumns().add(tableColumn);
+//                    } catch (Exception e) {
+//                        System.out.println("Duplicate columns in sql table output");
+//                        System.out.println(e.getMessage());
+//                    }
+                }
+                removeDuplicateColumns(table);
+                List<TableColumn<Map<String, Object>, ?>> columnsToRemove = new ArrayList<>();
+                for (TableColumn<Map<String, Object>, ?> column : table.getColumns()) {
+                    boolean columnIsEmpty = true;
+                    for (Map<String, Object> row : table.getItems()) {
+                        if (row.get(column.getText()) != null) {
+                            columnIsEmpty = false;
+                            break;
+                        }
+                    }
+                    if (columnIsEmpty) {
+                        columnsToRemove.add(column);
+                    }
+                }
+
+// remove empty columns
+                table.getColumns().removeAll(columnsToRemove);
+            }
+            vboxTableContent.getChildren().add(table);
+        //}
+    }
+
+
+    private TableColumn<Map<String, Object>, Object> findColumn(TableView<Map<String, Object>> table, String columnName) {
+        // Look for existing column with matching name
+        for (TableColumn<Map<String, Object>, ?> column : table.getColumns()) {
+            if (column.getText().equals(columnName)) {
+                return (TableColumn<Map<String, Object>, Object>) column;
+            }
+        }
+        // If no existing column found, create a new one
+        TableColumn<Map<String, Object>, Object> newColumn = new TableColumn<>(columnName);
+        newColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().get(columnName)));
+        return newColumn;
+    }
+
+    public static void removeDuplicateColumns(TableView<?> tableView) {
+        List<TableColumn<?, ?>> columnsToRemove = new ArrayList<>();
+        Set<String> columnNames = new HashSet<>();
+
+        for (TableColumn<?, ?> column : tableView.getColumns()) {
+            if (columnNames.contains(column.getText())) {
+                columnsToRemove.add(column);
+            } else {
+                columnNames.add(column.getText());
+            }
+        }
+
+        tableView.getColumns().removeAll(columnsToRemove);
+    }
+
+
+
+
+
+    public boolean doesColumnExist(TableView<?> table, String columnName) {
+        ObservableList<? extends TableColumn<?, ?>> columns = table.getColumns();
+        for (TableColumn<?, ?> column : columns) {
+            if (column.getText().equals(columnName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

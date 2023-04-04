@@ -809,7 +809,7 @@ public class MainCtrl {
         }
 
 
-        public void openAdminPanel(String ip) {
+        public void openAdminPanel(String ip, String token) {
             primaryStage.setTitle("Admin panel for server "+ip);
             primaryStage.setScene(adminScene);
             if (adminCtrl==null){
@@ -817,6 +817,7 @@ public class MainCtrl {
             } /*else {
                 System.out.println("admin ctrl is not null");
             }*/
+            adminCtrl.setToken(token);
             adminCtrl.refresh(ip);
         }
 

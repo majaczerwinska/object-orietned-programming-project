@@ -13,6 +13,8 @@ public class MainController {
     @Autowired
     private String adminPassword;
 
+    @Autowired
+    private String authToken;
 
     /**
      * empty constructor
@@ -32,7 +34,7 @@ public class MainController {
     @PostMapping("/admin")
     public ResponseEntity<String> checkAdminPassword(@RequestBody String password) {
         if (password.equals(adminPassword)) {
-            return ResponseEntity.ok("Password is correct");
+            return ResponseEntity.ok(authToken);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
 

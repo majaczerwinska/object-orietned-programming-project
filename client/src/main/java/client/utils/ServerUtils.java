@@ -22,6 +22,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 //import java.io.InputStreamReader;
 //import java.net.URL;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import commons.*;
@@ -62,28 +63,29 @@ public class ServerUtils {
 //    }
 
 
-    public boolean checkPassword(String pwd) {
+    public String checkPassword(String pwd) {
         try {
-            String response =
-                    ClientBuilder.newClient(new ClientConfig()) //
-                    .target(SERVER).path("admin") //
-                    .request(APPLICATION_JSON) //
-                    .accept(APPLICATION_JSON) //
-                    .post(Entity.entity(pwd, APPLICATION_JSON), String.class);
-            if (response.contains("Password is correct")) return true;
+            var response = ClientBuilder.newClient(new ClientConfig())
+                    .target(SERVER).path("admin")
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .post(Entity.entity(pwd, APPLICATION_JSON), Response.class);
+            if (response.getStatus() == 200) {
+                System.out.println("Successful authentication");
+                return response.readEntity(String.class);
+            }
         } catch (WebApplicationException u) {
             if (u.getResponse().getStatus() == Response.Status.UNAUTHORIZED.getStatusCode()) {
                 System.out.println("User unauthorised: "+u.getMessage());
-//                u.printStackTrace();
             } else if (u.getResponse().getStatus() == Response.Status.BAD_REQUEST.getStatusCode()) {
                 System.out.println("Bad Request at server password endpoint");
             } else {
                 System.out.println("Unknown error: "+u.getMessage());
                 u.printStackTrace();
             }
-            return false;
+            return "error";
         }
-        return false;
+        return "error";
     }
 
     /**
@@ -664,5 +666,27 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .delete(Board.class);
+    }
+
+
+    public List<Map<String, Object>> executeSQLQuery(String query, String token) {
+        System.out.println("Sending query="+query);
+        System.out.println("With token="+token);
+        try {
+            var response = ClientBuilder.newClient(new ClientConfig())
+                    .target(SERVER).path("query")
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .header("Authorization", "Bearer "+token)
+                    .post(Entity.entity(query, APPLICATION_JSON), Response.class);
+            if (response.getStatus() == 200) {
+                var res = response.readEntity(List.class);
+                System.out.println(res);
+                return res;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
