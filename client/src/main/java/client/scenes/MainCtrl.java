@@ -231,8 +231,6 @@ public class MainCtrl {
 
         this.paletteCreationCtrl = paletteCreate.getKey();
         this.paletteCreation = new Scene(paletteCreate.getValue());
-
-
         showLanding();
         primaryStage.show();
     }
