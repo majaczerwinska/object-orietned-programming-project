@@ -311,6 +311,9 @@ public class ServerSelectCtrl {
     }
 
 
+    /**
+     * button listener for opening (not yet) pop up for the admin panel
+     */
     public void enterAdminPage() {
         if (!verifyServerConnection()) return;
         mainCtrl.showAdminPasswordEnter(serverAddress);

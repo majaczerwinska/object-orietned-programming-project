@@ -809,7 +809,14 @@ public class MainCtrl {
         }
 
 
-        public void openAdminPanel(String ip, String token) {
+    /**
+     * open the admin panel page.
+     * called from the password check pop up, after having
+     * received a valid authentication token
+     * @param ip the server ip
+     * @param token the authentication token received during the password check proccess
+     */
+    public void openAdminPanel(String ip, String token) {
             primaryStage.setTitle("Admin panel for server "+ip);
             primaryStage.setScene(adminScene);
             if (adminCtrl==null){
@@ -821,11 +828,16 @@ public class MainCtrl {
             adminCtrl.refresh(ip);
         }
 
-        public void showAdminPasswordEnter(String ip) {
-            primaryStage.setTitle("Admin pwd for "+ip);
-            primaryStage.setScene(enterPasswordScene);
-            adminPasswordCtrl.refresh(ip);
-        }
+    /**
+     * show pop up for entering admin password
+     * //todo currently obviously not a pop up. make it a pop up
+     * @param ip the ip of the server joining
+     */
+    public void showAdminPasswordEnter(String ip) {
+        primaryStage.setTitle("Admin pwd for "+ip);
+        primaryStage.setScene(enterPasswordScene);
+        adminPasswordCtrl.refresh(ip);
     }
+}
 
 

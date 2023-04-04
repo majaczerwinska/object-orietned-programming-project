@@ -29,12 +29,25 @@ public class Config {
     @Value("${admin.password}")
     private String adminPassword;
 
+    /**
+     * the admin password string,
+     * as set in application.properties.
+     * @return the password string
+     */
     @Bean
     public String adminPassword() {
         return adminPassword;
     }
 
 
+    /**
+     * generate a single, unique, random token upon server start
+     * distributed to the auth and query endpoints,
+     * first sent to the client upon successful authentication
+     * and then verified from the query endpoint before running
+     * any sql queries received there.
+     * @return string token
+     */
     @Bean
     public String authToken() {
         SecureRandom random = new SecureRandom();

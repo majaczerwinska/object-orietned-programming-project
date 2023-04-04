@@ -4,9 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.sql.SQLInvalidAuthorizationSpecException;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,8 +20,22 @@ public class QueryController {
     private String authToken;
 
 
+    /**
+     * SQL Query receiving endpoint
+     * @param query the query (currently single) to be executed in the database
+     * @param authorizationHeader the authorization header must contain a valid token,
+     *                            sent to the client during the admin auth process.
+     *                            now the client must send the same one back in order to
+     *                            execute sql queries.
+     * @return a list of maps header/entry.
+     * with pain decrypted in the frontend into tables
+     * @throws SQLInvalidAuthorizationSpecException invalid token,
+     * user does not have authorization to access the database
+     */
     @PostMapping("/query")
-    public List<Map<String, Object>> executeQuery(@RequestBody String query, @RequestHeader("Authorization") String authorizationHeader) throws SQLInvalidAuthorizationSpecException {
+    public List<Map<String, Object>> executeQuery(
+            @RequestBody String query, @RequestHeader("Authorization") String authorizationHeader)
+            throws SQLInvalidAuthorizationSpecException {
 
         String token = authorizationHeader.replace("Bearer ", "");
 

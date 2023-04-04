@@ -153,6 +153,11 @@ public class BoardController {
     }
 
 
+    /**
+     * delete mapping for boards
+     * @param id the board's id
+     * @return the deleted board instance
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Board> deleteBoard(@PathVariable("id") int id) {
         if (id < 0 || !abs.existsById(id)) {

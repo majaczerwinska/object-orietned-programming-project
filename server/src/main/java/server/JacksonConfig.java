@@ -9,6 +9,12 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class JacksonConfig {
+
+    /**
+     * method used to customize the Jackson JSON object mapper builder
+     * for serialization and deserialization of JSON data
+     * @return modified Jackson JSON object mapper builder
+     */
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer addHibernateProxy() {
         return jacksonObjectMapperBuilder -> jacksonObjectMapperBuilder

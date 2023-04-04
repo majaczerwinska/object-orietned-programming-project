@@ -1,6 +1,5 @@
 package client.scenes;
 
-import ch.qos.logback.core.encoder.EchoEncoder;
 import client.utils.ServerUtils;
 import commons.Board;
 import javafx.beans.property.SimpleObjectProperty;
@@ -8,7 +7,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -84,12 +82,24 @@ public class Admin {
     private Button enterBoard;
 
 
+    /**
+     * Constructor for admin panel
+     * @param serverUtils injected server instance
+     * @param mainCtrl injected mainctrl instance
+     */
     @Inject
     public Admin(ServerUtils serverUtils, MainCtrl mainCtrl) {
         this.server = serverUtils;
         this.mainCtrl = mainCtrl;
     }
 
+
+    /**
+     * refresh the admin panel
+     * gets boards from server anew
+     * resets text fields
+     * @param ip the ip of the server connected to
+     */
     public void refresh(String ip) {
         this.ip = ip;
         titleText.setText("Boards for Server: "+ip);
@@ -106,10 +116,16 @@ public class Admin {
         boardList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         saveText.setText("");
         saveText.setFill(Color.BLACK);
+        boardName.setText("");
+        boardKey.setText("");
+        boardPassword.setText("");
     }
 
 
-
+    /**
+     * update text fields for board info
+     * called on click for the list view of boards
+     */
     public void updateTextFields() {
         String item = boardList.getSelectionModel().getSelectedItem();
         Board board = getBoardFromString(item);
@@ -120,6 +136,12 @@ public class Admin {
         }
     }
 
+
+    /**
+     * use text field info to update the database
+     * with new board name, key, and password fields.
+     * checks against public board to prevent modiying it
+     */
     public void saveTextFields() {
         String name = boardName.getText();
         String key = boardKey.getText();
@@ -144,6 +166,10 @@ public class Admin {
         }
     }
 
+
+    /**
+     * sends a delete request to the server for the board currently selcted
+     */
     public void deleteBoard() {
         Board b = getBoardFromString(boardList.getSelectionModel().getSelectedItem());
         if (b.getBoardkey().equals("public")){
@@ -158,6 +184,12 @@ public class Admin {
         saveText.setFill(Color.BLUEVIOLET);
     }
 
+
+    /**
+     * this method is my lowest point
+     * @param item the string from the list view
+     * @return the board instance
+     */
     private Board getBoardFromString(String item) {
         for (Board b : this.boardElementList) {
             String s = "Board #"+b.getId();
@@ -168,11 +200,19 @@ public class Admin {
         return null;
     }
 
+
+    /**
+     * go back to server select screen
+     */
     public void goBack() {
         mainCtrl.showServerSelect();
     }
 
 
+    /**
+     * enter the selected board as an admin,
+     * meaning no matter its password state you have it unlocked
+     */
     public void enterBoard() {
         Board b = getBoardFromString(boardList.getSelectionModel().getSelectedItem());
         if (b==null) {
@@ -196,10 +236,15 @@ public class Admin {
     }
 
 
-
+    /**
+     * 1. send the sql query from the text field to the server
+     * 2. get the response and generate a table out of it
+     * 3. display the table within the scrollpane of the admin panel
+     * //todo multiple queries at once
+     */
     public void sendQuery() {
         String query = sqlQuery.getText();
-        //List<List<Map<String, Object>>> res = server.executeSQLQuery(query, this.token);
+     //List<List<Map<String, Object>>> res = server.executeSQLQuery(query, this.token);//todo multiple queries at once
         List<Map<String, Object>> outputTable = server.executeSQLQuery(query, this.token);
         vboxTableContent.getChildren().clear();
         if (outputTable == null) {
@@ -208,14 +253,15 @@ public class Admin {
             vboxTableContent.getChildren().add(errorText);
             return;
         }
-        //for (List<Map<String, Object>> outputTable : res) {
+        //for (List<Map<String, Object>> outputTable : res) { //todo multiple queries at once
             TableView<Map<String, Object>> table = new TableView<>();
             ObservableList<Map<String, Object>> tableData = FXCollections.observableArrayList(outputTable);
             table.setItems(tableData);
             for (Map<String, Object> t : outputTable) {
                 for (String column : t.keySet()) {
                     TableColumn<Map<String, Object>, Object> tableColumn = findColumn(table, column);
-                    tableColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().get(column)));
+                    tableColumn.setCellValueFactory(cellData ->
+                            new SimpleObjectProperty<>(cellData.getValue().get(column)));
                     if (!doesColumnExist(table, tableColumn.getText())) table.getColumns().add(tableColumn);
                     //                    try {
 //                        table.getColumns().add(tableColumn);
@@ -247,7 +293,17 @@ public class Admin {
     }
 
 
-    private TableColumn<Map<String, Object>, Object> findColumn(TableView<Map<String, Object>> table, String columnName) {
+    /**
+     * get a column instance from a table
+     * if it does not exist, create it
+     * @param table the table instance
+     * @param columnName the column name to search for
+     * @return the column element,
+     * if found the currently existing one,
+     * else a new one for this table
+     */
+    private TableColumn<Map<String, Object>, Object> findColumn(
+            TableView<Map<String, Object>> table, String columnName) {
         // Look for existing column with matching name
         for (TableColumn<Map<String, Object>, ?> column : table.getColumns()) {
             if (column.getText().equals(columnName)) {
@@ -260,6 +316,11 @@ public class Admin {
         return newColumn;
     }
 
+
+    /**
+     * remove any duplicate columns created by parsing the map sent by SQL
+     * @param tableView the table instance
+     */
     public static void removeDuplicateColumns(TableView<?> tableView) {
         List<TableColumn<?, ?>> columnsToRemove = new ArrayList<>();
         Set<String> columnNames = new HashSet<>();
@@ -276,9 +337,12 @@ public class Admin {
     }
 
 
-
-
-
+    /**
+     * check if a column exists in a table
+     * @param table the table instance
+     * @param columnName the column's name
+     * @return T/F does it exist?
+     */
     public boolean doesColumnExist(TableView<?> table, String columnName) {
         ObservableList<? extends TableColumn<?, ?>> columns = table.getColumns();
         for (TableColumn<?, ?> column : columns) {
@@ -289,6 +353,12 @@ public class Admin {
         return false;
     }
 
+    /**
+     * set the token used for secure SQL queries.
+     * reset upon server start,
+     * sent to the client upon successful authentication
+     * @param token string random token
+     */
     public void setToken(String token) {
         this.token = token;
     }

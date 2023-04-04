@@ -35,7 +35,6 @@ import org.glassfish.jersey.client.ClientConfig;
 //import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
-import org.springframework.web.client.HttpClientErrorException;
 //import java.io.BufferedReader;
 //import java.io.IOException;
 //import java.io.InputStreamReader;
@@ -63,6 +62,13 @@ public class ServerUtils {
 //    }
 
 
+    /**
+     * Send a request for verifying a password against the server's set password
+     * todo hash the password with a hash method in commons
+     * @param pwd the password string
+     * @return the authentication token for the sql endpoint,
+     * else 401 error unauthorized if password incorrect
+     */
     public String checkPassword(String pwd) {
         try {
             var response = ClientBuilder.newClient(new ClientConfig())
@@ -660,6 +666,11 @@ public class ServerUtils {
     }
 
 
+    /**
+     * Send a delete request to the board endpoint
+     * @param id the board's id
+     * @return the deleted board (commons) instance
+     */
     public Board deleteBoard(int id) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/boards/" + id) //
@@ -669,6 +680,13 @@ public class ServerUtils {
     }
 
 
+    /**
+     * Send a query to the sql endpoint
+     * requires auth token
+     * @param query the SQL query
+     * @param token the auth token for access to the database
+     * @return the list of maps that represents the response table
+     */
     public List<Map<String, Object>> executeSQLQuery(String query, String token) {
         System.out.println("Sending query="+query);
         System.out.println("With token="+token);

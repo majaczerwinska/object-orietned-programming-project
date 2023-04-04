@@ -31,6 +31,16 @@ public class MainController {
     }
 
 
+    /**
+     * Authentication endpoint for the admin panel.
+     * user sends a password and it is checked against the server's admin
+     * password, as defined in the bean.
+     * //todo hash method in commons, receive hashed password
+     * @param password password string from the request body
+     * @return the authentication token for the sql endpoint,
+     * wrapped in a response entity of either 200 (successful)
+     * or 401 (unauthorized)
+     */
     @PostMapping("/admin")
     public ResponseEntity<String> checkAdminPassword(@RequestBody String password) {
         if (password.equals(adminPassword)) {

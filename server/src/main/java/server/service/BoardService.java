@@ -53,6 +53,7 @@ public class BoardService {
     /**
      * delete a board from the database
      * @param board to delete
+     * @return the deleted board instance
      */
     public Board delete(Board board){
         if(repo.existsById(board.getId())){
