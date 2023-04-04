@@ -241,7 +241,7 @@ public class ServerSelectCtrl {
                 connectionStatus.setTextFill(Color.RED);
                 break;
             case -1: // Timeout
-                connectionStatus.setText("Server not found (408 timeout)");
+                connectionStatus.setText("Server not found \n(408 timeout)");
                 connectionStatus.setTextFill(Color.ORANGERED);
                 break;
             case -2: // not a talio server

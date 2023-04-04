@@ -16,6 +16,12 @@ public class EditPasswordCtrl {
     public int boardID;
     private Preferences pref;
     @FXML
+    private Label editPassLabel;
+    @FXML
+    private Label passLabel;
+    @FXML
+    private Label verifyLabel;
+    @FXML
     private TextField password1;
     @FXML
     private TextField password2;
@@ -113,7 +119,84 @@ public class EditPasswordCtrl {
         warning2.setText("");
     }
 
+    /**
+     * title label getter
+     * @return Label
+     */
+    public Label getEditPassLabel() {
+        return editPassLabel;
+    }
 
+    /**
+     * password label getter
+     * @return Label
+     */
+    public Label getPassLabel() {
+        return passLabel;
+    }
 
+    /**
+     * verify password label getter
+     * @return Label
+     */
+    public Label getVerifyLabel() {
+        return verifyLabel;
+    }
+
+    /**
+     * pass textfield getter
+     * @return TextField
+     */
+    public TextField getPasswordTextField() {
+        return password1;
+    }
+
+    /**
+     * verify password textfield getter
+     * @return TextField
+     */
+    public TextField getPasswordVerifyTextField() {
+        return password2;
+    }
+
+    /**
+     * cancel button gette
+     * @return Button
+     */
+    public Button getCancel() {
+        return cancel;
+    }
+
+    /**
+     * edit button getter
+     * @return Button
+     */
+    public Button getEdit() {
+        return edit;
+    }
+
+    /**
+     * remove button getter
+     * @return Button
+     */
+    public Button getRemove() {
+        return remove;
+    }
+
+    /**
+     * warning for password label getter
+     * @return Label
+     */
+    public Label getWarningPassLabel() {
+        return warning1;
+    }
+
+    /**
+     * warning for verification label getter
+     * @return Label
+     */
+    public Label getWarningVerifyLabel() {
+        return warning2;
+    }
 
 }
