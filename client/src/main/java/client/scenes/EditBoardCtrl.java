@@ -6,10 +6,6 @@ import com.google.inject.Inject;
 import commons.Board;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.text.Text;
-
-//import javafx.scene.shape.Circle;
-
 
 public class EditBoardCtrl {
     private final ServerUtils server;
@@ -17,32 +13,17 @@ public class EditBoardCtrl {
     @FXML
     private TextField name;
     @FXML
-    private TextField color;
-    @FXML
     private Button save;
     @FXML
     private Button exit;
     @FXML
-    private TextArea description;
-    @FXML
-    private ListView<String> tags;
-    @FXML
-    private Text text;
-    @FXML
     private Label nameLabel;
     @FXML
-    private Label colorLabel;
+    private Label titleLabel;
 
 
     public int boardId;
 
-//    @FXML
-//    private Circle bigBlueButton;
-
-    @FXML
-    protected void onBigBlueButtonClick() {
-//        bigBlueButton.
-    }
     /**
      *
      * @param server -
@@ -66,7 +47,6 @@ public class EditBoardCtrl {
         Board board = server.getBoard(this.boardId);
 
         name.setText(board.getName());
-        color.setText(String.valueOf(board.getbColor()));
     }
 
     /**
@@ -128,15 +108,6 @@ public class EditBoardCtrl {
     }
 
     /**
-     * color textfield getter
-     * @return TextField
-     */
-    @FXML
-    public TextField getColor() {
-        return color;
-    }
-
-    /**
      * Getter for the save Button.
      * @return The Button object for the save button.
      */
@@ -155,12 +126,12 @@ public class EditBoardCtrl {
     }
 
     /**
-     * Getter for the text Text.
-     * @return The Text object for the text field.
+     * Getter for the text title label.
+     * @return The Label object for the text field.
      */
     @FXML
-    public Text getText() {
-        return text;
+    public Label getTitleLabel() {
+        return titleLabel;
     }
 
     /**
@@ -172,14 +143,6 @@ public class EditBoardCtrl {
         return nameLabel;
     }
 
-    /**
-     * Getter for the colorLabel Label.
-     * @return The Label object for the color label.
-     */
-    @FXML
-    public Label getColorLabel() {
-        return colorLabel;
-    }
 
 
 

@@ -21,7 +21,6 @@ import commons.Card;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Control;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -502,26 +501,24 @@ public class MainCtrl {
      * @param boardID the boardID of the board
      */
     public void showEditBoard(int boardID) {
-        // styling the edit board page
-
-        // changing the font family for the texts
-        editBoardCtrl.getColorLabel().setStyle("-fx-font-family: Avenir Book;");
-        editBoardCtrl.getExit().setStyle("-fx-font-family: Avenir Book;");
-        editBoardCtrl.getNameLabel().setStyle("-fx-font-family: Avenir Book;");
-        editBoardCtrl.getSave().setStyle("-fx-font-family: Avenir Book;");
-        editBoardCtrl.getText().setStyle("-fx-font-family: Avenir Book;");
-
-        // rounding the buttons and text fields
-        editBoardCtrl.getExit().setStyle("-fx-background-radius: 15;");
-        editBoardCtrl.getName().setStyle("-fx-background-radius: 7;");
-        editBoardCtrl.getSave().setStyle("-fx-background-radius: 7;");
-        editBoardCtrl.getColor().setStyle("-fx-background-radius: 7;");
-
         locker.setTitle("Show edit board :)");
         locker.setScene(editBoard);
         editBoardCtrl.boardId = boardID;
         locker.setResizable(false);
         editBoardCtrl.openScene(boardID);
+        // styling the edit board page
+
+        // changing the font family for the texts
+        editBoardCtrl.getExit().setStyle("-fx-font-family: Avenir Book;");
+        editBoardCtrl.getNameLabel().setStyle("-fx-font-family: Avenir Book;");
+        editBoardCtrl.getSave().setStyle("-fx-font-family: Avenir Book;");
+        editBoardCtrl.getTitleLabel().setStyle("-fx-font-family: Avenir Book;");
+
+        // rounding the buttons and text fields
+        editBoardCtrl.getExit().setStyle("-fx-background-radius: 15;");
+        editBoardCtrl.getName().setStyle("-fx-background-radius: 7;");
+        editBoardCtrl.getSave().setStyle("-fx-background-radius: 7;");
+
         locker.showAndWait();
     }
 
@@ -658,7 +655,10 @@ public class MainCtrl {
         else cardCtrl.enable();
         cardCtrl.setInfo();
         cardCtrl.registerForDeleted();
-        locker.setOnCloseRequest(e -> cardCtrl.stopPollingForDeletedCard());
+        locker.setOnCloseRequest(e -> {
+            cardCtrl.stopPollingForDeletedCard();
+            cardCtrl.exit();
+        });
         cardCtrl.refresh();
         locker.setResizable(false);
         locker.showAndWait();
