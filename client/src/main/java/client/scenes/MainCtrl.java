@@ -96,6 +96,12 @@ public class MainCtrl {
     private Scene paletteCreation;
 
 
+    private EnterAdminPassword adminPasswordCtrl;
+    private Scene enterPasswordScene;
+
+
+    private Admin adminCtrl;
+    private Scene adminScene;
     public Map<Integer, CardComponent> cardIdComponentMap;
 
     /**
@@ -122,6 +128,8 @@ public class MainCtrl {
      * @param editPassword
      * @param paletteCreate
      * @param warning
+     * @param adminPwd
+     * @param adminPage
      */
     public void initialize(Stage primaryStage,
                            Stage locker,
@@ -143,8 +151,10 @@ public class MainCtrl {
                            Pair<ProvidePasswordCtrl, Parent> providePassword,
                            Pair<CustomizationCtrl, Parent> customization,
                            Pair<EditPasswordCtrl, Parent> editPassword,
-                           Pair<PaletteCreationCtrl, Parent> paletteCreate,
-                           Pair<WarningCtrl, Parent> warning
+                           Pair<WarningCtrl, Parent> warning,
+                           Pair<EnterAdminPassword, Parent> adminPwd,
+                           Pair<Admin, Parent> adminPage,
+                           Pair<PaletteCreationCtrl, Parent> paletteCreate
                            ) {
 
         this.cardIdComponentMap = new HashMap<>();
@@ -213,9 +223,15 @@ public class MainCtrl {
         this.customizationCtrl = customization.getKey();
         this.customization = new Scene(customization.getValue());
 
+
+        this.adminPasswordCtrl = adminPwd.getKey();
+        this.enterPasswordScene = new Scene(adminPwd.getValue());
+
+        this.adminCtrl = adminPage.getKey();
+        this.adminScene = new Scene(adminPage.getValue());
+
         this.paletteCreationCtrl = paletteCreate.getKey();
         this.paletteCreation = new Scene(paletteCreate.getValue());
-
         showLanding();
         primaryStage.show();
     }
@@ -362,7 +378,7 @@ public class MainCtrl {
         boardSelectCtrl.getRemoveButton().setStyle("-fx-font-family: Avenir Book;");
         boardSelectCtrl.getJoinButton().setStyle("-fx-font-family: Avenir Book;");
         boardSelectCtrl.getBackButton().setStyle("-fx-font-family: Avenir Book;");
-        boardSelectCtrl.getDoubleClickText().setStyle("-fx-font-family: Avenir Book;");
+//        boardSelectCtrl.getDoubleClickText().setStyle("-fx-font-family: Avenir Book;");
         boardSelectCtrl.getJoinExistingLabel().setStyle("-fx-font-family: Avenir Book;");
         boardSelectCtrl.getEnterKeyLabel().setStyle("-fx-font-family: Avenir Book;");
         boardSelectCtrl.getCreateButton().setStyle("-fx-font-family: Avenir Book;");
@@ -529,17 +545,18 @@ public class MainCtrl {
      */
     public void showBoardOverview(int boardID){
         prepareBoard(boardID);
-        boardOverviewCtrl.refresh(null, false);
+        boardOverviewCtrl.refresh(null);
     }
 
     /**
      * show board overview
      * @param boardID the id of the board to join
-     * @param saveCardPositions whether to update card position attributes in the server
+     * @param isAdmin whether the user is in the board as an admin
      */
-    public void showBoardOverview(int boardID, Boolean saveCardPositions) {
+    public void showBoardOverview(int boardID, Boolean isAdmin) {
+        boardOverviewCtrl.setAdmin(isAdmin);
         prepareBoard(boardID);
-        boardOverviewCtrl.refresh(null, saveCardPositions);
+        boardOverviewCtrl.refresh(null);
     }
 
     /**
@@ -736,10 +753,9 @@ public class MainCtrl {
 
     /**
      * refresh board overview scene with newly polled data from the database
-         * @param saveCardPositions whether to save card position attributes
      */
-    public void refreshBoardOverview(Boolean saveCardPositions)  {
-        boardOverviewCtrl.refresh(null, saveCardPositions);
+    public void refreshBoardOverview()  {
+        boardOverviewCtrl.refresh(null);
     }
 
     /**
@@ -766,7 +782,7 @@ public class MainCtrl {
     public void timeoutBoardRefresh() {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Future<?> future = executor.submit(() -> {
-            boardOverviewCtrl.refresh(null, false);
+            boardOverviewCtrl.refresh(null);
         });
         try {
             future.get(200, TimeUnit.MILLISECONDS); // set a timeout of 5 seconds
@@ -788,7 +804,7 @@ public class MainCtrl {
     public void timeoutBoardRefresh(int mil) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Future<?> future = executor.submit(() -> {
-            boardOverviewCtrl.refresh(null, false);
+            boardOverviewCtrl.refresh(null);
         });
         try {
             future.get(mil, TimeUnit.MILLISECONDS); // set a timeout of 5 seconds
@@ -899,4 +915,34 @@ public class MainCtrl {
             return this.boardOverwiew;
         }
 
+
+    /**
+     * open the admin panel page.
+     * called from the password check pop up, after having
+     * received a valid authentication token
+     * @param ip the server ip
+     * @param token the authentication token received during the password check proccess
+     */
+    public void openAdminPanel(String ip, String token) {
+            primaryStage.setTitle("Admin panel for server "+ip);
+            primaryStage.setScene(adminScene);
+            if (adminCtrl==null){
+                throw new RuntimeException("admin panel is null for some reason");
+            } /*else {
+                System.out.println("admin ctrl is not null");
+            }*/
+            adminCtrl.setToken(token);
+            adminCtrl.refresh(ip);
+        }
+
+    /**
+     * show pop up for entering admin password
+     * //todo currently obviously not a pop up. make it a pop up
+     * @param ip the ip of the server joining
+     */
+    public void showAdminPasswordEnter(String ip) {
+        primaryStage.setTitle("Admin pwd for "+ip);
+        primaryStage.setScene(enterPasswordScene);
+        adminPasswordCtrl.refresh(ip);
     }
+}

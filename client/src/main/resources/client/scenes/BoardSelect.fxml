@@ -103,14 +103,14 @@
                      </padding>
                   </HBox>
                   <VBox prefHeight="200.0" prefWidth="69.0" />
-                  <VBox alignment="TOP_RIGHT" prefHeight="55.0" prefWidth="403.0">
+                  <HBox alignment="TOP_RIGHT" prefHeight="47.0" prefWidth="343.0">
                      <children>
                         <Button fx:id="back" mnemonicParsing="false" onAction="#back" text="Back">
                            <VBox.margin>
                               <Insets right="2.0" top="10.0" />
                            </VBox.margin></Button>
                      </children>
-                  </VBox>
+                  </HBox>
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
