@@ -53,10 +53,10 @@ public class MainCtrl {
 
     private TagManagerCtrl tagManagerCtrl;
     private Scene tagManager;
-    private TaskCreatorCtrl taskCreatorCtrl;
-    private Scene taskCreator;
+
     private BoardOverviewCtrl boardOverviewCtrl;
     private Scene boardOverwiew;
+
     private BoardCreationCtrl boardCreationCtrl;
     private Scene boardCreation;
 
@@ -109,7 +109,6 @@ public class MainCtrl {
      * @param boardCreation
      * @param help
      * @param tagPopUp
-     * @param taskCreator
      * @param listEdit
      * @param unlocked
      * @param locker
@@ -130,7 +129,6 @@ public class MainCtrl {
                            Pair<ServerSelectCtrl, Parent> select,
                            Pair<BoardOverviewCtrl, Parent> boardOverview,
                            Pair<BoardCreationCtrl, Parent> boardCreation,
-                           Pair<TaskCreatorCtrl, Parent> taskCreator,
                            Pair<ListEditCtrl, Parent> listEdit,
                            Pair<EditBoardCtrl, Parent> editBoard,
                            Pair<HelpCtrl, Parent> help,
@@ -170,9 +168,6 @@ public class MainCtrl {
 
         this.listCreationCtrl = listCreate.getKey();
         this.listCreate = new Scene(listCreate.getValue());
-
-        this.taskCreatorCtrl = taskCreator.getKey();
-        this.taskCreator = new Scene(taskCreator.getValue());
 
         this.serverSelectCtrl = select.getKey();
         this.serverSelect = new Scene(select.getValue());
@@ -488,16 +483,6 @@ public class MainCtrl {
         listCreationCtrl.boardID = boardId;
         locker.setResizable(false);
         locker.showAndWait();
-    }
-
-
-    /**
-     * Shows the task creator scene
-     */
-    public void showTaskCreator() {
-        primaryStage.setTitle("Task creator :)");
-        primaryStage.setScene(taskCreator);
-        primaryStage.show();
     }
 
     /**
