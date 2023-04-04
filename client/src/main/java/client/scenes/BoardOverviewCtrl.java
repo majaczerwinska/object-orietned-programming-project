@@ -527,7 +527,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             } else if (event.getCode() == KeyCode.DELETE) {
                 if (highlightedCardComponent != null) highlightedCardComponent.deleteCard();
             } else if (event.getCode() == KeyCode.T) {
-                mainCtrl.showTagPopUp(this.boardID);
+                if (highlightedCardComponent != null); mainCtrl.showTagPopUp(this.boardID, highlightedCardComponent.cardID);
             } else if (event.getCode() == KeyCode.SLASH) {
                 mainCtrl.showHelpScene();
             }
