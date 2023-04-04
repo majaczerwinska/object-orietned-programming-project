@@ -196,10 +196,10 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
                 (board.getbColor() >> 16) & 0xFF,
                 (board.getbColor() >> 8) & 0xFF, board.getbColor()& 0xFF)+";");
         String hexColor = String.format("#%06X", (0xFFFFFF & board.getfColor()));
-        labelBoardTitle.setStyle("-fx-text-fill: " + hexColor);
-        boardKey.setStyle("-fx-text-fill: " + hexColor);
-        boardKeyL.setStyle("-fx-text-fill: " + hexColor);
-        tagL.setStyle("-fx-text-fill: " + hexColor);
+        labelBoardTitle.setStyle("-fx-text-fill: " + hexColor+";");
+        boardKey.setStyle("-fx-text-fill: " + hexColor+";");
+        boardKeyL.setStyle("-fx-text-fill: " + hexColor+";");
+        tagL.setStyle("-fx-text-fill: " + hexColor+";");
     }
 
     /**

@@ -18,8 +18,10 @@ package client.scenes;
 import client.components.CardComponent;
 import client.components.CardListComponent;
 import commons.Card;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Control;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -544,6 +546,16 @@ public class MainCtrl {
     }
 
     /**
+     * Appends style to a node, use this method everywhere instead of setStyle
+     * @param node the node which you want to append style to
+     * @param style the style you want to append
+     */
+    public void appendStyle(Node node, String style) {
+        String existingStyle = node.getStyle();
+        node.setStyle(existingStyle.replaceAll(style, "") + style);
+    }
+
+    /**
      * show board overview util function, prevent duplicate code
      * @param boardID the board's id
      */
@@ -560,25 +572,27 @@ public class MainCtrl {
         boardOverviewCtrl.refreshListViewTags();
 
         // adding some styling to the board overview
-
+        String fontStyle = "-fx-font-family: Avenir Book;";
+        String roundingStyle = "-fx-background-radius: 7;";
+        String existingStyle;
         // changing the fonts to the labels and buttons
-        boardOverviewCtrl.getAddListButton().setStyle("-fx-font-family: Avenir Book;");
-        boardOverviewCtrl.getBackButton().setStyle("-fx-font-family: Avenir Book;");        
-        boardOverviewCtrl.getBoardLabel().setStyle("-fx-font-family: Avenir Book;");
-        boardOverviewCtrl.getBoardKeyLabel().setStyle("-fx-font-family: Avenir Book;");
-        boardOverviewCtrl.getBoardTitleLabel().setStyle("-fx-font-family: Avenir Book;");
-        boardOverviewCtrl.getCustomizationButton().setStyle("-fx-font-family: Avenir Book;");
-        boardOverviewCtrl.getEditBoardButton().setStyle("-fx-font-family: Avenir Book;");
-        boardOverviewCtrl.getTagLabel().setStyle("-fx-font-family: Avenir Book;");
-        boardOverviewCtrl.getTagManagerButton().setStyle("-fx-font-family: Avenir Book;");
+        appendStyle(boardOverviewCtrl.getBoardTitleLabel(), fontStyle);
+        appendStyle(boardOverviewCtrl.getAddListButton(), fontStyle);
+        appendStyle(boardOverviewCtrl.getBackButton(), fontStyle);
+        appendStyle(boardOverviewCtrl.getBoardLabel(), fontStyle);
+        appendStyle(boardOverviewCtrl.getBoardKeyLabel(), fontStyle);
+        appendStyle(boardOverviewCtrl.getCustomizationButton(), fontStyle);
+        appendStyle(boardOverviewCtrl.getEditBoardButton(), fontStyle);
+        appendStyle(boardOverviewCtrl.getTagLabel(), fontStyle);
+        appendStyle(boardOverviewCtrl.getTagManagerButton(), fontStyle);
 
         // rounding the buttons
-        boardOverviewCtrl.getAddListButton().setStyle("-fx-background-radius: 7;");
-        boardOverviewCtrl.getBackButton().setStyle("-fx-background-radius: 7;");
-        boardOverviewCtrl.getCustomizationButton().setStyle("-fx-background-radius: 7;");
-        boardOverviewCtrl.getEditBoardButton().setStyle("-fx-background-radius: 7;");
-        boardOverviewCtrl.getLockButton().setStyle("-fx-background-radius: 7;");
-        boardOverviewCtrl.getTagManagerButton().setStyle("-fx-background-radius: 7;");
+        appendStyle(boardOverviewCtrl.getAddListButton(), roundingStyle);
+        appendStyle(boardOverviewCtrl.getBackButton(), roundingStyle);
+        appendStyle(boardOverviewCtrl.getCustomizationButton(), roundingStyle);
+        appendStyle(boardOverviewCtrl.getEditBoardButton(), roundingStyle);
+        appendStyle(boardOverviewCtrl.getLockButton(), roundingStyle);
+        appendStyle(boardOverviewCtrl.getTagManagerButton(), roundingStyle);
     }
 
     /**
