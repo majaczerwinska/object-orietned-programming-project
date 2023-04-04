@@ -7,7 +7,7 @@ import javax.inject.Inject;
 
 public class LandingCtrl {
 
-    private final ServerUtils server;
+    // private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
 
@@ -18,7 +18,7 @@ public class LandingCtrl {
      */
     @Inject
     public LandingCtrl(ServerUtils server, MainCtrl mainCtrl) {
-        this.server = server;
+        // this.server = server;
         this.mainCtrl = mainCtrl;
     }
 
