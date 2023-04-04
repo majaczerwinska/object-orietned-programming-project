@@ -35,6 +35,7 @@ import org.glassfish.jersey.client.ClientConfig;
 //import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
+import org.glassfish.jersey.client.ClientProperties;
 //import java.io.BufferedReader;
 //import java.io.IOException;
 //import java.io.InputStreamReader;
@@ -503,7 +504,10 @@ public class ServerUtils {
      */
     public int testConnection(String ip) {
         try {
-            Client client = ClientBuilder.newClient();
+            ClientConfig config = new ClientConfig();
+            config.property(ClientProperties.CONNECT_TIMEOUT, 3000); // 5 seconds
+            config.property(ClientProperties.READ_TIMEOUT, 2500); // 5 seconds
+            Client client = ClientBuilder.newClient(config);
             Response response = client.target(ip)
                     .request()
                     .get();
@@ -524,7 +528,8 @@ public class ServerUtils {
             return -1;
         }
     }
-    
+
+
     /**
      * adds a board to the database
      * @param board board that will be added to the database

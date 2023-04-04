@@ -293,6 +293,7 @@ public class ServerSelectCtrl {
     @FXML
     public void onListElementClick(MouseEvent event) {
         refresh();
+        ipField.setText(selectedServer.getText());
         if (event.getClickCount() == 2) {
             enterServer();
         }
