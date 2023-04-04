@@ -22,10 +22,12 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 //import java.io.InputStreamReader;
 //import java.net.URL;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import commons.*;
 import jakarta.ws.rs.ProcessingException;
+import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
@@ -33,6 +35,7 @@ import org.glassfish.jersey.client.ClientConfig;
 //import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
+import org.glassfish.jersey.client.ClientProperties;
 //import java.io.BufferedReader;
 //import java.io.IOException;
 //import java.io.InputStreamReader;
@@ -59,30 +62,38 @@ public class ServerUtils {
 //        }
 //    }
 
-//    /**
-//     *
-//     * @return -
-//     */
-//    public List<Quote> getQuotes() {
-//        return ClientBuilder.newClient(new ClientConfig()) //
-//                .target(SERVER).path("api/quotes") //
-//                .request(APPLICATION_JSON) //
-//                .accept(APPLICATION_JSON) //
-//                .get(new GenericType<List<Quote>>() {});
-//    }
 
-//    /**
-//     *
-//     * @param quote -
-//     * @return -
-//     */
-//    public Quote addQuote(Quote quote) {
-//        return ClientBuilder.newClient(new ClientConfig()) //
-//                .target(SERVER).path("api/quotes") //
-//                .request(APPLICATION_JSON) //j
-//                .accept(APPLICATION_JSON) //
-//                .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
-//    }
+    /**
+     * Send a request for verifying a password against the server's set password
+     * todo hash the password with a hash method in commons
+     * @param pwd the password string
+     * @return the authentication token for the sql endpoint,
+     * else 401 error unauthorized if password incorrect
+     */
+    public String checkPassword(String pwd) {
+        try {
+            var response = ClientBuilder.newClient(new ClientConfig())
+                    .target(SERVER).path("admin")
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .post(Entity.entity(pwd, APPLICATION_JSON), Response.class);
+            if (response.getStatus() == 200) {
+                System.out.println("Successful authentication");
+                return response.readEntity(String.class);
+            }
+        } catch (WebApplicationException u) {
+            if (u.getResponse().getStatus() == Response.Status.UNAUTHORIZED.getStatusCode()) {
+                System.out.println("User unauthorised: "+u.getMessage());
+            } else if (u.getResponse().getStatus() == Response.Status.BAD_REQUEST.getStatusCode()) {
+                System.out.println("Bad Request at server password endpoint");
+            } else {
+                System.out.println("Unknown error: "+u.getMessage());
+                u.printStackTrace();
+            }
+            return "error";
+        }
+        return "error";
+    }
 
     /**
      * @param card card o be added
@@ -157,29 +168,6 @@ public class ServerUtils {
                     });
 
     }
-
-//    /**
-//     * returns the board with the given name
-//     * @param name the name of the board to be searched for
-//     * @return the board
-//     */
-    /*public Board getBoardByName(String name) {
-        try {
-            System.out.println("sending request in api/boards/name/"+name);
-            return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/boards/name/"+name)
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .get(new GenericType<Board>() {});
-            } 
-            catch (Exception e)
-            {
-                System.out.println("Exception raised in getBoardByName() in ServerUtils " + name);
-                System.out.println(e.getMessage());
-                e.printStackTrace();
-            }
-            return null;
-    }*/
 
     /**
      * Get card by id
@@ -516,7 +504,10 @@ public class ServerUtils {
      */
     public int testConnection(String ip) {
         try {
-            Client client = ClientBuilder.newClient();
+            ClientConfig config = new ClientConfig();
+            config.property(ClientProperties.CONNECT_TIMEOUT, 3000); // 5 seconds
+            config.property(ClientProperties.READ_TIMEOUT, 2500); // 5 seconds
+            Client client = ClientBuilder.newClient(config);
             Response response = client.target(ip)
                     .request()
                     .get();
@@ -537,7 +528,8 @@ public class ServerUtils {
             return -1;
         }
     }
-    
+
+
     /**
      * adds a board to the database
      * @param board board that will be added to the database
@@ -692,7 +684,50 @@ public class ServerUtils {
     }
 
     /**
-     * edits palette
+     * Send a delete request to the board endpoint
+     * @param id the board's id
+     * @return the deleted board (commons) instance
+     */
+    public Board deleteBoard(int id) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/boards/" + id) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .delete(Board.class);
+    }
+
+
+    /**
+     * Send a query to the sql endpoint
+     * requires auth token
+     * @param query the SQL query
+     * @param token the auth token for access to the database
+     * @return the list of maps that represents the response table
+     */
+    public List<Map<String, Object>> executeSQLQuery(String query, String token) {
+        System.out.println("Sending query=" + query);
+        System.out.println("With token=" + token);
+        try {
+            var response = ClientBuilder.newClient(new ClientConfig())
+                    .target(SERVER).path("query")
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .header("Authorization", "Bearer " + token)
+                    .post(Entity.entity(query, APPLICATION_JSON), Response.class);
+            if (response.getStatus() == 200) {
+                var res = response.readEntity(List.class);
+                System.out.println(res);
+                return res;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    /**
+    * edits palette
      * @param id
      * @param palette
      * @return - edited palette

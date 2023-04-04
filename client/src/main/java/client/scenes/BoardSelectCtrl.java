@@ -48,6 +48,7 @@ public class BoardSelectCtrl {
     private Button back;
 
     @FXML
+    private Button adminButton;
     private Text doubleClickText;
 
     @FXML

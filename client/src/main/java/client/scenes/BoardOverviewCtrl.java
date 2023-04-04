@@ -86,6 +86,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     private Preferences pref;
     private boolean isLocked;
 
+    private boolean isAdmin;
 
     /**
      *
@@ -98,6 +99,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         this.mainCtrl = mainCtrl;
         this.server = server;
         this.isLocked=false;
+        this.isAdmin=false;
         this.pref = Preferences.userRoot().node("locking");
         this.websocketClient = websocketClient;
         System.out.println("Inject called in board overview");
@@ -144,9 +146,9 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
                     String[] words = update.split(" ");
                     Card c = server.getCard(Integer.parseInt(words[2]));
                     System.out.println("refresh with focus to card#" + words[1]);
-                    refresh(c, false);
+                    refresh(c);
                 } else {
-                    refresh(null, false);
+                    refresh(null);
                 }
                 //            mainCtrl.timeoutBoardRefresh(1000);
             });
@@ -213,9 +215,15 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         }else{
             lock.setText("\uD83D\uDD12");
             checkForPref();
+            if (isAdmin) {
+                isLocked=false;
+                enable();
+                lock.setStyle("-fx-background-color: green");
+                return;
+            }
             if(pref.get(String.valueOf(boardID),"").equals("")){
                 lock.setStyle("-fx-background-color: red");
-                isLocked=true;
+                isLocked= true;
                 disable();
             }
             else{
@@ -387,10 +395,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * displays cards in vboxes
      * @param cardLists card lists
      * @param c - card for focus
-     * @param saveCardPositions whether to update the cards' positions in the database.
-     *                          only true when called from the client (in drag dropped)
      */
-    public void displayLists(List<CardList> cardLists, Card c, Boolean saveCardPositions){
+    public void displayLists(List<CardList> cardLists, Card c){
 
         for (CardList cardList : cardLists) {
 
@@ -499,15 +505,15 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     /**
      * Refresh scene from database
      * @param c - card for focus
-     * @param saveCardPositions whether to save card position attributes to server
      */
-    public void refresh(Card c, Boolean saveCardPositions) {
+    public void refresh(Card c) {
+
         Platform.runLater(new Runnable() {
             @Override public void run() {
                 System.out.println("Refreshing board overview");
                 List<CardList> cardLists = getCardListsFromServer();
                 clearBoard();
-                displayLists(cardLists, c, saveCardPositions);
+                displayLists(cardLists, c);
                 shortcut();
             }
         });
@@ -581,7 +587,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         System.out.println("creating new card "+c+" in list id="+listID);
 
         c = server.addCard(c, boardID, listID);
-        refresh(c, true);
+        refresh(c);
         return c;
     }
 
@@ -678,6 +684,15 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     public Button getTagManagerButton() {
         return btnTagManager;
     }
+
+    /**
+     * set admin access rights
+     * @param isAdmin bool
+     */
+    public void setAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+
 
     /**
      * back button getter

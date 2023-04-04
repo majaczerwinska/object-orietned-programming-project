@@ -49,18 +49,18 @@ public class BoardController {
         return ResponseEntity.ok(saved);
     }
 
-    /**
-     *deletes a board from the database
-     * @param id - the id of the board to be deleted
-     * @return - a response entity
-     */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Board> deleteBoard(@PathVariable("id") int id) {
-        if(!abs.existsById(id)) return ResponseEntity.badRequest().build();
-        Board board = abs.getById(id);
-        abs.delete(board);
-        return ResponseEntity.ok().build();
-    }
+//    /**
+//     *deletes a board from the database
+//     * @param id - the id of the board to be deleted
+//     * @return - a response entity
+//     */
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<Board> deleteBoard(@PathVariable("id") int id) {
+//        if(!abs.existsById(id)) return ResponseEntity.badRequest().build();
+//        Board board = abs.getById(id);
+//        abs.delete(board);
+//        return ResponseEntity.ok().build();
+//    }
 
     /**
      * gets all boards from the database
@@ -154,4 +154,17 @@ public class BoardController {
     }
 
 
+    /**
+     * delete mapping for boards
+     * @param id the board's id
+     * @return the deleted board instance
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Board> deleteBoard(@PathVariable("id") int id) {
+        if (id < 0 || !abs.existsById(id)) {
+            return ResponseEntity.badRequest().build();
+        }
+        abs.delete(abs.getById(id));
+        return ResponseEntity.ok().build();
+    }
 }

@@ -76,6 +76,9 @@ public class ServerSelectCtrl {
     @FXML
     private ListView<String> servers;
 
+    @FXML
+    private Button enterAsAdmin;
+
     /**
      *
      * @param server   -
@@ -266,16 +269,8 @@ public class ServerSelectCtrl {
     /**
      * Enters the server (goes to select board scene)
      */
-    public void enterServer() {
-        onTestConnection();
-        if (!connectionStatus.textProperty().get().equals("200 Successful")) {
-            System.out.println(connectionStatus.textProperty().get());
-            System.out.println("Tried to enter invalid server (" + serverAddress + "), aborting");
-            return;
-        }
-        System.out.println("entering server " + serverAddress);
-        setServer(serverAddress);
-        mainCtrl.setStompSession();
+    public void enterServer(){
+        if (!verifyServerConnection()) return;
         mainCtrl.showSelect();
     }
 
@@ -298,6 +293,7 @@ public class ServerSelectCtrl {
     @FXML
     public void onListElementClick(MouseEvent event) {
         refresh();
+        ipField.setText(selectedServer.getText());
         if (event.getClickCount() == 2) {
             enterServer();
         }
@@ -315,6 +311,27 @@ public class ServerSelectCtrl {
 
     }
 
+
+    /**
+     * button listener for opening (not yet) pop up for the admin panel
+     */
+    public void enterAdminPage() {
+        if (!verifyServerConnection()) return;
+        mainCtrl.showAdminPasswordEnter(serverAddress);
+    }
+
+    private boolean verifyServerConnection() {
+        onTestConnection();
+        if (!connectionStatus.textProperty().get().equals("200 Successful")) {
+            System.out.println(connectionStatus.textProperty().get());
+            System.out.println("Tried to enter invalid server ("+serverAddress+"), aborting");
+            return false;
+        }
+        System.out.println("entering server " + serverAddress);
+        setServer(serverAddress);
+        mainCtrl.setStompSession();
+        return true;
+    }
     /**
      * selected server label getter
      * @return Label

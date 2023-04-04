@@ -147,7 +147,7 @@ public class CardCtrl {
     public void exit(){
         System.out.println(boardID + "cardexit");
         mainCtrl.closeLocker();
-        mainCtrl.showBoardOverview(boardID, true);
+        mainCtrl.showBoardOverview(boardID);
         websocketClient.sendMessage("/app/update/card/"+boardID, "Done updating card in CardOverview");
     }
 
