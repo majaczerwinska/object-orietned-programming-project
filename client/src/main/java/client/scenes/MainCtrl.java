@@ -833,6 +833,19 @@ public class MainCtrl {
      */
     public void showTagPopUp(int boardID) {
         locker.setTitle("Tag pop-up");
+        // styling the pop up
+
+        // adding fonts for the text
+        tagPopUpCtrl.getGoBackButton().setStyle("-fx-font-family: Avenir Book;");
+        tagPopUpCtrl.getName().setStyle("-fx-font-family: Avenir Book;");
+        tagPopUpCtrl.getTitle().setStyle("-fx-font-family: Avenir Book;");
+        tagPopUpCtrl.getPlusButton().setStyle("-fx-font-family: Avenir Book;");
+
+        // rounding the buttons and text fields
+        tagPopUpCtrl.getGoBackButton().setStyle("-fx-background-radius: 7;");
+        tagPopUpCtrl.getPlusButton().setStyle("-fx-background-radius: 20;");
+        tagPopUpCtrl.getName().setStyle("-fx-background-radius: 7;");
+
         locker.setScene(tagPopUpScene);
         locker.setResizable(false);
         locker.showAndWait();

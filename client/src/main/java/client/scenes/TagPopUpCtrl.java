@@ -5,7 +5,7 @@ import commons.Tag;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-
+import javafx.scene.control.TextField;
 
 import javax.inject.Inject;
 
@@ -20,13 +20,13 @@ public class TagPopUpCtrl {
     private Label title;
 
     @FXML
-    private javafx.scene.control.TextField name;
-
-
+    private TextField name;
 
     @FXML
     private Button goBackButton;
-    // button to return to main menu
+
+    @FXML
+    private Button plusButton;
 
     /**
      * help controller constructor method
@@ -80,6 +80,42 @@ public class TagPopUpCtrl {
     public void back() {
         mainCtrl.closeLocker();
         mainCtrl.showBoardOverview(boardID);
+    }
+
+    /**
+     * title label getter
+     * @return Label
+     */
+    @FXML
+    public Label getTitle() {
+        return title;
+    }
+
+    /**
+     * tag name text field getter
+     * @return TextField
+     */
+    @FXML
+    public TextField getName() {
+        return name;
+    }
+
+    /**
+     * go back button getter
+     * @return Button
+     */
+    @FXML
+    public Button getGoBackButton() {
+        return goBackButton;
+    }
+
+    /**
+     * new tag button getter
+     * @return Button
+     */
+    @FXML
+    public Button getPlusButton() {
+        return plusButton;
     }
 
 
