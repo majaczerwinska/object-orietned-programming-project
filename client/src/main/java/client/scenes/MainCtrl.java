@@ -575,7 +575,6 @@ public class MainCtrl {
         boardOverviewCtrl.getBoardTitleLabel().setStyle("-fx-font-family: Avenir Book;");
         boardOverviewCtrl.getCustomizationButton().setStyle("-fx-font-family: Avenir Book;");
         boardOverviewCtrl.getEditBoardButton().setStyle("-fx-font-family: Avenir Book;");
-        boardOverviewCtrl.getRefreshButton().setStyle("-fx-font-family: Avenir Book;");
         boardOverviewCtrl.getTagLabel().setStyle("-fx-font-family: Avenir Book;");
         boardOverviewCtrl.getTagManagerButton().setStyle("-fx-font-family: Avenir Book;");
 
@@ -585,7 +584,6 @@ public class MainCtrl {
         boardOverviewCtrl.getCustomizationButton().setStyle("-fx-background-radius: 7;");
         boardOverviewCtrl.getEditBoardButton().setStyle("-fx-background-radius: 7;");
         boardOverviewCtrl.getLockButton().setStyle("-fx-background-radius: 7;");
-        boardOverviewCtrl.getRefreshButton().setStyle("-fx-background-radius: 7;");
         boardOverviewCtrl.getTagManagerButton().setStyle("-fx-background-radius: 7;");
     }
 

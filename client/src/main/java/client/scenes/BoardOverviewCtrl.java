@@ -80,9 +80,6 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     @FXML
     private Button addListButton;
 
-    @FXML
-    private Button refreshButton;
-
     @FXML Button editBoardButton;
 
     @FXML
@@ -721,14 +718,6 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      */
     public Button getAddListButton() {
         return addListButton;
-    }
-
-    /**
-     * refresh button getter
-     * @return Button
-     */
-    public Button getRefreshButton() {
-        return refreshButton;
     }
 
     /**
