@@ -115,9 +115,9 @@ public class CardListController {
     }
 
     /**
-     * Gets the card from its id
-     * @param id the id of the card we need to get
-     * @return a response entity with the card
+     * Gets the list from its id
+     * @param id the id of the list we need to get
+     * @return a response entity with the list
      */
     @GetMapping("/{id}")
     public ResponseEntity<CardList> getCard(@PathVariable("id") int id) {
