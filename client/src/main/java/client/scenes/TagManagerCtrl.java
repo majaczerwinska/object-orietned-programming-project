@@ -262,7 +262,7 @@ public class TagManagerCtrl implements Initializable {
      * @return Label
      */
     @FXML
-    private Label getLabelBoard() {
+    public Label getLabelBoard() {
         return labelBoard;
     }
 
@@ -271,7 +271,7 @@ public class TagManagerCtrl implements Initializable {
      * @return TextField
      */
     @FXML
-    private TextField getTfTitle() {
+    public TextField getTfTitle() {
         return tfTitle;
     }
 
@@ -280,7 +280,7 @@ public class TagManagerCtrl implements Initializable {
      * @return Label
      */
     @FXML
-    private Label getWarningLabel() {
+    public Label getWarningLabel() {
         return warningLabel;
     }
 
@@ -289,7 +289,7 @@ public class TagManagerCtrl implements Initializable {
      * @return Label
      */
     @FXML
-    private Label getTagTitleLabel() {
+    public Label getTagTitleLabel() {
         return tagTitleLabel;
     }
 
@@ -298,7 +298,7 @@ public class TagManagerCtrl implements Initializable {
      * @return Label
      */
     @FXML
-    private Label getTagColorLabel() {
+    public Label getTagColorLabel() {
         return tagColorLabel;
     }
 
@@ -307,7 +307,7 @@ public class TagManagerCtrl implements Initializable {
      * @return Button
      */
     @FXML
-    private Button getAddTagButton() {
+    public Button getAddTagButton() {
         return addTagButton;
     }
 
@@ -316,7 +316,7 @@ public class TagManagerCtrl implements Initializable {
      * @return Button
      */
     @FXML
-    private Button getEditTagButton() {
+    public Button getEditTagButton() {
         return editTagButton;
     }
 
@@ -325,7 +325,7 @@ public class TagManagerCtrl implements Initializable {
      * @return Button
      */
     @FXML
-    private Button getDeleteTagButton() {
+    public Button getDeleteTagButton() {
         return deleteTagButton;
     }
 
@@ -334,7 +334,7 @@ public class TagManagerCtrl implements Initializable {
      * @return Button
      */
     @FXML
-    private Button getGoBackButton() {
+    public Button getGoBackButton() {
         return goBackButton;
     }
 

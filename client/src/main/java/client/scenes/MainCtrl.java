@@ -375,6 +375,25 @@ public class MainCtrl {
      */
     public void showTagManager(int boardID) {
         primaryStage.setTitle("Tag Manager :)");
+        // styling the tag manager page 
+
+        // applying fonts 
+        tagManagerCtrl.getAddTagButton().setStyle("-fx-font-family: Avenir Book;");
+        tagManagerCtrl.getDeleteTagButton().setStyle("-fx-font-family: Avenir Book;");
+        tagManagerCtrl.getEditTagButton().setStyle("-fx-font-family: Avenir Book;");
+        tagManagerCtrl.getGoBackButton().setStyle("-fx-font-family: Avenir Book;");
+        tagManagerCtrl.getLabelBoard().setStyle("-fx-font-family: Avenir Book;");
+        tagManagerCtrl.getTagColorLabel().setStyle("-fx-font-family: Avenir Book;");
+        tagManagerCtrl.getTagTitleLabel().setStyle("-fx-font-family: Avenir Book;");
+        tagManagerCtrl.getWarningLabel().setStyle("-fx-font-family: Avenir Book;");
+
+        // rounding the buttons and text fields
+        tagManagerCtrl.getAddTagButton().setStyle("-fx-background-radius: 7;");
+        tagManagerCtrl.getDeleteTagButton().setStyle("-fx-background-radius: 7;");
+        tagManagerCtrl.getEditTagButton().setStyle("-fx-background-radius: 7;");
+        tagManagerCtrl.getGoBackButton().setStyle("-fx-background-radius: 7;");
+        tagManagerCtrl.getTfTitle().setStyle("-fx-background-radius: 7;");
+
         primaryStage.setScene(tagManager);
         tagManagerCtrl.boardId = boardID;
         //Later combine these methods into one refresh method
