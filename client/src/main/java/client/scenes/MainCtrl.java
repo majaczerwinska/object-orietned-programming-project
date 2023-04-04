@@ -257,12 +257,13 @@ public class MainCtrl {
         serverSelectCtrl.getRemoveServer().setStyle("-fx-font-family: Avenir Book;");
 
         // round the corners for the buttons and text fields
-        serverSelectCtrl.getIpField().setStyle("-fx-background-radius: 7;");
-        serverSelectCtrl.getTestConnection().setStyle("-fx-background-radius: 7;");
-        serverSelectCtrl.getAddServer().setStyle("-fx-background-radius: 7;");
-        serverSelectCtrl.getEnterServer().setStyle("-fx-background-radius: 7;");
-        serverSelectCtrl.getGoBackButton().setStyle("-fx-background-radius: 7;");
-        serverSelectCtrl.getRemoveServer().setStyle("-fx-background-radius: 7;");
+        String radiusStyle = "-fx-background-radius: 7;";
+        appendStyle(serverSelectCtrl.getIpField(), radiusStyle);
+        appendStyle(serverSelectCtrl.getTestConnection(), radiusStyle);
+        appendStyle(serverSelectCtrl.getAddServer(), radiusStyle);
+        appendStyle(serverSelectCtrl.getEnterServer(), radiusStyle);
+        appendStyle(serverSelectCtrl.getGoBackButton(), radiusStyle);
+        appendStyle(serverSelectCtrl.getRemoveServer(), radiusStyle);
 
         primaryStage.setScene(serverSelect);
         primaryStage.setResizable(true);
@@ -378,22 +379,24 @@ public class MainCtrl {
         // styling the board selection page
 
         // setting the font family for the text
-        boardSelectCtrl.getCreateButton().setStyle("-fx-font-family: Avenir Book;");
-        boardSelectCtrl.getRemoveButton().setStyle("-fx-font-family: Avenir Book;");
-        boardSelectCtrl.getJoinButton().setStyle("-fx-font-family: Avenir Book;");
-        boardSelectCtrl.getBackButton().setStyle("-fx-font-family: Avenir Book;");
+        String fontStyle = "-fx-font-family: Avenir Book;";
+        appendStyle(boardSelectCtrl.getCreateButton(), fontStyle);
+        appendStyle(boardSelectCtrl.getRemoveButton(), fontStyle);
+        appendStyle(boardSelectCtrl.getJoinButton(), fontStyle);
+        appendStyle(boardSelectCtrl.getBackButton(), fontStyle);
 //        boardSelectCtrl.getDoubleClickText().setStyle("-fx-font-family: Avenir Book;");
-        boardSelectCtrl.getJoinExistingLabel().setStyle("-fx-font-family: Avenir Book;");
-        boardSelectCtrl.getEnterKeyLabel().setStyle("-fx-font-family: Avenir Book;");
-        boardSelectCtrl.getCreateButton().setStyle("-fx-font-family: Avenir Book;");
-        boardSelectCtrl.getOrYouLabel().setStyle("-fx-font-family: Avenir Book;");
+        appendStyle(boardSelectCtrl.getJoinExistingLabel(), fontStyle);
+        appendStyle(boardSelectCtrl.getEnterKeyLabel(), fontStyle);
+        appendStyle(boardSelectCtrl.getCreateButton(), fontStyle);
+        appendStyle(boardSelectCtrl.getOrYouLabel(), fontStyle);
 
         // rounding the corners of the buttons and text fields
-        boardSelectCtrl.getCreateButton().setStyle("-fx-background-radius: 7;");
-        boardSelectCtrl.getRemoveButton().setStyle("-fx-background-radius: 7;");
-        boardSelectCtrl.getJoinButton().setStyle("-fx-background-radius: 7;");
-        boardSelectCtrl.getBackButton().setStyle("-fx-background-radius: 7;");
-        boardSelectCtrl.getBoardKeyTextField().setStyle("-fx-background-radius: 7;");
+        String radiusStyle = "-fx-background-radius: 7;";
+        appendStyle(boardSelectCtrl.getCreateButton(), radiusStyle);
+        appendStyle(boardSelectCtrl.getRemoveButton(), radiusStyle);
+        appendStyle(boardSelectCtrl.getJoinButton(), radiusStyle);
+        appendStyle(boardSelectCtrl.getBackButton(), radiusStyle);
+        appendStyle(boardSelectCtrl.getBoardKeyTextField(), radiusStyle);
 
         primaryStage.setScene(boardSelect);
         boardSelectCtrl.warning.setText("");
@@ -422,22 +425,24 @@ public class MainCtrl {
         primaryStage.setTitle("Tag Manager :)");
         // styling the tag manager page 
 
-        // applying fonts 
-        tagManagerCtrl.getAddTagButton().setStyle("-fx-font-family: Avenir Book;");
-        tagManagerCtrl.getDeleteTagButton().setStyle("-fx-font-family: Avenir Book;");
-        tagManagerCtrl.getEditTagButton().setStyle("-fx-font-family: Avenir Book;");
-        tagManagerCtrl.getGoBackButton().setStyle("-fx-font-family: Avenir Book;");
-        tagManagerCtrl.getLabelBoard().setStyle("-fx-font-family: Avenir Book;");
-        tagManagerCtrl.getTagColorLabel().setStyle("-fx-font-family: Avenir Book;");
-        tagManagerCtrl.getTagTitleLabel().setStyle("-fx-font-family: Avenir Book;");
-        tagManagerCtrl.getWarningLabel().setStyle("-fx-font-family: Avenir Book;");
+        // applying fonts
+        String fontStyle = "-fx-font-family: Avenir Book;";
+        appendStyle(tagManagerCtrl.getAddTagButton(), fontStyle);
+        appendStyle(tagManagerCtrl.getDeleteTagButton(), fontStyle);
+        appendStyle(tagManagerCtrl.getEditTagButton(), fontStyle);
+        appendStyle(tagManagerCtrl.getGoBackButton(), fontStyle);
+        appendStyle(tagManagerCtrl.getLabelBoard(), fontStyle);
+        appendStyle(tagManagerCtrl.getTagColorLabel(), fontStyle);
+        appendStyle(tagManagerCtrl.getTagTitleLabel(), fontStyle);
+        appendStyle(tagManagerCtrl.getWarningLabel(), fontStyle);
 
         // rounding the buttons and text fields
-        tagManagerCtrl.getAddTagButton().setStyle("-fx-background-radius: 7;");
-        tagManagerCtrl.getDeleteTagButton().setStyle("-fx-background-radius: 7;");
-        tagManagerCtrl.getEditTagButton().setStyle("-fx-background-radius: 7;");
-        tagManagerCtrl.getGoBackButton().setStyle("-fx-background-radius: 7;");
-        tagManagerCtrl.getTfTitle().setStyle("-fx-background-radius: 7;");
+        String radiusStyle = "-fx-background-radius: 7;";
+        appendStyle(tagManagerCtrl.getAddTagButton(), radiusStyle);
+        appendStyle(tagManagerCtrl.getDeleteTagButton(), radiusStyle);
+        appendStyle(tagManagerCtrl.getEditTagButton(), radiusStyle);
+        appendStyle(tagManagerCtrl.getGoBackButton(), radiusStyle);
+        appendStyle(tagManagerCtrl.getTfTitle(), radiusStyle);
 
         primaryStage.setScene(tagManager);
         tagManagerCtrl.boardId = boardID;
@@ -524,9 +529,9 @@ public class MainCtrl {
         editBoardCtrl.getTitleLabel().setStyle("-fx-font-family: Avenir Book;");
 
         // rounding the buttons and text fields
-        editBoardCtrl.getExit().setStyle("-fx-background-radius: 15;");
-        editBoardCtrl.getName().setStyle("-fx-background-radius: 7;");
-        editBoardCtrl.getSave().setStyle("-fx-background-radius: 7;");
+        appendStyle(editBoardCtrl.getExit(),"-fx-background-radius: 15;");
+        appendStyle(editBoardCtrl.getName(),"-fx-background-radius: 7;");
+        appendStyle(editBoardCtrl.getSave(),"-fx-background-radius: 7;");
 
         locker.setOnCloseRequest(e -> editBoardCtrl.exitButton());
         locker.showAndWait();
@@ -644,10 +649,6 @@ public class MainCtrl {
         boardOverviewCtrl.colorFont(color);
     }
 
-//    public void colorLF(int boardId, int listId, int color){
-//        CardListComponent list = new CardListComponent(this, boardId, listId);
-//                list.colorFont(color);
-//    }
 
     /**
      * show card overview
