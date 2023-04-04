@@ -722,8 +722,40 @@ public class ServerUtils {
     /**
      * Shuts down the executor service
      */
-    public void stopExecutorService(){
+    public void stopExecutorService() {
         EXEC.shutdownNow();
     }
 
+    /**
+     * deletes palette from the board
+     * @param paletteId
+     * @return - deleted palette
+     */
+    public Palette deletePalette(int paletteId){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/palettes/" + paletteId) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .delete(Palette.class);
+    }
+
+    /**
+     * edits palette
+     * @param id
+     * @param palette
+     * @return - edited palette
+     */
+    public Palette editPalette(int id, Palette palette) {
+        try{
+            return ClientBuilder.newClient(new ClientConfig())
+                    .target(SERVER).path("api/palettes/" + id)
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .put(Entity.entity(palette, APPLICATION_JSON), Palette.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return null;
+    }
 }

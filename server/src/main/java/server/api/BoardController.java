@@ -6,6 +6,7 @@ import commons.Board;
 //import commons.Card;
 import commons.CardList;
 import commons.Palette;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -91,9 +92,9 @@ public class BoardController {
     @GetMapping("/{id}")
     public ResponseEntity<Board> getBoard(@PathVariable("id") int id){
         System.out.println(id);
-        if(id < 0 || !abs.existsById(id)) return ResponseEntity.badRequest().body(null);
-
-        return ResponseEntity.ok(abs.findById(id).get());
+        if(id < 0 || !abs.existsById(id)) return ResponseEntity.badRequest().build();
+        Board resp = (Board) Hibernate.unproxy(abs.getById(id));
+        return ResponseEntity.ok().body(resp);
     }
 
     /**

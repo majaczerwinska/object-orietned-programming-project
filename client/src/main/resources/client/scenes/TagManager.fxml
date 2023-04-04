@@ -18,11 +18,11 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Button fx:id="btnAdd" alignment="CENTER" layoutX="314.0" layoutY="350.0" mnemonicParsing="false" onAction="#addTag" prefHeight="30.0" prefWidth="90.0" text="Add tag" />
+      <Button fx:id="addTagButton" alignment="CENTER" layoutX="314.0" layoutY="350.0" mnemonicParsing="false" onAction="#addTag" prefHeight="30.0" prefWidth="90.0" text="Add tag" />
       <VBox layoutX="314.0" layoutY="79.0" prefHeight="241.0" prefWidth="127.0" spacing="15.0">
          <children>
-            <Label text="Title" />
-            <Label text="Color" />
+            <Label fx:id="tagTitleLabel" text="Title" />
+            <Label fx:id="tagColorLabel" text="Color" />
          </children>
          <padding>
             <Insets top="5.0" />
@@ -35,8 +35,8 @@
             <Label fx:id="warningLabel" textAlignment="CENTER" />
          </children>
       </VBox>
-      <Button fx:id="btnUpdate" alignment="CENTER" layoutX="417.0" layoutY="350.0" mnemonicParsing="false" onAction="#editTag" prefHeight="30.0" prefWidth="90.0" text="Edit" />
-      <Button fx:id="btnDelete" alignment="CENTER" layoutX="517.0" layoutY="350.0" mnemonicParsing="false" onAction="#deleteTag" prefHeight="30.0" prefWidth="90.0" text="Delete" />
-      <Button fx:id="backbtn" layoutX="18.0" layoutY="19.0" mnemonicParsing="false" onAction="#backButton" prefHeight="30.0" prefWidth="68.0" text="Back" />
+      <Button fx:id="editTagButton" alignment="CENTER" layoutX="417.0" layoutY="350.0" mnemonicParsing="false" onAction="#editTag" prefHeight="30.0" prefWidth="90.0" text="Edit" />
+      <Button fx:id="deleteTagButton" alignment="CENTER" layoutX="517.0" layoutY="350.0" mnemonicParsing="false" onAction="#deleteTag" prefHeight="30.0" prefWidth="90.0" text="Delete" />
+      <Button fx:id="goBackButton" layoutX="18.0" layoutY="19.0" mnemonicParsing="false" onAction="#backButton" prefHeight="30.0" prefWidth="68.0" text="Back" />
    </children>
 </AnchorPane>

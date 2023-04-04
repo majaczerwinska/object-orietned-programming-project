@@ -80,9 +80,6 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     @FXML
     private Button addListButton;
 
-    @FXML
-    private Button refreshButton;
-
     @FXML Button editBoardButton;
 
     @FXML
@@ -91,7 +88,6 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     private Button lock;
     private Preferences pref;
     private boolean isLocked;
-
 
 
     /**
@@ -355,7 +351,10 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             if(isLocked) cardComponent.readmode();
             cardComponent.setStyle("-fx-background-color: " +
                     String.format("rgb(%d, %d, %d)", (card.getColor() >> 16) & 0xFF,
-                    (card.getColor() >> 8) & 0xFF, card.getColor()& 0xFF)+";" );
+                    (card.getColor() >> 8) & 0xFF, card.getColor() & 0xFF)+";" );
+            String hexColor = String.format("#%06X", (0xFFFFFF & card.getFcolor()));
+            cardComponent.tfTitle.setStyle("-fx-text-fill: " + hexColor);
+            cardComponent.descriptionLabel.setStyle("-fx-text-fill: " + hexColor);
             cardComponent.setTaskProgress();
 
             vbox.getChildren().add(cardComponent);
@@ -667,5 +666,84 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         tagL.setStyle("-fx-text-fill: " + hexColor);
     }
 
+    /**
+     * tag manager button getter
+     * @return Button
+     */
+    public Button getTagManagerButton() {
+        return btnTagManager;
+    }
 
+    /**
+     * back button getter
+     * @return Button
+     */
+    public Button getBackButton() {
+        return backbtn;
+    }
+
+    /**
+     * customization button getter
+     * @return Button
+     */
+    public Button getCustomizationButton() {
+        return btncustomization;
+    }
+
+    /**
+     * board key label getter
+     * @return Label
+     */
+    public Label getBoardKeyLabel() {
+        return boardKey;
+    }
+
+    /**
+     * board label getter
+     * @return Label
+     */
+    public Label getBoardLabel() {
+        return boardKeyL;
+    }
+
+    /**
+     * tag label getter
+     * @return Label
+     */
+    public Label getTagLabel() {
+        return tagL;
+    }
+
+    /**
+     * the add list button getter
+     * @return Button
+     */
+    public Button getAddListButton() {
+        return addListButton;
+    }
+
+    /**
+     * edit board button getter
+     * @return Button
+     */
+    public Button getEditBoardButton() {
+        return editBoardButton;
+    }
+
+    /**
+     * board title label getter
+     * @return Label
+     */
+    public Label getBoardTitleLabel() {
+        return labelBoardTitle;
+    }
+
+    /**
+    * lock button getter
+    * @return Button
+    */
+    public Button getLockButton() {
+        return lock;
+    }
+    
 }

@@ -26,17 +26,39 @@ public class TagManagerCtrl implements Initializable {
     private final WebsocketClient websocketClient;
     public int boardId = 0;
     private ObservableList<Tag> tagList;
+
     @FXML
     private Label labelBoard;
+
     @FXML
     private ListView<Tag> tagListView;
+
     @FXML
     private TextField tfTitle;
+
     @FXML
     private ColorPicker colorPicker;
+
     @FXML
     private Label warningLabel;
 
+    @FXML
+    private Label tagTitleLabel;
+
+    @FXML
+    private Label tagColorLabel;
+
+    @FXML
+    private Button addTagButton;
+
+    @FXML
+    private Button editTagButton;
+
+    @FXML
+    private Button deleteTagButton;
+
+    @FXML
+    private Button goBackButton;
 
     /**
      *
@@ -234,4 +256,86 @@ public class TagManagerCtrl implements Initializable {
         mainCtrl.showBoardOverview(boardId);
         websocketClient.unsubscribe("/topic/tags/"+boardId);
     }
+
+    /**
+     * board label getter
+     * @return Label
+     */
+    @FXML
+    public Label getLabelBoard() {
+        return labelBoard;
+    }
+
+    /**
+     * title textfield getter
+     * @return TextField
+     */
+    @FXML
+    public TextField getTfTitle() {
+        return tfTitle;
+    }
+
+    /**
+     * warning label getter
+     * @return Label
+     */
+    @FXML
+    public Label getWarningLabel() {
+        return warningLabel;
+    }
+
+    /**
+     * tag title label getter
+     * @return Label
+     */
+    @FXML
+    public Label getTagTitleLabel() {
+        return tagTitleLabel;
+    }
+
+    /**
+     * tag color label getter
+     * @return Label
+     */
+    @FXML
+    public Label getTagColorLabel() {
+        return tagColorLabel;
+    }
+
+    /**
+     * add tag button getter
+     * @return Button
+     */
+    @FXML
+    public Button getAddTagButton() {
+        return addTagButton;
+    }
+
+    /**
+     * edit tag button getter
+     * @return Button
+     */
+    @FXML
+    public Button getEditTagButton() {
+        return editTagButton;
+    }
+
+    /**
+     * delete tag button getter
+     * @return Button
+     */
+    @FXML
+    public Button getDeleteTagButton() {
+        return deleteTagButton;
+    }
+
+    /**
+     * go back button button getter
+     * @return Button
+     */
+    @FXML
+    public Button getGoBackButton() {
+        return goBackButton;
+    }
+
 }

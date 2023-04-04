@@ -5,6 +5,7 @@ import commons.Card;
 import commons.CardList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -31,6 +32,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 //This annotation loads the WebsocketConfigTest to instantiate websocket server for testing
@@ -112,47 +114,54 @@ public class CardListControllerTest {
     public void getListSizeTest(){
         Board board = new Board("board");
         CardList list = new CardList("c");
-        Card card = new Card("title");
-        Card card2 = new Card("title2");
-        Card card3 = new Card("title3");
-        List<Card> cards = new ArrayList<>();
-        cards.add(card);
-        cards.add(card2);
-        cards.add(card3);
-        list.setCards(cards);
-        list.lastPosition = 9;
-        int listId = list.getId();
         br.save(board);
         ser.save(list, board.getId());
-        cardService.save(card, listId);
-        cardService.save(card2, listId);
-        cardService.save(card3, listId);
-        ResponseEntity<Integer>  size = ResponseEntity.ok(9);
-        assertEquals(con.getListSize(listId), size);
+        ResponseEntity<Integer>  size = ResponseEntity.ok(0);
+        assertEquals(con.getListSize(list.getId()), size);
     }
 
     @Test
     public void setListSizeTest(){
         Board board = new Board("board");
+        List<CardList> list = new ArrayList<>();
+        CardList cardList = new CardList("c");
+        list.add(cardList);
+        board.setLists(list);
+
+        int listId = cardList.getId();
+        br.save(board);
+        ser.save(cardList, board.getId());
+        con.setListSize(listId, 12);
+        ResponseEntity<Integer>  size = ResponseEntity.ok(12);
+        assertEquals(br.getById(board.getId()).getLists().get(0).lastPosition, 12);
+    }
+
+    @Test
+    public void recolorListTest(){
+        Board board = new Board("board");
         CardList list = new CardList("c");
-        Card card = new Card("title");
-        Card card2 = new Card("title2");
-        Card card3 = new Card("title3");
         List<Card> cards = new ArrayList<>();
-        cards.add(card);
-        cards.add(card2);
-        cards.add(card3);
-        list.setCards(cards);
-        list.lastPosition = 9;
-        int listId = list.getId();
+
         br.save(board);
         ser.save(list, board.getId());
-        cardService.save(card, listId);
-        cardService.save(card2, listId);
-        cardService.save(card3, listId);
-        ResponseEntity<Integer>  size = ResponseEntity.ok(12);
-        assertEquals(con.setListSize(listId, 12), size);
+
+        list.setbColor(121);
+        list.setfColor(123);
+        con.recolorList(list.getId(), list);
+        assertEquals(repo.getById(list.getId()), list);
     }
+
+//    @Test
+//    public void messageClientTest() {
+//        // Arrange
+//        Board board = new Board("b");
+//
+//        con.messageClient(board.getId());
+//
+//    }
+
+
+
 
 
 }

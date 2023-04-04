@@ -53,10 +53,10 @@ public class MainCtrl {
 
     private TagManagerCtrl tagManagerCtrl;
     private Scene tagManager;
-    private TaskCreatorCtrl taskCreatorCtrl;
-    private Scene taskCreator;
+
     private BoardOverviewCtrl boardOverviewCtrl;
     private Scene boardOverwiew;
+
     private BoardCreationCtrl boardCreationCtrl;
     private Scene boardCreation;
 
@@ -91,12 +91,17 @@ public class MainCtrl {
     private TagPopUpCtrl tagPopUpCtrl;
     private Scene tagPopUpScene;
 
+    private PaletteCreationCtrl paletteCreationCtrl;
+    private Scene paletteCreation;
+
 
     public Map<Integer, CardComponent> cardIdComponentMap;
 
     /**
-     * @param landing
+     *
      * @param primaryStage
+     * @param locker
+     * @param landing
      * @param card
      * @param publicBoard
      * @param boardSelect
@@ -105,17 +110,16 @@ public class MainCtrl {
      * @param listCreate
      * @param select
      * @param boardOverview
-     * @param editBoard
      * @param boardCreation
+     * @param listEdit
+     * @param editBoard
      * @param help
      * @param tagPopUp
-     * @param taskCreator
-     * @param listEdit
      * @param unlocked
-     * @param locker
      * @param providePassword
-     * @param editPassword
      * @param customization
+     * @param editPassword
+     * @param paletteCreate
      * @param warning
      */
     public void initialize(Stage primaryStage,
@@ -130,7 +134,6 @@ public class MainCtrl {
                            Pair<ServerSelectCtrl, Parent> select,
                            Pair<BoardOverviewCtrl, Parent> boardOverview,
                            Pair<BoardCreationCtrl, Parent> boardCreation,
-                           Pair<TaskCreatorCtrl, Parent> taskCreator,
                            Pair<ListEditCtrl, Parent> listEdit,
                            Pair<EditBoardCtrl, Parent> editBoard,
                            Pair<HelpCtrl, Parent> help,
@@ -139,6 +142,7 @@ public class MainCtrl {
                            Pair<ProvidePasswordCtrl, Parent> providePassword,
                            Pair<CustomizationCtrl, Parent> customization,
                            Pair<EditPasswordCtrl, Parent> editPassword,
+                           Pair<PaletteCreationCtrl, Parent> paletteCreate,
                            Pair<WarningCtrl, Parent> warning
                            ) {
 
@@ -170,9 +174,6 @@ public class MainCtrl {
 
         this.listCreationCtrl = listCreate.getKey();
         this.listCreate = new Scene(listCreate.getValue());
-
-        this.taskCreatorCtrl = taskCreator.getKey();
-        this.taskCreator = new Scene(taskCreator.getValue());
 
         this.serverSelectCtrl = select.getKey();
         this.serverSelect = new Scene(select.getValue());
@@ -210,6 +211,9 @@ public class MainCtrl {
 
         this.customizationCtrl = customization.getKey();
         this.customization = new Scene(customization.getValue());
+
+        this.paletteCreationCtrl = paletteCreate.getKey();
+        this.paletteCreation = new Scene(paletteCreate.getValue());
 
         showLanding();
         primaryStage.show();
@@ -289,6 +293,25 @@ public class MainCtrl {
      */
     public void showEditPassword(int boardID) {
         locker.setTitle("Edit password!!");
+        // styling the edit password pop up
+
+        // changing the font for the text
+        editPasswordCtrl.getCancel().setStyle("-fx-font-family: Avenir Book;");
+        editPasswordCtrl.getEdit().setStyle("-fx-font-family: Avenir Book;");
+        editPasswordCtrl.getEditPassLabel().setStyle("-fx-font-family: Avenir Book;");
+        editPasswordCtrl.getPassLabel().setStyle("-fx-font-family: Avenir Book;");
+        editPasswordCtrl.getRemove().setStyle("-fx-font-family: Avenir Book;");
+        editPasswordCtrl.getVerifyLabel().setStyle("-fx-font-family: Avenir Book;");
+        editPasswordCtrl.getWarningPassLabel().setStyle("-fx-font-family: Avenir Book;");
+        editPasswordCtrl.getWarningVerifyLabel().setStyle("-fx-font-family: Avenir Book;");
+
+        // rounding the buttons and text-fields
+        editPasswordCtrl.getCancel().setStyle("-fx-background-radius: 7;");
+        editPasswordCtrl.getEdit().setStyle("-fx-background-radius: 7;");
+        editPasswordCtrl.getPasswordTextField().setStyle("-fx-background-radius: 7;");
+        editPasswordCtrl.getPasswordVerifyTextField().setStyle("-fx-background-radius: 7;");
+        editPasswordCtrl.getRemove().setStyle("-fx-background-radius: 7;");
+
         locker.setScene(editPassword);
         editPasswordCtrl.boardID = boardID;
         editPasswordCtrl.refresh();
@@ -375,6 +398,25 @@ public class MainCtrl {
      */
     public void showTagManager(int boardID) {
         primaryStage.setTitle("Tag Manager :)");
+        // styling the tag manager page 
+
+        // applying fonts 
+        tagManagerCtrl.getAddTagButton().setStyle("-fx-font-family: Avenir Book;");
+        tagManagerCtrl.getDeleteTagButton().setStyle("-fx-font-family: Avenir Book;");
+        tagManagerCtrl.getEditTagButton().setStyle("-fx-font-family: Avenir Book;");
+        tagManagerCtrl.getGoBackButton().setStyle("-fx-font-family: Avenir Book;");
+        tagManagerCtrl.getLabelBoard().setStyle("-fx-font-family: Avenir Book;");
+        tagManagerCtrl.getTagColorLabel().setStyle("-fx-font-family: Avenir Book;");
+        tagManagerCtrl.getTagTitleLabel().setStyle("-fx-font-family: Avenir Book;");
+        tagManagerCtrl.getWarningLabel().setStyle("-fx-font-family: Avenir Book;");
+
+        // rounding the buttons and text fields
+        tagManagerCtrl.getAddTagButton().setStyle("-fx-background-radius: 7;");
+        tagManagerCtrl.getDeleteTagButton().setStyle("-fx-background-radius: 7;");
+        tagManagerCtrl.getEditTagButton().setStyle("-fx-background-radius: 7;");
+        tagManagerCtrl.getGoBackButton().setStyle("-fx-background-radius: 7;");
+        tagManagerCtrl.getTfTitle().setStyle("-fx-background-radius: 7;");
+
         primaryStage.setScene(tagManager);
         tagManagerCtrl.boardId = boardID;
         //Later combine these methods into one refresh method
@@ -452,22 +494,27 @@ public class MainCtrl {
         locker.showAndWait();
     }
 
-
-    /**
-     * Shows the task creator scene
-     */
-    public void showTaskCreator() {
-        primaryStage.setTitle("Task creator :)");
-        primaryStage.setScene(taskCreator);
-        primaryStage.show();
-    }
-
     /**
      * Edit board with given boardID
      *
      * @param boardID the boardID of the board
      */
     public void showEditBoard(int boardID) {
+        // styling the edit board page
+
+        // changing the font family for the texts
+        editBoardCtrl.getColorLabel().setStyle("-fx-font-family: Avenir Book;");
+        editBoardCtrl.getExit().setStyle("-fx-font-family: Avenir Book;");
+        editBoardCtrl.getNameLabel().setStyle("-fx-font-family: Avenir Book;");
+        editBoardCtrl.getSave().setStyle("-fx-font-family: Avenir Book;");
+        editBoardCtrl.getText().setStyle("-fx-font-family: Avenir Book;");
+
+        // rounding the buttons and text fields
+        editBoardCtrl.getExit().setStyle("-fx-background-radius: 15;");
+        editBoardCtrl.getName().setStyle("-fx-background-radius: 7;");
+        editBoardCtrl.getSave().setStyle("-fx-background-radius: 7;");
+        editBoardCtrl.getColor().setStyle("-fx-background-radius: 7;");
+
         locker.setTitle("Show edit board :)");
         locker.setScene(editBoard);
         editBoardCtrl.boardId = boardID;
@@ -506,11 +553,32 @@ public class MainCtrl {
         primaryStage.setScene(boardOverwiew);
         boardOverviewCtrl.refreshName(boardID);
         primaryStage.show();
-        //We later have to combine all these methods we call into one refresh method in boardOverviewCtrl
+        // We later have to combine all these methods we call into one refresh method in boardOverviewCtrl
         boardOverviewCtrl.setBoardName();
         boardOverviewCtrl.setColor();
         boardOverviewCtrl.setLock();
         boardOverviewCtrl.refreshListViewTags();
+
+        // adding some styling to the board overview
+
+        // changing the fonts to the labels and buttons
+        boardOverviewCtrl.getAddListButton().setStyle("-fx-font-family: Avenir Book;");
+        boardOverviewCtrl.getBackButton().setStyle("-fx-font-family: Avenir Book;");        
+        boardOverviewCtrl.getBoardLabel().setStyle("-fx-font-family: Avenir Book;");
+        boardOverviewCtrl.getBoardKeyLabel().setStyle("-fx-font-family: Avenir Book;");
+        boardOverviewCtrl.getBoardTitleLabel().setStyle("-fx-font-family: Avenir Book;");
+        boardOverviewCtrl.getCustomizationButton().setStyle("-fx-font-family: Avenir Book;");
+        boardOverviewCtrl.getEditBoardButton().setStyle("-fx-font-family: Avenir Book;");
+        boardOverviewCtrl.getTagLabel().setStyle("-fx-font-family: Avenir Book;");
+        boardOverviewCtrl.getTagManagerButton().setStyle("-fx-font-family: Avenir Book;");
+
+        // rounding the buttons
+        boardOverviewCtrl.getAddListButton().setStyle("-fx-background-radius: 7;");
+        boardOverviewCtrl.getBackButton().setStyle("-fx-background-radius: 7;");
+        boardOverviewCtrl.getCustomizationButton().setStyle("-fx-background-radius: 7;");
+        boardOverviewCtrl.getEditBoardButton().setStyle("-fx-background-radius: 7;");
+        boardOverviewCtrl.getLockButton().setStyle("-fx-background-radius: 7;");
+        boardOverviewCtrl.getTagManagerButton().setStyle("-fx-background-radius: 7;");
     }
 
     /**
@@ -754,12 +822,37 @@ public class MainCtrl {
     }
 
     /**
+<<<<<<< HEAD
+     * goes to scene for creating a new palette for that board's cards
+     * @param boardId
+     */
+    public void showPaletteCreation(int boardId){
+        primaryStage.setTitle("create");
+        primaryStage.setScene(paletteCreation);
+        paletteCreationCtrl.boardId = boardId;
+        primaryStage.show();
+    }
+
+    /**
      * shows board selection scene
      *
      * @param boardID the ID of the board
      */
     public void showTagPopUp(int boardID) {
         locker.setTitle("Tag pop-up");
+        // styling the pop up
+
+        // adding fonts for the text
+        tagPopUpCtrl.getGoBackButton().setStyle("-fx-font-family: Avenir Book;");
+        tagPopUpCtrl.getName().setStyle("-fx-font-family: Avenir Book;");
+        tagPopUpCtrl.getTitle().setStyle("-fx-font-family: Avenir Book;");
+        tagPopUpCtrl.getPlusButton().setStyle("-fx-font-family: Avenir Book;");
+
+        // rounding the buttons and text fields
+        tagPopUpCtrl.getGoBackButton().setStyle("-fx-background-radius: 7;");
+        tagPopUpCtrl.getPlusButton().setStyle("-fx-background-radius: 20;");
+        tagPopUpCtrl.getName().setStyle("-fx-background-radius: 7;");
+
         locker.setScene(tagPopUpScene);
         locker.setResizable(false);
         tagPopUpCtrl.refresh();
@@ -794,5 +887,3 @@ public class MainCtrl {
         }
 
     }
-
-

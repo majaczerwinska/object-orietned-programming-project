@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
@@ -13,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#refresh" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardCtrl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#refresh" prefHeight="600.0" prefWidth="775.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.CardCtrl">
    <children>
       <ScrollPane layoutX="24.0" layoutY="78.0" onMouseClicked="#refresh" prefHeight="239.0" prefWidth="160.0">
          <content>
@@ -25,7 +24,8 @@
             <Font size="25.0" />
          </font>
       </Label>
-      <TextField fx:id="newTask" layoutX="29.0" layoutY="328.0" onKeyPressed="#createTask" />
+      <TextField fx:id="newTask" layoutX="30.0" layoutY="349.0" onKeyPressed="#createTask" />
+      <Button fx:id="exit" layoutX="696.0" layoutY="1.0" mnemonicParsing="false" onAction="#exit" text="X" />
       <Label fx:id="label" layoutX="30.0" layoutY="333.0" textFill="#c92222">
          <font>
             <Font size="10.0" />
@@ -43,7 +43,6 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <ColorPicker fx:id="palette" layoutX="199.0" layoutY="104.0" onAction="#updateCard" prefHeight="26.0" prefWidth="98.0" />
       <Label fx:id="warning" layoutX="316.0" layoutY="56.0" textFill="#e13232">
          <font>
             <Font size="10.0" />
@@ -65,6 +64,22 @@
          </panes>
       </Accordion>
       <Label layoutX="248.0" layoutY="164.0" prefHeight="18.0" prefWidth="34.0" text="Tags:" />
+      <Label layoutX="248.0" layoutY="398.0" text="Theme:" />
+      <TextField fx:id="theme" editable="false" layoutX="310.0" layoutY="394.0" prefHeight="25.0" prefWidth="200.0" />
+      <Accordion layoutX="310.0" layoutY="426.0" prefWidth="202.0">
+        <panes>
+          <TitledPane animated="false" prefHeight="122.0" prefWidth="202.0" text="Choose colors for your card">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="387.0" prefWidth="200.0">
+                     <children>
+                        <ListView fx:id="palettes" layoutY="-1.0" onMouseClicked="#choose" prefHeight="201.0" prefWidth="200.0" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </TitledPane>
+        </panes>
+      </Accordion>
+      <Button layoutX="656.0" layoutY="323.0" mnemonicParsing="false" onMouseClicked="#save" text="save" />
       <Label fx:id="readonly" layoutX="27.0" layoutY="366.0" prefHeight="18.0" prefWidth="266.0" textFill="#d11212" />
    </children>
 </AnchorPane>

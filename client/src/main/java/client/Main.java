@@ -77,7 +77,6 @@ public class Main extends Application {
             var tagManager = FXML.load(TagManagerCtrl.class, "client", "scenes", "TagManager.fxml");
             var serverSelect = FXML.load(ServerSelectCtrl.class, "client", "scenes", "ServerSelect.fxml");
             var boardOverview = FXML.load(BoardOverviewCtrl.class, "client", "scenes", "BoardOverview.fxml");
-            var taskCreator = FXML.load(TaskCreatorCtrl.class, "client", "scenes", "TaskCreator.fxml");
             var boardCreation = FXML.load(BoardCreationCtrl.class, "client", "scenes", "BoardCreation.fxml");
             var listEdit = FXML.load(ListEditCtrl.class, "client", "scenes", "ListEdit.fxml");
             var editBoard = FXML.load(EditBoardCtrl.class, "client", "scenes", "EditBoard.fxml");
@@ -87,6 +86,7 @@ public class Main extends Application {
             var editPassword = FXML.load(EditPasswordCtrl.class, "client", "scenes", "EditPassword.fxml");
             var warning = FXML.load(WarningCtrl.class, "client", "scenes", "Warning.fxml");
             var customization = FXML.load(CustomizationCtrl.class, "client", "scenes", "Customization.fxml");
+            var paletteCreation = FXML.load(PaletteCreationCtrl.class, "client", "scenes", "PaletteCreation.fxml");
             System.out.println("Done with loading scenes");
             Stage locker = new Stage();
             var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
@@ -105,7 +105,6 @@ public class Main extends Application {
                     serverSelect,
                     boardOverview,
                     boardCreation,
-                    taskCreator,
                     listEdit,
                     editBoard,
                     help,
@@ -114,6 +113,7 @@ public class Main extends Application {
                     providePassword,
                     customization,
                     editPassword,
+                    paletteCreation,
                     warning);
 
             primaryStage.setOnCloseRequest(e -> {
