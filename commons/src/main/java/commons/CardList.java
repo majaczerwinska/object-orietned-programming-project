@@ -132,22 +132,22 @@ public class CardList {
      */
     public void setfColor(int color){this.fColor = color;}
 
-//    /**
-//     * Creates a string for the object
-//     * @return a string representation
-//     */
-//    public String toString(){
-//        String res = "List #" + id + "\n name: " +name + "\n color: " + color + "\n";
-//        if (this.cards.size() < 1) {
-//            res += "this list has no cards";
-//        } else {
-//            res += "Cards:\n";
-//            for (Card c : cards) {
-//                res += c.toString();
-//            }
-//        }
-//        return res;
-//    }
+    /**
+     * Creates a string for the object
+     * @return a string representation
+     */
+    public String toString(){
+        String res = "List #" + id + "\n name: " +name + "\n color: " + getbColor() + "\n";
+        if (this.cards.size() < 1) {
+            res += "this list has no cards";
+        } else {
+            res += "Cards:\n";
+            for (Card c : cards) {
+                res += c.toString();
+            }
+        }
+        return res;
+    }
 
 
 

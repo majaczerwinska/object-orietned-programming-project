@@ -54,6 +54,7 @@ public class BoardTest {
     void setTags() {
         Board c = new Board("a");
         List<Tag> list = new ArrayList<>();
+        list.add(new Tag("a"));
         c.setTags(list);
         assertEquals(c.getTags(), list);
     }
