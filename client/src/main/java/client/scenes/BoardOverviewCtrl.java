@@ -1,6 +1,7 @@
 package client.scenes;
 import client.components.CardComponent;
 import client.components.CardListComponent;
+import client.services.BoardService;
 import client.utils.ServerUtils;
 import client.utils.WebsocketClient;
 import com.google.inject.Inject;
@@ -32,7 +33,9 @@ import java.util.Comparator;
 import java.util.prefs.Preferences;
 
 
-public class BoardOverviewCtrl /*implements Initializable*/ {
+public class BoardOverviewCtrl {
+    private final BoardService service;
+
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private final WebsocketClient websocketClient;
@@ -89,13 +92,14 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     private boolean isAdmin;
 
     /**
-     *
-     * @param server -
-     * @param mainCtrl -
+     * @param service
+     * @param server          -
+     * @param mainCtrl        -
      * @param websocketClient -
      */
     @Inject
-    public BoardOverviewCtrl(ServerUtils server, MainCtrl mainCtrl, WebsocketClient websocketClient) {
+    public BoardOverviewCtrl(BoardService service, ServerUtils server, MainCtrl mainCtrl, WebsocketClient websocketClient) {
+        this.service = service;
         this.mainCtrl = mainCtrl;
         this.server = server;
         this.isLocked=false;
@@ -205,32 +209,13 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * sets the colour of the button
      */
     public void setLock(){
-        Board board = server.getBoard(boardID);
-        if(board.getPassword().equals("") || board.getPassword()==null ){
-            lock.setText("\uD83D\uDD13");
-            isLocked=false;
-            lock.setStyle("-fx-background-color: white;");
+        if(service.checkLock(server, lock, isAdmin, boardID, pref)) {
             enable();
-        }else{
-            lock.setText("\uD83D\uDD12");
-            checkForPref();
-            if (isAdmin) {
-                isLocked=false;
-                enable();
-                lock.setStyle("-fx-background-color: green;");
-            } else if (pref.get(String.valueOf(boardID),"").equals("")){
-                lock.setStyle("-fx-background-color: red;");
-                isLocked=true;
-                disable();
-            }
-            else{
-                isLocked=false;
-                enable();
-                lock.setStyle("-fx-background-color: green;");
-            }
-
+            isLocked=false;
+        } else {
+            disable();
+            isLocked=true;
         }
-
     }
 
     /**
@@ -255,27 +240,10 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * Enables the write mode on the board
      */
     public void enable(){
-
         btnTagManager.setOnAction(this::showTagManager);
         btncustomization.setOnAction(this::goCustomization);
         editBoardButton.setOnAction(this::showEditBoard);
         addListButton.setOnAction(this::addListScene);
-
-    }
-
-
-
-
-    /**
-     * Checks if the board is the correct board
-     */
-    public void checkForPref(){
-        for(Board b :server.getBoards()){
-            if(!pref.get(String.valueOf(b.getId()),"").equals("") &&
-                    !pref.get(String.valueOf(b.getId()),"notfound").equals(b.getPassword())) {
-                pref.remove(String.valueOf(b.getId()));
-            }
-        }
     }
 
 
@@ -308,14 +276,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         websocketClient.unsubscribe("/topic/tags/"+boardID);
     }
 
-//    /**
-//     * Shows card creation scene
-//     * @param actionEvent the event of clicking on a button
-//     */
-//    public void showCardAdd(ActionEvent actionEvent){
-//        System.out.println("card");
-//        mainCtrl.showCard();
-//    }
+
     /**
      * displays cards in vboxes
      * @param vbox the vbox in the list where the cards need to be showed
@@ -402,20 +363,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     }
 
 
-    /**
-     * Creates an observable list with all tags
-     * @param boardID the board id we are in
-     * @return an observable list with all tags
-     */
-    public ObservableList<Tag> getTagList(int boardID){
-        List<Tag> t = server.getTagsFromBoard(boardID);
-        List<Tag> tags= new ArrayList<>();
-        for(Tag tag : t){
-            tags.add(tag);
-        }
-        ObservableList<Tag> tagList = (ObservableList<Tag>) FXCollections.observableList(tags);
-        return tagList;
-    }
+
 
     /**
      * Refreshes the list overview with the tags
@@ -424,8 +372,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         Platform.runLater(new Runnable() {
             @Override public void run() {
                 listViewTags.requestFocus();
-                listViewTags.setItems(getTagList(boardID));
-                listViewTags.setCellFactory(param -> new ListCell<Tag>() {
+                listViewTags.setItems(service.getTagList(server, boardID));
+                listViewTags.setCellFactory(param -> new ListCell<>() {
                     @Override
                     protected void updateItem(Tag tag, boolean empty) {
                         super.updateItem(tag, empty);
@@ -467,12 +415,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     @FXML
     public void refreshName(int boardID){
         Board b = server.getBoard(boardID);
-        //boardName.setText(b.getName());
         boardKey.setText(b.getBoardkey());
-
-//        list.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-//        ObservableList<Tag> tagList = FXCollections.observableList(server.getTagsFromBoard(boardID));
-//        list.setItems(tagList);
     }
 
     /**
@@ -490,7 +433,6 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * @param c - card for focus
      */
     public void refresh(Card c) {
-
         Platform.runLater(new Runnable() {
             @Override public void run() {
                 System.out.println("Refreshing board overview");
@@ -535,9 +477,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * @return the card element
      */
     public Card createCard(int listID) {
-        Card c = new Card("title..");
-        //int size = server.getListSize(listID) + 1;
-       // c.setPosition(99999);
+        Card c = new Card("Untitled Card");
         List<Palette> palettes = server.getPalettesFromBoard(boardID);
         for(Palette pal : palettes){
             if(pal.isIsdefault()){
@@ -589,7 +529,6 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
      * @param listID the lists id
      */
     public void addEnterKeyListener(int listID) {
-        System.out.println("add enter key listener called in Board Overview Controller");
         scrollPaneOverview.setOnKeyPressed(event -> onEnterKeyPressed(event, listID));
     }
 
