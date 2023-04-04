@@ -107,12 +107,6 @@ public class AdminService {
                 tableColumn.setCellValueFactory(cellData ->
                         new SimpleObjectProperty<>(cellData.getValue().get(column)));
                 if (!doesColumnExist(table, tableColumn.getText())) table.getColumns().add(tableColumn);
-                //                    try {
-//                        table.getColumns().add(tableColumn);
-//                    } catch (Exception e) {
-//                        System.out.println("Duplicate columns in sql table output");
-//                        System.out.println(e.getMessage());
-//                    }
             }
             removeDuplicateColumns(table);
             List<TableColumn<Map<String, Object>, ?>> columnsToRemove = new ArrayList<>();
@@ -128,10 +122,8 @@ public class AdminService {
                     columnsToRemove.add(column);
                 }
             }
-
             // remove empty columns
             table.getColumns().removeAll(columnsToRemove);
-
         }
         return table;
     }
