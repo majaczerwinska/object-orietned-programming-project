@@ -138,6 +138,7 @@ public class CardCtrl {
     public void clearCard(){
         vbox.getChildren().clear();
         taglist.getItems().clear();
+        palettes.getItems().clear();
     }
 
     /**
