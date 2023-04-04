@@ -167,7 +167,6 @@ public class MainCtrl {
 
         this.primaryStage = primaryStage;
         this.locker = locker;
-
         locker.initModality(Modality.APPLICATION_MODAL);
         locker.initOwner(primaryStage);
         this.landingCtrl = landing.getKey();
@@ -187,7 +186,6 @@ public class MainCtrl {
 
         this.tagManagerCtrl = tagManager.getKey();
         this.tagManager = new Scene(tagManager.getValue());
-
         this.listCreationCtrl = listCreate.getKey();
         this.listCreate = new Scene(listCreate.getValue());
 
@@ -234,7 +232,6 @@ public class MainCtrl {
 
         this.adminPasswordCtrl = adminPwd.getKey();
         this.enterPasswordScene = new Scene(adminPwd.getValue());
-
         this.adminCtrl = adminPage.getKey();
         this.adminScene = new Scene(adminPage.getValue());
 
