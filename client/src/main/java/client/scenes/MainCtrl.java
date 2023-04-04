@@ -289,6 +289,25 @@ public class MainCtrl {
      */
     public void showEditPassword(int boardID) {
         locker.setTitle("Edit password!!");
+        // styling the edit password pop up
+
+        // changing the font for the text
+        editPasswordCtrl.getCancel().setStyle("-fx-font-family: Avenir Book;");
+        editPasswordCtrl.getEdit().setStyle("-fx-font-family: Avenir Book;");
+        editPasswordCtrl.getEditPassLabel().setStyle("-fx-font-family: Avenir Book;");
+        editPasswordCtrl.getPassLabel().setStyle("-fx-font-family: Avenir Book;");
+        editPasswordCtrl.getRemove().setStyle("-fx-font-family: Avenir Book;");
+        editPasswordCtrl.getVerifyLabel().setStyle("-fx-font-family: Avenir Book;");
+        editPasswordCtrl.getWarningPassLabel().setStyle("-fx-font-family: Avenir Book;");
+        editPasswordCtrl.getWarningVerifyLabel().setStyle("-fx-font-family: Avenir Book;");
+
+        // rounding the buttons and text-fields
+        editPasswordCtrl.getCancel().setStyle("-fx-background-radius: 7;");
+        editPasswordCtrl.getEdit().setStyle("-fx-background-radius: 7;");
+        editPasswordCtrl.getPasswordTextField().setStyle("-fx-background-radius: 7;");
+        editPasswordCtrl.getPasswordVerifyTextField().setStyle("-fx-background-radius: 7;");
+        editPasswordCtrl.getRemove().setStyle("-fx-background-radius: 7;");
+
         locker.setScene(editPassword);
         editPasswordCtrl.boardID = boardID;
         editPasswordCtrl.refresh();
