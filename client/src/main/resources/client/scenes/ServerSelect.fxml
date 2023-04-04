@@ -10,7 +10,7 @@
    <children>
 
       <Button fx:id="enterServer" layoutX="489.0" layoutY="257.0" mnemonicParsing="false" onAction="#enterServer" text="Enter Server" AnchorPane.bottomAnchor="120.0" AnchorPane.rightAnchor="25.0" />
-      <TextField fx:id="ipField" layoutX="300.0" layoutY="56.0" prefHeight="26.0" prefWidth="277.0" text="http://localhost:8080" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="60.0" />
+      <TextField fx:id="ipField" layoutX="300.0" layoutY="56.0" prefHeight="26.0" prefWidth="282.0" text="http://localhost:8080" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="60.0" />
       <Button fx:id="addServer" layoutX="499.0" layoutY="98.0" mnemonicParsing="false" onAction="#addIP" text="Add Server" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="100.0" />
       <ListView fx:id="servers" layoutX="27.0" layoutY="56.0" onMouseClicked="#handleListClick" prefHeight="316.0" prefWidth="240.0" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="55.0" />
       <Label fx:id="ipFieldHeader" text="Enter domain or IP address" AnchorPane.rightAnchor="160.0" AnchorPane.topAnchor="30.0" />
@@ -20,7 +20,7 @@
       <Label fx:id="connectionStatus" text="Unknown" AnchorPane.bottomAnchor="185.0" AnchorPane.rightAnchor="100.0" />
       <Label fx:id="connectionLabel" text="Connection:" AnchorPane.bottomAnchor="185.0" AnchorPane.rightAnchor="235.0" />
       <Label fx:id="selectTalioServer" text="Please select a  talio server" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="30.0" />
-      <Button fx:id="goBackButton" layoutX="510.0" layoutY="349.0" mnemonicParsing="false" onAction="#goBackToMainMenuButtonHandler" text="Go back to main menu" textFill="#a81b1b" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
-      <Button fx:id="removeServer" layoutX="301.0" layoutY="257.0" mnemonicParsing="false" onAction="#onDeleteAddress" text="Remove Server" AnchorPane.bottomAnchor="120.0" AnchorPane.rightAnchor="200.0" /><Button fx:id="enterAsAdmin" layoutX="475.0" layoutY="303.0" mnemonicParsing="false" onAction="#enterAdminPage" text="Enter as Admin" textFill="#210651" />
+      <Button fx:id="goBackButton" layoutX="435.5" layoutY="348.0" mnemonicParsing="false" onAction="#goBackToMainMenuButtonHandler" text="Go back to main menu" textFill="#a81b1b" AnchorPane.bottomAnchor="26.0" AnchorPane.rightAnchor="26.0" />
+      <Button fx:id="removeServer" layoutX="301.0" layoutY="257.0" mnemonicParsing="false" onAction="#onDeleteAddress" text="Remove Server" AnchorPane.bottomAnchor="120.0" AnchorPane.rightAnchor="200.0" /><Button fx:id="enterAsAdmin" layoutX="489.0" layoutY="301.0" mnemonicParsing="false" onAction="#enterAdminPage" text="Admin Panel" textFill="#210651" />
    </children>
 </AnchorPane>

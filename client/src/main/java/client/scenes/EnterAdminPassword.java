@@ -4,6 +4,8 @@ import client.utils.ServerUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -82,5 +84,16 @@ public class EnterAdminPassword {
      */
     public void goBack() {
         mainCtrl.showServerSelect();
+    }
+
+
+    /**
+     * event handler for pressing enter
+     * @param e key event
+     */
+    public void handleEnterKeyPressed(KeyEvent e) {
+        if (e!=null && e.getCode() == KeyCode.ENTER) {
+            enterAdminPanel();
+        }
     }
 }

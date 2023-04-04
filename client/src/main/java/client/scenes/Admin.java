@@ -13,6 +13,7 @@ import javafx.scene.text.Text;
 
 import javax.inject.Inject;
 import java.util.*;
+import java.util.function.Predicate;
 
 public class Admin {
 
@@ -172,10 +173,16 @@ public class Admin {
      */
     public void deleteBoard() {
         Board b = getBoardFromString(boardList.getSelectionModel().getSelectedItem());
-        if (b.getBoardkey().equals("public")){
-            saveText.setText("You cannot edit the public board!");
-            saveText.setFill(Color.INDIANRED);
+        if (b==null) {
             refresh(this.ip);
+            saveText.setText("board selection is null");
+            saveText.setFill(Color.ORANGERED);
+            return;
+        }
+        if (b.getBoardkey().equals("public")){
+            refresh(this.ip);
+            saveText.setText("You cannot delete the public board!");
+            saveText.setFill(Color.INDIANRED);
             return;
         }
         server.deleteBoard(b.getId());
@@ -253,42 +260,44 @@ public class Admin {
             vboxTableContent.getChildren().add(errorText);
             return;
         }
+
         //for (List<Map<String, Object>> outputTable : res) { //todo multiple queries at once
-            TableView<Map<String, Object>> table = new TableView<>();
-            ObservableList<Map<String, Object>> tableData = FXCollections.observableArrayList(outputTable);
-            table.setItems(tableData);
-            for (Map<String, Object> t : outputTable) {
-                for (String column : t.keySet()) {
-                    TableColumn<Map<String, Object>, Object> tableColumn = findColumn(table, column);
-                    tableColumn.setCellValueFactory(cellData ->
-                            new SimpleObjectProperty<>(cellData.getValue().get(column)));
-                    if (!doesColumnExist(table, tableColumn.getText())) table.getColumns().add(tableColumn);
-                    //                    try {
+        TableView<Map<String, Object>> table = new TableView<>();
+        ObservableList<Map<String, Object>> tableData = FXCollections.observableArrayList(outputTable);
+        table.setItems(tableData);
+        for (Map<String, Object> t : outputTable) {
+            for (String column : t.keySet()) {
+                TableColumn<Map<String, Object>, Object> tableColumn = findColumn(table, column);
+                tableColumn.setCellValueFactory(cellData ->
+                        new SimpleObjectProperty<>(cellData.getValue().get(column)));
+                if (!doesColumnExist(table, tableColumn.getText())) table.getColumns().add(tableColumn);
+                //                    try {
 //                        table.getColumns().add(tableColumn);
 //                    } catch (Exception e) {
 //                        System.out.println("Duplicate columns in sql table output");
 //                        System.out.println(e.getMessage());
 //                    }
-                }
-                removeDuplicateColumns(table);
-                List<TableColumn<Map<String, Object>, ?>> columnsToRemove = new ArrayList<>();
-                for (TableColumn<Map<String, Object>, ?> column : table.getColumns()) {
-                    boolean columnIsEmpty = true;
-                    for (Map<String, Object> row : table.getItems()) {
-                        if (row.get(column.getText()) != null) {
-                            columnIsEmpty = false;
-                            break;
-                        }
-                    }
-                    if (columnIsEmpty) {
-                        columnsToRemove.add(column);
-                    }
-                }
-
-// remove empty columns
-                table.getColumns().removeAll(columnsToRemove);
             }
-            vboxTableContent.getChildren().add(table);
+            removeDuplicateColumns(table);
+            List<TableColumn<Map<String, Object>, ?>> columnsToRemove = new ArrayList<>();
+            for (TableColumn<Map<String, Object>, ?> column : table.getColumns()) {
+                boolean columnIsEmpty = true;
+                for (Map<String, Object> row : table.getItems()) {
+                    if (row.get(column.getText()) != null) {
+                        columnIsEmpty = false;
+                        break;
+                    }
+                }
+                if (columnIsEmpty) {
+                    columnsToRemove.add(column);
+                }
+            }
+
+            // remove empty columns
+            table.getColumns().removeAll(columnsToRemove);
+
+        }
+        vboxTableContent.getChildren().add(table);
         //}
     }
 
