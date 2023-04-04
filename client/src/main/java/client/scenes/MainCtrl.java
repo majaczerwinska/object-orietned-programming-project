@@ -111,8 +111,6 @@ public class MainCtrl {
      * @param select
      * @param boardOverview
      * @param boardCreation
-     * @param help
-     * @param tagPopUp
      * @param listEdit
      * @param editBoard
      * @param help
