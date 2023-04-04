@@ -4,7 +4,6 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 
 public class ListEditCtrl {
 
@@ -30,23 +29,26 @@ public class ListEditCtrl {
     }
 
     /**
-     * renames your list
-     * @param mouseEvent - click
+     *
      */
-    public void rename(MouseEvent mouseEvent){
+    public void setName(){
+        name.setText(server.getCardList(listId).getName());
+    }
+
+    /**
+     * renames your list
+     */
+    public void rename(){
         String newName = name.getText();
         server.editList(boardId, listId, newName);
-        name.setText("");
         mainCtrl.closeLocker();
         mainCtrl.showBoardOverview(boardId);
     }
 
     /**
      * takes you back to the board overview
-     * @param mouseEvent
      */
-    public void cancel(MouseEvent mouseEvent){
-        name.setText("");
+    public void cancel(){
         mainCtrl.closeLocker();
         mainCtrl.showBoardOverview(boardId);
     }

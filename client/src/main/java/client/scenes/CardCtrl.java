@@ -2,6 +2,7 @@ package client.scenes;
 import client.components.SubTaskComponent;
 import client.utils.*;
 import com.google.inject.Inject;
+import javafx.application.Platform;
 import commons.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,6 +22,7 @@ public class CardCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private final WebsocketClient websocketClient;
+    public boolean isViewed = false;
 
     @FXML
     private Label label;
@@ -83,6 +85,42 @@ public class CardCtrl {
     public void setStompSession(){
         websocketClient.setStompSession(ServerUtils.SERVER);
         System.out.println("StompSession created in card overview");
+    }
+
+    /**
+     * Registers deletion for the card you are viewing
+     */
+    public void registerForDeleted(){
+        server.registerForDeletedCard(cardID, deleted -> {
+            System.out.println("Card Deleted! -> show board overview");
+            if(isViewed){
+                Platform.runLater(() -> {
+                    System.out.println("Closing pop up");
+                    isViewed = false;
+                    mainCtrl.closeLocker();
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Card deleted");
+                    alert.setHeaderText("This card got deleted!");
+                    alert.setContentText("You were viewing a card that someone just deleted");
+                    alert.show();
+                });
+            }
+
+        });
+    }
+
+    /**
+     * Cancels the future of the polling
+     */
+    public void stopPollingForDeletedCard(){
+        server.stopPollingForDeletedCard();
+    }
+
+    /**
+     * Shuts down the executor service
+     */
+    public void stopExecutorService(){
+        server.stopExecutorService();
     }
 
     /**
@@ -149,6 +187,8 @@ public class CardCtrl {
         mainCtrl.closeLocker();
         mainCtrl.showBoardOverview(boardID);
         websocketClient.sendMessage("/app/update/card/"+boardID, "Done updating card in CardOverview");
+        isViewed = false;
+        server.stopPollingForDeletedCard();
     }
 
     /**

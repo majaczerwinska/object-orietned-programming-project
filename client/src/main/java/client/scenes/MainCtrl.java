@@ -18,6 +18,7 @@ package client.scenes;
 import client.components.CardComponent;
 import client.components.CardListComponent;
 import commons.Card;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
@@ -286,6 +287,7 @@ public class MainCtrl {
         locker.setScene(unlocked);
         lockInUnlockedBoardCtrl.boardID = boardID;
         locker.setResizable(false);
+        locker.setOnCloseRequest(e -> lockInUnlockedBoardCtrl.cancel());
         locker.showAndWait();
     }
 
@@ -299,6 +301,7 @@ public class MainCtrl {
         locker.setScene(providePassword);
         providePasswordCtrl.boardID = boardID;
         locker.setResizable(false);
+        locker.setOnCloseRequest(e -> providePasswordCtrl.cancel());
         locker.showAndWait();
     }
 
@@ -332,6 +335,7 @@ public class MainCtrl {
         editPasswordCtrl.boardID = boardID;
         editPasswordCtrl.refresh();
         locker.setResizable(false);
+        locker.setOnCloseRequest(e -> editPasswordCtrl.cancel());
         locker.showAndWait();
     }
 
@@ -344,6 +348,7 @@ public class MainCtrl {
         locker.setScene(warning);
         warningCtrl.boardID = boardID;
         locker.setResizable(false);
+        locker.setOnCloseRequest(e -> locker.close());
         locker.showAndWait();
     }
 
@@ -402,8 +407,9 @@ public class MainCtrl {
     public void showPopup() {
         locker.setTitle("Something went wrong");
         locker.setScene(popupJoin);
-        locker.show();
         popupJoinCtrl.refresh();
+        locker.setOnCloseRequest(e -> locker.close());
+        locker.showAndWait();
     }
 
 
@@ -507,6 +513,7 @@ public class MainCtrl {
         locker.setScene(listCreate);
         listCreationCtrl.boardID = boardId;
         locker.setResizable(false);
+        locker.setOnCloseRequest(e -> listCreationCtrl.cancel());
         locker.showAndWait();
     }
 
@@ -516,27 +523,26 @@ public class MainCtrl {
      * @param boardID the boardID of the board
      */
     public void showEditBoard(int boardID) {
+        locker.setTitle("Show edit board :)");
+        locker.setScene(editBoard);
+        editBoardCtrl.boardId = boardID;
+        locker.setResizable(false);
+        editBoardCtrl.openScene(boardID);
         // styling the edit board page
 
         // changing the font family for the texts
-        editBoardCtrl.getColorLabel().setStyle("-fx-font-family: Avenir Book;");
         editBoardCtrl.getExit().setStyle("-fx-font-family: Avenir Book;");
         editBoardCtrl.getNameLabel().setStyle("-fx-font-family: Avenir Book;");
         editBoardCtrl.getSave().setStyle("-fx-font-family: Avenir Book;");
-        editBoardCtrl.getText().setStyle("-fx-font-family: Avenir Book;");
+        editBoardCtrl.getTitleLabel().setStyle("-fx-font-family: Avenir Book;");
 
         // rounding the buttons and text fields
         editBoardCtrl.getExit().setStyle("-fx-background-radius: 15;");
         editBoardCtrl.getName().setStyle("-fx-background-radius: 7;");
         editBoardCtrl.getSave().setStyle("-fx-background-radius: 7;");
-        editBoardCtrl.getColor().setStyle("-fx-background-radius: 7;");
 
-        locker.setTitle("Show edit board :)");
-        locker.setScene(editBoard);
-        editBoardCtrl.boardId = boardID;
-        locker.setResizable(false);
+        locker.setOnCloseRequest(e -> editBoardCtrl.exitButton());
         locker.showAndWait();
-        editBoardCtrl.openScene(boardID);
     }
 
     /**
@@ -561,6 +567,16 @@ public class MainCtrl {
     }
 
     /**
+     * Appends style to a node, use this method everywhere instead of setStyle
+     * @param node the node which you want to append style to
+     * @param style the style you want to append
+     */
+    public void appendStyle(Node node, String style) {
+        String existingStyle = node.getStyle();
+        node.setStyle(existingStyle.replaceAll(style, "") + style);
+    }
+
+    /**
      * show board overview util function, prevent duplicate code
      * @param boardID the board's id
      */
@@ -577,25 +593,27 @@ public class MainCtrl {
         boardOverviewCtrl.refreshListViewTags();
 
         // adding some styling to the board overview
-
+        String fontStyle = "-fx-font-family: Avenir Book;";
+        String roundingStyle = "-fx-background-radius: 7;";
+        String existingStyle;
         // changing the fonts to the labels and buttons
-        boardOverviewCtrl.getAddListButton().setStyle("-fx-font-family: Avenir Book;");
-        boardOverviewCtrl.getBackButton().setStyle("-fx-font-family: Avenir Book;");        
-        boardOverviewCtrl.getBoardLabel().setStyle("-fx-font-family: Avenir Book;");
-        boardOverviewCtrl.getBoardKeyLabel().setStyle("-fx-font-family: Avenir Book;");
-        boardOverviewCtrl.getBoardTitleLabel().setStyle("-fx-font-family: Avenir Book;");
-        boardOverviewCtrl.getCustomizationButton().setStyle("-fx-font-family: Avenir Book;");
-        boardOverviewCtrl.getEditBoardButton().setStyle("-fx-font-family: Avenir Book;");
-        boardOverviewCtrl.getTagLabel().setStyle("-fx-font-family: Avenir Book;");
-        boardOverviewCtrl.getTagManagerButton().setStyle("-fx-font-family: Avenir Book;");
+        appendStyle(boardOverviewCtrl.getBoardTitleLabel(), fontStyle);
+        appendStyle(boardOverviewCtrl.getAddListButton(), fontStyle);
+        appendStyle(boardOverviewCtrl.getBackButton(), fontStyle);
+        appendStyle(boardOverviewCtrl.getBoardLabel(), fontStyle);
+        appendStyle(boardOverviewCtrl.getBoardKeyLabel(), fontStyle);
+        appendStyle(boardOverviewCtrl.getCustomizationButton(), fontStyle);
+        appendStyle(boardOverviewCtrl.getEditBoardButton(), fontStyle);
+        appendStyle(boardOverviewCtrl.getTagLabel(), fontStyle);
+        appendStyle(boardOverviewCtrl.getTagManagerButton(), fontStyle);
 
         // rounding the buttons
-        boardOverviewCtrl.getAddListButton().setStyle("-fx-background-radius: 7;");
-        boardOverviewCtrl.getBackButton().setStyle("-fx-background-radius: 7;");
-        boardOverviewCtrl.getCustomizationButton().setStyle("-fx-background-radius: 7;");
-        boardOverviewCtrl.getEditBoardButton().setStyle("-fx-background-radius: 7;");
-        boardOverviewCtrl.getLockButton().setStyle("-fx-background-radius: 7;");
-        boardOverviewCtrl.getTagManagerButton().setStyle("-fx-background-radius: 7;");
+        appendStyle(boardOverviewCtrl.getAddListButton(), roundingStyle);
+        appendStyle(boardOverviewCtrl.getBackButton(), roundingStyle);
+        appendStyle(boardOverviewCtrl.getCustomizationButton(), roundingStyle);
+        appendStyle(boardOverviewCtrl.getEditBoardButton(), roundingStyle);
+        appendStyle(boardOverviewCtrl.getLockButton(), roundingStyle);
+        appendStyle(boardOverviewCtrl.getTagManagerButton(), roundingStyle);
     }
 
     /**
@@ -659,11 +677,16 @@ public class MainCtrl {
         cardCtrl.isLocked = isLocked;
         if(isLocked) cardCtrl.disable();
         else cardCtrl.enable();
+        cardCtrl.setInfo();
+        cardCtrl.registerForDeleted();
+        cardCtrl.isViewed = true;
+        locker.setOnCloseRequest(e -> {
+            cardCtrl.stopPollingForDeletedCard();
+            cardCtrl.exit();
+        });
+        cardCtrl.refresh();
         locker.setResizable(false);
         locker.showAndWait();
-        cardCtrl.setInfo();
-        cardCtrl.refresh();
-
 
     }
 
@@ -699,6 +722,7 @@ public class MainCtrl {
 
         locker.setScene(boardCreation);
         locker.setResizable(false);
+        locker.setOnCloseRequest(e -> boardCreationCtrl.stopCreatingBoardButtonHandler());
         locker.showAndWait();
     }
 
@@ -732,7 +756,9 @@ public class MainCtrl {
         locker.setScene(listEdit);
         listEditCtrl.listId = listId;
         listEditCtrl.boardId = boardId;
+        listEditCtrl.setName();
         locker.setResizable(false);
+        locker.setOnCloseRequest(e -> listEditCtrl.cancel());
         locker.showAndWait();
     }
 
@@ -869,9 +895,10 @@ public class MainCtrl {
 
         locker.setScene(tagPopUpScene);
         locker.setResizable(false);
-        locker.showAndWait();
         tagPopUpCtrl.refresh();
         tagPopUpCtrl.setBoardID(boardID);
+        locker.setOnCloseRequest(e -> tagPopUpCtrl.back());
+        locker.showAndWait();
 
     }
 

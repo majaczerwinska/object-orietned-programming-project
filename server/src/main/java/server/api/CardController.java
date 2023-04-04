@@ -4,16 +4,21 @@ import commons.Card;
 
 import commons.Tag;
 import commons.Task;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.stereotype.Controller;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.async.DeferredResult;
 import server.service.CardService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 
 //import java.util.Random;
@@ -82,9 +87,10 @@ public class CardController {
             return ResponseEntity.badRequest().build();
         }
         Card card = acs.delete(acs.getById(id), listId);
-        msgs.convertAndSend("/topic/boards/"+boardId, "Card deleted on board#" + boardId);
 
         if(card==null) return ResponseEntity.badRequest().build();
+        msgs.convertAndSend("/topic/boards/"+boardId, "Card deleted on board#" + boardId);
+        listeners.forEach((k, l) -> l.accept(card));
 
         return ResponseEntity.ok().build();
     }
@@ -201,5 +207,30 @@ public class CardController {
         Card c = acs.findById(id).get();
         Set<Tag> tags = c.getTags();
         return ResponseEntity.ok(tags);
+    }
+
+    private Map<Object, Consumer<Card>> listeners = new HashMap<>();
+
+    /**
+     * Gets the card from its id
+     * @param id the id of the card we need to get
+     * @return a response entity with the card
+     */
+    @GetMapping("/deleted/{id}")
+    public DeferredResult<ResponseEntity<Card>> registerCardDeleted(@PathVariable("id") int id) {
+        ResponseEntity<Object> noContent = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        DeferredResult<ResponseEntity<Card>> res =
+                new DeferredResult<>(5000L, noContent);
+
+        Object key = new Object();
+        listeners.put(key, c -> {
+            if(c.getId() == id){
+                res.setResult(ResponseEntity.ok().build());
+            } else {
+                res.setResult(ResponseEntity.badRequest().build());
+            }
+        });
+        res.onCompletion(() -> listeners.remove(key));
+        return res;
     }
 }

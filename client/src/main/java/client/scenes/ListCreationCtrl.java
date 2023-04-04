@@ -78,9 +78,8 @@ public class ListCreationCtrl {
 
     /**
      * takes you back to the overview
-     * @param event - click
      */
-    public void cancel(ActionEvent event){
+    public void cancel(){
         name.setText("");
         mainCtrl.closeLocker();
         mainCtrl.showBoardOverview(boardID);

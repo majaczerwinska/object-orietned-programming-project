@@ -24,6 +24,10 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.function.Consumer;
 
 import commons.*;
 import jakarta.ws.rs.ProcessingException;
@@ -464,7 +468,7 @@ public class ServerUtils {
      */
     public List<Card> getCardsFromList(int listId) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/lists/" + listId) //
+                .target(SERVER).path("api/lists/cards/" + listId) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<List<Card>>() {});
@@ -668,6 +672,50 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<List<Palette>>() {});
+    }
+
+    private static final ExecutorService EXEC = Executors.newSingleThreadExecutor();
+    private Future<?> deletionPollingFuture;
+
+    /**
+     * Registers deletion for the card you are viewing
+     * @param cardId the id of the card you are viewing
+     * @param consumer consumer that is consumed whenever the card is deleted
+     */
+    public void registerForDeletedCard(int cardId, Consumer<String> consumer){
+        stopPollingForDeletedCard();
+        deletionPollingFuture = EXEC.submit(()->{
+            System.out.println("polling ...");
+            while (!Thread.interrupted()){
+                Response res = ClientBuilder.newClient(new ClientConfig()) //
+                        .target(SERVER).path("api/cards/deleted/" + cardId) //
+                        .request(APPLICATION_JSON) //
+                        .accept(APPLICATION_JSON) //
+                        .get(Response.class);
+                if(res.getStatus() == 204 || res.getStatus() == 400){
+                    continue;
+                } else {
+                    consumer.accept("Card deleted");
+                }
+            }
+        });
+    }
+
+    /**
+     * Cancels the future of the polling
+     */
+    public void stopPollingForDeletedCard() {
+        if (deletionPollingFuture != null && !deletionPollingFuture.isDone()) {
+            System.out.println("Canceling polling");
+            deletionPollingFuture.cancel(true);
+        }
+    }
+
+    /**
+     * Shuts down the executor service
+     */
+    public void stopExecutorService() {
+        EXEC.shutdownNow();
     }
 
     /**
