@@ -37,6 +37,12 @@ class CardListTest {
     }
 
     @Test
+    void setfColor() {
+        tl.setfColor(1);
+        assertEquals(tl.getfColor(),1);
+    }
+
+    @Test
     void getId() {
         assertEquals(tl.getId(), 0);
     }
@@ -47,9 +53,16 @@ class CardListTest {
     }
 
     @Test
-    void getColor() {
+    void getbColor() {
         tl.setbColor(0);
         assertEquals(tl.getbColor(),0);
+    }
+
+    @Test
+    void getfColor() {
+        tl.setfColor(0);
+        assertEquals(tl.getfColor(),0);
+
     }
 
     @Test
@@ -72,4 +85,19 @@ class CardListTest {
         t.setCards(c);
         assertEquals(t.toString(), "List #" + t.getId() + "\n name: " + t.getName() + "\n color: " + t.getbColor() + "\nCards:\nCard #0\n title: a\n description: \n color: 16777215");
     }
+//    @Test
+//    public void toStringEmptyTest(){
+//        CardList t = new CardList("t");
+//        assertEquals(t.toString(), "List #" + t.getId() + "\n name: " + t.getName() + "\n color: " + t.getbColor() + "\nthis list has no cards");
+//    }
+//
+//    @Test
+//    public void toStringTest() {
+//        CardList t = new CardList("t");
+//        List<Card> c = new ArrayList<>();
+//        c.add(new Card("a"));
+//        t.setCards(c);
+//        assertEquals(t.toString(), "List #" + t.getId() + "\n name: " + t.getName() + "\n color: " + t.getbColor() + "\nCards:\nCard #0\n title: a\n description: \n color: 16777215");
+//    }
+
 }

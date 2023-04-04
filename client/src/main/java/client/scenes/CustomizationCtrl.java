@@ -2,6 +2,7 @@ package client.scenes;
 
 import client.components.PaletteComponent;
 import client.utils.ServerUtils;
+import client.utils.WebsocketClient;
 import com.google.inject.Inject;
 import commons.Board;
 import commons.CardList;
@@ -19,6 +20,7 @@ public class CustomizationCtrl {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
+    private WebsocketClient websocketClient;
 
     public int boardId;
 
@@ -50,12 +52,23 @@ public class CustomizationCtrl {
      * constructor
      * @param server
      * @param mainCtrl
+     * @param websocketClient
      */
     @Inject
-    public CustomizationCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public CustomizationCtrl(ServerUtils server, MainCtrl mainCtrl, WebsocketClient websocketClient) {
         this.mainCtrl = mainCtrl;
         this.server = server;
+        this.websocketClient = websocketClient;
     }
+
+    /**
+     * Creates stomp session
+     */
+    public void setStompSession(){
+        websocketClient.setStompSession(ServerUtils.SERVER);
+        System.out.println("StompSession created in customization");
+    }
+
 
     /**
      * takes you back to the board overview
@@ -77,6 +90,7 @@ public class CustomizationCtrl {
         listBt = lb.getValue();
         listFt = lf.getValue();
         colourlist();
+        websocketClient.sendMessage("/app/update/list/"+boardId, "Done updating card in component");
         mainCtrl.showBoardOverview(boardId);
        // mainCtrl.colorBF(boardId, MainCtrl.colorParseToInt(bf.getValue()));
 

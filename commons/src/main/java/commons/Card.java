@@ -28,9 +28,7 @@ public class Card {
     @Column(name="font_color")
     private int fcolor;
     @Column(name = "card_position")
-    private double position;
-
-
+    private int position;
     @ManyToMany
     @JoinTable(
             name = "cards_tags",
@@ -62,24 +60,6 @@ public class Card {
      * Default constructor
      */
     public Card() {}
-
-    /**
-     *
-     * @return the card's relative position within the list
-     */
-    public double getPosition() {
-        return position;
-    }
-
-    /**
-     * set the relative position attribute of a card
-     * @param position the new position
-     */
-    public void setPosition(double position) {
-        this.position = position;
-    }
-
-
     /**
      *Sets the id of the card
      * @param id - the id
@@ -88,6 +68,21 @@ public class Card {
         this.id = id;
     }
 
+    /**
+     * Gets the position
+     * @return the position
+     */
+    public int getPosition() {
+        return position;
+    }
+
+    /**
+     * Sets the position
+     * @param position the position
+     */
+    public void setPosition(int position) {
+        this.position = position;
+    }
 
     /**
      *Sets the title of the card
@@ -239,7 +234,7 @@ public class Card {
     @Override
     public String toString() {
         return "Card #" + id + "\n title: " + title + "\n description: " + description + "\n color: "
-                + color + "\n position: " + position;
+                + color ;
     }
 
 

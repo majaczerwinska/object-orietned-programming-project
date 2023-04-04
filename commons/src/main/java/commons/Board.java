@@ -225,7 +225,7 @@ public class Board {
      */
     @Override
     public String toString() {
-        return  name ;
+        return  name;
     }
 
     /**

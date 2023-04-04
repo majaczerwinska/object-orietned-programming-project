@@ -6,6 +6,8 @@ import commons.Tag;
 import commons.Task;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.stereotype.Controller;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import server.service.CardService;
@@ -37,6 +39,15 @@ public class CardController {
     }
 
 
+    /**
+     * Receives messages from /app/update/card/{boardId}
+     * @param boardId the boardId the message is coming from
+     */
+    @MessageMapping("/update/card/{boardId}")
+    public void messageClient(@DestinationVariable("boardId") int boardId){
+        System.out.println("done editing card so refresh");
+        msgs.convertAndSend("/topic/boards/"+boardId, "done editing card so refresh");
+    }
 
     /**
      *Adds a card to the database
@@ -50,7 +61,7 @@ public class CardController {
                                         @PathVariable("listId") int listId, @RequestBody Card card) {
         if(card.getTitle()==null) return ResponseEntity.badRequest().build();
         Card saved = acs.save(card, listId);
-        msgs.convertAndSend("/topic/boards/"+ boardId, "Card added on board#" + boardId);
+        msgs.convertAndSend("/topic/boards/"+ boardId, "Added card# "+card.getId()+" on board#" + boardId);
         if(saved==null) return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(saved);
     }
@@ -66,7 +77,10 @@ public class CardController {
     public ResponseEntity<Card> deleteCard(@PathVariable("boardId") int boardId,
                                            @PathVariable("listId") int listId, @PathVariable("id") int id) {
         System.out.println("Received DELETE request for boardId="+boardId+ " listID="+listId+" card id="+id);
-        if(!acs.existsById(id)) return ResponseEntity.badRequest().build();
+        if(!acs.existsById(id)) {
+
+            return ResponseEntity.badRequest().build();
+        }
         Card card = acs.delete(acs.getById(id), listId);
         msgs.convertAndSend("/topic/boards/"+boardId, "Card deleted on board#" + boardId);
 
@@ -80,6 +94,7 @@ public class CardController {
      * @param id card's id
      * @param card card with updated information
      * @param boardId the id of the board at which the card is located
+     * @param ignore indicates whether websockets should ignore this update
      * @return a response entity with the card object
      */
 
@@ -88,17 +103,40 @@ public class CardController {
 //    public ResponseEntity<Card> editCard(@PathVariable("id") int id, @RequestBody Card card) {
 //        System.out.println("editing card with id="+id+" to card="+card);
 //=======
-    @PutMapping("/edit/{boardId}/{id}")
+    @PutMapping("/edit/{boardId}/{id}/{ignore}")
     public ResponseEntity<Card> editCard(@PathVariable("boardId") int boardId,
-                                         @PathVariable("id") int id, @RequestBody Card card) {
+                                         @PathVariable("id") int id,
+                                         @PathVariable("ignore") boolean ignore,
+                                         @RequestBody Card card) {
         if(!acs.existsById(id) || card.getTitle() == null){
             return ResponseEntity.badRequest().build();
         }
 
         card.setId(id);
         acs.setCardInfo(card);
-        msgs.convertAndSend("/topic/boards/"+boardId , "Card edited on board#" + boardId);
+        if(!ignore){
+            msgs.convertAndSend("/topic/boards/"+boardId , "Card#" +id+ " edited on board#" + boardId);
+        }
 
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * Sets the position
+     * @param cardId the id of the card
+     * @param position the position
+     * @param card the card
+     * @return the card
+     */
+    @PostMapping("/position/{cardId}/{position}")
+    public ResponseEntity<Card> setPosition(@PathVariable("cardId") int cardId,
+                                         @PathVariable("position") int position, @RequestBody Card card) {
+        if(!acs.existsById(cardId) || card.getTitle() == null){
+            return ResponseEntity.badRequest().build();
+        }
+        card.setId(cardId);
+        acs.setPosition(card,position);
+       // acs.setCardInfo(card);
         return ResponseEntity.ok().build();
     }
 
@@ -114,18 +152,19 @@ public class CardController {
                                                   @RequestBody Card card) {
         System.out.println("Changing list for card="+id+" to list="+listid);
 //        card.setId(id);
-        System.out.println(card);
-        System.out.println(acs.getListForCard(card));
+    //    System.out.println(card);
+     //   System.out.println(acs.getListForCard(card));
 
         if(!acs.existsById(id) || card.getTitle() == null || acs.getListForCard(card)==null){
-            System.out.println("ChangeList for card id="+id+" failed!");
-            System.out.println(!acs.existsById(id));
-            System.out.println(card.getTitle() == null);
-            System.out.println(acs.getListForCard(card)==null);
+//            System.out.println("ChangeList for card id="+id+" failed!");
+//            System.out.println(!acs.existsById(id));
+//            System.out.println(card.getTitle() == null);
+//            System.out.println(acs.getListForCard(card)==null);
             return ResponseEntity.badRequest().build();
         } else {
             System.out.println("No issue with card existence");
         }
+        if(acs.getListForCard(card).getId() == listid)  return ResponseEntity.ok(card);
 
         Card newcard = acs.changeListOfCard(card, listid);
 
@@ -163,8 +202,9 @@ public class CardController {
      */
     @GetMapping("/{id}/tags")
     public ResponseEntity<Set<Tag>> getTags(@PathVariable("id") int id) {
+        System.out.println("Received request at api/cards/"+id+"/tags");
         if(id < 0 || !acs.existsById(id)) return ResponseEntity.badRequest().body(null);
-        Card c =acs.findById(id).get();
+        Card c = acs.findById(id).get();
         Set<Tag> tags = c.getTags();
         return ResponseEntity.ok(tags);
     }

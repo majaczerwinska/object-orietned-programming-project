@@ -30,11 +30,9 @@ import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
-
 //import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
-
 //import java.io.BufferedReader;
 //import java.io.IOException;
 //import java.io.InputStreamReader;
@@ -207,12 +205,13 @@ public class ServerUtils {
      * @param boardId the board the card is in
      * @param id the id of the card to edit
      * @param card the new card the old card is replaced by
+     * @param ignore indicates whether websockets should ignore this update
      * @return return the card edited
      */
-    public Card editCard(int boardId, int id, Card card) {
+    public Card editCard(int boardId, int id, Card card, boolean ignore) {
         try {
             return ClientBuilder.newClient(new ClientConfig())
-                    .target(SERVER).path("api/cards/edit/" + boardId + "/" + id)
+                    .target(SERVER).path("api/cards/edit/" + boardId + "/" + id + "/" + ignore)
                     .request(APPLICATION_JSON)
                     .accept(APPLICATION_JSON)
                     .put(Entity.entity(card, APPLICATION_JSON), Card.class);
@@ -221,6 +220,26 @@ public class ServerUtils {
         }
         return null;
     }
+
+    /**
+     * Sets the position
+     * @param card the card
+     * @param position the position
+     * @return the card
+     */
+    public Card setPosition(Card card, int position) {
+        try {
+            return ClientBuilder.newClient(new ClientConfig())
+                    .target(SERVER).path("api/cards/position/" +card.getId()+ "/" + position)
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .post(Entity.entity(card, APPLICATION_JSON), Card.class);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
 
     /**
      * Edit list colour

@@ -70,6 +70,7 @@ public class Main extends Application {
             var landing = FXML.load(LandingCtrl.class, "client", "scenes", "Landing.fxml");
             var publicBoard = FXML.load(PublicBoardCtrl.class, "client", "scenes", "PublicBoard.fxml");
             var card = FXML.load(CardCtrl.class, "client", "scenes", "CardOverview.fxml");
+            var tagPopUp = FXML.load(TagPopUpCtrl.class, "client", "scenes", "TagPopUp.fxml");
             var selectBoard = FXML.load(BoardSelectCtrl.class, "client", "scenes", "BoardSelect.fxml");
             var popupJoin = FXML.load(PopupJoinCtrl.class, "client", "scenes", "popupJoin.fxml");
             var listCreate = FXML.load(ListCreationCtrl.class, "client", "scenes", "ListCreate.fxml");
@@ -84,6 +85,7 @@ public class Main extends Application {
             var unlocked = FXML.load(LockInUnlockedBoardCtrl.class, "client", "scenes", "LockInUnlockedBoard.fxml");
             var providePassword = FXML.load(ProvidePasswordCtrl.class, "client", "scenes", "ProvidePassword.fxml");
             var editPassword = FXML.load(EditPasswordCtrl.class, "client", "scenes", "EditPassword.fxml");
+            var warning = FXML.load(WarningCtrl.class, "client", "scenes", "Warning.fxml");
             var customization = FXML.load(CustomizationCtrl.class, "client", "scenes", "Customization.fxml");
             var paletteCreation = FXML.load(PaletteCreationCtrl.class, "client", "scenes", "PaletteCreation.fxml");
             System.out.println("Done with loading scenes");
@@ -108,11 +110,13 @@ public class Main extends Application {
                     listEdit,
                     editBoard,
                     help,
+                    tagPopUp,
                     unlocked,
                     providePassword,
                     customization,
                     editPassword,
-                    paletteCreation);
+                    paletteCreation,
+                    warning);
 
 
         } catch (Exception e) {

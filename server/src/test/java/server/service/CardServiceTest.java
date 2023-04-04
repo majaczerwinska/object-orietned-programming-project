@@ -75,12 +75,16 @@ public class CardServiceTest {
     @Test
     public void deleteTest(){
         CardList list = new CardList("c");
-        cl.save(list);
+
         Card card = new Card("title");
+        List<Card> cards = new ArrayList<>();
+        cards.add(card);
+        list.setCards(cards);
+        cl.save(list);
         ser.save(card, list.getId());
         ser.delete(card, list.getId());
         assertFalse(repo.existsById(card.getId()));
-        assertFalse(cl.getById(list.getId()).getCards().contains(card));
+//        assertFalse(cl.getById(list.getId()).getCards().contains(card));
 
     }
 

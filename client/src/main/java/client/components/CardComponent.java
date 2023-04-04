@@ -1,29 +1,28 @@
 package client.components;
 
 
+import client.scenes.BoardOverviewCtrl;
 import client.scenes.MainCtrl;
 import client.utils.ServerUtils;
 import commons.Card;
 import commons.Tag;
+import commons.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 
-//TODO
 public class CardComponent extends HBox implements Initializable {
 
 
@@ -33,12 +32,18 @@ public class CardComponent extends HBox implements Initializable {
 
 
 
-    private int cardID;
+    public int cardID;
     public int boardID;
 
     private int cardListID;
 
     public Card self;
+
+    private boolean highlighted;
+
+    private BoardOverviewCtrl boardOverviewCtrl;
+
+    String originalValue = "title..";
 
     @FXML
     public TextField tfTitle;
@@ -58,18 +63,22 @@ public class CardComponent extends HBox implements Initializable {
 
     @FXML
     private HBox cardFrame;
+    private boolean isLocked;
 
     @FXML
-    private CheckBox checkMark;
+    private Text text;
 
     /**
      * The constructor for the component
      * @param mainCtrl the main controller instance
+     * @param isLocked
      */
-    public CardComponent(MainCtrl mainCtrl) {
+    @SuppressWarnings("checkstyle:JavadocMethod")
+    public CardComponent(MainCtrl mainCtrl, boolean isLocked) {
         super();
         server = new ServerUtils();
         this.mainCtrl = mainCtrl;
+        this.isLocked = isLocked;
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/client/components/CardComponent.fxml"));
         fxmlLoader.setRoot(this);
@@ -84,9 +93,11 @@ public class CardComponent extends HBox implements Initializable {
 //        setOnKeyPressed(event -> updateCard());
 
         TextField titleTextField = (TextField) lookup("#tfTitle");
-        titleTextField.requestFocus();
+//        if(!isLocked){
+//           // tfTitle.setOnKeyTyped(event -> updateCard());
+//
+//        }
 
-        tfTitle.setOnKeyTyped(event -> updateCard());
         //tfDescription.setOnKeyTyped(event -> updateCard());
 //        setOnMouseEntered(event -> {
 //                tfTitle.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-alignment: center");
@@ -110,37 +121,26 @@ public class CardComponent extends HBox implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        tfTitle.requestFocus();
-        checkMark.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                System.out.println("Checkbox is checked");
-                markAsCompleted();
-            } else {
-                System.out.println("Checkbox is unchecked");
-                unMarkCompleted();
-            }
-        });
-        descriptionLabel.setOnMouseEntered(event -> {
-            descriptionLabel.setStyle("-fx-underline: true");
-
-        });
-        descriptionLabel.setOnMouseExited(event -> {
-            descriptionLabel.setStyle("-fx-underline: false");
-        });
-        tfTitle.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                // TextField has received focus
-                tfTitle.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-alignment: center");
-            } else {
-                // TextField has lost focus
-                tfTitle.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; " +
-                        "-fx-alignment: center");
-            }
-        });
-
-        setOnMouseEntered(event ->
+        if(!isLocked) {
+            tfTitle.focusedProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue) {
+                    // TextField has received focus
+                    tfTitle.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-alignment: center");
+                } else {
+                    // TextField has lost focus
+                    System.out.println("originalValue = " + originalValue + "\nnew value = " + tfTitle.getText());
+                    if(!tfTitle.getText().equals(originalValue)){
+                        boardOverviewCtrl.sendMessage("/app/update/card/"+boardID,
+                                "Done updating card in component");
+                        originalValue = tfTitle.getText();
+                    }
+                    tfTitle.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; " +
+                            "-fx-alignment: center");
+                }
+            });
+            setOnMouseEntered(event ->
             {tfTitle.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-alignment: center");});
-        setOnMouseExited(event ->
+            setOnMouseExited(event ->
             {
                 tfTitle.focusedProperty().addListener((observable, oldValue, newValue) -> {
                     if (newValue) {
@@ -153,19 +153,37 @@ public class CardComponent extends HBox implements Initializable {
                     }
                 });
             });
+
+            dragging();
+
+        }
         setOnMouseClicked(this::onElementClick);
-        dragging();
+        descriptionLabel.setOnMouseEntered(event -> {
+            descriptionLabel.setStyle("-fx-underline: true");
 
+        });
+        descriptionLabel.setOnMouseExited(event -> {
+            descriptionLabel.setStyle("-fx-underline: false");
+        });
 
+        this.boardOverviewCtrl = mainCtrl.getBoardOverviewCtrl();
+
+        cardFrame.setOnMouseEntered(event -> {
+            String style = getStyle();
+            style += "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.9), 5, 0, 0, 5);";
+            setStyle(style);
+            highlighted = true;
+            boardOverviewCtrl.highlightedCardComponent= this;
+        });
+        cardFrame.setOnMouseExited(event -> {
+            String style = getStyle();
+            style = style.replace("-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.9), 5, 0, 0, 5);", "");
+            setStyle(style);
+            highlighted = false;
+            boardOverviewCtrl.highlightedCardComponent = null;
+        });
     }
 
-
-    /**
-     * test method
-     */
-    public void addtesttagtocard() {
-        server.addTagToCard(boardID,0,cardID);
-    }
 
     /**
      * Method for all the dragging
@@ -191,72 +209,58 @@ public class CardComponent extends HBox implements Initializable {
             event.consume();
 
         });
-//        setOnDragOver(event ->{
-//            if (event.getGestureSource() != this &&
-//                    event.getDragboard().hasString()) {
-//                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-//            }
-//            event.consume();
-//        });
-//        setOnDragEntered(event -> {
-//            if (event.getGestureSource() != this &&
-//                    event.getDragboard().hasString()) {
-//                this.setStyle("-fx-background-color: green");
-//            }
-//            event.consume();
-//        });
-//        setOnDragExited(event -> {
-//
-//            this.setStyle("-fx-background-color: white");
-//            event.consume();
-//
-//        });
-//        setOnDragDropped(event -> {
-//
-//            Dragboard db = event.getDragboard();
-//            boolean success = false;
-//            if (db.hasString()) {
-//                Card c = server.getCard(Integer.parseInt(db.getString()));
-//                System.out.println(c);
-//                System.out.println(cardListID);
-//                server.changeListOfCard(cardListID,c);
-//                success = true;
-//            }
-//            event.setDropCompleted(success);
-//            Platform.runLater(()->{
-//                mainCtrl.refreshBoardOverview();
-//            });
-//
-//            event.consume();
-//
-//        });
+
 
     }
 
+
+    /**
+     * get tasks, update card component to show how many are completed
+     */
+    public void setTaskProgress() {
+        List<Task> tasks = server.getTasksFromCard(cardID);
+        int completed = 0;
+        for (Task t : tasks) {
+            if (t.isChecked()) completed++;
+        }
+        text.setText(completed+"/"+tasks.size());
+
+    }
     /**
      * get list of colors for a specific tag
-     * //todo here
      */
     public void getTagColors() {
-        Set<Tag> tags = server.getTagsForCard(cardID);
-        System.out.println(tags);
+        List<Color> l = new ArrayList<>();
+        for(Tag t : server.getTagsForCard(cardID)){
+            l.add(MainCtrl.colorParseToFXColor(t.getColor()));
+        }
+        setMulticolouredBorder(l);
     }
 
     /**
      * //todo make this set the border to every color of the tags in this card
-     * @param pane the cards hbox
      * @param colors the list of javafx color elements
      */
-    public void setMulticolouredBorder(Pane pane, List<Color> colors) {
-        BorderStrokeStyle style = BorderStrokeStyle.SOLID;
-        double borderWidth = 3;
-
-        List<BorderStroke> borders = new ArrayList<>();
-        for (int i = 0; i < pane.getChildren().size(); i++) {
-            borders.add(new BorderStroke(colors.get(i % colors.size()), style, null, new BorderWidths(borderWidth)));
+    public void setMulticolouredBorder(List<Color> colors) {
+        List<Stop> stops = new ArrayList<>();
+        double size = colors.size();
+        double i = 0;
+        for (Color c : colors) {
+            double offset1 = i++ / size;
+            double offset2 = i / size;
+            stops.add(new Stop(offset1, c));
+            stops.add(new Stop(offset2, c));
         }
+        // Create a custom border with a LinearGradient stroke
+        Border border = new Border(
+                new BorderStroke(
+                        new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, stops),
+                        BorderStrokeStyle.SOLID,
+                        null,
+                        new BorderWidths(3)));
 
-        pane.setBorder(new Border((BorderStroke) borders));
+        // Set the HBox's border to the custom border
+        this.setBorder(border);
     }
 
     /**
@@ -290,7 +294,7 @@ public class CardComponent extends HBox implements Initializable {
         }
         System.out.println("joining card #" + cardID);
         System.out.println(self);
-        mainCtrl.showCard(cardID, boardID);
+        mainCtrl.showCard(cardID, boardID, isLocked);
     }
 
     /**
@@ -300,7 +304,7 @@ public class CardComponent extends HBox implements Initializable {
         System.out.println("Update card method called in card component for card=" + self);
         self.setTitle(tfTitle.getText());
 
-        server.editCard(boardID, cardID,self);
+        server.editCard(boardID, cardID,self, true);
         System.out.println("update card method exits with card="+ self);
     }
 
@@ -330,32 +334,27 @@ public class CardComponent extends HBox implements Initializable {
         // UI update code here
         System.out.println("deleting card on board#"+ boardID + " (CardComponent.deleteCard(self)) " + self);
         server.deleteCard(self, boardID, cardListID);
-        mainCtrl.refreshBoardOverview();
-    }
-
-
-
-
-    /**
-     * mark a card as completed
-     * listener for the checkbox
-     * //todo make it work
-     */
-    public void markAsCompleted() {
-        //tfTitle.setStyle("-fx-strikethrough: true");
-
-        descriptionLabel.setStyle("-fx-strikethrough: true");
+        mainCtrl.refreshBoardOverview(true);
     }
 
     /**
-     * unmark a card as completed
-     * listener for the checkbox
-     * //todo make it work
+     * Disables the write mode on card
      */
-    public void unMarkCompleted() {
-        //tfTitle.setStyle("-fx-strikethrough: false");
-        descriptionLabel.setStyle("-fx-strikethrough: false");
+    public void readmode(){
+        if(isLocked){
+            btnDelete.setOnAction(e->{
+                mainCtrl.showWarning(boardID);
+                return;
+            });
+            tfTitle.setOnKeyTyped(event -> {
+                return ;
+            });
+            tfTitle.setEditable(false);
+
+
+        }
     }
+
 
     /**
      * set caret to title field of card

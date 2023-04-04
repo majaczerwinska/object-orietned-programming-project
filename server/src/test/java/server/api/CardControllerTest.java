@@ -22,8 +22,7 @@ import server.database.CardRepositoryTest;
 
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -74,7 +73,7 @@ public class CardControllerTest {
         Card card = new Card("title");
         Card card2 = new Card("title2");
         con.addCard(0, list.getId(), card);
-        con.editCard(0, card.getId(), card2);
+        con.editCard(0, card.getId(), true, card2);
         assertEquals(card, card2);
 
     }
@@ -87,7 +86,7 @@ public class CardControllerTest {
         Card card = new Card("title");
         Card card2 = new Card();
         con.addCard(0, list.getId(),card);
-        con.editCard(0, card.getId(), card2);
+        con.editCard(0, card.getId(), true, card2);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
 
     }
@@ -132,6 +131,46 @@ public class CardControllerTest {
 //    }
 
 
+    @Test
+    public void getTagsTest(){
+        Board board = new Board("b");
+        CardList list = new CardList("c");
+
+        Card card = new Card("title");
+        Set<Tag> tags = new HashSet<>();
+
+        tags.add(new Tag("a"));
+        card.setTags(tags);
+
+        cl.save(list);
+        con.addCard(board.getId(), list.getId(), card);
+
+        ResponseEntity<Set<Tag>> cardResponseEntity = ResponseEntity.ok(tags);
+        assertEquals(con.getTags(card.getId()), cardResponseEntity);
+    }
+
+//    @Test
+//    public void setPositionTest(){
+//        Board board = new Board("b");
+//        CardList list = new CardList("c");
+//        cl.save(list);
+//        Card card = new Card("title");
+//        ser.save(card, list.getId());
+//        con.setPosition(card.getId(), 4, card);
+//        assertEquals(Objects.requireNonNull(con.getCard(card.getId()).getBody()).getPosition(), 4);
+//    }
 
 
+//    @Test
+//    public void changeListForCardTest(){
+//        Board board = new Board("b");
+//        CardList list = new CardList("c");
+//        CardList list2 = new CardList("b");
+//        cl.save(list);
+//        cl.save(list2);
+//        Card card = new Card("title");
+//        ser.save(card, list.getId());
+//        con.changeListforCard(card.getId(), list2.getId(), card);
+//        assertEquals(ser.getListForCard(card), list2);
+//    }
 }

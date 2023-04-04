@@ -96,11 +96,10 @@ public class EditBoardCtrl {
         String name = this.name.getText();
         //int boardColor = Integer.parseInt(this.color.getText());
 
-
-        Board board = new Board(name);
-        board.setId(boardId);
-        //board.setbColor(boardColor);
-        // || color.getText().isEmpty()
+//        Board board = new Board(name);
+//        board.setId(boardId);
+        Board board = server.getBoard(boardId);
+        board.setName(name);
 
         if (name.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
