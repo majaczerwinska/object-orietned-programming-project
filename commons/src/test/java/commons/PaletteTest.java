@@ -105,6 +105,15 @@ public class PaletteTest {
         assertNotNull(p);
     }
 
+    @Test
+    void equalsTest() {
+        Palette p = new Palette("1", 3, 1);
+        Palette p1 = new Palette("1", 3, 1);
+        assertTrue(p.equals(p1));
+    }
+
+
+
 
 
 }

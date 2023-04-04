@@ -75,11 +75,26 @@ public class BoardServiceTest {
     }
 
     @Test
+    public void deleteEmptyTest(){
+        Board board = new Board("title");
+        assertNull(ser.delete(board));
+
+    }
+
+    @Test
     void findById() {
         Board b = new Board("a");
         ser.save(b);
 
         assertEquals(ser.findById(0), Optional.of(b));
+    }
+
+    @Test
+    void findByEmptyKey() {
+        Board b = new Board("a");
+        ser.save(b);
+
+        assertNull(ser.findByKey("b"));
     }
 
     @Test
