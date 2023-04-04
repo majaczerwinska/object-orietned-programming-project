@@ -31,6 +31,8 @@ public class CustomizationCtrl {
 
     private Color listBt;
     private Color listFt;
+    private Color boardBt;
+    private Color boardFt;
 
     @FXML
     private ColorPicker bb;
@@ -75,6 +77,9 @@ public class CustomizationCtrl {
      * @param event
      */
     public void back(ActionEvent event){
+        if(!bb.getValue().equals(server.getBoard(boardId).getbColor())){
+            boardBt = null;
+        }
         mainCtrl.showBoardOverview(boardId);
     }
 
@@ -85,7 +90,9 @@ public class CustomizationCtrl {
     public void color(MouseEvent event){
         Board board = server.getBoard(boardId);
         board.setbColor(MainCtrl.colorParseToInt(bb.getValue()));
+        boardBt = bb.getValue();
         board.setfColor(MainCtrl.colorParseToInt(bf.getValue()));
+        boardFt = bf.getValue();
         server.editBoard(boardId,board);
         listBt = lb.getValue();
         listFt = lf.getValue();
@@ -129,27 +136,29 @@ public class CustomizationCtrl {
     public void refresh(){
         Board b = server.getBoard(boardId);
         List<CardList> l = server.getCardListsFromBoard(boardId);
-        bb.setValue(MainCtrl.colorParseToFXColor(b.getbColor()));
-        bf.setValue(MainCtrl.colorParseToFXColor(b.getfColor()));
-        System.out.println("board color: " + bb.getValue());
-        System.out.println("board f color: " + bf.getValue());
-        if(l.isEmpty()){
-//            if(listBt == null){
-                lb.setValue(listB);
-                lf.setValue(listF);
-//                listBt = listB;
-//                listFt = listF;
- //           }
-//            else{
-//                lb.setValue(listBt);
-//                lf.setValue(listFt);
-//                System.out.println("assigning not default to color pickers");
-//            }
+        if(boardBt == null){
+            bb.setValue(MainCtrl.colorParseToFXColor(b.getbColor()));
+            bf.setValue(MainCtrl.colorParseToFXColor(b.getfColor()));
         }
         else{
-            lb.setValue(MainCtrl.colorParseToFXColor(l.get(0).getbColor()));
-            lf.setValue(MainCtrl.colorParseToFXColor(l.get(0).getfColor()));
+            bb.setValue(boardBt);
+            bf.setValue(boardFt);
         }
+        if(listBt == null) {
+            lb.setValue(listB);
+            lf.setValue(listF);
+//                listBt = listB;
+//                listFt = listF;
+            }
+        else{
+            lb.setValue(listBt);
+            lf.setValue(listFt);
+            }
+
+//        else{
+//            lb.setValue(MainCtrl.colorParseToFXColor(l.get(0).getbColor()));
+//            lf.setValue(MainCtrl.colorParseToFXColor(l.get(0).getfColor()));
+//        }
         displayPalettes();
 //        palettes.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 //        ObservableList<Palette> boardList = FXCollections.observableList(getPalettes());
@@ -196,6 +205,10 @@ public class CustomizationCtrl {
      * @param mouseEvent
      */
     public void addPalette(MouseEvent mouseEvent){
+        boardBt = bb.getValue();
+        boardFt = bf.getValue();
+        listFt = lb.getValue();
+        listBt = lf.getValue();
         mainCtrl.showPaletteCreation(boardId);
         displayPalettes();
     }
