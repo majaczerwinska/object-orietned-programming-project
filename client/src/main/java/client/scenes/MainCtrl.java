@@ -91,12 +91,17 @@ public class MainCtrl {
     private TagPopUpCtrl tagPopUpCtrl;
     private Scene tagPopUpScene;
 
+    private PaletteCreationCtrl paletteCreationCtrl;
+    private Scene paletteCreation;
+
 
     public Map<Integer, CardComponent> cardIdComponentMap;
 
     /**
-     * @param landing
+     *
      * @param primaryStage
+     * @param locker
+     * @param landing
      * @param card
      * @param publicBoard
      * @param boardSelect
@@ -105,17 +110,17 @@ public class MainCtrl {
      * @param listCreate
      * @param select
      * @param boardOverview
-     * @param editBoard
      * @param boardCreation
-     * @param help
-     * @param tagPopUp
      * @param taskCreator
      * @param listEdit
+     * @param editBoard
+     * @param help
+     * @param tagPopUp
      * @param unlocked
-     * @param locker
      * @param providePassword
-     * @param editPassword
      * @param customization
+     * @param editPassword
+     * @param paletteCreate
      * @param warning
      */
     public void initialize(Stage primaryStage,
@@ -139,6 +144,7 @@ public class MainCtrl {
                            Pair<ProvidePasswordCtrl, Parent> providePassword,
                            Pair<CustomizationCtrl, Parent> customization,
                            Pair<EditPasswordCtrl, Parent> editPassword,
+                           Pair<PaletteCreationCtrl, Parent> paletteCreate,
                            Pair<WarningCtrl, Parent> warning
                            ) {
 
@@ -210,6 +216,9 @@ public class MainCtrl {
 
         this.customizationCtrl = customization.getKey();
         this.customization = new Scene(customization.getValue());
+
+        this.paletteCreationCtrl = paletteCreate.getKey();
+        this.paletteCreation = new Scene(paletteCreate.getValue());
 
         showLanding();
         primaryStage.show();
@@ -753,6 +762,18 @@ public class MainCtrl {
     }
 
     /**
+<<<<<<< HEAD
+     * goes to scene for creating a new palette for that board's cards
+     * @param boardId
+     */
+    public void showPaletteCreation(int boardId){
+        primaryStage.setTitle("create");
+        primaryStage.setScene(paletteCreation);
+        paletteCreationCtrl.boardId = boardId;
+        primaryStage.show();
+    }
+
+    /**
      * shows board selection scene
      *
      * @param boardID the ID of the board
@@ -793,5 +814,3 @@ public class MainCtrl {
         }
 
     }
-
-

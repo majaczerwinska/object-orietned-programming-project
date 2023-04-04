@@ -24,6 +24,9 @@ public class Card {
     private String description;
     @Column(name = "card_color")
     private int color;
+
+    @Column(name="font_color")
+    private int fcolor;
     @Column(name = "card_position")
     private int position;
     @ManyToMany
@@ -47,6 +50,7 @@ public class Card {
         this.title = title;
         this.description = "";
         this.color = 0xffffff;
+        this.fcolor = 0x000000;
         this.tasks = new ArrayList<>();
         this.tags = new HashSet<>();
     }
@@ -173,6 +177,22 @@ public class Card {
      */
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
+    }
+
+    /**
+     * gets color of the font of the card
+     * @return - color
+     */
+    public int getFcolor(){
+        return fcolor;
+    }
+
+    /**
+     * sets the color of the font of the card
+     * @param color
+     */
+    public void setFcolor(int color){
+        this.fcolor = color;
     }
 
     /**

@@ -2,9 +2,7 @@ package client.scenes;
 import client.components.SubTaskComponent;
 import client.utils.*;
 import com.google.inject.Inject;
-import commons.Card;
-import commons.Tag;
-import commons.Task;
+import commons.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -37,8 +35,6 @@ public class CardCtrl {
     @FXML
     private Label description;
     @FXML
-    private ColorPicker palette;
-    @FXML
     private TextField text;
     @FXML
     private TextArea area;
@@ -53,6 +49,12 @@ public class CardCtrl {
     private ListView<Tag> boardtags;
     @FXML
     private Accordion accordion;
+
+    @FXML
+    private ListView<Palette> palettes;
+
+    @FXML
+    private TextField theme;
 
 
     @FXML
@@ -175,6 +177,8 @@ public class CardCtrl {
         displayTasks();
         showTags();
         showDropDown();
+        showDropDownColors();
+        theme.setText("");
         escShortcut();
     }
 
@@ -192,8 +196,8 @@ public class CardCtrl {
      */
     public void setInfo(){
         text.setText( server.getCard(cardID).getTitle());
-        palette.setValue(MainCtrl.colorParseToFXColor(server.getCard(cardID).getColor()));
         area.setText(server.getCard(cardID).getDescription());
+
     }
 
     /**
@@ -203,7 +207,6 @@ public class CardCtrl {
         if(!text.getText().equals("")){
             Card card= new Card(text.getText());
             card.setDescription(area.getText());
-            card.setColor(MainCtrl.colorParseToInt(palette.getValue()));
             server.editCard(boardID, cardID,card, true);
             warning.setText("");
         }
@@ -319,6 +322,81 @@ public class CardCtrl {
             showDropDown();
             taglist.getItems().clear();
             showTags();
+        }
+    }
+
+    /**
+     * shows menu of palettes of colors to choose for the card
+     */
+    public void showDropDownColors(){
+        palettes.setItems(getPalettes(boardID));
+        palettes.setCellFactory(param -> new ListCell<Palette>() {
+            @Override
+            public void updateItem(Palette palette, boolean empty) {
+                super.updateItem(palette, empty);
+                if (empty || palette == null) {
+                    setText(null);
+                } else {
+                    setText(palette.getName());
+//                    String hexColor = String.format("#%06X", (0xFFFFFF & tag.getColor()));
+//                    setStyle("-fx-control-inner-background: " + hexColor);
+                }
+            }
+        });
+    }
+
+    /**
+     * gets palettes from the board
+     * @param boardId
+     * @return - list of palettes
+     */
+    public ObservableList<Palette> getPalettes(int boardId){
+        List<Palette> p = server.getPalettesFromBoard(boardId);
+        ObservableList<Palette> palettes = FXCollections.observableArrayList(p);
+        return palettes;
+    }
+
+    /**
+     * hopefully will apply changes of selected color to card and save them to DB
+     * @param event
+     */
+    public void choose(MouseEvent event){
+        Palette palette = palettes.getSelectionModel().getSelectedItem();
+        if(event.getClickCount()==2 && palette!=null ){
+            showDropDownColors();
+        }
+        theme.setText(palette.getName());
+    }
+
+    /**
+     * saves cards colors to the db
+     * @param event
+     */
+    public void save(MouseEvent event){
+        List<Palette> palettes = server.getPalettesFromBoard(boardID);
+        if(theme.getText().equals("")){
+            for(Palette pal : palettes){
+                if(pal.isIsdefault()){
+                    theme.setText(pal.getName());
+                    Card card = server.getCard(cardID);
+                    card.setColor(pal.getbColor());
+                    card.setFcolor(pal.getfColor());
+                    server.editCard(boardID, cardID, card, false);
+                    break;
+                }
+            }
+        }
+        else{
+            for(Palette pal : palettes){
+                if(pal.getName().equals(theme.getText())){
+                    Card card = server.getCard(cardID);
+                    card.setColor(pal.getbColor());
+                    card.setFcolor(pal.getfColor());
+                    server.editCard(boardID, cardID, card, false);
+                    break;
+                }
+            }
+
         }
     }
 

@@ -93,7 +93,6 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     private boolean isLocked;
 
 
-
     /**
      *
      * @param server -
@@ -355,7 +354,10 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             if(isLocked) cardComponent.readmode();
             cardComponent.setStyle("-fx-background-color: " +
                     String.format("rgb(%d, %d, %d)", (card.getColor() >> 16) & 0xFF,
-                    (card.getColor() >> 8) & 0xFF, card.getColor()& 0xFF)+";" );
+                    (card.getColor() >> 8) & 0xFF, card.getColor() & 0xFF)+";" );
+            String hexColor = String.format("#%06X", (0xFFFFFF & card.getFcolor()));
+            cardComponent.tfTitle.setStyle("-fx-text-fill: " + hexColor);
+            cardComponent.descriptionLabel.setStyle("-fx-text-fill: " + hexColor);
             cardComponent.setTaskProgress();
 
             vbox.getChildren().add(cardComponent);
