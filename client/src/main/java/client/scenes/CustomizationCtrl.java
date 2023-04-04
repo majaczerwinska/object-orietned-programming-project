@@ -24,10 +24,10 @@ public class CustomizationCtrl {
 
     public int boardId;
 
-    private Color listB = MainCtrl.colorParseToFXColor(11776947);
-    private Color listF = MainCtrl.colorParseToFXColor(0) ;
-    private Color boardB = MainCtrl.colorParseToFXColor(2580);
-    private Color boardF = MainCtrl.colorParseToFXColor(13421772);
+    private Color listB = MainCtrl.colorParseToFXColor(3368550);
+    private Color listF = MainCtrl.colorParseToFXColor(16777215) ;
+    private Color boardB = MainCtrl.colorParseToFXColor(1723725);
+    private Color boardF = MainCtrl.colorParseToFXColor(16777215);
 
     private Color listBt;
     private Color listFt;

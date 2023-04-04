@@ -195,10 +195,10 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
                 (board.getbColor() >> 16) & 0xFF,
                 (board.getbColor() >> 8) & 0xFF, board.getbColor()& 0xFF)+";");
         String hexColor = String.format("#%06X", (0xFFFFFF & board.getfColor()));
-        labelBoardTitle.setStyle("-fx-text-fill: " + hexColor);
-        boardKey.setStyle("-fx-text-fill: " + hexColor);
-        boardKeyL.setStyle("-fx-text-fill: " + hexColor);
-        tagL.setStyle("-fx-text-fill: " + hexColor);
+        labelBoardTitle.setStyle("-fx-text-fill: " + hexColor+";");
+        boardKey.setStyle("-fx-text-fill: " + hexColor+";");
+        boardKeyL.setStyle("-fx-text-fill: " + hexColor+";");
+        tagL.setStyle("-fx-text-fill: " + hexColor+";");
     }
 
     /**
@@ -209,7 +209,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         if(board.getPassword().equals("") || board.getPassword()==null ){
             lock.setText("\uD83D\uDD13");
             isLocked=false;
-            lock.setStyle("-fx-background-color: white");
+            lock.setStyle("-fx-background-color: white;");
             enable();
             return;
         }else{
@@ -218,18 +218,18 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             if (isAdmin) {
                 isLocked=false;
                 enable();
-                lock.setStyle("-fx-background-color: green");
+                lock.setStyle("-fx-background-color: green;");
                 return;
             }
             if(pref.get(String.valueOf(boardID),"").equals("")){
-                lock.setStyle("-fx-background-color: red");
-                isLocked= true;
+                lock.setStyle("-fx-background-color: red;");
+                isLocked=true;
                 disable();
             }
             else{
                 isLocked=false;
                 enable();
-                lock.setStyle("-fx-background-color: green");
+                lock.setStyle("-fx-background-color: green;");
             }
 
         }
@@ -358,8 +358,8 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
                     String.format("rgb(%d, %d, %d)", (card.getColor() >> 16) & 0xFF,
                     (card.getColor() >> 8) & 0xFF, card.getColor() & 0xFF)+";" );
             String hexColor = String.format("#%06X", (0xFFFFFF & card.getFcolor()));
-            cardComponent.tfTitle.setStyle("-fx-text-fill: " + hexColor);
-            cardComponent.descriptionLabel.setStyle("-fx-text-fill: " + hexColor);
+            cardComponent.tfTitle.setStyle("-fx-text-fill: " + hexColor + ";");
+            cardComponent.descriptionLabel.setStyle("-fx-text-fill: " + hexColor + ";");
             cardComponent.setTaskProgress();
 
             vbox.getChildren().add(cardComponent);
@@ -405,13 +405,13 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
             cardListComponent.setTitle(cardList.getName());
             cardListComponent.setStyle(String.format("-fx-background-color: rgb(%d, %d, %d);",
                     (cardList.getbColor() >> 16) & 0xFF,
-                    (cardList.getbColor() >> 8) & 0xFF, cardList.getbColor()& 0xFF));
+                    (cardList.getbColor() >> 8) & 0xFF, cardList.getbColor()& 0xFF) + ";");
             System.out.println("List style: " + cardListComponent.getStyle());
             if(!isLocked) cardListComponent.setOnMouseEntered(event -> addEnterKeyListener(cardList.getId()));
             hboxCardLists.getChildren().add(cardListComponent);
             cardListComponent.setData(cardList);
             String hexColor = String.format("#%06X", (0xFFFFFF & cardList.getfColor()));
-            cardListComponent.labelTitle.setStyle("-fx-text-fill: " + hexColor);
+            cardListComponent.labelTitle.setStyle("-fx-text-fill: " + hexColor + ";");
             displayCards(cardListComponent.getVboxCards(), cardList.getId(),c);
             if(isLocked) cardListComponent.readonly();
         }
@@ -451,7 +451,7 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
                         } else {
                             setText(tag.getTitle());
                             String hexColor = String.format("#%06X", (0xFFFFFF & tag.getColor()));
-                            setStyle("-fx-control-inner-background: " + hexColor);
+                            setStyle("-fx-control-inner-background: " + hexColor + ";");
                         }
                     }
                 });
@@ -671,10 +671,10 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
     @FXML
     public void colorFont(int color){
         String hexColor = String.format("#%06X", (0xFFFFFF & color));
-        labelBoardTitle.setStyle("-fx-text-fill: " + hexColor);
-        boardKey.setStyle("-fx-text-fill: " + hexColor);
-        boardKeyL.setStyle("-fx-text-fill: " + hexColor);
-        tagL.setStyle("-fx-text-fill: " + hexColor);
+        labelBoardTitle.setStyle("-fx-text-fill: " + hexColor + ";");
+        boardKey.setStyle("-fx-text-fill: " + hexColor + ";");
+        boardKeyL.setStyle("-fx-text-fill: " + hexColor + ";");
+        tagL.setStyle("-fx-text-fill: " + hexColor + ";");
     }
 
     /**

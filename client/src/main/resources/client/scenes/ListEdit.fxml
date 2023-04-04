@@ -28,12 +28,12 @@
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button mnemonicParsing="false" onMouseClicked="#rename" text="Rename">
+                  <Button mnemonicParsing="false" onAction="#rename" text="Rename">
                      <HBox.margin>
                         <Insets left="451.0" />
                      </HBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" onMouseClicked="#cancel" text="Cancel">
+                  <Button mnemonicParsing="false" onAction="#cancel" text="Cancel">
                      <HBox.margin>
                         <Insets left="20.0" />
                      </HBox.margin>

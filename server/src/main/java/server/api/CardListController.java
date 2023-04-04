@@ -106,12 +106,24 @@ public class CardListController {
      * @param listId the id of the list we need to get the cards from
      * @return a response entity with the list of cards from the list
      */
-    @GetMapping("/{listId}")
+    @GetMapping("/cards/{listId}")
     public ResponseEntity<List<Card>> getCardsFromList(@PathVariable("listId") int listId) {
         if (listId < 0 || !als.existsById(listId)) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(als.getCardsFromList(listId));
+    }
+
+    /**
+     * Gets the list from its id
+     * @param id the id of the list we need to get
+     * @return a response entity with the list
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<CardList> getCard(@PathVariable("id") int id) {
+        if(id < 0 || !als.existsById(id)) return ResponseEntity.badRequest().body(null);
+        CardList cl =als.getById(id);
+        return ResponseEntity.ok(cl);
     }
 
     /**
