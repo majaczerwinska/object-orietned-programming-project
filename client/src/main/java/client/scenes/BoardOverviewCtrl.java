@@ -4,10 +4,7 @@ import client.components.CardListComponent;
 import client.utils.ServerUtils;
 import client.utils.WebsocketClient;
 import com.google.inject.Inject;
-import commons.Board;
-import commons.Card;
-import commons.CardList;
-import commons.Tag;
+import commons.*;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -573,6 +570,14 @@ public class BoardOverviewCtrl /*implements Initializable*/ {
         Card c = new Card("title..");
         //int size = server.getListSize(listID) + 1;
        // c.setPosition(99999);
+        List<Palette> palettes = server.getPalettesFromBoard(boardID);
+        for(Palette pal : palettes){
+            if(pal.isIsdefault()){
+                c.setColor(pal.getbColor());
+                c.setFcolor(pal.getfColor());
+                break;
+            }
+        }
         System.out.println("creating new card "+c+" in list id="+listID);
 
         c = server.addCard(c, boardID, listID);
