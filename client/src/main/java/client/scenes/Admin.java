@@ -13,7 +13,6 @@ import javafx.scene.text.Text;
 
 import javax.inject.Inject;
 import java.util.*;
-import java.util.function.Predicate;
 
 public class Admin {
 
