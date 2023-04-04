@@ -468,7 +468,7 @@ public class ServerUtils {
      */
     public List<Card> getCardsFromList(int listId) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/lists/" + listId) //
+                .target(SERVER).path("api/lists/cards/" + listId) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<List<Card>>() {});

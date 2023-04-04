@@ -29,15 +29,17 @@ public class ListEditCtrl {
         this.server = server;
     }
 
+    /**
+     *
+     */
     public void setName(){
         name.setText(server.getCardList(listId).getName());
     }
 
     /**
      * renames your list
-     * @param mouseEvent - click
      */
-    public void rename(MouseEvent mouseEvent){
+    public void rename(){
         String newName = name.getText();
         server.editList(boardId, listId, newName);
         mainCtrl.closeLocker();
