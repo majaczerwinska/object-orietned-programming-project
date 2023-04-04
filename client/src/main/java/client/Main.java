@@ -86,6 +86,7 @@ public class Main extends Application {
             var editPassword = FXML.load(EditPasswordCtrl.class, "client", "scenes", "EditPassword.fxml");
             var warning = FXML.load(WarningCtrl.class, "client", "scenes", "Warning.fxml");
             var customization = FXML.load(CustomizationCtrl.class, "client", "scenes", "Customization.fxml");
+            var paletteCreation = FXML.load(PaletteCreationCtrl.class, "client", "scenes", "PaletteCreation.fxml");
             System.out.println("Done with loading scenes");
             Stage locker = new Stage();
             var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
@@ -112,6 +113,7 @@ public class Main extends Application {
                     providePassword,
                     customization,
                     editPassword,
+                    paletteCreation,
                     warning);
 
 

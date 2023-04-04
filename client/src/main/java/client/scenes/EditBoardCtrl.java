@@ -98,14 +98,14 @@ public class EditBoardCtrl {
     @FXML
     private void editBoard() {
         String name = this.name.getText();
-        int boardColor = Integer.parseInt(this.color.getText());
+        //int boardColor = Integer.parseInt(this.color.getText());
 
-
+//        Board board = new Board(name);
+//        board.setId(boardId);
         Board board = server.getBoard(boardId);
         board.setName(name);
-        board.setbColor(boardColor);
 
-        if (name.isEmpty() || color.getText().isEmpty()) {
+        if (name.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
             alert.setContentText("Please enter a name and a color");

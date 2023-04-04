@@ -84,16 +84,13 @@ public class CustomizationCtrl {
      */
     public void color(MouseEvent event){
         Board board = server.getBoard(boardId);
-        board.setbColor(mainCtrl.colorParseToInt(bb.getValue()));
-        board.setfColor(mainCtrl.colorParseToInt(bf.getValue()));
+        board.setbColor(MainCtrl.colorParseToInt(bb.getValue()));
+        board.setfColor(MainCtrl.colorParseToInt(bf.getValue()));
         server.editBoard(boardId,board);
         listBt = lb.getValue();
         listFt = lf.getValue();
         colourlist();
         websocketClient.sendMessage("/app/update/list/"+boardId, "Done updating card in component");
-
-
-
         mainCtrl.showBoardOverview(boardId);
        // mainCtrl.colorBF(boardId, MainCtrl.colorParseToInt(bf.getValue()));
 
@@ -137,16 +134,17 @@ public class CustomizationCtrl {
         System.out.println("board color: " + bb.getValue());
         System.out.println("board f color: " + bf.getValue());
         if(l.isEmpty()){
-            if(listBt == null){
+//            if(listBt == null){
                 lb.setValue(listB);
                 lf.setValue(listF);
 //                listBt = listB;
 //                listFt = listF;
-            }
-            else{
-                lb.setValue(listBt);
-                lf.setValue(listFt);
-            }
+ //           }
+//            else{
+//                lb.setValue(listBt);
+//                lf.setValue(listFt);
+//                System.out.println("assigning not default to color pickers");
+//            }
         }
         else{
             lb.setValue(MainCtrl.colorParseToFXColor(l.get(0).getbColor()));
@@ -198,8 +196,7 @@ public class CustomizationCtrl {
      * @param mouseEvent
      */
     public void addPalette(MouseEvent mouseEvent){
-        Palette p = new Palette("new palette", 0, 0);
-        server.addPaletteToBoard(boardId, p);
+        mainCtrl.showPaletteCreation(boardId);
         displayPalettes();
     }
 
