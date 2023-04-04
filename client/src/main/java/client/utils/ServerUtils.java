@@ -670,6 +670,18 @@ public class ServerUtils {
                 .get(new GenericType<List<Palette>>() {});
     }
 
+    /**
+     * deletes palette from the board
+     * @param paletteId
+     * @return - deleted palette
+     */
+    public Palette deletePalette(int paletteId){
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/palettes/" + paletteId) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .delete(Palette.class);
+    }
 
     /**
      * Send a delete request to the board endpoint
@@ -693,14 +705,14 @@ public class ServerUtils {
      * @return the list of maps that represents the response table
      */
     public List<Map<String, Object>> executeSQLQuery(String query, String token) {
-        System.out.println("Sending query="+query);
-        System.out.println("With token="+token);
+        System.out.println("Sending query=" + query);
+        System.out.println("With token=" + token);
         try {
             var response = ClientBuilder.newClient(new ClientConfig())
                     .target(SERVER).path("query")
                     .request(APPLICATION_JSON)
                     .accept(APPLICATION_JSON)
-                    .header("Authorization", "Bearer "+token)
+                    .header("Authorization", "Bearer " + token)
                     .post(Entity.entity(query, APPLICATION_JSON), Response.class);
             if (response.getStatus() == 200) {
                 var res = response.readEntity(List.class);
@@ -709,6 +721,27 @@ public class ServerUtils {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    /**
+    * edits palette
+     * @param id
+     * @param palette
+     * @return - edited palette
+     */
+    public Palette editPalette(int id, Palette palette) {
+        try{
+            return ClientBuilder.newClient(new ClientConfig())
+                    .target(SERVER).path("api/palettes/" + id)
+                    .request(APPLICATION_JSON)
+                    .accept(APPLICATION_JSON)
+                    .put(Entity.entity(palette, APPLICATION_JSON), Palette.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+
         }
         return null;
     }

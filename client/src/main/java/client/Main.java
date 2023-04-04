@@ -77,7 +77,6 @@ public class Main extends Application {
             var tagManager = FXML.load(TagManagerCtrl.class, "client", "scenes", "TagManager.fxml");
             var serverSelect = FXML.load(ServerSelectCtrl.class, "client", "scenes", "ServerSelect.fxml");
             var boardOverview = FXML.load(BoardOverviewCtrl.class, "client", "scenes", "BoardOverview.fxml");
-            var taskCreator = FXML.load(TaskCreatorCtrl.class, "client", "scenes", "TaskCreator.fxml");
             var boardCreation = FXML.load(BoardCreationCtrl.class, "client", "scenes", "BoardCreation.fxml");
             var listEdit = FXML.load(ListEditCtrl.class, "client", "scenes", "ListEdit.fxml");
             var editBoard = FXML.load(EditBoardCtrl.class, "client", "scenes", "EditBoard.fxml");
@@ -89,6 +88,7 @@ public class Main extends Application {
             var customization = FXML.load(CustomizationCtrl.class, "client", "scenes", "Customization.fxml");
             var adminPasswordCheck = FXML.load(EnterAdminPassword.class, "client", "scenes", "EnterAdminPassword.fxml");
             var adminPanel = FXML.load(Admin.class, "client", "scenes", "Admin.fxml");
+            var paletteCreation = FXML.load(PaletteCreationCtrl.class, "client", "scenes", "PaletteCreation.fxml");
 
 
             System.out.println("Done with loading scenes");
@@ -109,7 +109,6 @@ public class Main extends Application {
                     serverSelect,
                     boardOverview,
                     boardCreation,
-                    taskCreator,
                     listEdit,
                     editBoard,
                     help,
@@ -120,7 +119,8 @@ public class Main extends Application {
                     editPassword,
                     warning,
                     adminPasswordCheck,
-                    adminPanel
+                    adminPanel,
+                    paletteCreation
 
             );
 

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "palettes")
@@ -126,5 +127,43 @@ public class Palette {
      */
     public void setfColor(int fColor) {
         this.fColor = fColor;
+    }
+
+    /**
+     * checks if equal
+     * @param o
+     * @return - true if yes
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Palette palette = (Palette) o;
+        return id == palette.id && bColor == palette.bColor && fColor == palette.fColor
+                && isdefault == palette.isdefault && name.equals(palette.name);
+    }
+
+    /**
+     *
+     * @return - hashcode
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, bColor, fColor, isdefault);
+    }
+
+    /**
+     * to string
+     * @return - string representation of palette
+     */
+    @Override
+    public String toString() {
+        return "Palette{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", bColor=" + bColor +
+                ", fColor=" + fColor +
+                ", isdefault=" + isdefault +
+                '}';
     }
 }

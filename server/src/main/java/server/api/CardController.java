@@ -97,12 +97,6 @@ public class CardController {
      * @param ignore indicates whether websockets should ignore this update
      * @return a response entity with the card object
      */
-
-//<<<<<<< HEAD
-//    @PutMapping("/{id}")
-//    public ResponseEntity<Card> editCard(@PathVariable("id") int id, @RequestBody Card card) {
-//        System.out.println("editing card with id="+id+" to card="+card);
-//=======
     @PutMapping("/edit/{boardId}/{id}/{ignore}")
     public ResponseEntity<Card> editCard(@PathVariable("boardId") int boardId,
                                          @PathVariable("id") int id,
