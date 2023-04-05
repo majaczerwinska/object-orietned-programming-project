@@ -54,8 +54,8 @@ public class EditBoardCtrl {
     /**
      * When this method is called the window that has the button in it will be left.
      */
-@FXML
-    private void exitButton(){
+    @FXML
+    public void exitButton(){
         mainCtrl.closeLocker();
         mainCtrl.showBoardOverview(boardId);
     }
