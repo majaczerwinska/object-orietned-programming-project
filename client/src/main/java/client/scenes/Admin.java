@@ -7,6 +7,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -221,6 +223,12 @@ public class Admin {
         try {
             System.out.println("joining board #" + b.getId());
             System.out.println(b);
+            if (server.getBoard(b.getId()) == null) {
+                this.refresh(this.ip);
+                saveText.setText("That board doesn't exist!");
+                saveText.setFill(Color.RED);
+                return;
+            }
             mainCtrl.showBoardOverview(b.getId(), true);
             mainCtrl.subscribeToBoard(b.getId());
             mainCtrl.subscribeToTagsFromBoard(b.getId());
@@ -263,5 +271,17 @@ public class Admin {
      */
     public void setToken(String token) {
         this.token = token;
+    }
+
+    /**
+     * event handler for pressing enter
+     * @param e key event
+     */
+    public void handleEnterKeyPressed(KeyEvent e) {
+        if (e!=null && e.getCode() == KeyCode.ENTER) {
+            if (sqlQuery.getText().toLowerCase().contains("select")) {
+                sendQuery();
+            }
+        }
     }
 }
