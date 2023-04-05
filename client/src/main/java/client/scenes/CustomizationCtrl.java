@@ -29,11 +29,6 @@ public class CustomizationCtrl {
     private Color boardB = MainCtrl.colorParseToFXColor(2580);
     private Color boardF = MainCtrl.colorParseToFXColor(13421772);
 
-    private Color listBt;
-    private Color listFt;
-    private Color boardBt;
-    private Color boardFt;
-
     @FXML
     private ColorPicker bb;
     @FXML
@@ -77,9 +72,6 @@ public class CustomizationCtrl {
      * @param event
      */
     public void back(ActionEvent event){
-        if(!bb.getValue().equals(server.getBoard(boardId).getbColor())){
-            boardBt = null;
-        }
         mainCtrl.showBoardOverview(boardId);
     }
 
@@ -90,12 +82,10 @@ public class CustomizationCtrl {
     public void color(MouseEvent event){
         Board board = server.getBoard(boardId);
         board.setbColor(MainCtrl.colorParseToInt(bb.getValue()));
-        boardBt = bb.getValue();
         board.setfColor(MainCtrl.colorParseToInt(bf.getValue()));
-        boardFt = bf.getValue();
+        board.setListb(MainCtrl.colorParseToInt(lb.getValue()));
+        board.setListt(MainCtrl.colorParseToInt(lf.getValue()));
         server.editBoard(boardId,board);
-        listBt = lb.getValue();
-        listFt = lf.getValue();
         colourlist();
         websocketClient.sendMessage("/app/update/list/"+boardId, "Done updating card in component");
         mainCtrl.showBoardOverview(boardId);
@@ -108,61 +98,25 @@ public class CustomizationCtrl {
      */
     public void colourlist(){
         List<CardList> cardLists = server.getCardListsFromBoard(boardId);
-        if (listBt == null) {
-            for(CardList list : cardLists){
-                list.setbColor(MainCtrl.colorParseToInt(listB));
-                System.out.println("extracted value from color picker after setting lbcolor: " + lb.getValue());
-                list.setfColor(MainCtrl.colorParseToInt(listF));
-                System.out.println("extracted value from color picker: " + lf.getValue());
+        Board board = server.getBoard(boardId);
+        for(CardList list : cardLists){
+                list.setbColor(board.getListb());
+                list.setfColor(board.getListt());
                 server.editCardListColour(list.getId(), list);
                 //mainCtrl.colorLF(boardId, list.getId(), MainCtrl.colorParseToInt(lf.getValue()));
             }
-        }
-        else{
-            for(CardList list : cardLists) {
-                list.setbColor(MainCtrl.colorParseToInt(listBt));
-                System.out.println("extracted value from color picker after setting lbcolor: " + lb.getValue());
-                list.setfColor(MainCtrl.colorParseToInt(listFt));
-                System.out.println("extracted value from color picker: " + lf.getValue());
-                server.editCardListColour(list.getId(), list);
-                //mainCtrl.colorLF(boardId, list.getId(), MainCtrl.colorParseToInt(lf.getValue()));
-            }
-        }
     }
 
     /**
      * refreshes the page to set values for color pickers
      */
-    public void refresh(){
+    public void refresh() {
         Board b = server.getBoard(boardId);
-        List<CardList> l = server.getCardListsFromBoard(boardId);
-        if(boardBt == null){
-            bb.setValue(MainCtrl.colorParseToFXColor(b.getbColor()));
-            bf.setValue(MainCtrl.colorParseToFXColor(b.getfColor()));
-        }
-        else{
-            bb.setValue(boardBt);
-            bf.setValue(boardFt);
-        }
-        if(listBt == null) {
-            lb.setValue(listB);
-            lf.setValue(listF);
-//                listBt = listB;
-//                listFt = listF;
-            }
-        else{
-            lb.setValue(listBt);
-            lf.setValue(listFt);
-            }
-
-//        else{
-//            lb.setValue(MainCtrl.colorParseToFXColor(l.get(0).getbColor()));
-//            lf.setValue(MainCtrl.colorParseToFXColor(l.get(0).getfColor()));
-//        }
+        bb.setValue(MainCtrl.colorParseToFXColor(b.getbColor()));
+        bf.setValue(MainCtrl.colorParseToFXColor(b.getfColor()));
+        lb.setValue(MainCtrl.colorParseToFXColor(b.getListb()));
+        lf.setValue(MainCtrl.colorParseToFXColor(b.getListt()));
         displayPalettes();
-//        palettes.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-//        ObservableList<Palette> boardList = FXCollections.observableList(getPalettes());
-//        palettes.setItems(boardList);
     }
 
     /**
@@ -192,23 +146,11 @@ public class CustomizationCtrl {
         lf.setValue(listF);
     }
 
-//    public List<Palette> getPalettes(){
-//        return server.getPalettesFromBoard(boardId);
-//    }
-////    @FXML
-////    public void addPalette(MouseEvent event){
-////        Palette p = new Palette()
-////    }
-
     /**
      * adds new palette of colors for cards
      * @param mouseEvent
      */
     public void addPalette(MouseEvent mouseEvent){
-        boardBt = bb.getValue();
-        boardFt = bf.getValue();
-        listFt = lb.getValue();
-        listBt = lf.getValue();
         mainCtrl.showPaletteCreation(boardId);
         displayPalettes();
     }

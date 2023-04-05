@@ -116,6 +116,7 @@ public class CardService {
         c.setTitle(card.getTitle());
         c.setColor(card.getColor());
         c.setFcolor(card.getFcolor());
+        c.setPalette(card.getPalette());
         c.setPosition(card.getPosition());
         repo.save(c);
     }

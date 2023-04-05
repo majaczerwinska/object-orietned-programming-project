@@ -79,7 +79,6 @@
           </TitledPane>
         </panes>
       </Accordion>
-      <Button layoutX="656.0" layoutY="323.0" mnemonicParsing="false" onMouseClicked="#save" text="save" />
       <Label fx:id="readonly" layoutX="27.0" layoutY="366.0" prefHeight="18.0" prefWidth="266.0" textFill="#d11212" />
    </children>
 </AnchorPane>

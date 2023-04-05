@@ -129,6 +129,8 @@ public class BoardService {
         b.setPassword(board.getPassword());
         b.setbColor(board.getbColor());
         b.setfColor(board.getfColor());
+        b.setListb(board.getListb());
+        b.setListt(board.getListt());
         repo.save(b);
     }
 

@@ -1,0 +1,39 @@
+   Meeting Team 47
+Location:   Drebbelweg
+Date:      4th April
+Time:      14:15-14:40
+Attendees: Everyone
+
+Agenda Items:
+	
+	Opening by chairperson
+			time stamp: 14:16
+
+
+		   Announcements: deadlines for assigment were moved to tuesday
+
+			time stamp: 14:18
+
+	Approval of the agenda
+			time stamp: 14:19
+
+The graph of our code contributtion has been showed to us again. The proportions on it seemed way more balanced. But Galya and Andreas still have more code than others, but that's okay. Good job everyone!
+
+	Agenda Item 1 - Last Week Work:
+Everyone is satisfied with their work and our product so far.
+
+	Agenda Item 2 - Finish Product:
+We don't have a lot left. We need to add some shortcuts, testing and implement the help page. Also use long polling.
+
+confirmed - we need websockets, long polling and rest
+
+	Agenda Item 3 - Finishing other assignments:
+We have to record another video by the end of the week (we will have a google doc where we can edit the script) and focus more on selling the product. We also need to rewrite our HUE on the weekend (we can do another exaluation with a random students).
+
+
+Summary of action opints:
+Action items                   Who is responsible   Deadline
+Polishing shortcuts and tests  Pjotr                
+Frontend need refactoring      Lucas & Andreas
+Tests on front end             Tudor
+Help page                      Maja                 Friday
