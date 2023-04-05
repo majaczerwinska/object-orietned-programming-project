@@ -29,7 +29,7 @@ public class ListEditCtrl {
     }
 
     /**
-     *
+     * set name field with the current list name
      */
     public void setName(){
         name.setText(server.getCardList(listId).getName());

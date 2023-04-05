@@ -35,7 +35,7 @@ public class ListCreationCtrl {
      *Creates a list
      * @param server the server
      * @param mainCtrl the controller
-     * @param websocketClient the board overview ctrl
+     * @param websocketClient the websocket client
      */
     @Inject
     public ListCreationCtrl(ServerUtils server, MainCtrl mainCtrl, WebsocketClient websocketClient){

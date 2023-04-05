@@ -97,6 +97,7 @@ public class TagPopUpCtrl {
         }
     }
 
+
     /**
      * Gets the list of tags and puts it in an observable list
      * @param boardID the id of the board
@@ -114,6 +115,7 @@ public class TagPopUpCtrl {
         ObservableList<Tag> tagList = FXCollections.observableArrayList(t);
         return tagList;
     }
+
 
     /**
      * Closes the pop-up

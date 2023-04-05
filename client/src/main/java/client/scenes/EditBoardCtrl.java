@@ -21,6 +21,8 @@ public class EditBoardCtrl {
     @FXML
     private Label titleLabel;
 
+    @FXML
+    private Button deleteBoardButton;
 
     public int boardId;
 
@@ -45,7 +47,7 @@ public class EditBoardCtrl {
     public void openScene(int boardId) {
         this.boardId = boardId;
         Board board = server.getBoard(this.boardId);
-
+        name.requestFocus();
         name.setText(board.getName());
     }
 
@@ -58,31 +60,13 @@ public class EditBoardCtrl {
         mainCtrl.closeLocker();
     }
 
-//    /**
-//     * Adds a task to the database
-//     */
-//    @FXML
-//    private void addTask(){
-//        Card c = server.getCard(cardId);
-//        List<Task> l = c.getTasks();
-//        l.add(new Task(newTask.getText()));
-//        c.setTasks(l);
-//        server.editCard(cardId, c);
-//    }
-
-
-
-
     /**
      * Saves the card and all changes made to it to the database.
      */
     @FXML
     private void editBoard() {
         String name = this.name.getText();
-        //int boardColor = Integer.parseInt(this.color.getText());
 
-//        Board board = new Board(name);
-//        board.setId(boardId);
         Board board = server.getBoard(boardId);
         board.setName(name);
 
@@ -97,6 +81,39 @@ public class EditBoardCtrl {
         }
         mainCtrl.showBoardOverview(boardId);
     }
+
+
+    /**
+     * button handler for delete
+     */
+    @FXML
+    public void handleDeleteButtonClick() {
+        if (deleteBoardButton.getText().equals("Are you sure?")){
+            deleteBoardButton.setText("Delete Board");
+            deleteBoard();
+        } else {
+            deleteBoardButton.setText("Are you sure?");
+        }
+    }
+
+    /**
+     *
+     */
+    @FXML
+    public void mouseExitCancelDelete() {
+        deleteBoardButton.setText("Delete Board");
+    }
+
+
+    /**
+     * delete board and go back to board select
+     */
+    public void deleteBoard() {
+        server.deleteBoard(boardId);
+        mainCtrl.showSelect();
+        mainCtrl.closeLocker();
+    }
+
 
     /**
      * name textfield getter

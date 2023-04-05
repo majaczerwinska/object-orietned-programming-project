@@ -1,20 +1,27 @@
 package client.scenes;
 
+import client.services.AdminService;
 import client.utils.ServerUtils;
 import commons.Board;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import org.springframework.stereotype.Controller;
 
 import javax.inject.Inject;
 import java.util.*;
 
+@Controller
 public class Admin {
+
+    private final AdminService service;
+
 
     private String token;
 
@@ -86,11 +93,13 @@ public class Admin {
      * Constructor for admin panel
      * @param serverUtils injected server instance
      * @param mainCtrl injected mainctrl instance
+     * @param adminService the service for generating boards
      */
     @Inject
-    public Admin(ServerUtils serverUtils, MainCtrl mainCtrl) {
+    public Admin(ServerUtils serverUtils, MainCtrl mainCtrl, AdminService adminService) {
         this.server = serverUtils;
         this.mainCtrl = mainCtrl;
+        this.service = adminService;
     }
 
 
@@ -128,7 +137,7 @@ public class Admin {
      */
     public void updateTextFields() {
         String item = boardList.getSelectionModel().getSelectedItem();
-        Board board = getBoardFromString(item);
+        Board board = service.getBoardFromString(item, this.boardElementList);
         if (board != null) {
             boardName.setText(board.getName());
             boardKey.setText(board.getBoardkey());
@@ -146,7 +155,7 @@ public class Admin {
         String name = boardName.getText();
         String key = boardKey.getText();
         String password = boardPassword.getText();
-        Board b = getBoardFromString(boardList.getSelectionModel().getSelectedItem());
+        Board b = service.getBoardFromString(boardList.getSelectionModel().getSelectedItem(), this.boardElementList);
         if (b!= null) {
             if (b.getBoardkey().equals("public")){
                 refresh(this.ip);
@@ -171,7 +180,7 @@ public class Admin {
      * sends a delete request to the server for the board currently selcted
      */
     public void deleteBoard() {
-        Board b = getBoardFromString(boardList.getSelectionModel().getSelectedItem());
+        Board b = service.getBoardFromString(boardList.getSelectionModel().getSelectedItem(), this.boardElementList);
         if (b==null) {
             refresh(this.ip);
             saveText.setText("board selection is null");
@@ -192,22 +201,6 @@ public class Admin {
 
 
     /**
-     * this method is my lowest point
-     * @param item the string from the list view
-     * @return the board instance
-     */
-    private Board getBoardFromString(String item) {
-        for (Board b : this.boardElementList) {
-            String s = "Board #"+b.getId();
-            s+="\nName: "+b.getName();
-            s+="\nKey: " +b.getBoardkey();
-            if (s.equals(item)) return b;
-        }
-        return null;
-    }
-
-
-    /**
      * go back to server select screen
      */
     public void goBack() {
@@ -220,7 +213,7 @@ public class Admin {
      * meaning no matter its password state you have it unlocked
      */
     public void enterBoard() {
-        Board b = getBoardFromString(boardList.getSelectionModel().getSelectedItem());
+        Board b = service.getBoardFromString(boardList.getSelectionModel().getSelectedItem(), this.boardElementList);
         if (b==null) {
             this.refresh(this.ip);
             saveText.setText("Invalid board selected");
@@ -230,6 +223,12 @@ public class Admin {
         try {
             System.out.println("joining board #" + b.getId());
             System.out.println(b);
+            if (server.getBoard(b.getId()) == null) {
+                this.refresh(this.ip);
+                saveText.setText("That board doesn't exist!");
+                saveText.setFill(Color.RED);
+                return;
+            }
             mainCtrl.showBoardOverview(b.getId(), true);
             mainCtrl.subscribeToBoard(b.getId());
             mainCtrl.subscribeToTagsFromBoard(b.getId());
@@ -260,105 +259,8 @@ public class Admin {
             return;
         }
 
-        //for (List<Map<String, Object>> outputTable : res) { //todo multiple queries at once
-        TableView<Map<String, Object>> table = new TableView<>();
-        ObservableList<Map<String, Object>> tableData = FXCollections.observableArrayList(outputTable);
-        table.setItems(tableData);
-        for (Map<String, Object> t : outputTable) {
-            for (String column : t.keySet()) {
-                TableColumn<Map<String, Object>, Object> tableColumn = findColumn(table, column);
-                tableColumn.setCellValueFactory(cellData ->
-                        new SimpleObjectProperty<>(cellData.getValue().get(column)));
-                if (!doesColumnExist(table, tableColumn.getText())) table.getColumns().add(tableColumn);
-                //                    try {
-//                        table.getColumns().add(tableColumn);
-//                    } catch (Exception e) {
-//                        System.out.println("Duplicate columns in sql table output");
-//                        System.out.println(e.getMessage());
-//                    }
-            }
-            removeDuplicateColumns(table);
-            List<TableColumn<Map<String, Object>, ?>> columnsToRemove = new ArrayList<>();
-            for (TableColumn<Map<String, Object>, ?> column : table.getColumns()) {
-                boolean columnIsEmpty = true;
-                for (Map<String, Object> row : table.getItems()) {
-                    if (row.get(column.getText()) != null) {
-                        columnIsEmpty = false;
-                        break;
-                    }
-                }
-                if (columnIsEmpty) {
-                    columnsToRemove.add(column);
-                }
-            }
-
-            // remove empty columns
-            table.getColumns().removeAll(columnsToRemove);
-
-        }
+        TableView<Map<String, Object>> table = service.generateTable(outputTable);
         vboxTableContent.getChildren().add(table);
-        //}
-    }
-
-
-    /**
-     * get a column instance from a table
-     * if it does not exist, create it
-     * @param table the table instance
-     * @param columnName the column name to search for
-     * @return the column element,
-     * if found the currently existing one,
-     * else a new one for this table
-     */
-    private TableColumn<Map<String, Object>, Object> findColumn(
-            TableView<Map<String, Object>> table, String columnName) {
-        // Look for existing column with matching name
-        for (TableColumn<Map<String, Object>, ?> column : table.getColumns()) {
-            if (column.getText().equals(columnName)) {
-                return (TableColumn<Map<String, Object>, Object>) column;
-            }
-        }
-        // If no existing column found, create a new one
-        TableColumn<Map<String, Object>, Object> newColumn = new TableColumn<>(columnName);
-        newColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().get(columnName)));
-        return newColumn;
-    }
-
-
-    /**
-     * remove any duplicate columns created by parsing the map sent by SQL
-     * @param tableView the table instance
-     */
-    public static void removeDuplicateColumns(TableView<?> tableView) {
-        List<TableColumn<?, ?>> columnsToRemove = new ArrayList<>();
-        Set<String> columnNames = new HashSet<>();
-
-        for (TableColumn<?, ?> column : tableView.getColumns()) {
-            if (columnNames.contains(column.getText())) {
-                columnsToRemove.add(column);
-            } else {
-                columnNames.add(column.getText());
-            }
-        }
-
-        tableView.getColumns().removeAll(columnsToRemove);
-    }
-
-
-    /**
-     * check if a column exists in a table
-     * @param table the table instance
-     * @param columnName the column's name
-     * @return T/F does it exist?
-     */
-    public boolean doesColumnExist(TableView<?> table, String columnName) {
-        ObservableList<? extends TableColumn<?, ?>> columns = table.getColumns();
-        for (TableColumn<?, ?> column : columns) {
-            if (column.getText().equals(columnName)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
@@ -369,5 +271,17 @@ public class Admin {
      */
     public void setToken(String token) {
         this.token = token;
+    }
+
+    /**
+     * event handler for pressing enter
+     * @param e key event
+     */
+    public void handleEnterKeyPressed(KeyEvent e) {
+        if (e!=null && e.getCode() == KeyCode.ENTER) {
+            if (sqlQuery.getText().toLowerCase().contains("select")) {
+                sendQuery();
+            }
+        }
     }
 }

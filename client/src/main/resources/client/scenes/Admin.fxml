@@ -24,7 +24,7 @@
             <Font size="21.0" />
          </font>
       </Text>
-      <TextField fx:id="sqlQuery" layoutX="31.0" layoutY="371.0" prefHeight="26.0" prefWidth="674.0" />
+      <TextField fx:id="sqlQuery" layoutX="31.0" layoutY="371.0" onKeyPressed="#handleEnterKeyPressed" prefHeight="26.0" prefWidth="674.0" />
       <Text layoutX="31.0" layoutY="415.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Output:" />
       <Button fx:id="sqlSend" layoutX="718.0" layoutY="371.0" mnemonicParsing="false" onAction="#sendQuery" text="Send" />
       <HBox layoutX="313.0" layoutY="47.0" prefHeight="285.0" prefWidth="451.0">

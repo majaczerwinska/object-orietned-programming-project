@@ -1,5 +1,6 @@
 package client.scenes;
 import client.components.SubTaskComponent;
+import client.services.CardService;
 import client.utils.*;
 import com.google.inject.Inject;
 import javafx.application.Platform;
@@ -15,10 +16,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.TextField;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 public class CardCtrl {
+    private final CardService service;
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private final WebsocketClient websocketClient;
@@ -68,12 +68,14 @@ public class CardCtrl {
 
     /**
      *
-     * @param server -
-     * @param mainCtrl -
-     * @param websocketClient -
+     * @param service the services for this controller
+     * @param server server utils instance
+     * @param mainCtrl main ctrl instance
+     * @param websocketClient the websocket client
      */
     @Inject
-    public CardCtrl(ServerUtils server, MainCtrl mainCtrl, WebsocketClient websocketClient){
+    public CardCtrl(CardService service, ServerUtils server, MainCtrl mainCtrl, WebsocketClient websocketClient){
+        this.service = service;
         this.mainCtrl = mainCtrl;
         this.server = server;
         this.websocketClient = websocketClient;
@@ -269,7 +271,7 @@ public class CardCtrl {
      * Shows the tags in this board that are not added to the card yet
      */
     public void showDropDown(){
-        boardtags.setItems(getTagListOfBoard(boardID));
+        boardtags.setItems(service.getTagListOfBoard(server, boardID, cardID));
         boardtags.setCellFactory(param -> new ListCell<Tag>() {
             @Override
             public void updateItem(Tag tag, boolean empty) {
@@ -286,10 +288,10 @@ public class CardCtrl {
     }
 
     /**
-     * Shows the tags in this board that are not added to the card yet
+     * Shows the tags in this board that are added to the card
      */
     public void showTags(){
-        taglist.setItems(getTagListOfCard(cardID));
+        taglist.setItems(service.getTagListOfCard(server, cardID));
         taglist.setCellFactory(param -> new ListCell<Tag>() {
             @Override
             public void updateItem(Tag tag, boolean empty) {
@@ -306,39 +308,6 @@ public class CardCtrl {
         });
     }
 
-
-    /**
-     * Gets the list of tags and puts it in an observable list
-     * @param boardID the id of the board
-     * @return an observable list of tags
-     */
-    public ObservableList<Tag> getTagListOfBoard(int boardID){
-        List<Tag> tags = server.getTagsFromBoard(boardID);
-        List<Tag> t = new ArrayList<>();
-        Set<Tag> tagsofcard = server.getTagsForCard(cardID);
-        for(Tag tag : tags){
-            if(tagsofcard!=null && !tagsofcard.contains(tag)){
-                t.add(tag);
-            }
-        }
-        ObservableList<Tag> tagList = FXCollections.observableArrayList(t);
-        return tagList;
-    }
-
-    /**
-     * Gets the list of tags and puts it in an observable list
-     * @param cardID the id of the board
-     * @return an observable list of tags
-     */
-    public ObservableList<Tag> getTagListOfCard(int cardID){
-        Set<Tag> tags = server.getTagsForCard(cardID);
-        List<Tag> t = new ArrayList<>();
-        for(Tag tag : tags){
-                t.add(tag);
-        }
-        ObservableList<Tag> tagList = FXCollections.observableArrayList(t);
-        return tagList;
-    }
 
     /**
      * Shows the selected tag in the text field/area

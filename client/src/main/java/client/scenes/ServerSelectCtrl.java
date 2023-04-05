@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.services.ServerSelectService;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import javafx.collections.FXCollections;
@@ -11,24 +12,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.prefs.Preferences;
 
-//import javafx.application.Platform;
-//import javafx.collections.FXCollections;
-//import javafx.collections.ObservableList;
-//import javafx.event.ActionEvent;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-//import javafx.scene.text.Text;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
+import org.springframework.stereotype.Controller;
 
+@Controller
 public class ServerSelectCtrl {
 
-    private Preferences prefs;
+    private final ServerSelectService service;
+    private final Preferences prefs;
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
@@ -80,12 +74,13 @@ public class ServerSelectCtrl {
     private Button enterAsAdmin;
 
     /**
-     *
-     * @param server   -
-     * @param mainCtrl -
+     * @param service the services for this controller
+     * @param server server utils instance
+     * @param mainCtrl main ctrl instance
      */
     @Inject
-    public ServerSelectCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public ServerSelectCtrl(ServerSelectService service, ServerUtils server, MainCtrl mainCtrl) {
+        this.service = service;
         this.mainCtrl = mainCtrl;
         this.server = server;
         this.prefs = Preferences.userRoot().node(this.getClass().getName());
@@ -182,7 +177,7 @@ public class ServerSelectCtrl {
         System.out.println("selected address " + address);
         if (address != null) {
             updateAddress(address);
-            setConnectionStatus(1);
+            service.setConnectionStatus(1, connectionStatus);
         }
         System.out.println("Server " + address + " selected");
     }
@@ -221,38 +216,7 @@ public class ServerSelectCtrl {
         return ipList;
     }
 
-    private void setConnectionStatus(int status) {
-        switch (status) {
-            case 1: // unknown
-                connectionStatus.setText("Unknown");
-                connectionStatus.setTextFill(Color.BLACK);
-                break;
-            case 0: // loading
-                connectionStatus.setText("Loading...");
-                connectionStatus.setTextFill(Color.BLACK);
-                break;
-            case 200: // Connection Successful
-                connectionStatus.setText("200 Successful");
-                connectionStatus.setTextFill(Color.GREEN);
-                break;
-            case 301:
-                connectionStatus.setText("301 Moved Permanently");
-                connectionStatus.setTextFill(Color.CORAL);
-                break;
-            case 404: // Not found
-                connectionStatus.setText("404 Not Found");
-                connectionStatus.setTextFill(Color.RED);
-                break;
-            case -1: // Timeout
-                connectionStatus.setText("Server not found \n(408 timeout)");
-                connectionStatus.setTextFill(Color.ORANGERED);
-                break;
-            case -2: // not a talio server
-                connectionStatus.setText("Not a talio server");
-                connectionStatus.setTextFill(Color.GOLDENROD);
-                break;
-        }
-    }
+
 
     /**
      * Event handler for the test connection button
@@ -260,10 +224,10 @@ public class ServerSelectCtrl {
     public void onTestConnection() {
         String ip = serverAddress;
         System.out.println("testing connection to server " + ip);
-        setConnectionStatus(0);
+        service.setConnectionStatus(0, connectionStatus);
         int res = server.testConnection(ip);
         System.out.println("Server responded with status code : " + res);
-        setConnectionStatus(res);
+        service.setConnectionStatus(res, connectionStatus);
     }
 
     /**
