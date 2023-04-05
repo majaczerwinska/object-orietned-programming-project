@@ -1,7 +1,9 @@
 package client.scenes;
 import client.components.SubTaskComponent;
+import client.services.CardService;
 import client.utils.*;
 import com.google.inject.Inject;
+import javafx.application.Platform;
 import commons.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,13 +16,13 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.TextField;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 public class CardCtrl {
+    private final CardService service;
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private final WebsocketClient websocketClient;
+    public boolean isViewed = false;
 
     @FXML
     private Label label;
@@ -66,12 +68,14 @@ public class CardCtrl {
 
     /**
      *
-     * @param server -
-     * @param mainCtrl -
-     * @param websocketClient -
+     * @param service the services for this controller
+     * @param server server utils instance
+     * @param mainCtrl main ctrl instance
+     * @param websocketClient the websocket client
      */
     @Inject
-    public CardCtrl(ServerUtils server, MainCtrl mainCtrl, WebsocketClient websocketClient){
+    public CardCtrl(CardService service, ServerUtils server, MainCtrl mainCtrl, WebsocketClient websocketClient){
+        this.service = service;
         this.mainCtrl = mainCtrl;
         this.server = server;
         this.websocketClient = websocketClient;
@@ -83,6 +87,42 @@ public class CardCtrl {
     public void setStompSession(){
         websocketClient.setStompSession(ServerUtils.SERVER);
         System.out.println("StompSession created in card overview");
+    }
+
+    /**
+     * Registers deletion for the card you are viewing
+     */
+    public void registerForDeleted(){
+        server.registerForDeletedCard(cardID, deleted -> {
+            System.out.println("Card Deleted! -> show board overview");
+            if(isViewed){
+                Platform.runLater(() -> {
+                    System.out.println("Closing pop up");
+                    isViewed = false;
+                    mainCtrl.closeLocker();
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Card deleted");
+                    alert.setHeaderText("This card got deleted!");
+                    alert.setContentText("You were viewing a card that someone just deleted");
+                    alert.show();
+                });
+            }
+
+        });
+    }
+
+    /**
+     * Cancels the future of the polling
+     */
+    public void stopPollingForDeletedCard(){
+        server.stopPollingForDeletedCard();
+    }
+
+    /**
+     * Shuts down the executor service
+     */
+    public void stopExecutorService(){
+        server.stopExecutorService();
     }
 
     /**
@@ -162,6 +202,8 @@ public class CardCtrl {
         mainCtrl.closeLocker();
         mainCtrl.showBoardOverview(boardID);
         websocketClient.sendMessage("/app/update/card/"+boardID, "Done updating card in CardOverview");
+        isViewed = false;
+        server.stopPollingForDeletedCard();
     }
 
     /**
@@ -255,7 +297,7 @@ public class CardCtrl {
      * Shows the tags in this board that are not added to the card yet
      */
     public void showDropDown(){
-        boardtags.setItems(getTagListOfBoard(boardID));
+        boardtags.setItems(service.getTagListOfBoard(server, boardID, cardID));
         boardtags.setCellFactory(param -> new ListCell<Tag>() {
             @Override
             public void updateItem(Tag tag, boolean empty) {
@@ -272,10 +314,10 @@ public class CardCtrl {
     }
 
     /**
-     * Shows the tags in this board that are not added to the card yet
+     * Shows the tags in this board that are added to the card
      */
     public void showTags(){
-        taglist.setItems(getTagListOfCard(cardID));
+        taglist.setItems(service.getTagListOfCard(server, cardID));
         taglist.setCellFactory(param -> new ListCell<Tag>() {
             @Override
             public void updateItem(Tag tag, boolean empty) {
@@ -292,39 +334,6 @@ public class CardCtrl {
         });
     }
 
-
-    /**
-     * Gets the list of tags and puts it in an observable list
-     * @param boardID the id of the board
-     * @return an observable list of tags
-     */
-    public ObservableList<Tag> getTagListOfBoard(int boardID){
-        List<Tag> tags = server.getTagsFromBoard(boardID);
-        List<Tag> t = new ArrayList<>();
-        Set<Tag> tagsofcard = server.getTagsForCard(cardID);
-        for(Tag tag : tags){
-            if(tagsofcard!=null && !tagsofcard.contains(tag)){
-                t.add(tag);
-            }
-        }
-        ObservableList<Tag> tagList = FXCollections.observableArrayList(t);
-        return tagList;
-    }
-
-    /**
-     * Gets the list of tags and puts it in an observable list
-     * @param cardID the id of the board
-     * @return an observable list of tags
-     */
-    public ObservableList<Tag> getTagListOfCard(int cardID){
-        Set<Tag> tags = server.getTagsForCard(cardID);
-        List<Tag> t = new ArrayList<>();
-        for(Tag tag : tags){
-                t.add(tag);
-        }
-        ObservableList<Tag> tagList = FXCollections.observableArrayList(t);
-        return tagList;
-    }
 
     /**
      * Shows the selected tag in the text field/area

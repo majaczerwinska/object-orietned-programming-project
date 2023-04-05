@@ -57,6 +57,12 @@ public class BoardControllerTest {
     }
 
     @Test
+    public void deleteEmptyBoardTest(){
+        Board board = new Board("title");
+        assertEquals(con.deleteBoard(board.getId()), ResponseEntity.badRequest().build());
+    }
+
+    @Test
     public void getCardsFromListTest(){
         Board board = new Board("board");
         CardList list = new CardList("c");
@@ -78,9 +84,17 @@ public class BoardControllerTest {
         Board b = new Board("title");
         Board b2 = new Board("title2");
         con.addBoard(b);
-        con.editBoard(b2.getId(), b2);
-        assertEquals(b, b2);
+        con.editBoard(b.getId(), b2);
+        ResponseEntity<Board> board = ResponseEntity.ok(b2);
+        assertEquals(con.getBoard(b.getId()), board);
+    }
 
+    @Test
+    public void editEmptyBoardTest(){
+        Board b = new Board("title");
+        Board b2 = new Board("title2");
+
+        assertEquals(con.editBoard(b2.getId(), b), ResponseEntity.badRequest().build());
     }
 
     @Test
@@ -123,6 +137,15 @@ public class BoardControllerTest {
         repo.save(board);
         ResponseEntity<List<Palette>> cardLists = ResponseEntity.ok(list);
         assertEquals(con.getPalettesFromBoard(board.getId()), cardLists);
+    }
+
+    @Test
+    public void getPalettesFromEmptyBoardTest(){
+        Board board = new Board("board");
+        List<Palette> list = new ArrayList<>();
+        list.add(new Palette("p", 1, 2));
+        board.setPalettes(list);
+        assertEquals(con.getPalettesFromBoard(board.getId()), ResponseEntity.badRequest().build());
     }
 
 }

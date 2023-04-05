@@ -71,6 +71,7 @@ public class Main extends Application {
             var publicBoard = FXML.load(PublicBoardCtrl.class, "client", "scenes", "PublicBoard.fxml");
             var card = FXML.load(CardCtrl.class, "client", "scenes", "CardOverview.fxml");
             var tagPopUp = FXML.load(TagPopUpCtrl.class, "client", "scenes", "TagPopUp.fxml");
+            var colorPopUp = FXML.load(ColorPopUpCtrl.class, "client", "scenes", "ColorPopUp.fxml");
             var selectBoard = FXML.load(BoardSelectCtrl.class, "client", "scenes", "BoardSelect.fxml");
             var popupJoin = FXML.load(PopupJoinCtrl.class, "client", "scenes", "popupJoin.fxml");
             var listCreate = FXML.load(ListCreationCtrl.class, "client", "scenes", "ListCreate.fxml");
@@ -113,6 +114,7 @@ public class Main extends Application {
                     editBoard,
                     help,
                     tagPopUp,
+                    colorPopUp,
                     unlocked,
                     providePassword,
                     customization,
@@ -124,6 +126,10 @@ public class Main extends Application {
 
             );
 
+            primaryStage.setOnCloseRequest(e -> {
+                System.out.println("Executer service shut down");
+                card.getKey().stopExecutorService();
+            });
 
         } catch (Exception e) {
             System.out.println("very sad exception :(\nin start method of client.main..");

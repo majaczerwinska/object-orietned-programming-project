@@ -2,12 +2,16 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import commons.Tag;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 
 public class TagPopUpCtrl {
@@ -16,17 +20,18 @@ public class TagPopUpCtrl {
 
     private int boardID;
 
-    @FXML
-    private Label title;
+    private int cardID;
+
 
     @FXML
-    private TextField name;
+    private ListView<Tag> boardtags;
+    @FXML
+    private ListView<Tag> taglist;
 
     @FXML
     private Button goBackButton;
 
-    @FXML
-    private Button plusButton;
+
 
     /**
      * help controller constructor method
@@ -44,35 +49,73 @@ public class TagPopUpCtrl {
      * refresh method
      */
     public void refresh() {
+        showDropDown();
     }
 
     /**
      * Sets boardID to the ID of the board
      * @param boardID the ID of the board
+     * @param cardID the ID of the board
      */
-    public void setBoardID(int boardID) {
+    public void setBoardAndCardID(int boardID, int cardID) {
         this.boardID = boardID;
+        this.cardID = cardID;
+    }
+
+
+
+    /**
+     * Shows the tags in this board that are not added to the card yet
+     */
+    public void showDropDown(){
+        boardtags.setItems(getTagListOfBoard(boardID));
+        boardtags.setCellFactory(param -> new ListCell<Tag>() {
+            @Override
+            public void updateItem(Tag tag, boolean empty) {
+                super.updateItem(tag, empty);
+                if (empty || tag == null || tag.getTitle() == null) {
+                    setText(null);
+                } else {
+                    setText(tag.getTitle());
+                    String hexColor = String.format("#%06X", (0xFFFFFF & tag.getColor()));
+                    setStyle("-fx-control-inner-background: " + hexColor);
+                }
+            }
+        });
     }
 
     /**
-     * Adds a tag to the database and empties the textField.
+     * Shows the selected tag in the text field/area
+     * @param event - clicking the mouse
      */
-    @FXML
-    public void addTag() {
-        if (name.getText() != null) {
-            Tag tag = new Tag(name.getText());
-            server.addTag(tag, boardID);
-            name.setText("");
+    public void addTagToCard(MouseEvent event){
+        Tag tag = boardtags.getSelectionModel().getSelectedItem();
+        if(event.getClickCount()==2 && tag!=null ){
+            server.addTagToCard(boardID, tag.getId(), cardID);
+//            showTags();
+            showDropDown();
         }
     }
 
-//    /**
-//     * Closes the pop-up
-//     */
-//    public void back() {
-//        Stage stage = (Stage) title.getScene().getWindow();
-//        stage.close();
-//    }
+
+    /**
+     * Gets the list of tags and puts it in an observable list
+     * @param boardID the id of the board
+     * @return an observable list of tags
+     */
+    public ObservableList<Tag> getTagListOfBoard(int boardID){
+        List<Tag> tags = server.getTagsFromBoard(boardID);
+        List<Tag> t = new ArrayList<>();
+        Set<Tag> tagsofcard = server.getTagsForCard(cardID);
+        for(Tag tag : tags){
+            if(tagsofcard!=null && !tagsofcard.contains(tag)){
+                t.add(tag);
+            }
+        }
+        ObservableList<Tag> tagList = FXCollections.observableArrayList(t);
+        return tagList;
+    }
+
 
     /**
      * Closes the pop-up
@@ -82,23 +125,6 @@ public class TagPopUpCtrl {
         mainCtrl.showBoardOverview(boardID);
     }
 
-    /**
-     * title label getter
-     * @return Label
-     */
-    @FXML
-    public Label getTitle() {
-        return title;
-    }
-
-    /**
-     * tag name text field getter
-     * @return TextField
-     */
-    @FXML
-    public TextField getName() {
-        return name;
-    }
 
     /**
      * go back button getter
@@ -109,14 +135,7 @@ public class TagPopUpCtrl {
         return goBackButton;
     }
 
-    /**
-     * new tag button getter
-     * @return Button
-     */
-    @FXML
-    public Button getPlusButton() {
-        return plusButton;
-    }
+
 
 
 

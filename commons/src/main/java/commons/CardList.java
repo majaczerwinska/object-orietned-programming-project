@@ -44,8 +44,8 @@ public class CardList {
      */
     public CardList(String name) {
         this.name = name;
-        this.bColor = 11776947;
-        this.fColor = 0;
+        this.bColor = 3368550;
+        this.fColor = 16777215;
         this.cards = new ArrayList<>();
     }
 
@@ -132,22 +132,22 @@ public class CardList {
      */
     public void setfColor(int color){this.fColor = color;}
 
-//    /**
-//     * Creates a string for the object
-//     * @return a string representation
-//     */
-//    public String toString(){
-//        String res = "List #" + id + "\n name: " +name + "\n color: " + color + "\n";
-//        if (this.cards.size() < 1) {
-//            res += "this list has no cards";
-//        } else {
-//            res += "Cards:\n";
-//            for (Card c : cards) {
-//                res += c.toString();
-//            }
-//        }
-//        return res;
-//    }
+    /**
+     * Creates a string for the object
+     * @return a string representation
+     */
+    public String toString(){
+        String res = "List #" + id + "\n name: " +name + "\n color: " + getbColor() + "\n";
+        if (this.cards.size() < 1) {
+            res += "this list has no cards";
+        } else {
+            res += "Cards:\n";
+            for (Card c : cards) {
+                res += c.toString();
+            }
+        }
+        return res;
+    }
 
 
 

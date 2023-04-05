@@ -204,7 +204,9 @@ public class CardComponent extends HBox implements Initializable {
             if (event.getTransferMode() == TransferMode.MOVE) {
 
 
-                System.out.println("successfull dropping said by cardcomponent");;
+                System.out.println("successfull dropping said by cardcomponent");
+                boardOverviewCtrl.sendMessage("/app/update/card/"+boardID,
+                        "Done dragging card in component");
             }
             event.consume();
 

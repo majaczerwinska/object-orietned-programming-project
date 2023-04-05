@@ -108,6 +108,13 @@ public class CardListControllerTest {
         assertEquals(con.getCardsFromList(listId), ResponseEntity.badRequest().build());
     }
 
+    @Test
+    public void getCardTest(){
+        CardList list = new CardList("c");
+        repo.save(list);
+        ResponseEntity<CardList> cardResponseEntity = ResponseEntity.ok(list);
+        assertEquals(con.getCard(list.getId()), cardResponseEntity);
+    }
 
 
     @Test

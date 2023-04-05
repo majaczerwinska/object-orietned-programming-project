@@ -57,8 +57,8 @@ public class Board {
      */
     public Board(String name){
         this.name = name;
-        this.bColor = 2580;
-        this.fColor = 13421772;
+        this.bColor = 1723725;
+        this.fColor = 16777215;
         this.lists = new ArrayList<>();
         this.boardkey = "";
         this.tags = new ArrayList<>();

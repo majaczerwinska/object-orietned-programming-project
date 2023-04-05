@@ -35,7 +35,7 @@ public class ListCreationCtrl {
      *Creates a list
      * @param server the server
      * @param mainCtrl the controller
-     * @param websocketClient the board overview ctrl
+     * @param websocketClient the websocket client
      */
     @Inject
     public ListCreationCtrl(ServerUtils server, MainCtrl mainCtrl, WebsocketClient websocketClient){
@@ -78,9 +78,8 @@ public class ListCreationCtrl {
 
     /**
      * takes you back to the overview
-     * @param event - click
      */
-    public void cancel(ActionEvent event){
+    public void cancel(){
         name.setText("");
         mainCtrl.closeLocker();
         mainCtrl.showBoardOverview(boardID);

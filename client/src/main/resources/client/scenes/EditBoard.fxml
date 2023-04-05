@@ -7,25 +7,25 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EditBoardCtrl">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="264.0" prefWidth="439.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.EditBoardCtrl">
    <center>
-      <AnchorPane prefHeight="200.0" prefWidth="360.0" style="-fx-background-color: #ECECE7;" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="296.0" prefWidth="447.0" style="-fx-background-color: #ECECE7;" BorderPane.alignment="CENTER">
          <children>
-            <Text fx:id="text" layoutX="217.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Edit Board" textAlignment="JUSTIFY">
-               <font>
-                  <Font name="System Bold" size="33.0" />
-               </font>
-            </Text>
-            <Label fx:id="nameLabel" layoutX="162.0" layoutY="140.0" text="Name">
+            <Label fx:id="nameLabel" layoutX="101.0" layoutY="111.0" text="Name">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="name" layoutX="224.0" layoutY="137.0" prefHeight="26.0" prefWidth="150.0" />
-            <Button fx:id="save" layoutX="277.0" layoutY="360.0" mnemonicParsing="false" onAction="#editBoard" text="Save" />
-            <Button fx:id="exit" graphicTextGap="5.0" mnemonicParsing="false" onAction="#exitButton" text="x" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <TextField fx:id="name" layoutX="145.0" layoutY="107.0" prefHeight="26.0" prefWidth="155.0" />
+            <Button fx:id="save" layoutX="231.0" layoutY="144.0" mnemonicParsing="false" onAction="#editBoard" prefHeight="26.0" prefWidth="69.0" text="Save" />
+            <Button fx:id="exit" graphicTextGap="5.0" layoutX="491.0" layoutY="1.0" mnemonicParsing="false" onAction="#exitButton" text="x" AnchorPane.rightAnchor="2.5" AnchorPane.topAnchor="1.0" />
+            <Label fx:id="titleLabel" layoutX="148.0" layoutY="35.0" text="Edit Board">
+               <font>
+                  <Font name="System Bold" size="33.0" />
+               </font>
+            </Label>
+            <Button fx:id="deleteBoardButton" layoutX="14.0" layoutY="224.0" mnemonicParsing="false" onAction="#handleDeleteButtonClick" onMouseExited="#mouseExitCancelDelete" text="Delete Board" textFill="#c60000" />
          </children>
          <BorderPane.margin>
             <Insets />
