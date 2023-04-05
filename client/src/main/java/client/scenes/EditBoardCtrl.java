@@ -105,6 +105,9 @@ public class EditBoardCtrl {
     }
 
 
+    /**
+     * delete board and go back to board select
+     */
     public void deleteBoard() {
         server.deleteBoard(boardId);
         mainCtrl.showSelect();

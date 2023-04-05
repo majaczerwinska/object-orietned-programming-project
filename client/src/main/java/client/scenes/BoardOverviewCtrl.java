@@ -7,8 +7,6 @@ import client.utils.WebsocketClient;
 import com.google.inject.Inject;
 import commons.*;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
@@ -27,7 +25,6 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Comparator;
 
 import java.util.prefs.Preferences;
@@ -98,7 +95,8 @@ public class BoardOverviewCtrl {
      * @param websocketClient -
      */
     @Inject
-    public BoardOverviewCtrl(BoardService service, ServerUtils server, MainCtrl mainCtrl, WebsocketClient websocketClient) {
+    public BoardOverviewCtrl(BoardService service, ServerUtils server,
+                             MainCtrl mainCtrl, WebsocketClient websocketClient) {
         this.service = service;
         this.mainCtrl = mainCtrl;
         this.server = server;
