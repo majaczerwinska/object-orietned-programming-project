@@ -186,6 +186,19 @@ public class CardCtrl {
      */
     public void exit(){
         System.out.println(boardID + "cardexit");
+        if(!theme.getText().equals("")){
+            List<Palette> palettes = server.getPalettesFromBoard(boardID);
+            for(Palette pal : palettes){
+                if(pal.getName().equals(theme.getText())){
+                    Card card = server.getCard(cardID);
+                    card.setColor(pal.getbColor());
+                    card.setFcolor(pal.getfColor());
+                    card.setPalette(pal.getName());
+                    server.editCard(boardID, cardID, card, false);
+                    break;
+                }
+            }
+        }
         mainCtrl.closeLocker();
         mainCtrl.showBoardOverview(boardID);
         websocketClient.sendMessage("/app/update/card/"+boardID, "Done updating card in CardOverview");
@@ -221,7 +234,20 @@ public class CardCtrl {
         showTags();
         showDropDown();
         showDropDownColors();
-        theme.setText("");
+        Card c = server.getCard(cardID);
+        System.out.println(c.getPalette()+"-----------------");
+        if(c.getPalette().equals("")){
+            List<Palette> palettes = server.getPalettesFromBoard(boardID);
+            for(Palette pal : palettes){
+                if(pal.isIsdefault()){
+                    theme.setText(pal.getName());
+                    break;
+                }
+            }
+        }
+        else{
+            theme.setText(c.getPalette());
+        }
         escShortcut();
     }
 
@@ -377,37 +403,4 @@ public class CardCtrl {
         }
         theme.setText(palette.getName());
     }
-
-    /**
-     * saves cards colors to the db
-     * @param event
-     */
-    public void save(MouseEvent event){
-        List<Palette> palettes = server.getPalettesFromBoard(boardID);
-        if(theme.getText().equals("")){
-            for(Palette pal : palettes){
-                if(pal.isIsdefault()){
-                    theme.setText(pal.getName());
-                    Card card = server.getCard(cardID);
-                    card.setColor(pal.getbColor());
-                    card.setFcolor(pal.getfColor());
-                    server.editCard(boardID, cardID, card, false);
-                    break;
-                }
-            }
-        }
-        else{
-            for(Palette pal : palettes){
-                if(pal.getName().equals(theme.getText())){
-                    Card card = server.getCard(cardID);
-                    card.setColor(pal.getbColor());
-                    card.setFcolor(pal.getfColor());
-                    server.editCard(boardID, cardID, card, false);
-                    break;
-                }
-            }
-
-        }
-    }
-
 }

@@ -31,6 +31,12 @@ public class Board {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "listb")
+    private int listb;
+
+    @Column(name = "listt")
+    private int listt;
+
     @OneToMany(targetEntity = CardList.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "board_id")
     private List<CardList> lists;
@@ -60,6 +66,8 @@ public class Board {
         this.palettes = new ArrayList<>();
         palettes.add(new Palette("default", 16777215, 0));
         palettes.get(0).setIsdefault(true);
+        this.listb = 11776947;
+        this.listt = 0;
     }
 
     /**
@@ -242,5 +250,37 @@ public class Board {
      */
     public void setPalettes(List<Palette> palettes) {
         this.palettes = palettes;
+    }
+
+    /**
+     *
+     * @return - color for list background
+     */
+    public int getListb() {
+        return listb;
+    }
+
+    /**
+     *
+     * @param listb
+     */
+    public void setListb(int listb) {
+        this.listb = listb;
+    }
+
+    /**
+     *
+     * @return - color for list text
+     */
+    public int getListt() {
+        return listt;
+    }
+
+    /**
+     *
+     * @param listt
+     */
+    public void setListt(int listt) {
+        this.listt = listt;
     }
 }

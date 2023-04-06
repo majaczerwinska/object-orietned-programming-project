@@ -29,6 +29,9 @@ public class Card {
     private int fcolor;
     @Column(name = "card_position")
     private int position;
+
+    @Column(name = "palette")
+    private String palette;
     @ManyToMany
     @JoinTable(
             name = "cards_tags",
@@ -53,6 +56,7 @@ public class Card {
         this.fcolor = 0x000000;
         this.tasks = new ArrayList<>();
         this.tags = new HashSet<>();
+        this.palette = "";
     }
 
 
@@ -255,5 +259,21 @@ public class Card {
         return Objects.equals(title, card.title)
                 && Objects.equals(description, card.description)
                 && Objects.equals(color, card.color);
+    }
+
+    /**
+     *
+     * @return - name of the palette assigned to card
+     */
+    public String getPalette(){
+        return this.palette;
+    }
+
+    /**
+     *
+     * @param palette
+     */
+    public void setPalette(String palette){
+        this.palette = palette;
     }
 }

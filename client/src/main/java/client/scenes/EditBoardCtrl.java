@@ -56,8 +56,8 @@ public class EditBoardCtrl {
      */
     @FXML
     public void exitButton(){
-        mainCtrl.showBoardOverview(boardId);
         mainCtrl.closeLocker();
+        mainCtrl.showBoardOverview(boardId);
     }
 
     /**
@@ -79,6 +79,7 @@ public class EditBoardCtrl {
         else {
            server.editBoard(this.boardId, board);
         }
+        mainCtrl.closeLocker();
         mainCtrl.showBoardOverview(boardId);
     }
 

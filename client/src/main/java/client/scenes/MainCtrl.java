@@ -528,6 +528,7 @@ public class MainCtrl {
         // styling the edit board page
 
         // changing the font family for the texts
+       // editBoardCtrl.getColorLabel().setStyle("-fx-font-family: Avenir Book;");
         editBoardCtrl.getExit().setStyle("-fx-font-family: Avenir Book;");
         editBoardCtrl.getNameLabel().setStyle("-fx-font-family: Avenir Book;");
         editBoardCtrl.getSave().setStyle("-fx-font-family: Avenir Book;");
@@ -585,7 +586,6 @@ public class MainCtrl {
         primaryStage.show();
         // We later have to combine all these methods we call into one refresh method in boardOverviewCtrl
         boardOverviewCtrl.setBoardName();
-        boardOverviewCtrl.setColor();
         boardOverviewCtrl.setLock();
         boardOverviewCtrl.refreshListViewTags();
 
@@ -611,6 +611,7 @@ public class MainCtrl {
         appendStyle(boardOverviewCtrl.getEditBoardButton(), roundingStyle);
         appendStyle(boardOverviewCtrl.getLockButton(), roundingStyle);
         appendStyle(boardOverviewCtrl.getTagManagerButton(), roundingStyle);
+        boardOverviewCtrl.setColor();
     }
 
     /**
@@ -663,13 +664,12 @@ public class MainCtrl {
      * @param isLocked whether toe board is locked
      */
     public  void showCard(int cardID, int boardID, boolean isLocked){
-        locker.setTitle("Card overview :)");
-        locker.setScene(card);
         cardCtrl.cardID = cardID;
         cardCtrl.boardID = boardID;
         cardCtrl.isLocked = isLocked;
         if(isLocked) cardCtrl.disable();
         else cardCtrl.enable();
+
         cardCtrl.setInfo();
         cardCtrl.registerForDeleted();
         cardCtrl.isViewed = true;
@@ -678,6 +678,8 @@ public class MainCtrl {
             cardCtrl.exit();
         });
         cardCtrl.refresh();
+        locker.setTitle("Card overview :)");
+        locker.setScene(card);
         locker.setResizable(false);
         locker.showAndWait();
 
