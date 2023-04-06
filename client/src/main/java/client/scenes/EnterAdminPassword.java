@@ -50,6 +50,7 @@ public class EnterAdminPassword {
     public void refresh(String ip) {
         serverText.setText(ip);
         this.ip = ip;
+        shortcut();
     }
 
 
@@ -95,5 +96,16 @@ public class EnterAdminPassword {
         if (e!=null && e.getCode() == KeyCode.ENTER) {
             enterAdminPanel();
         }
+    }
+
+    /**
+     * Shortcut for opening the help scene
+     */
+    private void shortcut() {
+        password.getScene().setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.SLASH) {
+                mainCtrl.showHelpScene();
+            }
+        });
     }
 }

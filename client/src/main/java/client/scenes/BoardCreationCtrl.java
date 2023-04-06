@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
 import commons.Board;
+import javafx.scene.input.KeyCode;
 
 public class BoardCreationCtrl {
 
@@ -115,6 +116,7 @@ public class BoardCreationCtrl {
         warningkey.setText("");
         boardTitleTextField.setText("");
         boardKeyTextField.setText("");
+        shortcut();
     }
 
     /**
@@ -250,6 +252,17 @@ public class BoardCreationCtrl {
     public String getBoardKeyTextFieldString() {
         String title = boardKeyTextField.getText();
         return title;
+    }
+
+    /**
+     * Shortcut for opening the help scene
+     */
+    private void shortcut() {
+        titleLabel.getScene().setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.SLASH) {
+                mainCtrl.showHelpScene();
+            }
+        });
     }
 
 }

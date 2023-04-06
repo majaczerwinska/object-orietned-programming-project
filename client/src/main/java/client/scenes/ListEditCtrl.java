@@ -4,6 +4,7 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 
 public class ListEditCtrl {
 
@@ -33,6 +34,11 @@ public class ListEditCtrl {
      */
     public void setName(){
         name.setText(server.getCardList(listId).getName());
+            name.getScene().setOnKeyPressed(event -> {
+                if (event.getCode() == KeyCode.SLASH) {
+                    mainCtrl.showHelpScene();
+                }
+            });
     }
 
     /**

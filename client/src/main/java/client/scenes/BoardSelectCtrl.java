@@ -16,6 +16,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 
@@ -88,7 +89,7 @@ public class BoardSelectCtrl {
         list.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         ObservableList<Board> boardList = FXCollections.observableList(service.getBoards(server));
         list.setItems(boardList);
-
+        shortcut();
     }
 
     /**
@@ -242,6 +243,17 @@ public class BoardSelectCtrl {
      */
     public Label getOrYouLabel() {
         return orYouLabel;
+    }
+
+    /**
+     * Shortcut for opening the help scene
+     */
+    private void shortcut() {
+        join.getScene().setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.SLASH) {
+                mainCtrl.showHelpScene();
+            }
+        });
     }
 
 }
