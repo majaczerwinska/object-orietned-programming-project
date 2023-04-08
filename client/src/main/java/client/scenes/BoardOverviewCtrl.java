@@ -20,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ListCell;
+import javafx.scene.paint.Color;
 //import java.net.URL;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -414,15 +415,18 @@ public class BoardOverviewCtrl {
     public void refreshName(int boardID){
         Board b = server.getBoard(boardID);
         boardKey.setText(b.getBoardkey());
+        boardKey.setTextFill(Color.BLACK);
     }
 
     /**
      * display and copy to clipboard the boardKey
      */
     public void getBoardKey(){
-            StringSelection selection = new StringSelection(boardKey.getText());
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            clipboard.setContents(selection, selection);
+        StringSelection selection = new StringSelection(boardKey.getText());
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(selection, selection);
+        boardKey.setText("copied!");
+        boardKey.setTextFill(Color.GREEN);
     }
 
 
