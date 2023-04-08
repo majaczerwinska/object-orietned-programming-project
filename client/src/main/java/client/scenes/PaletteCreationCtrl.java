@@ -54,6 +54,11 @@ public class PaletteCreationCtrl {
      */
     public void create(MouseEvent event){
         String n = name.getText();
+        if(n.equals("")){
+            nameExists.setVisible(true);
+            nameExists.setText("Required field!");
+            return;
+        }
         List<Palette> palettes = server.getPalettesFromBoard(boardId);
         for(Palette pal : palettes){
             if(pal.getName().equals(n)){
