@@ -845,6 +845,7 @@ public class MainCtrl {
         primaryStage.setTitle("create");
         primaryStage.setScene(paletteCreation);
         paletteCreationCtrl.boardId = boardId;
+        paletteCreationCtrl.refresh();
         primaryStage.show();
     }
 

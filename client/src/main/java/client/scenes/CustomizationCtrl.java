@@ -29,6 +29,11 @@ public class CustomizationCtrl {
     private Color boardB = MainCtrl.colorParseToFXColor(1723725);
     private Color boardF = MainCtrl.colorParseToFXColor(16777215);
 
+    private Color listBt;
+    private Color listFt;
+    private Color boardBt;
+    private Color boardFt;
+
     @FXML
     private ColorPicker bb;
     @FXML
@@ -92,7 +97,7 @@ public class CustomizationCtrl {
     }
 
     /**
-     * applies the changes?
+     * applies the changes
      */
     public void colourlist(){
         List<CardList> cardLists = server.getCardListsFromBoard(boardId);
@@ -109,12 +114,26 @@ public class CustomizationCtrl {
      * refreshes the page to set values for color pickers
      */
     public void refresh() {
-        Board b = server.getBoard(boardId);
-        bb.setValue(MainCtrl.colorParseToFXColor(b.getbColor()));
-        bf.setValue(MainCtrl.colorParseToFXColor(b.getfColor()));
-        lb.setValue(MainCtrl.colorParseToFXColor(b.getListb()));
-        lf.setValue(MainCtrl.colorParseToFXColor(b.getListt()));
-        displayPalettes();
+        if(boardBt != null){
+            bb.setValue(boardBt);
+            bf.setValue(boardFt);
+            lb.setValue(listBt);
+            lf.setValue(listFt);
+            boardBt = null;
+            boardFt = null;
+            listBt = null;
+            listFt = null;
+            displayPalettes();
+        }
+        else{
+            Board b = server.getBoard(boardId);
+            bb.setValue(MainCtrl.colorParseToFXColor(b.getbColor()));
+            bf.setValue(MainCtrl.colorParseToFXColor(b.getfColor()));
+            lb.setValue(MainCtrl.colorParseToFXColor(b.getListb()));
+            lf.setValue(MainCtrl.colorParseToFXColor(b.getListt()));
+            displayPalettes();
+        }
+
     }
 
     /**
@@ -149,6 +168,10 @@ public class CustomizationCtrl {
      * @param mouseEvent
      */
     public void addPalette(MouseEvent mouseEvent){
+        listFt = lf.getValue();
+        listBt = lb.getValue();
+        boardFt = bf.getValue();
+        boardBt = bb.getValue();
         mainCtrl.showPaletteCreation(boardId);
         displayPalettes();
     }

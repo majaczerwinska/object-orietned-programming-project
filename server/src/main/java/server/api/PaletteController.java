@@ -61,5 +61,4 @@ public class PaletteController {
         Palette updated = ps.updatePalette(ps.getById(id), palette);
         return ResponseEntity.ok().build();
     }
-
 }
