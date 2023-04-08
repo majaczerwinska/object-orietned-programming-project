@@ -115,7 +115,7 @@ public class CustomizationCtrl {
      * refreshes the page to set values for color pickers
      */
     public void refresh() {
-        if (boardBt != null) {
+        if(boardBt != null){
             bb.setValue(boardBt);
             bf.setValue(boardFt);
             lb.setValue(listBt);
