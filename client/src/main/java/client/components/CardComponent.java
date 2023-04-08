@@ -148,7 +148,8 @@ public class CardComponent extends HBox implements Initializable {
                         mainCtrl.appendStyle(tfTitle,"-fx-border-color: black; -fx-alignment: center");
                     } else {
                         // TextField has lost focus
-                        mainCtrl.appendStyle(tfTitle,"-fx-background-color: transparent; -fx-border-color: transparent; " +
+                        mainCtrl.appendStyle(tfTitle,"-fx-background-color: transparent;" +
+                                " -fx-border-color: transparent; " +
                                 "-fx-alignment: center");
                     }
                 });

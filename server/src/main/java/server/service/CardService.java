@@ -79,6 +79,11 @@ public class CardService {
         return card;
     }
 
+    /**
+     * Sorts the list
+     * @param list the list to be sorted
+     * @return sorted list
+     */
     public List<Card> listsort(List<Card> list){
         list.sort(Comparator.comparing(Card::getPosition));
         return list;
