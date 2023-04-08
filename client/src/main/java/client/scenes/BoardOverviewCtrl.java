@@ -457,6 +457,16 @@ public class BoardOverviewCtrl {
             }  else if (event.getCode() == KeyCode.C) {
                 if (highlightedCardComponent != null);
                 mainCtrl.showColorPopUp(this.boardID, highlightedCardComponent.cardID);
+//            }   else if (event.getCode() == KeyCode.KP_DOWN) {
+//                if (highlightedCardComponent != null) {
+//                    for (Card c : server.getCardsFromList(server.getListFromCard(
+//                    highlightedCardComponent.cardID, server.getCard(highlightedCardComponent.cardID)).getId())) {
+//                        if (c.getPosition() - 1 == server.getCard(highlightedCardComponent.cardID).getPosition()){
+//                        }
+//                    }
+//                }
+//            }   else if (event.getCode() == KeyCode.KP_UP) {
+//                if (highlightedCardComponent != null);
             }
         });
     }

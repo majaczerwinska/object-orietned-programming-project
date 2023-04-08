@@ -6,6 +6,7 @@ import com.google.inject.Inject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import java.util.ArrayList;
@@ -100,6 +101,7 @@ public class ServerSelectCtrl {
      */
     public void refresh() {
         servers.setItems(getAddressList());
+        shortcut();
     }
 
     /**
@@ -400,4 +402,14 @@ public class ServerSelectCtrl {
         return servers;
     }
 
+    /**
+     * Shortcut for opening the help scene
+     */
+    private void shortcut() {
+        goBackButton.getScene().setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.SLASH) {
+                mainCtrl.showHelpScene();
+            }
+        });
+    }
 }

@@ -98,7 +98,7 @@ public class CardControllerTest {
         Card card = new Card("title");
         con.addCard(0, list.getId(), card);
         ResponseEntity<Card> cardResponseEntity = ResponseEntity.ok(card);
-        assertEquals(con.getCard(card.getId()), cardResponseEntity);
+        assertEquals(con.getCard(card.getId(), card), cardResponseEntity);
     }
     @Test
     public void getTasksTest(){

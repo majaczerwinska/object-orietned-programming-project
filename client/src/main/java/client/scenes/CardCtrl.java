@@ -249,6 +249,7 @@ public class CardCtrl {
             theme.setText(c.getPalette());
         }
         escShortcut();
+        shortcut();
     }
 
     private void escShortcut() {
@@ -402,5 +403,16 @@ public class CardCtrl {
             showDropDownColors();
         }
         theme.setText(palette.getName());
+    }
+
+    /**
+     * Shortcut for opening the help scene
+     */
+    private void shortcut() {
+        taglist.getScene().setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.SLASH) {
+                mainCtrl.showHelpScene();
+            }
+        });
     }
 }

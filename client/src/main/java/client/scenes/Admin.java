@@ -128,6 +128,7 @@ public class Admin {
         boardName.setText("");
         boardKey.setText("");
         boardPassword.setText("");
+        shortcut();
     }
 
 
@@ -283,5 +284,16 @@ public class Admin {
                 sendQuery();
             }
         }
+    }
+
+    /**
+     * Shortcut for opening the help scene
+     */
+    private void shortcut() {
+        boardName.getScene().setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.SLASH) {
+                mainCtrl.showHelpScene();
+            }
+        });
     }
 }

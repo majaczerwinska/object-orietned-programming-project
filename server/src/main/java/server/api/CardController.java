@@ -2,6 +2,7 @@ package server.api;
 
 import commons.Card;
 
+//import commons.CardList;
 import commons.Tag;
 import commons.Task;
 import org.springframework.http.HttpStatus;
@@ -174,14 +175,28 @@ public class CardController {
     /**
      * Gets the card from its id
      * @param id the id of the card we need to get
+     * @param card ram id the id of the card we need to get
      * @return a response entity with the card
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Card> getCard(@PathVariable("id") int id) {
+    public ResponseEntity<Card> getCard(@PathVariable("id") int id, @RequestBody Card card) {
         if(id < 0 || !acs.existsById(id)) return ResponseEntity.badRequest().body(null);
         Card c =acs.findById(id).get();
         return ResponseEntity.ok(c);
     }
+
+//    /**
+//     * Get the list of the card
+//     * @param id the id of the card
+//     * @param card the card
+//     * @return the list the card belongs to
+//     */
+//    @GetMapping("/{id}/card/cardList")
+//    public ResponseEntity<CardList> getListForCard(@PathVariable("id") int id, @RequestBody Card card) {
+//        if(id < 0 || !acs.existsById(id) || card == null) return ResponseEntity.badRequest().body(null);
+//        CardList c = acs.getListForCard(card);
+//        return ResponseEntity.ok(c);
+//    }
     /**
      * Gets the task from a card
      * @param id the id of the card we need to get tke tasks from

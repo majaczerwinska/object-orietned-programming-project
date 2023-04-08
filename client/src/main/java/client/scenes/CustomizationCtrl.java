@@ -10,6 +10,7 @@ import commons.Palette;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -115,6 +116,7 @@ public class CustomizationCtrl {
         lb.setValue(MainCtrl.colorParseToFXColor(b.getListb()));
         lf.setValue(MainCtrl.colorParseToFXColor(b.getListt()));
         displayPalettes();
+        shortcut();
     }
 
     /**
@@ -166,6 +168,15 @@ public class CustomizationCtrl {
         }
     }
 
-
+    /**
+     * Shortcut for opening the help scene
+     */
+    private void shortcut() {
+        lb.getScene().setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.SLASH) {
+                mainCtrl.showHelpScene();
+            }
+        });
+    }
 
 }

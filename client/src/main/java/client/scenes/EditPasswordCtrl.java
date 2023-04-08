@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 
 import javax.inject.Inject;
 import java.util.prefs.Preferences;
@@ -107,6 +108,7 @@ public class EditPasswordCtrl {
     public void refresh(){
         Board board = server.getBoard(boardID);
         password1.setText(board.getPassword());
+        shortcut();
     }
 
     /**
@@ -199,4 +201,14 @@ public class EditPasswordCtrl {
         return warning2;
     }
 
+    /**
+     * Shortcut for opening the help scene
+     */
+    private void shortcut() {
+        cancel.getScene().setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.SLASH) {
+                mainCtrl.showHelpScene();
+            }
+        });
+    }
 }
