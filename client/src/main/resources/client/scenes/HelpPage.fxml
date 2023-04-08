@@ -7,25 +7,36 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="513.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.HelpCtrl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="513.0" prefWidth="650.0" style="-fx-background-color: #336666;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.HelpCtrl">
    <children>
-      <HBox alignment="CENTER_RIGHT" prefHeight="28.0" prefWidth="650.0" spacing="50.0">
+      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="650.0" spacing="50.0" style="-fx-background-color: #1A4D4D;">
          <children>
-            <Label text="Welcome to the help page!" />
-            <Button fx:id="goBackButton" mnemonicParsing="false" onAction="#goBackButtonHandler" text="Go back">
+            <Label alignment="CENTER" prefHeight="0.0" prefWidth="288.0" text="Welcome to the help page!" textFill="WHITE">
+               <font>
+                  <Font size="24.0" />
+               </font></Label>
+            <Button fx:id="goBackButton" mnemonicParsing="false" onAction="#goBackButtonHandler" style="-fx-background-radius: 7;" text="Go back">
                <HBox.margin>
-                  <Insets left="145.0" />
+                  <Insets left="80.0" />
                </HBox.margin>
+               <font>
+                  <Font name="Calibri" size="12.0" />
+               </font>
             </Button>
          </children>
          <padding>
             <Insets right="15.0" />
          </padding>
       </HBox>
-      <VBox layoutY="28.0" prefHeight="473.0" prefWidth="650.0">
+      <VBox layoutX="76.0" layoutY="101.0" prefHeight="402.0" prefWidth="487.0">
          <children>
-            <TextArea editable="false" prefHeight="493.0" prefWidth="650.0" text="We understand that using our application can be overwhelming, but don't worry, we're here to assist you. Here are some helpful shortcuts that will make your experience much smoother:&#10;&#10;To access the Help screen, press &quot;?&quot; anywhere in the application. Here you can find all the shortcuts available.&#10;&#10;To highlight a task, hover your mouse over it. This will activate the shortcuts associated with that task.&#10;&#10;The currently selected task will be highlighted, so you know which task is in focus.&#10;&#10;You can move the task highlight with the arrow keys (Up/Down/Left/Right) to select other tasks.&#10;&#10;To re-prioritize tasks, press &quot;Shift+Up/Down&quot; to change their order in the list.&#10;&#10;To edit a task title directly in the overview, press &quot;E&quot;. This will save you the trouble of opening the details.&#10;&#10;If you need to delete a task, simply press &quot;Del&quot; or &quot;Backspace&quot;. You won't have to open the details to do so.&#10;&#10;Pressing &quot;Enter&quot; will open the task details, giving you more information.&#10;&#10;To close the task details and return to the overview, press &quot;Esc&quot;.&#10;&#10;For adding tags, press &quot;T&quot; for a popup that you can select with a mouse click. This will save you from having to open the details.&#10;&#10;For color preset selection, press &quot;C&quot; for a popup that you can select with a mouse click. This will also save you from having to open the details.&#10;&#10;We hope these shortcuts make using our application much easier for you. If you have any further questions or concerns, please don't hesitate to reach out to us. We're always here to help." wrapText="true" />
+            <TextArea editable="false" prefHeight="311.0" prefWidth="487.0" style="-fx-background-radius: 7;" text="We understand that using our application can be overwhelming, but don't worry, we're here to assist you. Here are some helpful shortcuts that will make your experience much smoother:&#10;&#10;To access the Help screen, press &quot;?&quot; anywhere in the application. Here you can find all the shortcuts available.&#10;&#10;To highlight a task, hover your mouse over it. This will activate the shortcuts associated with that task.&#10;&#10;The currently selected task will be highlighted, so you know which task is in focus.&#10;&#10;You can move the task highlight with the arrow keys (Up/Down/Left/Right) to select other tasks.&#10;&#10;To re-prioritize tasks, press &quot;Shift+Up/Down&quot; to change their order in the list.&#10;&#10;To edit a task title directly in the overview, press &quot;E&quot;. This will save you the trouble of opening the details.&#10;&#10;If you need to delete a task, simply press &quot;Del&quot; or &quot;Backspace&quot;. You won't have to open the details to do so.&#10;&#10;Pressing &quot;Enter&quot; will open the task details, giving you more information.&#10;&#10;To close the task details and return to the overview, press &quot;Esc&quot;.&#10;&#10;For adding tags, press &quot;T&quot; for a popup that you can select with a mouse click. This will save you from having to open the details.&#10;&#10;For color preset selection, press &quot;C&quot; for a popup that you can select with a mouse click. This will also save you from having to open the details.&#10;&#10;We hope these shortcuts make using our application much easier for you. If you have any further questions or concerns, please don't hesitate to reach out to us. We're always here to help." wrapText="true">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </TextArea>
          </children>
       </VBox>
    </children>
