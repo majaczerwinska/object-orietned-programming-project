@@ -125,7 +125,7 @@ public class CardComponent extends HBox implements Initializable {
             tfTitle.focusedProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue) {
                     // TextField has received focus
-                    tfTitle.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-alignment: center");
+                    mainCtrl.appendStyle(tfTitle,"-fx-border-color: black; -fx-alignment: center");
                 } else {
                     // TextField has lost focus
                     System.out.println("originalValue = " + originalValue + "\nnew value = " + tfTitle.getText());
@@ -134,21 +134,21 @@ public class CardComponent extends HBox implements Initializable {
                                 "Done updating card in component");
                         originalValue = tfTitle.getText();
                     }
-                    tfTitle.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; " +
+                    mainCtrl.appendStyle(tfTitle,"-fx-background-color: transparent; -fx-border-color: transparent; " +
                             "-fx-alignment: center");
                 }
             });
             setOnMouseEntered(event ->
-            {tfTitle.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-alignment: center");});
+            {mainCtrl.appendStyle(tfTitle,"-fx-border-color: black; -fx-alignment: center");});
             setOnMouseExited(event ->
             {
                 tfTitle.focusedProperty().addListener((observable, oldValue, newValue) -> {
                     if (newValue) {
                         // TextField has received focus
-                        tfTitle.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-alignment: center");
+                        mainCtrl.appendStyle(tfTitle,"-fx-border-color: black; -fx-alignment: center");
                     } else {
                         // TextField has lost focus
-                        tfTitle.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; " +
+                        mainCtrl.appendStyle(tfTitle,"-fx-background-color: transparent; -fx-border-color: transparent; " +
                                 "-fx-alignment: center");
                     }
                 });

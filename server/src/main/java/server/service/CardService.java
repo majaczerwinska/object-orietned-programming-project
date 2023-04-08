@@ -66,14 +66,22 @@ public class CardService {
         }
         card.getTags().forEach(tag -> tag.getCards().remove(card));
         card.setTags(new HashSet<>());
-        List<Card> list = cl.getById(listId).getCards();
         repo.delete(card);
         repo.flush();
+        List<Card> list = cl.getById(listId).getCards();
+        List<Card> l = listsort(list);
+
        // repo.existsById(card.getId());
         for (int i = 0; i < list.size(); i++) {
-            list.get(i).setPosition(i);
+            l.get(i).setPosition(i);
+            repo.save(l.get(i));
         }
         return card;
+    }
+
+    public List<Card> listsort(List<Card> list){
+        list.sort(Comparator.comparing(Card::getPosition));
+        return list;
     }
 
     /**

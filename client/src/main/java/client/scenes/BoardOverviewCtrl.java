@@ -190,17 +190,17 @@ public class BoardOverviewCtrl {
      */
     public void setColor(){
         Board board = server.getBoard(boardID);
-        scrollPaneOverview.setStyle("-fx-background: " + String.format("rgb(%d, %d, %d)",
+        mainCtrl.appendStyle(scrollPaneOverview,"-fx-background: " + String.format("rgb(%d, %d, %d)",
                 (board.getbColor() >> 16) & 0xFF,
                 (board.getbColor() >> 8) & 0xFF, board.getbColor()& 0xFF)+";");
-        vboxList1.setStyle("-fx-background-color: " + String.format("rgb(%d, %d, %d)",
+        mainCtrl.appendStyle(vboxList1,"-fx-background-color: " + String.format("rgb(%d, %d, %d)",
                 (board.getbColor() >> 16) & 0xFF,
                 (board.getbColor() >> 8) & 0xFF, board.getbColor()& 0xFF)+";");
         String hexColor = String.format("#%06X", (0xFFFFFF & board.getfColor()));
-        labelBoardTitle.setStyle("-fx-text-fill: " + hexColor+";");
-        boardKey.setStyle("-fx-text-fill: " + hexColor+";");
-        boardKeyL.setStyle("-fx-text-fill: " + hexColor+";");
-        tagL.setStyle("-fx-text-fill: " + hexColor+";");
+        mainCtrl.appendStyle(labelBoardTitle,"-fx-text-fill: " + hexColor+";");
+        mainCtrl.appendStyle(boardKey,"-fx-text-fill: " + hexColor+";");
+        mainCtrl.appendStyle(boardKeyL,"-fx-text-fill: " + hexColor+";");
+        mainCtrl.appendStyle(tagL,"-fx-text-fill: " + hexColor+";");
     }
 
     /**
@@ -296,12 +296,12 @@ public class BoardOverviewCtrl {
             cardComponent.setData(card, listId);
             cardComponent.getTagColors();
             if(isLocked) cardComponent.readmode();
-            cardComponent.setStyle("-fx-background-color: " +
+            mainCtrl.appendStyle(cardComponent, "-fx-background-color: " +
                     String.format("rgb(%d, %d, %d)", (card.getColor() >> 16) & 0xFF,
                     (card.getColor() >> 8) & 0xFF, card.getColor() & 0xFF)+";" );
             String hexColor = String.format("#%06X", (0xFFFFFF & card.getFcolor()));
-            cardComponent.tfTitle.setStyle("-fx-text-fill: " + hexColor + ";");
-            cardComponent.descriptionLabel.setStyle("-fx-text-fill: " + hexColor + ";");
+            mainCtrl.appendStyle(cardComponent.tfTitle,"-fx-text-fill: " + hexColor + ";");
+            mainCtrl.appendStyle(cardComponent.descriptionLabel,"-fx-text-fill: " + hexColor + ";");
             cardComponent.setTaskProgress();
 
             vbox.getChildren().add(cardComponent);
@@ -345,7 +345,7 @@ public class BoardOverviewCtrl {
             CardListComponent cardListComponent = new CardListComponent(mainCtrl, boardID,cardList.getId());
 
             cardListComponent.setTitle(cardList.getName());
-            cardListComponent.setStyle(String.format("-fx-background-color: rgb(%d, %d, %d);",
+            mainCtrl.appendStyle(cardListComponent,String.format("-fx-background-color: rgb(%d, %d, %d);",
                     (cardList.getbColor() >> 16) & 0xFF,
                     (cardList.getbColor() >> 8) & 0xFF, cardList.getbColor()& 0xFF) + ";");
             System.out.println("List style: " + cardListComponent.getStyle());
@@ -353,7 +353,7 @@ public class BoardOverviewCtrl {
             hboxCardLists.getChildren().add(cardListComponent);
             cardListComponent.setData(cardList);
             String hexColor = String.format("#%06X", (0xFFFFFF & cardList.getfColor()));
-            cardListComponent.labelTitle.setStyle("-fx-text-fill: " + hexColor + ";");
+            mainCtrl.appendStyle(cardListComponent.labelTitle,"-fx-text-fill: " + hexColor + ";");
             displayCards(cardListComponent.getVboxCards(), cardList.getId(),c);
             if(isLocked) cardListComponent.readonly();
         }
