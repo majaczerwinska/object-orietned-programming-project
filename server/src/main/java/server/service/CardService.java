@@ -2,6 +2,7 @@ package server.service;
 
 import commons.Card;
 import commons.CardList;
+import commons.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -65,14 +66,27 @@ public class CardService {
         }
         card.getTags().forEach(tag -> tag.getCards().remove(card));
         card.setTags(new HashSet<>());
-        List<Card> list = cl.getById(listId).getCards();
         repo.delete(card);
         repo.flush();
+        List<Card> list = cl.getById(listId).getCards();
+        List<Card> l = listsort(list);
+
        // repo.existsById(card.getId());
         for (int i = 0; i < list.size(); i++) {
-            list.get(i).setPosition(i);
+            l.get(i).setPosition(i);
+            repo.save(l.get(i));
         }
         return card;
+    }
+
+    /**
+     * Sorts the list
+     * @param list the list to be sorted
+     * @return sorted list
+     */
+    public List<Card> listsort(List<Card> list){
+        list.sort(Comparator.comparing(Card::getPosition));
+        return list;
     }
 
     /**
@@ -146,8 +160,10 @@ public class CardService {
     public Card changeListOfCard(Card card, int listID) {
         int id = card.getId();
         CardList oldlist = getListForCard(card);
+        Set<Tag> tags = card.getTags();
         delete(card, oldlist.getId());
         card.setId(id);
+        card.setTags(tags);
         save(card,listID);
         return card;
 
