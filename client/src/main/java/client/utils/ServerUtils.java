@@ -185,17 +185,15 @@ public class ServerUtils {
      * @return the card found by id
      */
     public Card getCard(int id) {
-        try {
-            return ClientBuilder.newClient(new ClientConfig())
-                    .target(SERVER).path("api/cards/" + id)
-                    .request(APPLICATION_JSON)
-                    .accept(APPLICATION_JSON)
-                    .get(new GenericType<Card>() {
-                    });
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
+
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/cards/" + id)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(new GenericType<Card>() {
+                });
+
+
     }
 
     /**

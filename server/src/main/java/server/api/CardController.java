@@ -175,12 +175,11 @@ public class CardController {
     /**
      * Gets the card from its id
      * @param id the id of the card we need to get
-     * @param card ram id the id of the card we need to get
      * @return a response entity with the card
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Card> getCard(@PathVariable("id") int id, @RequestBody Card card) {
-        if(id < 0 || !acs.existsById(id)) return ResponseEntity.badRequest().body(null);
+    public ResponseEntity<Card> getCard(@PathVariable("id") int id) {
+        if(id < 0 || !acs.existsById(id)) return ResponseEntity.badRequest().build();
         Card c =acs.findById(id).get();
         return ResponseEntity.ok(c);
     }
