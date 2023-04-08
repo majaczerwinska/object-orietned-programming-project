@@ -125,17 +125,18 @@ public class CustomizationCtrl {
             listBt = null;
             listFt = null;
             displayPalettes();
-        }
-        else{
+            shortcut();
+        } else {
             Board b = server.getBoard(boardId);
             bb.setValue(MainCtrl.colorParseToFXColor(b.getbColor()));
             bf.setValue(MainCtrl.colorParseToFXColor(b.getfColor()));
             lb.setValue(MainCtrl.colorParseToFXColor(b.getListb()));
             lf.setValue(MainCtrl.colorParseToFXColor(b.getListt()));
             displayPalettes();
+            shortcut();
         }
 
-
+        
     }
 
     /**
