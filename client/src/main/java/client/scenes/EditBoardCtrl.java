@@ -6,6 +6,7 @@ import com.google.inject.Inject;
 import commons.Board;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 
 public class EditBoardCtrl {
     private final ServerUtils server;
@@ -49,6 +50,7 @@ public class EditBoardCtrl {
         Board board = server.getBoard(this.boardId);
         name.requestFocus();
         name.setText(board.getName());
+        shortcut();
     }
 
     /**
@@ -161,7 +163,16 @@ public class EditBoardCtrl {
         return nameLabel;
     }
 
-
+    /**
+     * Shortcut for opening the help scene
+     */
+    private void shortcut() {
+        exit.getScene().setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.SLASH) {
+                mainCtrl.showHelpScene();
+            }
+        });
+    }
 
 
 }

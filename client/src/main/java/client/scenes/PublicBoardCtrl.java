@@ -4,6 +4,7 @@ import client.utils.ServerUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -48,7 +49,11 @@ public class PublicBoardCtrl {
      *
      */
     public void refresh() {
-
+            publicBoardBackButton.getScene().setOnKeyPressed(event -> {
+                if (event.getCode() == KeyCode.SLASH) {
+                    mainCtrl.showHelpScene();
+                }
+            });
     }
 
 
