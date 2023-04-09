@@ -50,7 +50,7 @@ public class BoardOverviewCtrl {
 
 
     @FXML
-    private ScrollPane scrollPaneOverview;
+    public ScrollPane scrollPaneOverview;
 
     @FXML
     private VBox vboxTags;
@@ -191,12 +191,12 @@ public class BoardOverviewCtrl {
      */
     public void setColor(){
         Board board = server.getBoard(boardID);
-        mainCtrl.appendStyle(scrollPaneOverview,"-fx-background: " + String.format("rgb(%d, %d, %d)",
+        String colour = String.format("rgb(%d, %d, %d)",
                 (board.getbColor() >> 16) & 0xFF,
-                (board.getbColor() >> 8) & 0xFF, board.getbColor()& 0xFF)+";");
-        mainCtrl.appendStyle(vboxList1,"-fx-background-color: " + String.format("rgb(%d, %d, %d)",
-                (board.getbColor() >> 16) & 0xFF,
-                (board.getbColor() >> 8) & 0xFF, board.getbColor()& 0xFF)+";");
+                (board.getbColor() >> 8) & 0xFF, board.getbColor()& 0xFF);
+        String colourString = "-fx-background: " + colour +";";
+        mainCtrl.appendStyle(scrollPaneOverview, colourString);
+        mainCtrl.appendStyle(vboxList1,colourString);
         String hexColor = String.format("#%06X", (0xFFFFFF & board.getfColor()));
         mainCtrl.appendStyle(labelBoardTitle,"-fx-text-fill: " + hexColor+";");
         mainCtrl.appendStyle(boardKey,"-fx-text-fill: " + hexColor+";");
@@ -287,7 +287,7 @@ public class BoardOverviewCtrl {
 
         List<Card> cards = server.getCardsFromList(listId);
         cards.sort(Comparator.comparing(Card::getPosition));
-        System.out.println("\n\n\n\n\n=======================================\n"+cards);
+        System.out.println("\n\n=======================================\n"+cards);
         for (Card card : cards) {
             CardComponent cardComponent = new CardComponent(mainCtrl, isLocked);
             mainCtrl.cardIdComponentMap.remove(card.getId());
@@ -295,7 +295,7 @@ public class BoardOverviewCtrl {
             mainCtrl.cardIdComponentMap.put(card.getId(), cardComponent);
             cardComponent.boardID = boardID;
             cardComponent.setData(card, listId);
-            cardComponent.getTagColors();
+            cardComponent.setColouredBorder();
             if(isLocked) cardComponent.readmode();
             mainCtrl.appendStyle(cardComponent, "-fx-background-color: " +
                     String.format("rgb(%d, %d, %d)", (card.getColor() >> 16) & 0xFF,
