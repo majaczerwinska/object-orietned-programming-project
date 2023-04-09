@@ -12,7 +12,22 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.Node;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -21,6 +36,9 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.text.Text;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
@@ -119,12 +137,11 @@ public class CardComponent extends HBox implements Initializable {
                                 "Done updating card in component");
                         originalValue = tfTitle.getText();
                     }
-//                  mainCtrl.appendStyle(tfTitle,"-fx-background-color: transparent; -fx-border-color: transparent; " +
-//                            "-fx-alignment: center");
                 }
             });
 
             handleCardHoverStyles();
+
 
             dragging();
 
@@ -133,15 +150,14 @@ public class CardComponent extends HBox implements Initializable {
         setOnMouseClicked(this::onElementClick);
 
         descriptionLabel.setOnMouseEntered(event -> {
-            descriptionLabel.setStyle("-fx-underline: true");
+            //descriptionLabel.setStyle("-fx-underline: true");
 
         });
         descriptionLabel.setOnMouseExited(event -> {
-            descriptionLabel.setStyle("-fx-underline: false");
+            //descriptionLabel.setStyle("-fx-underline: false");
         });
 
         this.boardOverviewCtrl = mainCtrl.getBoardOverviewCtrl();
-
     }
 
     /**
@@ -151,10 +167,21 @@ public class CardComponent extends HBox implements Initializable {
         setOnDragDetected(event-> {
             System.setProperty("javafx.dnd.delayedDragCallback", "false");
             Dragboard db = this.startDragAndDrop(TransferMode.MOVE);
+
+
+            SnapshotParameters snapshotParameters = new SnapshotParameters();
+
             // db.setDragView(this.snapshot(null, null)); // show a snapshot of the card while dragging
             ClipboardContent content = new ClipboardContent();
             content.putString(String.valueOf(cardID));
             db.setContent(content);
+
+            snapshotParameters.setFill(Color.TRANSPARENT);
+            db.setDragView(
+                    cardFrame.snapshot(snapshotParameters, null), 0,0);
+//                    event.getX() - (cardFrame.getWidth() / 2),
+//                    event.getY() - (cardFrame.getHeight() / 2));
+
             event.consume();
 
         });
@@ -254,10 +281,12 @@ public class CardComponent extends HBox implements Initializable {
      * @param colors the list of javafx color elements
      */
     public void createMultiColouredBorder (List<Color> colors) {
+        System.out.println("\033[41;34m \nSetting multicoloured border "+ colors +" \033[0m");
         List<Stop> stops = new ArrayList<>();
         double size = colors.size();
         double i = 0;
         for (Color c : colors) {
+            System.out.println("Adding color c="+c);
             double offset1 = i++ / size;
             double offset2 = i / size;
             stops.add(new Stop(offset1, c));
