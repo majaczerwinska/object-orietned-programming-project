@@ -109,8 +109,8 @@ public class SubTaskComponent extends HBox {
      * delete a subtask
      */
     public void delete(){
-        System.out.println(taskId);
-        System.out.println(cardId);
+        System.out.println("Deleting task with id="+taskId);
+        System.out.println("On card id="+cardId);
         server.deleteTask(taskId, cardId);
         cardCtrl.refresh();
     }

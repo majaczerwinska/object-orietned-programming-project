@@ -114,24 +114,6 @@ public class BoardOverviewCtrl {
         System.out.println("Inject called in board overview");
     }
 
-//    /**
-//     *
-//     * @param location
-//     * The location used to resolve relative paths for the root object, or
-//     * {@code null} if the location is not known.
-//     *
-//     * @param resources
-//     * The resources used to localize the root object, or {@code null} if
-//     * the root object was not localized.
-//     */
-//    @Override
-//    public void initialize(URL location, ResourceBundle resources) {
-//        if (server.testConnection(ServerUtils.SERVER) != 200) {
-//            System.out.println("No server to connect to, halting tag init function");
-//            return;
-//        }
-//    }
-
     /**
      * Creates stomp session
      */
@@ -294,7 +276,7 @@ public class BoardOverviewCtrl {
 
         List<Card> cards = server.getCardsFromList(listId);
         cards.sort(Comparator.comparing(Card::getPosition));
-        System.out.println("\n\n=======================================\n"+cards);
+        System.out.println("\n=======================================\n"+cards);
         for (Card card : cards) {
             CardComponent cardComponent = new CardComponent(mainCtrl, isLocked);
             mainCtrl.cardIdComponentMap.remove(card.getId());
