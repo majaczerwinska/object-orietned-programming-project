@@ -28,6 +28,7 @@ public class Main {
      * @param args none?
      */
     public static void main(String[] args) {
+        System.out.println("\033[37;42m Starting server... \033[0m");
         SpringApplication.run(Main.class, args);
     }
 }

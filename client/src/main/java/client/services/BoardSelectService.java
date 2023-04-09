@@ -38,7 +38,7 @@ public class BoardSelectService {
     public List<String> getBoardKeys() {
         String keys = prefs.get(saveID, "public");
         List<String> keyList = new ArrayList<>(List.of(keys.split(",")));
-        System.out.println(keyList);
+        System.out.println("List of board keys = "+keyList);
         return keyList;
     }
 

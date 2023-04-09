@@ -570,8 +570,30 @@ public class MainCtrl {
      * @param style the style you want to append
      */
     public void appendStyle(Node node, String style) {
+        removeStyle(node, style);
         String existingStyle = node.getStyle();
-        node.setStyle(existingStyle.replaceAll(style, "") + style);
+        node.setStyle(existingStyle + style);
+    }
+
+
+    /**
+     * remove a style from a node
+     * @param node the node instance
+     * @param style the style string to remove
+     */
+    public void removeStyle(Node node, String style) {
+        String existingStyle = node.getStyle();
+        System.out.println("\033[96;40m Removing style from element="+node+
+                "\n'"+style+
+                "'\n'"+existingStyle+"'");
+
+        if (style.contains(":")) {
+            node.setStyle(existingStyle.replaceAll("(?i)" + style + "\\s*;?", ""));
+        } else {
+            String regex = "(?i)"+style+":[^;]*;?";
+            node.setStyle(existingStyle.replaceAll(regex, ""));
+        }
+        System.out.println("'"+node.getStyle()+"'\033[0m\n");
     }
 
     /**

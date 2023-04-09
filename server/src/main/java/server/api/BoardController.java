@@ -91,7 +91,6 @@ public class BoardController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<Board> getBoard(@PathVariable("id") int id){
-        System.out.println(id);
         if(id < 0 || !abs.existsById(id)) return ResponseEntity.badRequest().build();
         Board resp = (Board) Hibernate.unproxy(abs.getById(id));
         return ResponseEntity.ok().body(resp);

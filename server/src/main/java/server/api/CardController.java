@@ -152,15 +152,8 @@ public class CardController {
     public ResponseEntity<Card> changeListforCard(@PathVariable("id") int id, @PathVariable("listid") int listid,
                                                   @RequestBody Card card) {
         System.out.println("Changing list for card="+id+" to list="+listid);
-//        card.setId(id);
-    //    System.out.println(card);
-     //   System.out.println(acs.getListForCard(card));
 
         if(!acs.existsById(id) || card.getTitle() == null || acs.getListForCard(card)==null){
-//            System.out.println("ChangeList for card id="+id+" failed!");
-//            System.out.println(!acs.existsById(id));
-//            System.out.println(card.getTitle() == null);
-//            System.out.println(acs.getListForCard(card)==null);
             return ResponseEntity.badRequest().build();
         } else {
             System.out.println("No issue with card existence");
