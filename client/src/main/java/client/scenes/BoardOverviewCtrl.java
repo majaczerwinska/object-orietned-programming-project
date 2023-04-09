@@ -469,12 +469,13 @@ public class BoardOverviewCtrl {
     private void switchShortcut() {
         listViewTags.getScene().setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.S) {
-                if (highlightedCardComponent != null) {
-                    getCardForSwitchingHighlight(1);
-                }
+                if (highlightedCardComponent != null) getCardForSwitchingHighlight(1);
             }   else if (event.getCode() == KeyCode.W) {
                 if (highlightedCardComponent != null) getCardForSwitchingHighlight(-1);
-
+            } else if (event.getCode() == KeyCode.O) {
+                if (highlightedCardComponent != null) switchPosition(-1);
+            }   else if (event.getCode() == KeyCode.L) {
+                if (highlightedCardComponent != null) switchPosition(1);
             }
         });
     }
@@ -519,6 +520,32 @@ public class BoardOverviewCtrl {
                 }
             }
         }
+    }
+
+    /**
+     * Gets the card for switching the highlight
+     * @param upOrDown This tells us if the highlight is switched up or down
+     */
+    public void switchPosition(int upOrDown) {
+        Card card = server.getCard(highlightedCardComponent.cardID);
+        int pos = card.getPosition();
+        CardList cardList = null;
+        for (CardList list : server.getCardListsFromBoard(boardID)) {
+            if (list.getCards().contains(card)) cardList = list;
+        }
+        if (cardList == null) return;
+        List<Card> cards = cardList.getCards();
+        cards.sort(Comparator.comparing(Card::getPosition));
+        if (cards.get(pos+upOrDown) == null) return;
+        Card newCard = cards.get(pos+upOrDown);
+        if (newCard == null) return;
+
+        int oldPos = card.getPosition();
+        int newPos = newCard.getPosition();
+        server.setPosition(card, newPos);
+        server.setPosition(newCard, oldPos);
+        refresh(null);
+
     }
 
 
