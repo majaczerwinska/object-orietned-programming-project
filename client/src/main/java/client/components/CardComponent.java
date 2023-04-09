@@ -10,24 +10,13 @@ import commons.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.Node;
-import javafx.scene.SnapshotParameters;
-import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -36,14 +25,9 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.text.Text;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 public class CardComponent extends HBox implements Initializable {
 
@@ -244,8 +228,15 @@ public class CardComponent extends HBox implements Initializable {
     }
 
 
+    /**
+     * get the appropriate shadow colour to contrast a certain background color
+     * use standard formula for coolour luminance
+     * @param backgroundColor javafx color instance
+     * @return new javafx colour instance for contrasting colour
+     */
     public Color getShadowColor(Color backgroundColor) {
-        double luminance = 0.2126 * backgroundColor.getRed() + 0.7152 * backgroundColor.getGreen() + 0.0722 * backgroundColor.getBlue();
+        double luminance = 0.2126 * backgroundColor.getRed() + 0.7152 * backgroundColor.getGreen()
+                + 0.0722 * backgroundColor.getBlue();
         if (luminance > 0.5) {
             // background color is light -> use dark shadow
             return Color.rgb(0, 0, 0, 0.3);
@@ -255,7 +246,15 @@ public class CardComponent extends HBox implements Initializable {
         }
     }
 
-    public static String getRgbaColor(Color color) {
+    /**
+     * Hacky solution to convert a javafx color to a string that can be used
+     * with appendStyle method. Opacity attribute is specifically tailored
+     * for black and white shadows, this method is not to be used elsewhere.
+     * use with caution if you do
+     * @param color color object
+     * @return string rgba(r, g, b, a)
+     */
+    public String getRgbaColor(Color color) {
         int r = (int) (color.getRed() * 255);
         int g = (int) (color.getGreen() * 255);
         int b = (int) (color.getBlue() * 255);
