@@ -249,17 +249,17 @@ public class MainCtrl {
         // styling the page 
 
         // setting the font family for the text
-        serverSelectCtrl.getSelectedServerLabel().setStyle("-fx-font-family: Avenir Book;");
-        serverSelectCtrl.getConnectionLabel().setStyle("-fx-font-family: Avenir Book;");
-        serverSelectCtrl.getSelectTalioServer().setStyle("-fx-font-family: Avenir Book;");
-        serverSelectCtrl.getIpFieldHeader().setStyle("-fx-font-family: Avenir Book;");
-        serverSelectCtrl.getConnectionStatus().setStyle("-fx-font-family: Avenir Book;");
-        serverSelectCtrl.getSelectedServer().setStyle("-fx-font-family: Avenir Book;");
-        serverSelectCtrl.getTestConnection().setStyle("-fx-font-family: Avenir Book;");
-        serverSelectCtrl.getAddServer().setStyle("-fx-font-family: Avenir Book;");
-        serverSelectCtrl.getEnterServer().setStyle("-fx-font-family: Avenir Book;");
-        serverSelectCtrl.getGoBackButton().setStyle("-fx-font-family: Avenir Book;");
-        serverSelectCtrl.getRemoveServer().setStyle("-fx-font-family: Avenir Book;");
+        this.appendStyle(serverSelectCtrl.getSelectedServerLabel(),"-fx-font-family: Avenir Book;");
+        this.appendStyle(serverSelectCtrl.getConnectionLabel(),"-fx-font-family: Avenir Book;");
+        this.appendStyle(serverSelectCtrl.getSelectTalioServer(),"-fx-font-family: Avenir Book;");
+        this.appendStyle(serverSelectCtrl.getIpFieldHeader(),"-fx-font-family: Avenir Book;");
+        this.appendStyle(serverSelectCtrl.getConnectionStatus(),"-fx-font-family: Avenir Book;");
+        this.appendStyle(serverSelectCtrl.getSelectedServer(),"-fx-font-family: Avenir Book;");
+        this.appendStyle(serverSelectCtrl.getTestConnection(),"-fx-font-family: Avenir Book;");
+        this.appendStyle(serverSelectCtrl.getAddServer(),"-fx-font-family: Avenir Book;");
+        this.appendStyle(serverSelectCtrl.getEnterServer(),"-fx-font-family: Avenir Book;");
+        this.appendStyle(serverSelectCtrl.getGoBackButton(),"-fx-font-family: Avenir Book;");
+        this.appendStyle(serverSelectCtrl.getRemoveServer(),"-fx-font-family: Avenir Book;");
 
         // round the corners for the buttons and text fields
         String radiusStyle = "-fx-background-radius: 7;";
@@ -321,21 +321,21 @@ public class MainCtrl {
         // styling the edit password pop up
 
         // changing the font for the text
-        editPasswordCtrl.getCancel().setStyle("-fx-font-family: Avenir Book;");
-        editPasswordCtrl.getEdit().setStyle("-fx-font-family: Avenir Book;");
-        editPasswordCtrl.getEditPassLabel().setStyle("-fx-font-family: Avenir Book;");
-        editPasswordCtrl.getPassLabel().setStyle("-fx-font-family: Avenir Book;");
-        editPasswordCtrl.getRemove().setStyle("-fx-font-family: Avenir Book;");
-        editPasswordCtrl.getVerifyLabel().setStyle("-fx-font-family: Avenir Book;");
-        editPasswordCtrl.getWarningPassLabel().setStyle("-fx-font-family: Avenir Book;");
-        editPasswordCtrl.getWarningVerifyLabel().setStyle("-fx-font-family: Avenir Book;");
+        this.appendStyle(editPasswordCtrl.getCancel(),"-fx-font-family: Avenir Book;");
+        this.appendStyle(editPasswordCtrl.getEdit(),"-fx-font-family: Avenir Book;");
+        this.appendStyle(editPasswordCtrl.getEditPassLabel(),"-fx-font-family: Avenir Book;");
+        this.appendStyle(editPasswordCtrl.getPassLabel(),"-fx-font-family: Avenir Book;");
+        this.appendStyle(editPasswordCtrl.getRemove(),"-fx-font-family: Avenir Book;");
+        this.appendStyle(editPasswordCtrl.getVerifyLabel(),"-fx-font-family: Avenir Book;");
+        this.appendStyle(editPasswordCtrl.getWarningPassLabel(),"-fx-font-family: Avenir Book;");
+        this.appendStyle(editPasswordCtrl.getWarningVerifyLabel(),"-fx-font-family: Avenir Book;");
 
         // rounding the buttons and text-fields
-        editPasswordCtrl.getCancel().setStyle("-fx-background-radius: 7;");
-        editPasswordCtrl.getEdit().setStyle("-fx-background-radius: 7;");
-        editPasswordCtrl.getPasswordTextField().setStyle("-fx-background-radius: 7;");
-        editPasswordCtrl.getPasswordVerifyTextField().setStyle("-fx-background-radius: 7;");
-        editPasswordCtrl.getRemove().setStyle("-fx-background-radius: 7;");
+        this.appendStyle(editPasswordCtrl.getCancel(),"-fx-background-radius: 7;");
+        this.appendStyle(editPasswordCtrl.getEdit(),"-fx-background-radius: 7;");
+        this.appendStyle(editPasswordCtrl.getPasswordTextField(),"-fx-background-radius: 7;");
+        this.appendStyle(editPasswordCtrl.getPasswordVerifyTextField(),"-fx-background-radius: 7;");
+        this.appendStyle(editPasswordCtrl.getRemove(),"-fx-background-radius: 7;");
 
         locker.setScene(editPassword);
         editPasswordCtrl.boardID = boardID;
@@ -529,10 +529,10 @@ public class MainCtrl {
 
         // changing the font family for the texts
        // editBoardCtrl.getColorLabel().setStyle("-fx-font-family: Avenir Book;");
-        editBoardCtrl.getExit().setStyle("-fx-font-family: Avenir Book;");
-        editBoardCtrl.getNameLabel().setStyle("-fx-font-family: Avenir Book;");
-        editBoardCtrl.getSave().setStyle("-fx-font-family: Avenir Book;");
-        editBoardCtrl.getTitleLabel().setStyle("-fx-font-family: Avenir Book;");
+        this.appendStyle(editBoardCtrl.getExit(),"-fx-font-family: Avenir Book;");
+        this.appendStyle(editBoardCtrl.getNameLabel(),"-fx-font-family: Avenir Book;");
+        this.appendStyle(editBoardCtrl.getSave(),"-fx-font-family: Avenir Book;");
+        this.appendStyle(editBoardCtrl.getTitleLabel(),"-fx-font-family: Avenir Book;");
 
         // rounding the buttons and text fields
         appendStyle(editBoardCtrl.getExit(),"-fx-background-radius: 15;");
@@ -701,19 +701,19 @@ public class MainCtrl {
         boardCreationCtrl.getCreateBoardButton().setFont(Font.font(screenWidth * 0.015));
 
         // setting the font family for the text
-        boardCreationCtrl.getTitleLabel().setStyle("-fx-font-family: Avenir Book;");
-        boardCreationCtrl.getBoardKeyLabel().setStyle("-fx-font-family: Avenir Book;");
-        boardCreationCtrl.getBoardTitleLabel().setStyle("-fx-font-family: Avenir Book;");
-        boardCreationCtrl.getCreateBoardButton().setStyle("-fx-font-family: Avenir Book;");
-        boardCreationCtrl.getStopCreatingBoardButton().setStyle("-fx-font-family: Avenir Book;");
+        this.appendStyle(boardCreationCtrl.getTitleLabel(),"-fx-font-family: Avenir Book;");
+        this.appendStyle(boardCreationCtrl.getBoardKeyLabel(),"-fx-font-family: Avenir Book;");
+        this.appendStyle(boardCreationCtrl.getBoardTitleLabel(),"-fx-font-family: Avenir Book;");
+        this.appendStyle(boardCreationCtrl.getCreateBoardButton(),"-fx-font-family: Avenir Book;");
+        this.appendStyle(boardCreationCtrl.getStopCreatingBoardButton(),"-fx-font-family: Avenir Book;");
 
         // round the corners for the text areas
-        boardCreationCtrl.getBoardKeyTextField().setStyle("-fx-background-radius: 7;");
-        boardCreationCtrl.getBoardTitleTextField().setStyle("-fx-background-radius: 7;");
+        this.appendStyle(boardCreationCtrl.getBoardKeyTextField(),"-fx-background-radius: 7;");
+        this.appendStyle(boardCreationCtrl.getBoardTitleTextField(),"-fx-background-radius: 7;");
 
         // round the corners of the buttons
-        boardCreationCtrl.getCreateBoardButton().setStyle("-fx-background-radius: 7;");
-        boardCreationCtrl.getStopCreatingBoardButton().setStyle("-fx-background-radius: 7;");
+        this.appendStyle(boardCreationCtrl.getCreateBoardButton(),"-fx-background-radius: 7;");
+        this.appendStyle(boardCreationCtrl.getStopCreatingBoardButton(),"-fx-background-radius: 7;");
 
         locker.setScene(boardCreation);
         locker.setResizable(false);
@@ -860,13 +860,13 @@ public class MainCtrl {
         // styling the pop up
 
         // adding fonts for the text
-        tagPopUpCtrl.getGoBackButton().setStyle("-fx-font-family: Avenir Book;");
+        this.appendStyle(tagPopUpCtrl.getGoBackButton(),"-fx-font-family: Avenir Book;");
 //        tagPopUpCtrl.getName().setStyle("-fx-font-family: Avenir Book;");
 //        tagPopUpCtrl.getTitle().setStyle("-fx-font-family: Avenir Book;");
 //        tagPopUpCtrl.getPlusButton().setStyle("-fx-font-family: Avenir Book;");
 
         // rounding the buttons and text fields
-        tagPopUpCtrl.getGoBackButton().setStyle("-fx-background-radius: 7;");
+        this.appendStyle(tagPopUpCtrl.getGoBackButton(),"-fx-background-radius: 7;");
 //        tagPopUpCtrl.getPlusButton().setStyle("-fx-background-radius: 20;");
 //        tagPopUpCtrl.getName().setStyle("-fx-background-radius: 7;");
 
