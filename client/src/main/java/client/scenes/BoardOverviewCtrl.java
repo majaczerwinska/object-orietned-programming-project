@@ -442,6 +442,7 @@ public class BoardOverviewCtrl {
                 clearBoard();
                 displayLists(cardLists, c);
                 shortcut();
+                switchShortcut();
             }
         });
     }
@@ -461,20 +462,64 @@ public class BoardOverviewCtrl {
             }  else if (event.getCode() == KeyCode.C) {
                 if (highlightedCardComponent != null);
                 mainCtrl.showColorPopUp(this.boardID, highlightedCardComponent.cardID);
-//            }   else if (event.getCode() == KeyCode.KP_DOWN) {
-//                if (highlightedCardComponent != null) {
-//                    for (Card c : server.getCardsFromList(server.getListFromCard(
-//                    highlightedCardComponent.cardID, server.getCard(highlightedCardComponent.cardID)).getId())) {
-//                        if (c.getPosition() - 1 == server.getCard(highlightedCardComponent.cardID).getPosition()){
-//                        }
-//                    }
-//                }
-//            }   else if (event.getCode() == KeyCode.KP_UP) {
-//                if (highlightedCardComponent != null);
             }
         });
     }
 
+    private void switchShortcut() {
+        listViewTags.getScene().setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.S) {
+                if (highlightedCardComponent != null) {
+                    getCardForSwitchingHighlight(1);
+                }
+            }   else if (event.getCode() == KeyCode.W) {
+                if (highlightedCardComponent != null) getCardForSwitchingHighlight(-1);
+
+            }
+        });
+    }
+
+    /**
+     * Gets the card for switching the highlight
+     * @param upOrDown This tells us if the highlight is switched up or down
+     */
+    public void getCardForSwitchingHighlight(int upOrDown) {
+        Card card = server.getCard(highlightedCardComponent.cardID);
+        int pos = card.getPosition();
+        CardList cardList = null;
+        for (CardList list : server.getCardListsFromBoard(boardID)) {
+            if (list.getCards().contains(card)) cardList = list;
+        }
+        if (cardList == null) return;
+        List<Card> cards = cardList.getCards();
+        cards.sort(Comparator.comparing(Card::getPosition));
+        if (cards.get(pos+upOrDown) == null) return;
+        Card newCard = cards.get(pos+upOrDown);
+        if (newCard == null) return;
+        switchHighlight(cardList, newCard);
+    }
+
+    private void switchHighlight(CardList cardList, Card newCard) {
+        for (var t : hboxCardLists.getChildren()) {
+            CardListComponent cardListComponent = (CardListComponent) t;
+            if (cardListComponent.getListId()== cardList.getId()) {
+                for (var p : cardListComponent.getVboxCards().getChildren()) {
+                    CardComponent cc = (CardComponent) p;
+                    if (cc.cardID== newCard.getId()) {
+                        String oldStyle = highlightedCardComponent.getStyle();
+                        oldStyle = oldStyle.replace("-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.9), 5, 0, 0, 5);",
+                                "");
+                        highlightedCardComponent.setStyle(oldStyle);
+                        this.highlightedCardComponent = cc;
+                        String newStyle = highlightedCardComponent.getStyle();
+                        newStyle += "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.9), 5, 0, 0, 5);";
+                        highlightedCardComponent.setStyle(newStyle);
+
+                    }
+                }
+            }
+        }
+    }
 
 
     /**

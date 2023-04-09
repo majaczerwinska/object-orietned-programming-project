@@ -295,4 +295,12 @@ public class CardListComponent extends VBox{
 
     }
 
+
+    /**
+     * returns the id of the list
+     * @return the id of the list
+     */
+    public int getListId(){
+        return this.listId;
+    }
 }
