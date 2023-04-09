@@ -87,6 +87,12 @@ public class BoardOverviewCtrl {
     private Preferences pref;
     private boolean isLocked;
 
+
+    public int boardBackgroundColor;
+
+    public int listsBackgroundColor;
+
+
     private boolean isAdmin;
 
     /**
@@ -191,6 +197,7 @@ public class BoardOverviewCtrl {
      */
     public void setColor(){
         Board board = server.getBoard(boardID);
+        boardBackgroundColor = board.getbColor();
         String colour = String.format("rgb(%d, %d, %d)",
                 (board.getbColor() >> 16) & 0xFF,
                 (board.getbColor() >> 8) & 0xFF, board.getbColor()& 0xFF);
@@ -346,6 +353,7 @@ public class BoardOverviewCtrl {
             CardListComponent cardListComponent = new CardListComponent(mainCtrl, boardID,cardList.getId());
 
             cardListComponent.setTitle(cardList.getName());
+            listsBackgroundColor = cardList.getbColor();
             mainCtrl.appendStyle(cardListComponent,String.format("-fx-background-color: rgb(%d, %d, %d);",
                     (cardList.getbColor() >> 16) & 0xFF,
                     (cardList.getbColor() >> 8) & 0xFF, cardList.getbColor()& 0xFF) + ";");

@@ -189,24 +189,9 @@ public class CardComponent extends HBox implements Initializable {
             boardOverviewCtrl.highlightedCardComponent= this;
             mainCtrl.appendStyle(tfTitle,"-fx-border-color: black; -fx-alignment: center;");
 
-            Pattern regex = Pattern.compile("(?i)--fx-background: [^;]*;?");
-            Matcher matcher = regex.matcher(boardOverviewCtrl.scrollPaneOverview.getStyle());
-            Color backgroundColour = Color.BLACK;
-            if (matcher.find()) {
-                String styleString = matcher.group(1);
-                Pattern pattern = Pattern.compile("\\(\\s*(\\d+)\\s*,\\s*(\\d+)\\s*,\\s*(\\d+)\\s*\\)");
-                Matcher colourMatcher = pattern.matcher(styleString);
-                if (colourMatcher.find()) {
-                    int red = Integer.parseInt(matcher.group(1));
-                    int green = Integer.parseInt(matcher.group(2));
-                    int blue = Integer.parseInt(matcher.group(3));
-                    backgroundColour = Color.rgb(red, green, blue);
-                }
-            }
-
-            Color shadowColor = getShadowColor(backgroundColour);
-            System.out.println("\033[40;35mShadow color="+getRgbaColor(shadowColor)+"\n\033[0m");
-            mainCtrl.appendStyle(cardFrame, "-fx-effect: dropshadow(gaussian, "+ getRgbaColor(shadowColor) +", 9, 0, 0, 3);");
+            mainCtrl.appendStyle(cardFrame, "-fx-effect: dropshadow(gaussian, "+
+                    getRgbaColor(getShadowColor(MainCtrl.colorParseToFXColor(boardOverviewCtrl.listsBackgroundColor)))
+                    +", 9, 0, 0, 3);");
         });
         cardFrame.setOnMouseExited(event -> {
             highlighted = false;
@@ -249,7 +234,7 @@ public class CardComponent extends HBox implements Initializable {
         int b = (int) (color.getBlue() * 255);
         int a = (int) (color.getOpacity() * 255);
 //        return "rgba(" + r + ", " + g + ", " + b + ", " + a + ")";
-        return "rgba(" + r + ", " + g + ", " + b + ", 0.3)";
+        return "rgba(" + r + ", " + g + ", " + b + ", "+ ((r>200)?0.9:0.3) +")";
     }
 
     /**
