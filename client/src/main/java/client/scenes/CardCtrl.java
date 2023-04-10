@@ -28,6 +28,8 @@ public class CardCtrl implements Initializable {
     private final MainCtrl mainCtrl;
     private final WebsocketClient websocketClient;
     public boolean isViewed = false;
+    private String nameOld = "";
+    private String descriptionOld = "";
 
     @FXML
     private Label label;
@@ -99,30 +101,24 @@ public class CardCtrl implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         text.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            String originalValue = "";
             if (newValue) {
                 // TextField has received focus
-                originalValue = text.getText();
             } else {
                 // TextField has lost focus
-                System.out.println("originalValue = " + originalValue + "\nnew value = " + text.getText());
-                if (!text.getText().equals(originalValue)) {
+                System.out.println("originalValue = " + nameOld + "\nnew value = " + text.getText());
+                if (!text.getText().equals(nameOld)) {
                     websocketClient.sendMessage("/app/update/cardOverview/" + cardID, "Name edited");
-                    originalValue = text.getText();
                 }
             }
         });
         area.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            String originalValue = "";
             if (newValue) {
                 // TextField has received focus
-                originalValue = area.getText();
             } else {
                 // TextField has lost focus
-                System.out.println("originalValue = " + originalValue + "\nnew value = " + area.getText());
-                if (!area.getText().equals(originalValue)) {
+                System.out.println("originalValue = " + descriptionOld + "\nnew value = " + area.getText());
+                if (!area.getText().equals(descriptionOld)) {
                     websocketClient.sendMessage("/app/update/cardOverview/" + cardID, "Description edited");
-                    originalValue = area.getText();
                 }
             }
         });
@@ -155,9 +151,11 @@ public class CardCtrl implements Initializable {
                     showTags();
                     showDropDown();
                 } else if(update.contains("Name")){
-                    text.setText( server.getCard(cardID).getTitle());
+                    nameOld = server.getCard(cardID).getTitle();
+                    text.setText(nameOld);
                 } else if(update.contains("Description")){
-                    area.setText( server.getCard(cardID).getDescription());
+                    descriptionOld = server.getCard(cardID).getDescription();
+                    area.setText(descriptionOld);
                 }
             });
         });
@@ -352,8 +350,10 @@ public class CardCtrl implements Initializable {
      * launch card overview scene util
      */
     public void setInfo(){
-        text.setText( server.getCard(cardID).getTitle());
-        area.setText(server.getCard(cardID).getDescription());
+        nameOld = server.getCard(cardID).getTitle();
+        text.setText(nameOld);
+        descriptionOld = server.getCard(cardID).getDescription();
+        area.setText(descriptionOld);
 
     }
 
