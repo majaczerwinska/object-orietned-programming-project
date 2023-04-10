@@ -3,7 +3,6 @@ package client.scenes;
 import javax.inject.Inject;
 import client.utils.*;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 

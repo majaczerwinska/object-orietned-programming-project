@@ -112,7 +112,7 @@ public class MainCtrl {
      *
      * @param primaryStage
      * @param locker
-     * @param
+     * @param helpStage
      * @param landing
      * @param card
      * @param publicBoard
@@ -232,16 +232,12 @@ public class MainCtrl {
 
         this.warningCtrl = warning.getKey();
         this.warning = new Scene(warning.getValue());
-
         this.customizationCtrl = customization.getKey();
         this.customization = new Scene(customization.getValue());
-
-
         this.adminPasswordCtrl = adminPwd.getKey();
         this.enterPasswordScene = new Scene(adminPwd.getValue());
         this.adminCtrl = adminPage.getKey();
         this.adminScene = new Scene(adminPage.getValue());
-
         this.paletteCreationCtrl = paletteCreate.getKey();
         this.paletteCreation = new Scene(paletteCreate.getValue());
         showLanding();
