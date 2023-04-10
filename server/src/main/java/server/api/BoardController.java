@@ -46,6 +46,7 @@ public class BoardController {
     public ResponseEntity<Board> addBoard(@RequestBody Board board) {
         if(board.getName()==null) return ResponseEntity.badRequest().build();
         Board saved = abs.save(board);
+        msgs.convertAndSend("/topic/admin/", "Board added");
         return ResponseEntity.ok(saved);
     }
 
@@ -124,6 +125,7 @@ public class BoardController {
         board.setId(id);
         abs.setBoardInfo(board);
         msgs.convertAndSend("/topic/boards/"+id, "Edited board#" + id + " refreshnamecolor");
+        msgs.convertAndSend("/topic/admin/", "Edited board#" + id);
         return ResponseEntity.ok().build();
     }
 
@@ -164,7 +166,8 @@ public class BoardController {
             return ResponseEntity.badRequest().build();
         }
         abs.delete(abs.getById(id));
-        msgs.convertAndSend("/topic/boards/delete/"+id, "CardList deleted on board#" + id);
+        msgs.convertAndSend("/topic/boards/delete/"+id, "Board#" + id + " deleted");
+        msgs.convertAndSend("/topic/admin/", "Deleted board#" + id);
         return ResponseEntity.ok().build();
     }
 }

@@ -660,6 +660,7 @@ public class MainCtrl {
         cardCtrl.disconnectStompSession();
         listCreationCtrl.disconnectStompSession();
         customizationCtrl.disconnectStompSession();
+        adminCtrl.disconnectStompSession();
     }
 
     /**
@@ -978,6 +979,8 @@ public class MainCtrl {
             }*/
             adminCtrl.setToken(token);
             adminCtrl.refresh(ip);
+            adminCtrl.setStompSession();
+            adminCtrl.subscribeToAllBoards();
         }
 
     /**
