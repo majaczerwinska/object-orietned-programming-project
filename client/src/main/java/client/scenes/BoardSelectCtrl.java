@@ -162,7 +162,6 @@ public class BoardSelectCtrl {
         System.out.println(selection);
         mainCtrl.showBoardOverview(selection.id);
         mainCtrl.subscribeToBoard(selection.id);
-        mainCtrl.subscribeToTagsFromBoard(selection.id);
     }
 
     /**

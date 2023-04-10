@@ -232,7 +232,6 @@ public class Admin {
             }
             mainCtrl.showBoardOverview(b.getId(), true);
             mainCtrl.subscribeToBoard(b.getId());
-            mainCtrl.subscribeToTagsFromBoard(b.getId());
         } catch (Exception e) {
             refresh(this.ip);
             saveText.setText("Could not join: "+e.getMessage());

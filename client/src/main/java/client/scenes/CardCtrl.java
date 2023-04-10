@@ -69,6 +69,7 @@ public class CardCtrl implements Initializable {
     @FXML
     private TextField newTask;
     public int cardID;
+    public int listID;
     public int boardID;
     public boolean isLocked;
 
@@ -183,16 +184,43 @@ public class CardCtrl implements Initializable {
         });
         websocketClient.registerForMessages("/topic/palletes/"+boardID, String.class, update -> {
             System.out.println("payload in card overview: "+ update);
-            Platform.runLater(() -> {
-                showDropDownColors();
-            });
+            Platform.runLater(this::showDropDownColors);
         });
     }
 
+    /**
+     * Subscribes to endpoint that listens to all deletes from the list and board the card is in
+     */
+    public void subscribeToListenForDeletes(){
+        websocketClient.registerForMessages("/topic/lists/delete/"+listID, String.class, update -> {
+            System.out.println("payload in card overview: "+ update);
+            if(isViewed){
+                Platform.runLater(() -> {
+                    closeOverviewAndShowAlert("You were viewing a card, " +
+                            "but someone just deleted the list the card is in!");
+                });
+            }
+        });
+        websocketClient.registerForMessages("/topic/boards/delete/"+boardID, String.class, update -> {
+            System.out.println("payload in card overview: "+ update);
+            if(isViewed){
+                Platform.runLater(() -> {
+                    closeOverviewAndShowAlert("You were viewing a card, " +
+                            "but someone just deleted the board the card is in!");
+                });
+            }
+        });
+    }
+
+    /**
+     * Unsubscribes to all endpoints from card overview
+     */
     private void unsubscribe(){
         websocketClient.unsubscribe("/topic/cardOverview/"+cardID);
         websocketClient.unsubscribe("/topic/tags/"+boardID);
         websocketClient.unsubscribe("/topic/palletes/"+boardID);
+        websocketClient.unsubscribe("/topic/lists/delete/"+listID);
+        websocketClient.unsubscribe("/topic/boards/delete/"+boardID);
     }
 
     /**
@@ -205,7 +233,7 @@ public class CardCtrl implements Initializable {
     }
 
     /**
-     * Registers deletion for the card you are viewing
+     * Registers deletion for the card you are viewing (via polling)
      */
     public void registerForDeleted(){
         server.registerForDeletedCard(cardID, deleted -> {
@@ -213,17 +241,24 @@ public class CardCtrl implements Initializable {
             if(isViewed){
                 Platform.runLater(() -> {
                     System.out.println("Closing pop up");
-                    isViewed = false;
-                    mainCtrl.closeLocker();
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Card deleted");
-                    alert.setHeaderText("This card got deleted!");
-                    alert.setContentText("You were viewing a card that someone just deleted");
-                    alert.show();
+                    closeOverviewAndShowAlert("You were viewing a card that someone just deleted!");
                 });
             }
 
         });
+    }
+
+    /**
+     * Closes card overview when card or list/board where card is in gets deleted and shows alert that it happened
+     */
+    private void closeOverviewAndShowAlert(String context){
+        isViewed = false;
+        mainCtrl.closeLocker();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Card deleted");
+        alert.setHeaderText("This card got deleted!");
+        alert.setContentText(context);
+        alert.show();
     }
 
     /**

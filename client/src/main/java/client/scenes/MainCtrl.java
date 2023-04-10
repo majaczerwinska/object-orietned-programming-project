@@ -665,16 +665,9 @@ public class MainCtrl {
      * @param boardId the boarId from the board we want updates from
      */
     public void subscribeToBoard(int boardId) {
-        boardOverviewCtrl.subscribeToBoard(boardId);
-    }
-
-    /**
-     * Subscribes to endpoint that listens to all updates of tags from a specific board
-     *
-     * @param boardId the boarId from the board we want updates from
-     */
-    public void subscribeToTagsFromBoard(int boardId) {
+        boardOverviewCtrl.subscribeToBoardUpdates(boardId);
         boardOverviewCtrl.subscribeToTagsFromBoard(boardId);
+        boardOverviewCtrl.subscribeToListenForDeletes(boardId);
     }
 
 
@@ -694,11 +687,13 @@ public class MainCtrl {
      * show card overview
      *
      * @param cardID  card id
+     * @param listID list id
      * @param boardID board id
      * @param isLocked whether toe board is locked
      */
-    public  void showCard(int cardID, int boardID, boolean isLocked){
+    public  void showCard(int cardID, int listID, int boardID, boolean isLocked){
         cardCtrl.cardID = cardID;
+        cardCtrl.listID = listID;
         cardCtrl.boardID = boardID;
         cardCtrl.isLocked = isLocked;
         if(isLocked) cardCtrl.disable();
@@ -714,6 +709,7 @@ public class MainCtrl {
         cardCtrl.refresh();
         cardCtrl.subscribeToCardOverview(cardID);
         cardCtrl.subscribeToCardOverviewBoardUpdates(boardID);
+        cardCtrl.subscribeToListenForDeletes();
         locker.setTitle("Card overview :)");
         locker.setScene(card);
         locker.setResizable(false);

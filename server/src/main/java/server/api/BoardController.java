@@ -164,6 +164,7 @@ public class BoardController {
             return ResponseEntity.badRequest().build();
         }
         abs.delete(abs.getById(id));
+        msgs.convertAndSend("/topic/boards/delete/"+id, "CardList deleted on board#" + id);
         return ResponseEntity.ok().build();
     }
 }
