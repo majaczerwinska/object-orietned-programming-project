@@ -100,7 +100,8 @@ public class Admin {
      * @param websocketClient the websocket client
      */
     @Inject
-    public Admin(ServerUtils serverUtils, MainCtrl mainCtrl, AdminService adminService, WebsocketClient websocketClient) {
+    public Admin(ServerUtils serverUtils, MainCtrl mainCtrl, AdminService adminService,
+                 WebsocketClient websocketClient) {
         this.server = serverUtils;
         this.mainCtrl = mainCtrl;
         this.service = adminService;
