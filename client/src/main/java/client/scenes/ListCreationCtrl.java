@@ -53,6 +53,13 @@ public class ListCreationCtrl {
         System.out.println("StompSession created in list creation");
     }
 
+    /**
+     * Disconnects the stomp session
+     */
+    public void disconnectStompSession(){
+        websocketClient.disconnect();
+    }
+
 
     /**
      * Creates a new cardList with a given title and adds it to the public board

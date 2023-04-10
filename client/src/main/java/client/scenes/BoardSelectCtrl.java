@@ -132,6 +132,7 @@ public class BoardSelectCtrl {
      * takes you back to the landing page
      */
     public void back() {
+        mainCtrl.disconnectStompSessions();
         mainCtrl.showServerSelect();
     }
 

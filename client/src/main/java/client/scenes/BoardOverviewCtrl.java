@@ -123,6 +123,13 @@ public class BoardOverviewCtrl {
     }
 
     /**
+     * Disconnects the stomp session
+     */
+    public void disconnectStompSession(){
+        websocketClient.disconnect();
+    }
+
+    /**
      * Subscribes to endpoint that listens to all updates of cards and lists from a specific board
      * @param boardID the boarId from the board we want updates from
      */

@@ -270,6 +270,7 @@ public class MainCtrl {
         appendStyle(serverSelectCtrl.getGoBackButton(), radiusStyle);
         appendStyle(serverSelectCtrl.getRemoveServer(), radiusStyle);
 
+
         primaryStage.setScene(serverSelect);
         primaryStage.setResizable(true);
         serverSelectCtrl.refresh();
@@ -637,7 +638,7 @@ public class MainCtrl {
     }
 
     /**
-     * Calls the methods to create a stomp session in boardOverviewCtrl and tagManagerCtrl
+     * Calls the methods to create a stomp session in all necessary scenes
      */
     public void setStompSession() {
         boardOverviewCtrl.setStompSession();
@@ -645,6 +646,17 @@ public class MainCtrl {
         cardCtrl.setStompSession();
         listCreationCtrl.setStompSession();
         customizationCtrl.setStompSession();
+    }
+
+    /**
+     * Calls the methods to disconnect a stomp session in all necessary scenes
+     */
+    public void disconnectStompSessions() {
+        boardOverviewCtrl.disconnectStompSession();
+        tagManagerCtrl.disconnectStompSession();
+        cardCtrl.disconnectStompSession();
+        listCreationCtrl.disconnectStompSession();
+        customizationCtrl.disconnectStompSession();
     }
 
     /**

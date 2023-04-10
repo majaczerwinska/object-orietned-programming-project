@@ -133,6 +133,13 @@ public class CardCtrl implements Initializable {
     }
 
     /**
+     * Disconnects the stomp session
+     */
+    public void disconnectStompSession(){
+        websocketClient.disconnect();
+    }
+
+    /**
      * Subscribes to endpoint that listens to all updates from a specific card
      * @param cardID the cardID from the card we want updates from
      */
