@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 //import org.springframework.stereotype.Controller;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
@@ -50,9 +51,20 @@ public class CardController {
      * @param boardId the boardId the message is coming from
      */
     @MessageMapping("/update/card/{boardId}")
-    public void messageClient(@DestinationVariable("boardId") int boardId){
+    public void messageClientBoard(@DestinationVariable("boardId") int boardId){
         System.out.println("done editing card so refresh");
         msgs.convertAndSend("/topic/boards/"+boardId, "done editing card so refresh");
+    }
+
+    /**
+     * Receives messages from /app/update/cardOverview/{cardId}
+     * @param cardId the cardId the message is coming from
+     * @param payload the payload of receiving message
+     */
+    @MessageMapping("/update/cardOverview/{cardId}")
+    public void messageClientCard(@DestinationVariable("cardId") int cardId, @Payload String payload){
+        System.out.println("Updated card in cardOverview");
+        msgs.convertAndSend("/topic/cardOverview/"+cardId, payload);
     }
 
     /**

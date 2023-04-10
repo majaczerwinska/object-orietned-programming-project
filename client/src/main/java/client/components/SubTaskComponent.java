@@ -6,6 +6,7 @@ import client.utils.ServerUtils;
 import commons.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 
@@ -14,8 +15,10 @@ import javafx.scene.layout.HBox;
 
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class SubTaskComponent extends HBox {
+public class SubTaskComponent extends HBox implements Initializable {
     private int taskId;
     private int cardId;
     private CardCtrl cardCtrl;
@@ -50,8 +53,8 @@ public class SubTaskComponent extends HBox {
             throw new RuntimeException(exception);
         }
 
-        textField.setOnKeyTyped(event -> updateTask());
-        checkbox.setOnAction(event -> updateTask());
+        textField.setOnKeyTyped(event -> updateNameTask());
+        checkbox.setOnAction(event -> updateCheckTask());
         delete.setOnAction(event -> delete());
 
         textField.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; " +
@@ -60,16 +63,50 @@ public class SubTaskComponent extends HBox {
     }
 
     /**
-     * updates a task
+     *
+     * @param url
+     * The location used to resolve relative paths for the root object, or
+     * {@code null} if the location is not known.
+     *
+     * @param rb
+     * The resources used to localize the root object, or {@code null} if
+     * the root object was not localized.
      */
-    public void updateTask(){
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        textField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            String originalValue = "";
+            if (newValue) {
+                // TextField has received focus
+                originalValue = textField.getText();
+            } else {
+                // TextField has lost focus
+                System.out.println("originalValue = " + originalValue + "\nnew value = " + textField.getText());
+                if (!textField.getText().equals(originalValue)) {
+                    cardCtrl.sendMessage("/app/update/cardOverview/" + cardId, "Subtask edited");
+                    originalValue = textField.getText();
+                }
+            }
+        });
+    }
+
+    /**
+     * updates a task when name is changed
+     */
+    public void updateNameTask(){
         if(textField.getText().equals("")) return;
-            self.setName(textField.getText());
-            self.setChecked(checkbox.isSelected());
-            server.editTask(taskId,self);
+        self.setName(textField.getText());
+        server.editTask(taskId,self);
+    }
 
-
-
+    /**
+     * updates a task when checked
+     */
+    public void updateCheckTask(){
+        if(textField.getText().equals("")) return;
+        self.setChecked(checkbox.isSelected());
+        server.editTask(taskId,self);
+        cardCtrl.sendMessage("/app/update/cardOverview/" + cardId, "Subtask checked");
     }
 
     /**
@@ -113,6 +150,7 @@ public class SubTaskComponent extends HBox {
         System.out.println("On card id="+cardId);
         server.deleteTask(taskId, cardId);
         cardCtrl.refresh();
+        cardCtrl.sendMessage("/app/update/cardOverview/" + cardId, "Subtask deleted");
     }
 
 

@@ -48,7 +48,7 @@ public class CardComponent extends HBox implements Initializable {
 
     private BoardOverviewCtrl boardOverviewCtrl;
 
-    String originalValue = "title..";
+    String originalValue = "Untitled Card";
 
     @FXML
     public TextField tfTitle;

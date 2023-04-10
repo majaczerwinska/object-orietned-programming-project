@@ -3,6 +3,7 @@ package server.api;
 import commons.Palette;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import server.service.PaletteService;
 
@@ -11,14 +12,17 @@ import server.service.PaletteService;
 public class PaletteController {
 
     private PaletteService ps;
+    private SimpMessagingTemplate msgs;
 
     /**
      *
      * @param ps
+     * @param msgs the messaging template for messages
      */
     @Autowired
-    public PaletteController(PaletteService ps){
+    public PaletteController(PaletteService ps, SimpMessagingTemplate msgs){
         this.ps = ps;
+        this.msgs = msgs;
     }
 
     /**
@@ -34,6 +38,7 @@ public class PaletteController {
         Palette saved = ps.save(palette, boardId);
         if(saved == null) return ResponseEntity.badRequest().build();
         System.out.println(palette.getName());
+        msgs.convertAndSend("/topic/palletes/"+boardId, "Pallete added on board#" + boardId);
         return ResponseEntity.ok(saved);
     }
 
@@ -46,6 +51,7 @@ public class PaletteController {
     public ResponseEntity<Palette> deletePalette(@PathVariable int id) {
         if(!ps.existsById(id)) return ResponseEntity.badRequest().build();
         Palette p = ps.delete(id);
+        msgs.convertAndSend("/topic/palletes/"+id, "Pallete deleted on board#" + id);
         return ResponseEntity.ok(p);
     }
 

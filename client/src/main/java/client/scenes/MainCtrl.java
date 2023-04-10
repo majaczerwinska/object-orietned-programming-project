@@ -700,6 +700,8 @@ public class MainCtrl {
             cardCtrl.exit();
         });
         cardCtrl.refresh();
+        cardCtrl.subscribeToCardOverview(cardID);
+        cardCtrl.subscribeToCardOverviewBoardUpdates(boardID);
         locker.setTitle("Card overview :)");
         locker.setScene(card);
         locker.setResizable(false);

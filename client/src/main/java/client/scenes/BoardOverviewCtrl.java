@@ -152,7 +152,7 @@ public class BoardOverviewCtrl {
      */
     public void subscribeToTagsFromBoard(int boardID){
         websocketClient.registerForMessages("/topic/tags/"+boardID, String.class, update -> {
-                    System.out.println("payload: "+ update);
+                    System.out.println("payload in board: "+ update);
                     refreshListViewTags();
         });
     }
