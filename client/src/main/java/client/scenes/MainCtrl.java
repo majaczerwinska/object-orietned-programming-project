@@ -36,6 +36,7 @@ public class MainCtrl {
 
     private Stage primaryStage;
     private Stage locker;
+    private Stage helpStage;
 
     private LandingCtrl landingCtrl;
     private Scene landing;
@@ -111,6 +112,7 @@ public class MainCtrl {
      *
      * @param primaryStage
      * @param locker
+     * @param helpStage
      * @param landing
      * @param card
      * @param publicBoard
@@ -137,6 +139,7 @@ public class MainCtrl {
      */
     public void initialize(Stage primaryStage,
                            Stage locker,
+                           Stage helpStage,
                            Pair<LandingCtrl, Parent> landing,
                            Pair<CardCtrl, Parent> card,
                            Pair<PublicBoardCtrl, Parent> publicBoard,
@@ -169,6 +172,10 @@ public class MainCtrl {
         this.locker = locker;
         locker.initModality(Modality.APPLICATION_MODAL);
         locker.initOwner(primaryStage);
+        this.helpStage = helpStage;
+        helpStage.initModality(Modality.NONE);
+        helpStage.initOwner(primaryStage);
+
         this.landingCtrl = landing.getKey();
         this.landing = new Scene(landing.getValue());
 
@@ -225,16 +232,12 @@ public class MainCtrl {
 
         this.warningCtrl = warning.getKey();
         this.warning = new Scene(warning.getValue());
-
         this.customizationCtrl = customization.getKey();
         this.customization = new Scene(customization.getValue());
-
-
         this.adminPasswordCtrl = adminPwd.getKey();
         this.enterPasswordScene = new Scene(adminPwd.getValue());
         this.adminCtrl = adminPage.getKey();
         this.adminScene = new Scene(adminPage.getValue());
-
         this.paletteCreationCtrl = paletteCreate.getKey();
         this.paletteCreation = new Scene(paletteCreate.getValue());
         showLanding();
@@ -936,9 +939,9 @@ public class MainCtrl {
      * shows board selection scene
      */
     public void showHelpScene() {
-        primaryStage.setTitle("Help Scene");
-        primaryStage.setScene(helpScene);
-        primaryStage.show();
+        helpStage.setTitle("Help Scene");
+        helpStage.setScene(helpScene);
+        helpStage.show();
         helpCtrl.refresh();
     }
 

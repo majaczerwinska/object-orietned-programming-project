@@ -10,7 +10,6 @@ import javafx.collections.ObservableList;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -375,18 +374,9 @@ public class CardCtrl implements Initializable {
         showDropDown();
         showDropDownColors();
         setThemeText();
-        escShortcut();
         shortcut();
     }
 
-    private void escShortcut() {
-        Scene scene = taglist.getScene();
-        scene.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ESCAPE) {
-                exit();
-            }
-        });
-    }
 
     /**
      * launch card overview scene util
@@ -545,6 +535,9 @@ public class CardCtrl implements Initializable {
         }
     }
 
+    /**
+     * Updates the pallete of a card in the database
+     */
     private void updatePallete(){
         if(!theme.getText().equals("")){
             List<Palette> palettes = server.getPalettesFromBoard(boardID);
@@ -571,8 +564,10 @@ public class CardCtrl implements Initializable {
         if(event.getClickCount()==2 && palette!=null ){
             showDropDownColors();
         }
-        theme.setText(palette.getName());
-        updatePallete();
+        if(palette!=null){
+            theme.setText(palette.getName());
+            updatePallete();
+        }
     }
 
     /**
@@ -582,6 +577,9 @@ public class CardCtrl implements Initializable {
         taglist.getScene().setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.SLASH) {
                 mainCtrl.showHelpScene();
+            }
+            if (event.getCode() == KeyCode.ESCAPE) {
+                exit();
             }
         });
     }

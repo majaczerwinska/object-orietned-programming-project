@@ -210,8 +210,9 @@ public class BoardOverviewCtrl {
                 (board.getbColor() >> 16) & 0xFF,
                 (board.getbColor() >> 8) & 0xFF, board.getbColor()& 0xFF);
         String colourString = "-fx-background: " + colour +";";
+        String colourStringList = "-fx-background-color: " + colour +";";
         mainCtrl.appendStyle(scrollPaneOverview, colourString);
-        mainCtrl.appendStyle(vboxList1,colourString);
+        mainCtrl.appendStyle(vboxList1,colourStringList);
         String hexColor = String.format("#%06X", (0xFFFFFF & board.getfColor()));
         mainCtrl.appendStyle(labelBoardTitle,"-fx-text-fill: " + hexColor+";");
         mainCtrl.appendStyle(boardKey,"-fx-text-fill: " + hexColor+";");
