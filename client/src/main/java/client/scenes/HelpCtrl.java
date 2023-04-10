@@ -15,9 +15,6 @@ public class HelpCtrl {
     private Label title;
     // title of the help page
 
-    @FXML
-    private Button goBackButton;
-    // button to return to main menu
 
     /**
      * help controller constructor method
@@ -30,12 +27,6 @@ public class HelpCtrl {
         this.server = server;
     }
 
-    /**
-     * go back button handler method
-     */
-    public void goBackButtonHandler() {
-        mainCtrl.showLanding();
-    }
 
     /**
      * refresh method

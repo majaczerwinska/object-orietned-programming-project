@@ -94,12 +94,14 @@ public class Main extends Application {
 
             System.out.println("Done with loading scenes");
             Stage locker = new Stage();
+            Stage helpStage = new Stage();
             var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
 
 
             mainCtrl.initialize(
                     primaryStage,
                     locker,
+                    helpStage,
                     landing,
                     card,
                     publicBoard,
