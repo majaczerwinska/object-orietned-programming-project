@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
 <fx:root alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="580.0" spacing="20.0" type="HBox" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -25,13 +26,19 @@
             <Insets left="30.0" />
          </HBox.margin>
       </Rectangle>
-      <Button mnemonicParsing="false" onMouseClicked="#delete" text="X">
+      <Button mnemonicParsing="false" onMouseClicked="#delete" style="-fx-background-color: white; -fx-background-radius: 7; -fx-border-radius: 7; -fx-border-color: black;" text="X">
          <HBox.margin>
             <Insets left="20.0" />
-         </HBox.margin></Button>
-      <Button fx:id="def" mnemonicParsing="false" onMouseClicked="#setDef" text="set as default">
+         </HBox.margin>
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Button>
+      <Button fx:id="def" mnemonicParsing="false" onMouseClicked="#setDef" style="-fx-background-color: white; -fx-background-radius: 7; -fx-border-radius: 7; -fx-border-color: #36a9a9; -fx-border-width: 3;" text="set as default" textFill="#36a9a9">
          <HBox.margin>
             <Insets left="10.0" />
-         </HBox.margin></Button>
+         </HBox.margin>
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Button>
    </children>
 </fx:root>

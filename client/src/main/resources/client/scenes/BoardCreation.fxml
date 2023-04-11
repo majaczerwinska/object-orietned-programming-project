@@ -73,7 +73,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="stopCreatingBoardButton" mnemonicParsing="false" onAction="#stopCreatingBoardButtonHandler" style="-fx-background-color: FFFFFF; -fx-border-radius: 7; -fx-border-width: 3; -fx-border-color: #36a9a9;" text="Cancel" textFill="#36a9a9">
+                  <Button fx:id="stopCreatingBoardButton" mnemonicParsing="false" onAction="#stopCreatingBoardButtonHandler" prefHeight="46.0" prefWidth="142.0" style="-fx-background-color: FFFFFF; -fx-border-radius: 7; -fx-border-width: 3; -fx-border-color: #36a9a9;" text="Cancel" textFill="#36a9a9">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -81,7 +81,7 @@
                         <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="createBoardButton" mnemonicParsing="false" onAction="#createBoardButtonClickHandler" style="-fx-background-color: FFFFFF; -fx-border-radius: 7; -fx-border-width: 3; -fx-border-color: #36a9a9;" text="Create Board" textFill="#36a9a9">
+                  <Button fx:id="createBoardButton" mnemonicParsing="false" onAction="#createBoardButtonClickHandler" prefHeight="45.0" prefWidth="142.0" style="-fx-background-color: FFFFFF; -fx-border-radius: 7; -fx-border-width: 3; -fx-border-color: #36a9a9;" text="Create Board" textFill="#36a9a9">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>

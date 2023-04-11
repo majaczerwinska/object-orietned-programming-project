@@ -10,15 +10,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="628.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.TagManagerCtrl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="628.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.TagManagerCtrl">
    <children>
-      <ListView fx:id="tagListView" layoutX="18.0" layoutY="63.0" onMouseClicked="#showSelectedItem" prefHeight="322.0" prefWidth="281.0" />
+      <ListView fx:id="tagListView" layoutX="18.0" layoutY="63.0" onMouseClicked="#showSelectedItem" prefHeight="322.0" prefWidth="281.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-radius: 7; -fx-background-radius: 7;" />
       <Label fx:id="labelBoard" alignment="CENTER" prefHeight="63.0" prefWidth="600.0" text="Tags for board ..." textAlignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Button fx:id="addTagButton" alignment="CENTER" layoutX="314.0" layoutY="350.0" mnemonicParsing="false" onAction="#addTag" prefHeight="30.0" prefWidth="90.0" text="Add tag" />
+      <Button fx:id="addTagButton" alignment="CENTER" layoutX="314.0" layoutY="350.0" mnemonicParsing="false" onAction="#addTag" prefHeight="30.0" prefWidth="90.0" style="-fx-background-color: white; -fx-background-radius: 7; -fx-border-radius: 7; -fx-border-color: #36a9a9; -fx-border-width: 3;" text="Add tag" textFill="#36a9a9">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Button>
       <VBox layoutX="314.0" layoutY="79.0" prefHeight="241.0" prefWidth="127.0" spacing="15.0">
          <children>
             <Label fx:id="tagTitleLabel" text="Title" />
@@ -30,13 +33,22 @@
       </VBox>
       <VBox alignment="TOP_CENTER" layoutX="465.0" layoutY="79.0" prefHeight="242.0" prefWidth="127.0" spacing="10.0">
          <children>
-            <TextField fx:id="tfTitle" />
-            <ColorPicker fx:id="colorPicker" />
+            <TextField fx:id="tfTitle" style="-fx-background-radius: 7; -fx-border-radius: 7; -fx-background-color: white; -fx-border-color: black;" />
+            <ColorPicker fx:id="colorPicker" style="-fx-background-color: white; -fx-background-radius: 7; -fx-border-radius: 7; -fx-border-color: black;" />
             <Label fx:id="warningLabel" textAlignment="CENTER" />
          </children>
       </VBox>
-      <Button fx:id="editTagButton" alignment="CENTER" layoutX="417.0" layoutY="350.0" mnemonicParsing="false" onAction="#editTag" prefHeight="30.0" prefWidth="90.0" text="Edit" />
-      <Button fx:id="deleteTagButton" alignment="CENTER" layoutX="517.0" layoutY="350.0" mnemonicParsing="false" onAction="#deleteTag" prefHeight="30.0" prefWidth="90.0" text="Delete" />
-      <Button fx:id="goBackButton" layoutX="18.0" layoutY="19.0" mnemonicParsing="false" onAction="#backButton" prefHeight="30.0" prefWidth="68.0" text="Back" />
+      <Button fx:id="editTagButton" alignment="CENTER" layoutX="417.0" layoutY="350.0" mnemonicParsing="false" onAction="#editTag" prefHeight="30.0" prefWidth="90.0" style="-fx-background-color: white; -fx-background-radius: 7; -fx-border-color: #36a9a9; -fx-border-radius: 7; -fx-border-width: 3;" text="Edit" textFill="#36a9a9">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Button>
+      <Button fx:id="deleteTagButton" alignment="CENTER" layoutX="517.0" layoutY="350.0" mnemonicParsing="false" onAction="#deleteTag" prefHeight="30.0" prefWidth="90.0" style="-fx-background-color: white; -fx-background-radius: 7; -fx-border-radius: 7; -fx-border-width: 3; -fx-border-color: #36a9a9;" text="Delete" textFill="#36a9a9">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Button>
+      <Button fx:id="goBackButton" layoutX="18.0" layoutY="19.0" mnemonicParsing="false" onAction="#backButton" prefHeight="30.0" prefWidth="68.0" style="-fx-background-color: white; -fx-background-radius: 7; -fx-border-radius: 7; -fx-border-color: #36a9a9; -fx-border-width: 3;" text="Back" textFill="#36a9a9">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Button>
    </children>
 </AnchorPane>

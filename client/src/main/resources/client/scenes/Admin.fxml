@@ -11,9 +11,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="662.0" prefWidth="796.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.Admin">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="662.0" prefWidth="796.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.Admin">
    <children>
-      <ListView fx:id="boardList" layoutX="27.0" layoutY="47.0" onMouseClicked="#updateTextFields" prefHeight="283.0" prefWidth="271.0" />
+      <ListView fx:id="boardList" layoutX="27.0" layoutY="47.0" onMouseClicked="#updateTextFields" prefHeight="283.0" prefWidth="271.0" style="-fx-background-color: white; -fx-background-radius: 7; -fx-border-radius: 7; -fx-border-color: black;" />
       <Text fx:id="titleText" layoutX="26.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Boards for Server: ">
          <font>
             <Font size="15.0" />
@@ -24,9 +24,12 @@
             <Font size="21.0" />
          </font>
       </Text>
-      <TextField fx:id="sqlQuery" layoutX="31.0" layoutY="371.0" onKeyPressed="#handleEnterKeyPressed" prefHeight="26.0" prefWidth="674.0" />
+      <TextField fx:id="sqlQuery" layoutX="31.0" layoutY="371.0" onKeyPressed="#handleEnterKeyPressed" prefHeight="26.0" prefWidth="674.0" style="-fx-background-color: white; -fx-background-radius: 7; -fx-border-radius: 7; -fx-border-color: black;" />
       <Text layoutX="31.0" layoutY="415.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Output:" />
-      <Button fx:id="sqlSend" layoutX="718.0" layoutY="371.0" mnemonicParsing="false" onAction="#sendQuery" text="Send" />
+      <Button fx:id="sqlSend" layoutX="718.0" layoutY="371.0" mnemonicParsing="false" onAction="#sendQuery" style="-fx-background-color: white; -fx-border-radius: 7; -fx-background-radius: 7; -fx-border-width: 3; -fx-border-color: #36a9a9;" text="Send" textFill="#36a9a9">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Button>
       <HBox layoutX="313.0" layoutY="47.0" prefHeight="285.0" prefWidth="451.0">
          <children>
             <VBox prefHeight="285.0" prefWidth="157.0" spacing="20.0">
@@ -46,19 +49,25 @@
                         <Font size="18.0" />
                      </font>
                   </Text>
-                  <Button fx:id="saveChangesButton" mnemonicParsing="false" onAction="#saveTextFields" text="Save Changes" textFill="#0b170b">
+                  <Button fx:id="saveChangesButton" mnemonicParsing="false" onAction="#saveTextFields" style="-fx-background-color: white; -fx-border-radius: 7; -fx-background-radius: 7; -fx-border-width: 3; -fx-border-color: #36a9a9;" text="Save Changes" textFill="#36a9a9">
                      <VBox.margin>
                         <Insets top="3.0" />
                      </VBox.margin>
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
                   </Button>
-                  <Button fx:id="deleteBoardButton" mnemonicParsing="false" onAction="#deleteBoard" text="Delete Board" textFill="#a10101" />
+                  <Button fx:id="deleteBoardButton" mnemonicParsing="false" onAction="#deleteBoard" style="-fx-background-color: white; -fx-border-radius: 7; -fx-background-radius: 7; -fx-border-width: 3; -fx-border-color: #a10101;" text="Delete Board" textFill="#a10101">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Button>
                </children>
             </VBox>
             <VBox alignment="TOP_RIGHT" prefHeight="285.0" prefWidth="294.0" spacing="15.0">
                <children>
-                  <TextField fx:id="boardName" />
-                  <TextField fx:id="boardKey" />
-                  <TextField fx:id="boardPassword" />
+                  <TextField fx:id="boardName" style="-fx-background-color: white; -fx-background-radius: 7; -fx-border-radius: 7; -fx-border-color: black;" />
+                  <TextField fx:id="boardKey" style="-fx-background-color: white; -fx-background-radius: 7; -fx-border-radius: 7; -fx-border-color: black;" />
+                  <TextField fx:id="boardPassword" style="-fx-background-color: white; -fx-background-radius: 7; -fx-border-radius: 7; -fx-border-color: black;" />
                   <Text fx:id="saveText" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="295.56219482421875">
                      <VBox.margin>
                         <Insets top="6.0" />
@@ -67,19 +76,25 @@
                         <Font size="15.0" />
                      </font>
                   </Text>
-                  <Button fx:id="enterBoard" mnemonicParsing="false" onAction="#enterBoard" text="Enter Board as admin" textFill="#0d1a3c">
+                  <Button fx:id="enterBoard" mnemonicParsing="false" onAction="#enterBoard" style="-fx-background-color: white; -fx-border-radius: 7; -fx-background-radius: 7; -fx-border-width: 3; -fx-border-color: #36a9a9;" text="Enter Board as admin" textFill="#36a9a9">
                      <VBox.margin>
                         <Insets top="12.0" />
                      </VBox.margin>
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
                   </Button>
                </children>
             </VBox>
          </children>
       </HBox>
-      <Button fx:id="backButton" layoutX="719.0" layoutY="14.0" mnemonicParsing="false" onAction="#goBack" text="Back" />
-      <ScrollPane fx:id="sqlOutput" layoutX="33.0" layoutY="426.0" prefHeight="225.0" prefWidth="733.0">
+      <Button fx:id="backButton" layoutX="719.0" layoutY="14.0" mnemonicParsing="false" onAction="#goBack" style="-fx-background-color: white; -fx-border-radius: 7; -fx-background-radius: 7; -fx-border-width: 3; -fx-border-color: black;" text="Back">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Button>
+      <ScrollPane fx:id="sqlOutput" layoutX="33.0" layoutY="426.0" prefHeight="225.0" prefWidth="733.0" style="-fx-background-color: white; -fx-background-radius: 7; -fx-border-radius: 7; -fx-border-color: black;">
          <content>
-            <VBox fx:id="vboxTableContent" />
+            <VBox fx:id="vboxTableContent" style="-fx-background-color: white; -fx-background-radius: 7; -fx-border-radius: 7;" />
          </content>
       </ScrollPane>
    </children>

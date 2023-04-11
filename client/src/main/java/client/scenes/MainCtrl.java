@@ -26,7 +26,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import javafx.stage.Screen;
-import javafx.scene.text.Font;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -532,13 +532,11 @@ public class MainCtrl {
 
         // changing the font family for the texts
        // editBoardCtrl.getColorLabel().setStyle("-fx-font-family: Avenir Book;");
-        this.appendStyle(editBoardCtrl.getExit(),"-fx-font-family: Avenir Book;");
         this.appendStyle(editBoardCtrl.getNameLabel(),"-fx-font-family: Avenir Book;");
         this.appendStyle(editBoardCtrl.getSave(),"-fx-font-family: Avenir Book;");
         this.appendStyle(editBoardCtrl.getTitleLabel(),"-fx-font-family: Avenir Book;");
 
         // rounding the buttons and text fields
-        appendStyle(editBoardCtrl.getExit(),"-fx-background-radius: 15;");
         appendStyle(editBoardCtrl.getName(),"-fx-background-radius: 7;");
         appendStyle(editBoardCtrl.getSave(),"-fx-background-radius: 7;");
 
@@ -719,11 +717,11 @@ public class MainCtrl {
 
         // setting the font size for the text
         double screenWidth = Screen.getPrimary().getBounds().getWidth();
-        boardCreationCtrl.getTitleLabel().setFont(Font.font(screenWidth * 0.03));
-        boardCreationCtrl.getBoardKeyLabel().setFont(Font.font(screenWidth * 0.015));
-        boardCreationCtrl.getBoardTitleLabel().setFont(Font.font(screenWidth * 0.015));
-        boardCreationCtrl.getStopCreatingBoardButton().setFont(Font.font(screenWidth * 0.012));
-        boardCreationCtrl.getCreateBoardButton().setFont(Font.font(screenWidth * 0.015));
+       // boardCreationCtrl.getTitleLabel().setFont(Font.font(screenWidth * 0.03));
+       // boardCreationCtrl.getBoardKeyLabel().setFont(Font.font(screenWidth * 0.015));
+       // boardCreationCtrl.getBoardTitleLabel().setFont(Font.font(screenWidth * 0.015));
+       // boardCreationCtrl.getStopCreatingBoardButton().setFont(Font.font(screenWidth * 0.012));
+        //boardCreationCtrl.getCreateBoardButton().setFont(Font.font(screenWidth * 0.015));
 
         // setting the font family for the text
         this.appendStyle(boardCreationCtrl.getTitleLabel(),"-fx-font-family: Avenir Book;");
@@ -733,12 +731,12 @@ public class MainCtrl {
         this.appendStyle(boardCreationCtrl.getStopCreatingBoardButton(),"-fx-font-family: Avenir Book;");
 
         // round the corners for the text areas
-        this.appendStyle(boardCreationCtrl.getBoardKeyTextField(),"-fx-background-radius: 7;");
-        this.appendStyle(boardCreationCtrl.getBoardTitleTextField(),"-fx-background-radius: 7;");
+       // this.appendStyle(boardCreationCtrl.getBoardKeyTextField(),"-fx-background-radius: 7;");
+        //this.appendStyle(boardCreationCtrl.getBoardTitleTextField(),"-fx-background-radius: 7;");
 
         // round the corners of the buttons
-        this.appendStyle(boardCreationCtrl.getCreateBoardButton(),"-fx-background-radius: 7;");
-        this.appendStyle(boardCreationCtrl.getStopCreatingBoardButton(),"-fx-background-radius: 7;");
+       // this.appendStyle(boardCreationCtrl.getCreateBoardButton(),"-fx-background-radius: 7;");
+        //this.appendStyle(boardCreationCtrl.getStopCreatingBoardButton(),"-fx-background-radius: 7;");
 
         locker.setScene(boardCreation);
         locker.setResizable(false);
