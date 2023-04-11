@@ -66,6 +66,21 @@ public class ServerUtils {
 //        }
 //    }
 
+    /**
+     * adds the public board to the database if it doesn't exist already
+     *
+     * @return response entity
+     */
+    public Board addPublicBoard() {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/boards/publicBoard") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<>() {
+                });
+    }
+
+
 
     /**
      * Send a request for verifying a password against the server's set password
@@ -114,14 +129,6 @@ public class ServerUtils {
                 .post(Entity.entity(card, APPLICATION_JSON), Card.class);
     }
 
-//
-//    public Board addBoard(Board board) {
-//        return ClientBuilder.newClient(new ClientConfig())
-//                .target(SERVER).path("api/boards/")
-//                .request(APPLICATION_JSON)
-//                .accept(APPLICATION_JSON)
-//                .post(Entity.entity(board, APPLICATION_JSON), Board.class);
-//    }
 
     /**
      * returns all boards from the database
