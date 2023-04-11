@@ -9,16 +9,8 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.messaging.converter.StringMessageConverter;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-//import org.springframework.messaging.simp.stomp.StompFrameHandler;
-//import org.springframework.messaging.simp.stomp.StompHeaders;
-//import org.springframework.messaging.simp.stomp.StompSession;
-//import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
-//import org.springframework.web.socket.client.standard.StandardWebSocketClient;
-//import org.springframework.web.socket.messaging.WebSocketStompClient;
 import server.database.BoardRepositoryTest;
 import server.database.CardRepositoryTest;
 import server.service.BoardService;
@@ -34,8 +26,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 //This annotation loads the WebsocketConfigTest to instantiate websocket server for testing
 public class TagControllerTest {
-//    @LocalServerPort
-//    private int port;
     private TagRepositoryTest repo;
     private BoardRepositoryTest br;
     private CardRepositoryTest cr;
@@ -45,26 +35,9 @@ public class TagControllerTest {
     @Autowired
     private SimpMessagingTemplate msgs;
 
-//    private StompSession session;
 
     @BeforeEach
-    public void setup() throws ExecutionException, InterruptedException {
-//        StandardWebSocketClient client = new StandardWebSocketClient();
-//        WebSocketStompClient stompClient = new WebSocketStompClient(client);
-//        stompClient.setMessageConverter(new StringMessageConverter());
-//        System.out.println("Connecting to WebSocket server...");
-//        session = stompClient.connect("ws://localhost:" + port + "/websocketTest", new StompSessionHandlerAdapter() {}).get();
-//        session.subscribe("/topic/tags/0", new StompFrameHandler() {
-//            @Override
-//            public Type getPayloadType(StompHeaders headers) {
-//                return String.class;
-//            }
-//
-//            @Override
-//            public void handleFrame(StompHeaders headers, Object payload) {
-//                return;
-//            }
-//        });
+    public void setup() {
 
         repo = new TagRepositoryTest();
         br = new BoardRepositoryTest();

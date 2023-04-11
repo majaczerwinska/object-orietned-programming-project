@@ -29,7 +29,9 @@ import server.service.CardService;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
@@ -37,6 +39,8 @@ import static org.mockito.Mockito.verify;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 //This annotation loads the WebsocketConfigTest to instantiate websocket server for testing
 public class CardListControllerTest {
+    @LocalServerPort
+    private int port;
     private CardListRepositoryTest repo;
     private BoardRepositoryTest br;
     private CardListController con;
@@ -45,6 +49,7 @@ public class CardListControllerTest {
     private CardService cardService;
     @Autowired
     private SimpMessagingTemplate msgs;
+    private StompSession session;
 
     @BeforeEach
     public void setup() {
@@ -54,6 +59,44 @@ public class CardListControllerTest {
         con = new CardListController(ser, msgs);
         cr = new CardRepositoryTest();
         cardService = new CardService(cr, repo);
+    }
+
+    @Test
+    public void websocketTest() throws ExecutionException, InterruptedException {
+        int boardID = 0;
+        String[] messages = new String[1];
+        CountDownLatch latch = new CountDownLatch(1);
+        Consumer<String> consumer = message -> {
+            System.out.println("Message received");
+            messages[0] = message;
+            latch.countDown();
+        };
+        StandardWebSocketClient client = new StandardWebSocketClient();
+        WebSocketStompClient stompClient = new WebSocketStompClient(client);
+        stompClient.setMessageConverter(new StringMessageConverter());
+        System.out.println("Connecting to WebSocket server...");
+        session = stompClient.connect("ws://localhost:" + port + "/websocketTest", new StompSessionHandlerAdapter() {
+            @Override
+            public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
+                session.subscribe("/topic/boards/" + boardID, new StompFrameHandler() {
+                    @Override
+                    public Type getPayloadType(StompHeaders headers) {
+                        return String.class;
+                    }
+
+                    @Override
+                    public void handleFrame(StompHeaders headers, Object payload) {
+                        consumer.accept((String)payload);
+                    }
+                });
+                latch.countDown();
+            }
+        }).get();
+
+        latch.await();
+
+        con.messageClient(boardID);
+        assertEquals(messages[0], "CardList added on board#" + boardID);
     }
 
     @Test

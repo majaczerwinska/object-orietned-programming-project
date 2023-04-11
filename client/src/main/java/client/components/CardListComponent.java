@@ -208,7 +208,7 @@ public class CardListComponent extends VBox{
         System.out.println(vboxCards.getHeight());
          Card c = mainCtrl.createCard(listId);
         System.out.println(boardId + "carlistcomp");
-         mainCtrl.showCard(c.getId(), boardId, false);
+         mainCtrl.showCard(c.getId(), listId, boardId, false);
     }
 
     /**

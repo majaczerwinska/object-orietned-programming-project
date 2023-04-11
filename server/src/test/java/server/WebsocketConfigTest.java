@@ -17,7 +17,7 @@ public class WebsocketConfigTest implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry){
         registry.addEndpoint("/websocketTest");
-        System.out.println("websocket endpoint set");
+        System.out.println("websocket endpoint set in test config");
     }
 
     /**

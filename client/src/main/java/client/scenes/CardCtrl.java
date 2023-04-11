@@ -9,19 +9,26 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.TextField;
+
+import java.net.URL;
 import java.util.List;
-public class CardCtrl {
+import java.util.ResourceBundle;
+
+public class CardCtrl implements Initializable {
     private final CardService service;
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private final WebsocketClient websocketClient;
     public boolean isViewed = false;
+    private String nameOld = "";
+    private String descriptionOld = "";
 
     @FXML
     private Label label;
@@ -61,6 +68,7 @@ public class CardCtrl {
     @FXML
     private TextField newTask;
     public int cardID;
+    public int listID;
     public int boardID;
     public boolean isLocked;
 
@@ -81,6 +89,42 @@ public class CardCtrl {
     }
 
     /**
+     *
+     * @param url
+     * The location used to resolve relative paths for the root object, or
+     * {@code null} if the location is not known.
+     *
+     * @param rb
+     * The resources used to localize the root object, or {@code null} if
+     * the root object was not localized.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        text.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                // TextField has received focus
+            } else {
+                // TextField has lost focus
+                System.out.println("originalValue = " + nameOld + "\nnew value = " + text.getText());
+                if (!text.getText().equals(nameOld)) {
+                    websocketClient.sendMessage("/app/update/cardOverview/" + cardID, "Name edited");
+                }
+            }
+        });
+        area.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                // TextField has received focus
+            } else {
+                // TextField has lost focus
+                System.out.println("originalValue = " + descriptionOld + "\nnew value = " + area.getText());
+                if (!area.getText().equals(descriptionOld)) {
+                    websocketClient.sendMessage("/app/update/cardOverview/" + cardID, "Description edited");
+                }
+            }
+        });
+    }
+
+    /**
      * Creates stomp session
      */
     public void setStompSession(){
@@ -89,7 +133,106 @@ public class CardCtrl {
     }
 
     /**
-     * Registers deletion for the card you are viewing
+     * Disconnects the stomp session
+     */
+    public void disconnectStompSession(){
+        websocketClient.disconnect();
+    }
+
+    /**
+     * Subscribes to endpoint that listens to all updates from a specific card
+     * @param cardID the cardID from the card we want updates from
+     */
+    public void subscribeToCardOverview(int cardID){
+        websocketClient.registerForMessages("/topic/cardOverview/"+cardID, String.class, update -> {
+            Platform.runLater(() -> {
+                System.out.println("payload in card overview: "+ update);
+                if(update.contains("Subtask")){
+                    System.out.println("Refreshing subtasks");
+                    vbox.getChildren().clear();
+                    displayTasks();
+                } else if(update.contains("Pallete")){
+                    setThemeText();
+                } else if(update.contains("Tag")){
+                    taglist.getItems().clear();
+                    showTags();
+                    showDropDown();
+                } else if(update.contains("Name")){
+                    nameOld = server.getCard(cardID).getTitle();
+                    text.setText(nameOld);
+                } else if(update.contains("Description")){
+                    descriptionOld = server.getCard(cardID).getDescription();
+                    area.setText(descriptionOld);
+                }
+            });
+        });
+    }
+
+    /**
+     * Subscribes to endpoint that listens to all updates from a board card that can affect a card (tags and palletes)
+     * @param boardID the boardID from the card we want updates from
+     */
+    public void subscribeToCardOverviewBoardUpdates(int boardID){
+        websocketClient.registerForMessages("/topic/tags/"+boardID, String.class, update -> {
+            System.out.println("payload in card overview: "+ update);
+            Platform.runLater(() -> {
+                taglist.getItems().clear();
+                showTags();
+                showDropDown();
+            });
+        });
+        websocketClient.registerForMessages("/topic/palletes/"+boardID, String.class, update -> {
+            System.out.println("payload in card overview: "+ update);
+            Platform.runLater(this::showDropDownColors);
+        });
+    }
+
+    /**
+     * Subscribes to endpoint that listens to all deletes from the list and board the card is in
+     */
+    public void subscribeToListenForDeletes(){
+        websocketClient.registerForMessages("/topic/lists/delete/"+listID, String.class, update -> {
+            System.out.println("payload in card overview: "+ update);
+            if(isViewed){
+                Platform.runLater(() -> {
+                    closeOverviewAndShowAlert("You were viewing a card, " +
+                            "but someone just deleted the list the card is in!");
+                });
+            }
+        });
+        websocketClient.registerForMessages("/topic/boards/delete/"+boardID, String.class, update -> {
+            System.out.println("payload in card overview: "+ update);
+            if(isViewed){
+                Platform.runLater(() -> {
+                    closeOverviewAndShowAlert("You were viewing a card, " +
+                            "but someone just deleted the board the card is in!");
+                });
+            }
+        });
+    }
+
+    /**
+     * Unsubscribes to all endpoints from card overview
+     */
+    private void unsubscribe(){
+        websocketClient.unsubscribe("/topic/cardOverview/"+cardID);
+        websocketClient.unsubscribe("/topic/tags/"+boardID);
+        websocketClient.unsubscribe("/topic/palletes/"+boardID);
+        websocketClient.unsubscribe("/topic/lists/delete/"+listID);
+        websocketClient.unsubscribe("/topic/boards/delete/"+boardID);
+    }
+
+    /**
+     * Sends message to /app/dest
+     * @param dest destination to send message to
+     * @param payload message to send
+     */
+    public void sendMessage(String dest, String payload){
+        websocketClient.sendMessage(dest, payload);
+    }
+
+    /**
+     * Registers deletion for the card you are viewing (via polling)
      */
     public void registerForDeleted(){
         server.registerForDeletedCard(cardID, deleted -> {
@@ -97,17 +240,24 @@ public class CardCtrl {
             if(isViewed){
                 Platform.runLater(() -> {
                     System.out.println("Closing pop up");
-                    isViewed = false;
-                    mainCtrl.closeLocker();
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Card deleted");
-                    alert.setHeaderText("This card got deleted!");
-                    alert.setContentText("You were viewing a card that someone just deleted");
-                    alert.show();
+                    closeOverviewAndShowAlert("You were viewing a card that someone just deleted!");
                 });
             }
 
         });
+    }
+
+    /**
+     * Closes card overview when card or list/board where card is in gets deleted and shows alert that it happened
+     */
+    private void closeOverviewAndShowAlert(String context){
+        isViewed = false;
+        mainCtrl.closeLocker();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Card deleted");
+        alert.setHeaderText("This card got deleted!");
+        alert.setContentText(context);
+        alert.show();
     }
 
     /**
@@ -185,24 +335,13 @@ public class CardCtrl {
      */
     public void exit(){
         System.out.println(boardID + "cardexit");
-        if(!theme.getText().equals("")){
-            List<Palette> palettes = server.getPalettesFromBoard(boardID);
-            for(Palette pal : palettes){
-                if(pal.getName().equals(theme.getText())){
-                    Card card = server.getCard(cardID);
-                    card.setColor(pal.getbColor());
-                    card.setFcolor(pal.getfColor());
-                    card.setPalette(pal.getName());
-                    server.editCard(boardID, cardID, card, false);
-                    break;
-                }
-            }
-        }
+        updatePallete();
         mainCtrl.closeLocker();
         mainCtrl.showBoardOverview(boardID);
         websocketClient.sendMessage("/app/update/card/"+boardID, "Done updating card in CardOverview");
         isViewed = false;
         server.stopPollingForDeletedCard();
+        unsubscribe();
     }
 
     /**
@@ -221,6 +360,7 @@ public class CardCtrl {
             newTask.setText("");
             label.setText("");
             refresh();
+            sendMessage("/app/update/cardOverview/" + cardID, "Subtask added");
         }
     }
 
@@ -233,20 +373,7 @@ public class CardCtrl {
         showTags();
         showDropDown();
         showDropDownColors();
-        Card c = server.getCard(cardID);
-        System.out.println(c.getPalette()+"-----------------");
-        if(c.getPalette().equals("")){
-            List<Palette> palettes = server.getPalettesFromBoard(boardID);
-            for(Palette pal : palettes){
-                if(pal.isIsdefault()){
-                    theme.setText(pal.getName());
-                    break;
-                }
-            }
-        }
-        else{
-            theme.setText(c.getPalette());
-        }
+        setThemeText();
         shortcut();
     }
 
@@ -255,8 +382,10 @@ public class CardCtrl {
      * launch card overview scene util
      */
     public void setInfo(){
-        text.setText( server.getCard(cardID).getTitle());
-        area.setText(server.getCard(cardID).getDescription());
+        nameOld = server.getCard(cardID).getTitle();
+        text.setText(nameOld);
+        descriptionOld = server.getCard(cardID).getDescription();
+        area.setText(descriptionOld);
 
     }
 
@@ -334,8 +463,10 @@ public class CardCtrl {
         Tag tag = boardtags.getSelectionModel().getSelectedItem();
         if(event.getClickCount()==2 && tag!=null ){
             server.addTagToCard(boardID, tag.getId(), cardID);
+            websocketClient.sendMessage("/app/update/cardOverview/" + cardID, "Tag added");
             showTags();
             showDropDown();
+
         }
     }
 
@@ -349,6 +480,7 @@ public class CardCtrl {
             showDropDown();
             taglist.getItems().clear();
             showTags();
+            websocketClient.sendMessage("/app/update/cardOverview/" + cardID, "Tag removed");
         }
     }
 
@@ -384,6 +516,46 @@ public class CardCtrl {
     }
 
     /**
+     * Sets the text field of theme to cards current theme
+     */
+    private void setThemeText(){
+        Card c = server.getCard(cardID);
+        System.out.println(c.getPalette()+"-----------------");
+        if(c.getPalette().equals("")){
+            List<Palette> palettes = server.getPalettesFromBoard(boardID);
+            for(Palette pal : palettes){
+                if(pal.isIsdefault()){
+                    theme.setText(pal.getName());
+                    break;
+                }
+            }
+        }
+        else{
+            theme.setText(c.getPalette());
+        }
+    }
+
+    /**
+     * Updates the pallete of a card in the database
+     */
+    private void updatePallete(){
+        if(!theme.getText().equals("")){
+            List<Palette> palettes = server.getPalettesFromBoard(boardID);
+            for(Palette pal : palettes){
+                if(pal.getName().equals(theme.getText())){
+                    Card card = server.getCard(cardID);
+                    card.setColor(pal.getbColor());
+                    card.setFcolor(pal.getfColor());
+                    card.setPalette(pal.getName());
+                    server.editCard(boardID, cardID, card, false);
+                    websocketClient.sendMessage("/app/update/cardOverview/" + cardID, "Pallete updated");
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
      * hopefully will apply changes of selected color to card and save them to DB
      * @param event
      */
@@ -394,6 +566,7 @@ public class CardCtrl {
         }
         if(palette!=null){
             theme.setText(palette.getName());
+            updatePallete();
         }
     }
 

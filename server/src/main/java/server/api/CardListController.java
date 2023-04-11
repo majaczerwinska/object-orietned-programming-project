@@ -37,7 +37,6 @@ public class CardListController {
     @MessageMapping("/update/list/{boardId}")
     public void messageClient(@DestinationVariable("boardId") int boardId){
         msgs.convertAndSend("/topic/boards/"+boardId, "CardList added on board#" + boardId);
-
     }
 
     /**
@@ -97,6 +96,7 @@ public class CardListController {
         if(!als.existsById(id)) return ResponseEntity.badRequest().build();
         CardList list = als.delete(als.getById(id), boardId);
         msgs.convertAndSend("/topic/boards/"+boardId, "CardList deleted on board#" + boardId);
+        msgs.convertAndSend("/topic/lists/delete/"+id, "CardList deleted on board#" + boardId);
         if(list==null) return ResponseEntity.badRequest().build();
         return ResponseEntity.ok().build();
     }

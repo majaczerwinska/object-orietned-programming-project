@@ -93,4 +93,11 @@ public class WebsocketClient {
         session.send(dest, payload);
 //        System.out.println(session.getSessionId());
     }
+
+    /**
+     * Disconnects session
+     */
+    public void disconnect(){
+        session.disconnect();
+    }
 }
