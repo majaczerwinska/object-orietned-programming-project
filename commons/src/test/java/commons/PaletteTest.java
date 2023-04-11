@@ -112,6 +112,27 @@ public class PaletteTest {
         assertTrue(p.equals(p1));
     }
 
+    @Test
+    void hashCodeTest() {
+        Palette p = new Palette("1", 3, 1);
+        Palette p1 = new Palette("1", 3, 1);
+        assertEquals(p.hashCode(), p1.hashCode());
+    }
+
+    @Test
+    void toStringTest() {
+        Palette p = new Palette("1", 3, 1);
+
+        assertEquals(p.toString(), "Palette{" +
+                "id=" + p.getId() +
+                ", name= 1" + '\'' +
+                ", bColor=" + 3 +
+                ", fColor=" + 1 +
+                ", isdefault=" + p.isIsdefault() +
+                '}');
+    }
+
+
 
 
 

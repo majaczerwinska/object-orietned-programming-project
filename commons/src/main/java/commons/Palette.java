@@ -160,7 +160,7 @@ public class Palette {
     public String toString() {
         return "Palette{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", name= " + name + '\'' +
                 ", bColor=" + bColor +
                 ", fColor=" + fColor +
                 ", isdefault=" + isdefault +

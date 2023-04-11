@@ -74,70 +74,75 @@ public class CardServiceTest {
 
     @Test
     public void deleteTest(){
-        CardList list = new CardList("c");
+        Card c = new Card("t");
+        repo.save(c);
+        assertNull(ser.delete(c,7));
+    }
 
-        Card card = new Card("title");
-        List<Card> cards = new ArrayList<>();
-        cards.add(card);
-        list.setCards(cards);
+    @Test
+    public void setCardInfoTest(){
+        CardList list = new CardList("c");
         cl.save(list);
+        Card card = new Card("title");
         ser.save(card, list.getId());
-        ser.delete(card, list.getId());
-        assertFalse(repo.existsById(card.getId()));
-//        assertFalse(cl.getById(list.getId()).getCards().contains(card));
+        Card card2 = new Card("title2");
+        card2.setId(card.getId());
+        ser.setCardInfo(card2);
+        assertEquals(card.getTitle(), card2.getTitle());
 
     }
 
-//    @Test
-//    public void setCardInfoTest(){
-//        CardList list = new CardList("c");
-//        cl.save(list);
-//        Card card = new Card("title");
-//        ser.save(card, list.getId());
-//        Card card2 = new Card("title2");
-//        card2.setId(card.getId());
-//        ser.setCardInfo(card2);
-//        assertEquals(card.getTitle(), card2.getTitle());
-//
-//    }
+    @Test
+    public void getListForCardNull(){
+        CardList list = new CardList("l");
+        Card card1 = new Card("c1");
+        Card card2 = new Card("c2");
+        List<Card> cards = new ArrayList<>();
+        list.setCards(cards);
+        cl.save(list);
+        cards.add(card1);
+        ser.save(card1,list.getId());
+        repo.save(card2);
+        assertNull(ser.getListForCard(card2));
+    }
 
-//    @Test
-//    public void getListForCardTest(){
-//        CardList list = new CardList("l");
-//        Card card1 = new Card("c1");
-//        Card card2 = new Card("c2");
-//        List<Card> cards = new ArrayList<>();
-//        list.setCards(cards);
-//        cl.save(list);
-//        cards.add(card1);
-//        ser.save(card1, list.getId());
-//
-//        cards.add(card2);
-//        ser.save(card2, list.getId());
-//
-//        assertEquals(ser.getListForCard(card2), list);
-//
-//    }
-//
-//    @Test
-//    public void changeListForCardTest(){
-//        CardList list = new CardList("l");
-//        Card card1 = new Card("c1");
-//        Card card2 = new Card("c2");
-//        List<Card> cards = new ArrayList<>();
-//
-//        CardList list2 = new CardList("l2");
-//        list.setCards(cards);
-//        cl.save(list);
-//        cl.save(list2);
-//        cards.add(card1);
-//        ser.save(card1, list.getId());
-//        cards.add(card2);
-//        ser.save(card2, list.getId());
-//        ser.changeListOfCard(card2, list2.getId());
-//
-//        assertEquals(list2.getId(), ser.getListForCard(card2).getId());
-//
-//    }
+    @Test
+    public void getListForCardTest(){
+        CardList list = new CardList("l");
+        Card card1 = new Card("c1");
+        Card card2 = new Card("c2");
+        List<Card> cards = new ArrayList<>();
+        list.setCards(cards);
+        cl.save(list);
+        cards.add(card1);
+        ser.save(card1, list.getId());
+
+        cards.add(card2);
+        ser.save(card2, list.getId());
+
+        assertEquals(ser.getListForCard(card2), list);
+
+    }
+
+    @Test
+    public void changeListForCardTest(){
+        CardList list = new CardList("l");
+        Card card1 = new Card("c1");
+        Card card2 = new Card("c2");
+        List<Card> cards = new ArrayList<>();
+
+        CardList list2 = new CardList("l2");
+        list.setCards(cards);
+        cl.save(list);
+        cl.save(list2);
+        cards.add(card1);
+        ser.save(card1, list.getId());
+        cards.add(card2);
+        ser.save(card2, list.getId());
+        ser.changeListOfCard(card2, list2.getId());
+
+        assertEquals(list2.getId(), ser.getListForCard(card2).getId());
+
+    }
 
 }

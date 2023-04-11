@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import server.database.BoardRepositoryTest;
@@ -31,9 +32,15 @@ public class MainControllerTest {
     }
 
     @Test
-    public void addPaletteToBoardTest(){
+    public void rootGetTest(){
         ResponseEntity<String> response = ResponseEntity.ok("welcome to talio!");
         assertEquals(main.rootGet(), response);
+    }
+
+    @Test
+    public void checkAdminPasswordTest(){
+
+        assertEquals(main.checkAdminPassword("erjhbejgh"),ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials"));
     }
 
 }

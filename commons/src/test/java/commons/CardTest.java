@@ -107,6 +107,21 @@ public class CardTest {
     }
 
     @Test
+    void getPalette() {
+        Card c = new Card("a");
+        assertEquals(c.getPalette(), "");
+    }
+
+    @Test
+    void setPalette() {
+        Card c = new Card("a");
+        Palette p = new Palette("name", 0, 0);
+        c.setPalette(p.getName());
+        assertEquals(c.getPalette(), p.getName());
+    }
+
+
+    @Test
     void getTitle() {
         Card c = new Card("a");
         assertEquals(c.getTitle(), "a");
@@ -117,6 +132,18 @@ public class CardTest {
         Card c = new Card("a");
         c.setColor(1);
         assertEquals(c.getColor(), 1);
+    }
+
+    @Test
+    void setFColor() {
+        Card c = new Card("a");
+        c.setFcolor(1);
+        assertEquals(c.getFcolor(), 1);
+    }
+    @Test
+    void getFColor() {
+        Card c = new Card("a");
+        assertEquals(c.getFcolor(), 0);
     }
 
     @Test

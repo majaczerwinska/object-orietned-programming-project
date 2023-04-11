@@ -58,25 +58,11 @@ public class BoardController {
     public ResponseEntity<Board> addPublicBoard() {
         if (!abs.existsById(1)) {
             abs.addPublicBoard();
-        } else {
-            System.out.println("Public board already exists");
         }
         return ResponseEntity.ok().build();
-
     }
 
-//    /**
-//     *deletes a board from the database
-//     * @param id - the id of the board to be deleted
-//     * @return - a response entity
-//     */
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Board> deleteBoard(@PathVariable("id") int id) {
-//        if(!abs.existsById(id)) return ResponseEntity.badRequest().build();
-//        Board board = abs.getById(id);
-//        abs.delete(board);
-//        return ResponseEntity.ok().build();
-//    }
+
 
     /**
      * gets all boards from the database
@@ -86,6 +72,7 @@ public class BoardController {
     public List<Board> getBoards(){
         return abs.findAll();
     }
+
 
     /**
      * Get mapping to fetch a board by its key
@@ -100,6 +87,7 @@ public class BoardController {
         return res;
     }
 
+
     /**
      * gets a board from database with provided id
      * @param id - id of the board
@@ -112,6 +100,7 @@ public class BoardController {
         return ResponseEntity.ok().body(resp);
     }
 
+
     /**
      * Gets all lists form a specific board
      * @param boardId the id of the board we need to get the lists from
@@ -120,41 +109,27 @@ public class BoardController {
     @GetMapping("/lists/{boardId}")
     public ResponseEntity<List<CardList>> getCardListsFromBoard(@PathVariable("boardId") int boardId) {
         if (boardId < 0 || !abs.existsById(boardId)) {
-            return ResponseEntity.badRequest().build();
-        }
+            return ResponseEntity.badRequest().build();}
         return ResponseEntity.ok(abs.getCardListsFromBoard(boardId));
     }
 
+    
     /**
      * edits board name and color
      * @param id board's id
      * @param board board with updated information
      * @return a response entity with the card object
      */
-
     @PutMapping("/{id}")
     public ResponseEntity<Board> editBoard(@PathVariable("id") int id, @RequestBody Board board) {
         if(!abs.existsById(id) || board.getName() == null){
-            return ResponseEntity.badRequest().build();
-        }
+            return ResponseEntity.badRequest().build();}
         board.setId(id);
         abs.setBoardInfo(board);
         msgs.convertAndSend("/topic/boards/"+id, "Edited board#" + id + " refreshnamecolor");
         msgs.convertAndSend("/topic/admin/", "Edited board#" + id);
         return ResponseEntity.ok().build();
     }
-
-//    /**
-//     * board getter using the name
-//     * @param name name of the board
-//     * @return Board instance or null 
-//     */
-    /*@GetMapping("/name/{name}")
-    public Board getBoardByName(@PathVariable("name") String name) {
-        System.out.println("Received get request at /api/boards/name/"+name);
-        Board res = abs.findByName(name);
-        return res;
-    }*/
 
     /**
      * hopefully retrieves palettes from a board whose id is prvided
@@ -164,11 +139,9 @@ public class BoardController {
     @GetMapping("/palettes/{boardId}")
     public ResponseEntity<List<Palette>> getPalettesFromBoard(@PathVariable("boardId") int boardId) {
         if (boardId < 0 || !abs.existsById(boardId)) {
-            return ResponseEntity.badRequest().build();
-        }
+            return ResponseEntity.badRequest().build();}
         return ResponseEntity.ok(abs.getPalettesFromBoard(boardId));
     }
-
 
     /**
      * delete mapping for boards
@@ -178,11 +151,12 @@ public class BoardController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Board> deleteBoard(@PathVariable("id") int id) {
         if (id < 0 || !abs.existsById(id)) {
-            return ResponseEntity.badRequest().build();
-        }
+            return ResponseEntity.badRequest().build();}
         abs.delete(abs.getById(id));
         msgs.convertAndSend("/topic/boards/delete/"+id, "Board#" + id + " deleted");
         msgs.convertAndSend("/topic/admin/", "Deleted board#" + id);
         return ResponseEntity.ok().build();
     }
+
+
 }

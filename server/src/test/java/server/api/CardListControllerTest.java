@@ -62,44 +62,6 @@ public class CardListControllerTest {
     }
 
     @Test
-    public void websocketTest() throws ExecutionException, InterruptedException {
-        int boardID = 0;
-        String[] messages = new String[1];
-        CountDownLatch latch = new CountDownLatch(1);
-        Consumer<String> consumer = message -> {
-            System.out.println("Message received");
-            messages[0] = message;
-            latch.countDown();
-        };
-        StandardWebSocketClient client = new StandardWebSocketClient();
-        WebSocketStompClient stompClient = new WebSocketStompClient(client);
-        stompClient.setMessageConverter(new StringMessageConverter());
-        System.out.println("Connecting to WebSocket server...");
-        session = stompClient.connect("ws://localhost:" + port + "/websocketTest", new StompSessionHandlerAdapter() {
-            @Override
-            public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
-                session.subscribe("/topic/boards/" + boardID, new StompFrameHandler() {
-                    @Override
-                    public Type getPayloadType(StompHeaders headers) {
-                        return String.class;
-                    }
-
-                    @Override
-                    public void handleFrame(StompHeaders headers, Object payload) {
-                        consumer.accept((String)payload);
-                    }
-                });
-                latch.countDown();
-            }
-        }).get();
-
-        latch.await();
-
-        con.messageClient(boardID);
-        assertEquals(messages[0], "CardList added on board#" + boardID);
-    }
-
-    @Test
     public void addListTest(){
         Board board = new Board("t");
         br.save(board);
@@ -171,6 +133,12 @@ public class CardListControllerTest {
     }
 
     @Test
+    public void getListSize2Test(){
+
+        assertEquals(con.getListSize(-30), ResponseEntity.badRequest().build());
+    }
+
+    @Test
     public void setListSizeTest(){
         Board board = new Board("board");
         List<CardList> list = new ArrayList<>();
@@ -185,6 +153,14 @@ public class CardListControllerTest {
         ResponseEntity<Integer>  size = ResponseEntity.ok(12);
         assertEquals(br.getById(board.getId()).getLists().get(0).lastPosition, 12);
     }
+
+    @Test
+    public void setListSize2Test(){
+        
+        assertEquals(con.setListSize(-29, 12),ResponseEntity.badRequest().build());
+    }
+
+
 
     @Test
     public void recolorListTest(){

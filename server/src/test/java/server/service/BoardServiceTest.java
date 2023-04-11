@@ -39,6 +39,12 @@ public class BoardServiceTest {
         System.out.println(board.getId());
         assertTrue(repo.existsById(board.getId()));
     }
+    @Test
+    public void addPublicBoardTest(){
+        ser.addPublicBoard();
+
+        assertTrue(repo.existsById(1));
+    }
 
     @Test
     public void getByIdTest(){

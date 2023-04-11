@@ -22,6 +22,7 @@ public class QueryController {
     private String authToken;
 
 
+
     /**
      * SQL Query receiving endpoint
      * @param query the query (currently single) to be executed in the database

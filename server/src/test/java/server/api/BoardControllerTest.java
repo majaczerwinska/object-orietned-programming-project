@@ -49,6 +49,22 @@ public class BoardControllerTest {
     }
 
     @Test
+    public void addPublicBoardTest(){
+
+        con.addPublicBoard();
+        assertTrue(repo.existsById(1));
+
+
+    }
+    @Test
+    public void addPublicBoard2Test(){
+
+
+        assertEquals(con.addPublicBoard(),ResponseEntity.ok().build());
+
+    }
+
+    @Test
     public void deleteBoardTest(){
         Board board = new Board("title");
         con.addBoard(board);

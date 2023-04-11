@@ -81,7 +81,8 @@ public class WebsocketClient {
      * @param dest the endpoint to unsubscribe from
      */
     public void unsubscribe(String dest){
-         subscriptions.remove(dest).unsubscribe();
+        if (subscriptions==null || dest==null || !subscriptions.containsKey(dest)) return;
+        subscriptions.remove(dest).unsubscribe();
         System.out.println("Unsubscribed from: " + dest);
     }
 
