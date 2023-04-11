@@ -15,8 +15,7 @@ public class EditBoardCtrl {
     private TextField name;
     @FXML
     private Button save;
-    @FXML
-    private Button exit;
+
     @FXML
     private Label nameLabel;
     @FXML
@@ -136,14 +135,6 @@ public class EditBoardCtrl {
         return save;
     }
 
-    /**
-     * Getter for the exit Button.
-     * @return The Button object for the exit button.
-     */
-    @FXML
-    public Button getExit() {
-        return exit;
-    }
 
     /**
      * Getter for the text title label.
@@ -167,7 +158,7 @@ public class EditBoardCtrl {
      * Shortcut for opening the help scene
      */
     private void shortcut() {
-        exit.getScene().setOnKeyPressed(event -> {
+        save.getScene().setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.SLASH) {
                 mainCtrl.showHelpScene();
             }
