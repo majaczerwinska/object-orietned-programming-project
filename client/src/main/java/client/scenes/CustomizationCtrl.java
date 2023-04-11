@@ -23,7 +23,7 @@ public class CustomizationCtrl {
     private final MainCtrl mainCtrl;
     private WebsocketClient websocketClient;
 
-    public int boardId;
+    public int boardId = 1;
 
     private Color listB = MainCtrl.colorParseToFXColor(3368550);
     private Color listF = MainCtrl.colorParseToFXColor(16777215) ;
