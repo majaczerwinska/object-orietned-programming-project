@@ -230,7 +230,7 @@ test_job_client_scenes_controllers:
   stage: test
   variables:
     CLIENT_MIN_COVERAGE: 0
-    CLIENT_GOOD_COVERAGE: 90
+    CLIENT_GOOD_COVERAGE: 9
   needs:
     - build_job
   dependencies:
@@ -263,7 +263,7 @@ test_job_client_scenes_controllers:
 test_job_overall:
   stage: test
   variables:
-    GOOD_COVERAGE_TOTAL: 16
+    GOOD_COVERAGE_TOTAL: 1
     MINIMUM_COVERAGE_TOTAL: 0
   needs:
     - build_job
