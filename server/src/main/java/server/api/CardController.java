@@ -144,6 +144,7 @@ public class CardController {
     @PostMapping("/position/{cardId}/{position}")
     public ResponseEntity<Card> setPosition(@PathVariable("cardId") int cardId,
                                          @PathVariable("position") int position, @RequestBody Card card) {
+        System.out.println("received request at api/cards/position/"+cardId+"/"+position);
         if(!acs.existsById(cardId) || card.getTitle() == null){
             return ResponseEntity.badRequest().build();
         }

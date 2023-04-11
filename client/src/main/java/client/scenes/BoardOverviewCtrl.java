@@ -12,6 +12,8 @@ import javafx.fxml.FXML;
 
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -460,42 +462,136 @@ public class BoardOverviewCtrl {
                 List<CardList> cardLists = getCardListsFromServer();
                 clearBoard();
                 displayLists(cardLists, c);
-                shortcut();
+                initialiseBoardShortcuts();
             }
         });
     }
 
-    private void shortcut() {
+
+    ///////////////////////////////////////////////////////////////////////
+    //////////////////////    Keyboard shortcuts     //////////////////////
+
+
+    @SuppressWarnings({"checkstyle:CyclomaticComplexity"})
+    private void initialiseBoardShortcuts() {
         listViewTags.getScene().setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.E) {
-                if (highlightedCardComponent != null)
-                    mainCtrl.showCard(highlightedCardComponent.cardID,
-                            highlightedCardComponent.cardListID, boardID,isLocked);
-            } else if (event.getCode() == KeyCode.DELETE) {
-                if (highlightedCardComponent != null) highlightedCardComponent.deleteCard();
-            } else if (event.getCode() == KeyCode.T) {
-                if (highlightedCardComponent != null);
-                mainCtrl.showTagPopUp(this.boardID, highlightedCardComponent.cardID);
-            } else if (event.getCode() == KeyCode.SLASH) {
-                mainCtrl.showHelpScene();
-            }  else if (event.getCode() == KeyCode.C) {
-                if (highlightedCardComponent != null);
-                mainCtrl.showColorPopUp(this.boardID, highlightedCardComponent.cardID);
-//            }   else if (event.getCode() == KeyCode.KP_DOWN) {
-//                if (highlightedCardComponent != null) {
-//                    for (Card c : server.getCardsFromList(server.getListFromCard(
-//                    highlightedCardComponent.cardID, server.getCard(highlightedCardComponent.cardID)).getId())) {
-//                        if (c.getPosition() - 1 == server.getCard(highlightedCardComponent.cardID).getPosition()){
-//                        }
-//                    }
-//                }
-//            }   else if (event.getCode() == KeyCode.KP_UP) {
-//                if (highlightedCardComponent != null);
+            System.out.println("Key event in board listener: "+ event);
+            KeyCombination keyCombinationUP = new KeyCodeCombination(KeyCode.W, KeyCombination.SHIFT_ANY);
+            switch (event.getCode()) {
+                case E:
+                    if (highlightedCardComponent != null)
+                        mainCtrl.showCard(highlightedCardComponent.cardID,
+                                highlightedCardComponent.cardListID , boardID, isLocked);
+                    break;
+                case DELETE:
+                    if (highlightedCardComponent != null) highlightedCardComponent.deleteCard();
+                    break;
+                case T:
+                    if (highlightedCardComponent != null)
+                        mainCtrl.showTagPopUp(this.boardID, highlightedCardComponent.cardID);
+                    break;
+                case SLASH:
+                    mainCtrl.showHelpScene();
+                    break;
+                case C:
+                    if (highlightedCardComponent != null)
+                        mainCtrl.showColorPopUp(this.boardID, highlightedCardComponent.cardID);
+                    break;
+
+
+                case W:
+                    if (event.getText().equals("W")) {
+                        System.out.println("\n\n\nswapping up\n\n\n");
+                        if (highlightedCardComponent != null) swapHighlight(true, true);
+                        break;
+                    }
+                case UP:
+                case KP_UP:
+                case PAGE_UP:
+                    System.out.println("\n\n\nmoving highlight up\n\n\n");
+                    if (highlightedCardComponent != null) swapHighlight(true, false);
+                    break;
+
+
+                case S:
+                    if (event.getText().equals("S")) {
+                        if (highlightedCardComponent != null) swapHighlight(false, true);
+                        break;
+                    }
+                case DOWN:
+                case KP_DOWN:
+                case PAGE_DOWN:
+                    if (highlightedCardComponent != null) swapHighlight(false, false);
+                    break;
             }
         });
     }
 
+    /**
+     * Gets the card for switching the highlight
+     * @param moveUp This tells us if the highlight is switched up or down
+     * @param swap whether to swap the two cards or not
+     */
+    public void swapHighlight(boolean moveUp, boolean swap) {
+        System.out.println("swap highlight method::::");
+        // get card instance from server
+        Card card = server.getCard(highlightedCardComponent.cardID);
+        int pos = card.getPosition();
+        System.out.println(pos);
+        // get list instance
+        CardList cardList = null;
+        for (CardList list : server.getCardListsFromBoard(boardID)) {
+            if (list.getCards().contains(card)) cardList = list;
+        } if (cardList == null) return;
 
+        // get sorted List of cards
+        List<Card> cards = cardList.getCards();
+        cards.sort(Comparator.comparing(Card::getPosition));
+
+        int newPosition = Math.min(Math.max(0, pos+((moveUp)?-1:1)), cards.size()-1);
+        System.out.println(newPosition);
+        if (cards.get(newPosition) == null) return;
+
+        Card newCard = cards.get(newPosition);
+        if (newCard == null) return;
+
+        System.out.println("\033[55;49m Swapping card="+card+" with other="+newCard+" to position "+newPosition);
+
+        if (swap) {
+            int oldPos = card.getPosition();
+            int newPos = newCard.getPosition();
+            server.setPosition(card, newPos + ((moveUp)?0:1));
+//            System.out.println(oldPos);
+//            System.out.println(newPos);
+            System.out.println("Card that was switched "+server.getCard(card.getId()).getPosition());
+            System.out.println("Card that was switched with "+server.getCard(newCard.getId()).getPosition());
+            refresh(null);
+        } else {
+            switchHighlight(cardList, newCard);
+        }
+    }
+
+    private void switchHighlight(CardList cardList, Card newCard) {
+        for (var t : hboxCardLists.getChildren()) {
+            CardListComponent cardListComponent = (CardListComponent) t;
+            if (cardListComponent.getListId()== cardList.getId()) {
+                for (var p : cardListComponent.getVboxCards().getChildren()) {
+                    CardComponent cc = (CardComponent) p;
+                    if (cc.cardID== newCard.getId()) {
+                        mainCtrl.removeStyle(highlightedCardComponent, "-fx-effect");
+                        this.highlightedCardComponent = cc;
+                        mainCtrl.appendStyle(highlightedCardComponent, "-fx-effect: dropshadow(gaussian, "+
+                                mainCtrl.getRgbaColor(mainCtrl.getShadowColor(
+                                        MainCtrl.colorParseToFXColor(listsBackgroundColor)))
+                                +", 9, 0, 0, 3);");
+                    }
+                }
+            }
+        }
+    }
+
+
+ //////////////////////////
 
     /**
      * refresh a specific list
@@ -543,7 +639,6 @@ public class BoardOverviewCtrl {
             isCreatingCard = true;
             // when the user presses the enter button
             Card createdCardElement = createCard(listID);
-
         }
     }
 

@@ -133,14 +133,6 @@ public class CardComponent extends HBox implements Initializable {
 
         setOnMouseClicked(this::onElementClick);
 
-        descriptionLabel.setOnMouseEntered(event -> {
-            //descriptionLabel.setStyle("-fx-underline: true");
-
-        });
-        descriptionLabel.setOnMouseExited(event -> {
-            //descriptionLabel.setStyle("-fx-underline: false");
-        });
-
         this.boardOverviewCtrl = mainCtrl.getBoardOverviewCtrl();
     }
 
@@ -198,17 +190,18 @@ public class CardComponent extends HBox implements Initializable {
         cardFrame.setOnMouseEntered(event -> {
             highlighted = true;
             boardOverviewCtrl.highlightedCardComponent= this;
-            mainCtrl.appendStyle(tfTitle,"-fx-border-color: black; -fx-alignment: center;");
 
             mainCtrl.appendStyle(cardFrame, "-fx-effect: dropshadow(gaussian, "+
-                    getRgbaColor(getShadowColor(MainCtrl.colorParseToFXColor(boardOverviewCtrl.listsBackgroundColor)))
+                    mainCtrl.getRgbaColor(mainCtrl.getShadowColor(
+                            MainCtrl.colorParseToFXColor(boardOverviewCtrl.listsBackgroundColor)))
                     +", 9, 0, 0, 3);");
+            setColouredBorder();
         });
         cardFrame.setOnMouseExited(event -> {
             highlighted = false;
             boardOverviewCtrl.highlightedCardComponent = null;
             mainCtrl.removeStyle(cardFrame, "-fx-effect");
-            mainCtrl.removeStyle(tfTitle, "-fx-border-color");
+            //mainCtrl.removeStyle(tfTitle, "-fx-border-color");
             mainCtrl.appendStyle(tfTitle,"-fx-background-color: transparent;" +
                     " -fx-border-color: transparent; " +
                     "-fx-alignment: center;");
@@ -218,50 +211,19 @@ public class CardComponent extends HBox implements Initializable {
                     mainCtrl.appendStyle(tfTitle,"-fx-border-color: black; -fx-alignment: center;");
                 } else {
                     // TextField has lost focus
-                    mainCtrl.removeStyle(tfTitle, "-fx-border-color: black; -fx-alignment: center;");
+                    //mainCtrl.removeStyle(tfTitle, "-fx-border-color: black; -fx-alignment: center;");
                     mainCtrl.appendStyle(tfTitle,"-fx-background-color: transparent;" +
                             " -fx-border-color: transparent; " +
                             "-fx-alignment: center;");
                 }
             });
+            setColouredBorder();
         });
     }
 
 
-    /**
-     * get the appropriate shadow colour to contrast a certain background color
-     * use standard formula for coolour luminance
-     * @param backgroundColor javafx color instance
-     * @return new javafx colour instance for contrasting colour
-     */
-    public Color getShadowColor(Color backgroundColor) {
-        double luminance = 0.2126 * backgroundColor.getRed() + 0.7152 * backgroundColor.getGreen()
-                + 0.0722 * backgroundColor.getBlue();
-        if (luminance > 0.5) {
-            // background color is light -> use dark shadow
-            return Color.rgb(0, 0, 0, 0.3);
-        } else {
-            // background color is dark -> use light shadow
-            return Color.rgb(255, 255, 255, 0.3);
-        }
-    }
 
-    /**
-     * Hacky solution to convert a javafx color to a string that can be used
-     * with appendStyle method. Opacity attribute is specifically tailored
-     * for black and white shadows, this method is not to be used elsewhere.
-     * use with caution if you do
-     * @param color color object
-     * @return string rgba(r, g, b, a)
-     */
-    public String getRgbaColor(Color color) {
-        int r = (int) (color.getRed() * 255);
-        int g = (int) (color.getGreen() * 255);
-        int b = (int) (color.getBlue() * 255);
-        int a = (int) (color.getOpacity() * 255);
-//        return "rgba(" + r + ", " + g + ", " + b + ", " + a + ")";
-        return "rgba(" + r + ", " + g + ", " + b + ", "+ ((r>200)?0.9:0.3) +")";
-    }
+
 
     /**
      * get list of colors for a specific tag
@@ -271,7 +233,7 @@ public class CardComponent extends HBox implements Initializable {
         for(Tag t : server.getTagsForCard(cardID)){
             l.add(MainCtrl.colorParseToFXColor(t.getColor()));
         }
-        System.out.println("\033[35;107mCreating coloured border with l="+l+"\033[0m");
+//        System.out.println("\033[35;107mCreating coloured border with l="+l+"\033[0m");
         createMultiColouredBorder(l);
     }
 
@@ -280,12 +242,12 @@ public class CardComponent extends HBox implements Initializable {
      * @param colors the list of javafx color elements
      */
     public void createMultiColouredBorder (List<Color> colors) {
-        System.out.println("\033[41;34m \nSetting multicoloured border "+ colors +" \033[0m");
+//        System.out.println("\033[41;34m \nSetting multicoloured border "+ colors +" \033[0m");
         List<Stop> stops = new ArrayList<>();
         double size = colors.size();
         double i = 0;
         for (Color c : colors) {
-            System.out.println("Adding color c="+c);
+//            System.out.println("Adding color c="+c);
             double offset1 = i++ / size;
             double offset2 = i / size;
             stops.add(new Stop(offset1, c));
@@ -296,14 +258,15 @@ public class CardComponent extends HBox implements Initializable {
                 new BorderStroke(
                         new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, stops),
                         BorderStrokeStyle.SOLID,
-                        null,
+                        new CornerRadii(7),
                         new BorderWidths(3)));
 
-        System.out.println("\033[93;40mCreated border="+border+"\033[0m");
+//        System.out.println("\033[93;40mCreated border="+border+"\033[0m");
 
         // Set the HBox's border to the custom border
         mainCtrl.removeStyle(cardFrame, "-fx-border-width");
         mainCtrl.removeStyle(cardFrame, "-fx-border-color");
+//        System.out.println("Setting new border");
         cardFrame.setBorder(border);
     }
 

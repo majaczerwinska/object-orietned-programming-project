@@ -187,6 +187,7 @@ public class CardService {
             repo.save(cardlist.get(i));
         }
         list.setCards(cardlist);
+//        repo.flush();
         //System.out.println("\n\n\n\n\n\n" + list.getCards());
         cl.save(list);
         //System.out.println("\n\n\n\n\n\n" + cl.getById(list.getId()).getCards());
