@@ -37,7 +37,6 @@ public class CardListController {
     @MessageMapping("/update/list/{boardId}")
     public void messageClient(@DestinationVariable("boardId") int boardId){
         msgs.convertAndSend("/topic/boards/"+boardId, "CardList added on board#" + boardId);
-
     }
 
     /**
