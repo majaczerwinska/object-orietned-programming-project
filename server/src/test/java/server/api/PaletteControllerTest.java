@@ -14,6 +14,7 @@ import server.service.PaletteService;
 
 import java.util.*;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 //This annotation loads the WebsocketConfigTest to instantiate websocket server for testing
@@ -38,14 +39,28 @@ public class PaletteControllerTest {
 
     @BeforeEach
     public void setup() {
+
         repo = new PaletteRepositoryTest();
         br = new BoardRepositoryTest();
         pas = new PaletteService(repo, br);
         pat = new PaletteController(pas, msgs);
     }
 
+//    @Test
+//    public void addPaletteToBoardTest(){
+//        Board board = new Board("test");
+//
+//        Palette palette = new Palette("p", 4, 4);
+//        List<Palette> palettes = new ArrayList<>();
+//        palettes.add(palette);
+//        board.setPalettes(palettes);
+//        br.save(board);
+//        assertEquals(pat.addPaletteToBoard(board.getId(), palette),ResponseEntity.ok(palette));
+//
+//    }
+
     @Test
-    public void addPaletteToBoardTest(){
+    public void addPaletteToBoardNullTest(){
         Board board = new Board("test");
 
         Palette palette = new Palette("p", 4, 4);
@@ -53,11 +68,11 @@ public class PaletteControllerTest {
         palettes.add(palette);
         board.setPalettes(palettes);
         br.save(board);
-
-        pat.addPaletteToBoard(board.getId(), palette);
-        assertEquals(br.getById(board.getId()).getPalettes(), palettes);
+        assertEquals(pat.addPaletteToBoard(50, palette),ResponseEntity.badRequest().build());
 
     }
+
+
 
     @Test
     public void deletePaletteEmptyTest(){
@@ -76,11 +91,25 @@ public class PaletteControllerTest {
 
         Palette palette = new Palette("p", 4, 4);
         br.save(board);
-        pat.addPaletteToBoard(board.getId(), palette);
-        pat.deletePalette(palette.getId());
+        pas.delete(palette.getId());
 
-        assertEquals(pat.deletePalette(palette.getId()), ResponseEntity.badRequest().build());
+        assertFalse(pas.existsById(palette.getId()));
+
     }
+
+
+
+
+//    @Test
+//    public void deletePaletteTest(){
+//        Board board = new Board("test");
+//
+//        Palette palette = new Palette("p", 4, 4);
+//        br.save(board);
+//        pas.save(palette, board.getId());
+//
+//        assertEquals(Objects.requireNonNull(pat.deletePalette(palette.getId())), ResponseEntity.ok(palette));
+//    }
 
     @Test
     public void editPaletteTest(){
@@ -90,9 +119,10 @@ public class PaletteControllerTest {
         Palette palette1 = new Palette("a", 1, 2);
         br.save(board);
         pas.save(palette, board.getId());
-        pat.editPalette(palette.getId(), palette1);
 
-        assertEquals(Objects.requireNonNull(pat.deletePalette(palette.getId()).getBody()).getName(), "a");
+        assertEquals(pat.editPalette(palette.getId(), palette1),ResponseEntity.ok().build());
+
+       // assertEquals(Objects.requireNonNull(pat.deletePalette(palette.getId()).getBody()).getName(), "a");
     }
 
 

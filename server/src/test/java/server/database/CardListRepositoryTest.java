@@ -1,5 +1,6 @@
 package server.database;
 
+import commons.Card;
 import commons.CardList;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.data.domain.Example;
@@ -9,10 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 
 public class CardListRepositoryTest implements CardListRepository {
@@ -24,7 +22,11 @@ public class CardListRepositoryTest implements CardListRepository {
      */
     @Override
     public List<CardList> findAll() {
-        return null;
+        List<CardList> list = new ArrayList<>();
+        for(CardList c : tasks){
+            list.add(c);
+        }
+        return list;
     }
 
     /**

@@ -15,7 +15,11 @@ public class CardRepositoryTest implements CardRepository{
 
     @Override
     public List<Card> findAll() {
-        return null;
+        List<Card> list = new ArrayList<>();
+        for(Card c : cards){
+            list.add(c);
+        }
+        return list;
     }
 
     @Override

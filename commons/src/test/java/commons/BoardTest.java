@@ -44,6 +44,19 @@ public class BoardTest {
     }
 
     @Test
+    void setListt() {
+        Board c = new Board("a");
+        c.setListt(1);
+        assertEquals(c.getListt(), 1);
+    }
+    @Test
+    void setListb() {
+        Board c = new Board("a");
+        c.setListb(1);
+        assertEquals(c.getListb(), 1);
+    }
+
+    @Test
     void setLists() {
         Board c = new Board("a");
         List<CardList> list = new ArrayList<>();

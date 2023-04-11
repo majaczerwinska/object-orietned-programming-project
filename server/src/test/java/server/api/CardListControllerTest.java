@@ -171,6 +171,12 @@ public class CardListControllerTest {
     }
 
     @Test
+    public void getListSize2Test(){
+
+        assertEquals(con.getListSize(-30), ResponseEntity.badRequest().build());
+    }
+
+    @Test
     public void setListSizeTest(){
         Board board = new Board("board");
         List<CardList> list = new ArrayList<>();
@@ -185,6 +191,14 @@ public class CardListControllerTest {
         ResponseEntity<Integer>  size = ResponseEntity.ok(12);
         assertEquals(br.getById(board.getId()).getLists().get(0).lastPosition, 12);
     }
+
+    @Test
+    public void setListSize2Test(){
+        
+        assertEquals(con.setListSize(-29, 12),ResponseEntity.badRequest().build());
+    }
+
+
 
     @Test
     public void recolorListTest(){
