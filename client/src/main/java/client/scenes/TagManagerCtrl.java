@@ -9,23 +9,20 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 import static client.scenes.MainCtrl.colorParseToFXColor;
 import static client.scenes.MainCtrl.colorParseToInt;
-public class TagManagerCtrl implements Initializable {
+public class TagManagerCtrl {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private final WebsocketClient websocketClient;
-    public int boardId = 0;
+    public int boardId = 1;
     private ObservableList<Tag> tagList;
 
     @FXML
@@ -75,26 +72,6 @@ public class TagManagerCtrl implements Initializable {
 
     }
 
-    /**
-     *
-     * @param location
-     * The location used to resolve relative paths for the root object, or
-     * {@code null} if the location is not known.
-     *
-     * @param resources
-     * The resources used to localize the root object, or {@code null} if
-     * the root object was not localized.
-     */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        if (server.testConnection(ServerUtils.SERVER) != 200) {
-            System.out.println("No server to connect to, halting tag init function");
-            return;
-        }
-        System.out.println("Initialize called");
-        setLabelBoard();
-        refresh();
-    }
 
     /**
      * Creates stomp session

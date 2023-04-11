@@ -51,6 +51,21 @@ public class BoardService {
     }
 
     /**
+     * save a board to the database
+     * @return the board
+     */
+    public Board addPublicBoard(){
+        System.out.println("Adding public board");
+        Board board = new Board("Public Board");
+        board.setId(1);
+        board.setBoardkey("public");
+        repo.save(board);
+        return board;
+    }
+
+
+
+    /**
      * delete a board from the database
      * @param board to delete
      * @return the deleted board instance
