@@ -581,6 +581,11 @@ public class BoardOverviewCtrl {
      */
     public void clickLockInUnlockedBoard(){
         if(boardID==0){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("This is the public board");
+            alert.setHeaderText("Board cannot be locked!");
+            alert.setContentText("Since this is the public board, it cannot be locked");
+            alert.show();
             return;
         }
         if(server.getBoard(boardID).getPassword().equals("")){
