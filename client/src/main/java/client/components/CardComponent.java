@@ -10,6 +10,12 @@ import commons.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
+
+import java.io.IOException;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
@@ -19,16 +25,15 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.text.Text;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+
 
 public class CardComponent extends HBox implements Initializable {
 
 
     private ServerUtils server;
     private MainCtrl mainCtrl;
-
 
 
 
@@ -71,9 +76,8 @@ public class CardComponent extends HBox implements Initializable {
     /**
      * The constructor for the component
      * @param mainCtrl the main controller instance
-     * @param isLocked
+     * @param isLocked if the card should be disactivated
      */
-    @SuppressWarnings("checkstyle:JavadocMethod")
     public CardComponent(MainCtrl mainCtrl, boolean isLocked) {
         super();
         server = new ServerUtils();
@@ -89,23 +93,6 @@ public class CardComponent extends HBox implements Initializable {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
-
-//        setOnKeyPressed(event -> updateCard());
-
-        TextField titleTextField = (TextField) lookup("#tfTitle");
-//        if(!isLocked){
-//           // tfTitle.setOnKeyTyped(event -> updateCard());
-//
-//        }
-
-        //tfDescription.setOnKeyTyped(event -> updateCard());
-//        setOnMouseEntered(event -> {
-//                tfTitle.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-alignment: center");
-//            });
-//        setOnMouseExited(event -> {
-//            tfTitle.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; " +
-//                    "-fx-alignment: center");
-//        });
 
     }
 
@@ -125,7 +112,7 @@ public class CardComponent extends HBox implements Initializable {
             tfTitle.focusedProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue) {
                     // TextField has received focus
-                    mainCtrl.appendStyle(tfTitle,"-fx-border-color: black; -fx-alignment: center");
+                    //mainCtrl.appendStyle(tfTitle,"-fx-border-color: black; -fx-alignment: center");
                 } else {
                     // TextField has lost focus
                     System.out.println("originalValue = " + originalValue + "\nnew value = " + tfTitle.getText());
@@ -134,57 +121,28 @@ public class CardComponent extends HBox implements Initializable {
                                 "Done updating card in component");
                         originalValue = tfTitle.getText();
                     }
-                    mainCtrl.appendStyle(tfTitle,"-fx-background-color: transparent; -fx-border-color: transparent; " +
-                            "-fx-alignment: center");
                 }
             });
-            setOnMouseEntered(event ->
-            {mainCtrl.appendStyle(tfTitle,"-fx-border-color: black; -fx-alignment: center");});
-            setOnMouseExited(event ->
-            {
-                tfTitle.focusedProperty().addListener((observable, oldValue, newValue) -> {
-                    if (newValue) {
-                        // TextField has received focus
-                        mainCtrl.appendStyle(tfTitle,"-fx-border-color: black; -fx-alignment: center");
-                    } else {
-                        // TextField has lost focus
-                        mainCtrl.appendStyle(tfTitle,"-fx-background-color: transparent;" +
-                                " -fx-border-color: transparent; " +
-                                "-fx-alignment: center");
-                    }
-                });
-            });
+
+            handleCardHoverStyles();
+
 
             dragging();
 
         }
+
         setOnMouseClicked(this::onElementClick);
+
         descriptionLabel.setOnMouseEntered(event -> {
-            descriptionLabel.setStyle("-fx-underline: true");
+            //descriptionLabel.setStyle("-fx-underline: true");
 
         });
         descriptionLabel.setOnMouseExited(event -> {
-            descriptionLabel.setStyle("-fx-underline: false");
+            //descriptionLabel.setStyle("-fx-underline: false");
         });
 
         this.boardOverviewCtrl = mainCtrl.getBoardOverviewCtrl();
-
-        cardFrame.setOnMouseEntered(event -> {
-            String style = getStyle();
-            style += "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.9), 5, 0, 0, 5);";
-            setStyle(style);
-            highlighted = true;
-            boardOverviewCtrl.highlightedCardComponent= this;
-        });
-        cardFrame.setOnMouseExited(event -> {
-            String style = getStyle();
-            style = style.replace("-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.9), 5, 0, 0, 5);", "");
-            setStyle(style);
-            highlighted = false;
-            boardOverviewCtrl.highlightedCardComponent = null;
-        });
     }
-
 
     /**
      * Method for all the dragging
@@ -193,18 +151,27 @@ public class CardComponent extends HBox implements Initializable {
         setOnDragDetected(event-> {
             System.setProperty("javafx.dnd.delayedDragCallback", "false");
             Dragboard db = this.startDragAndDrop(TransferMode.MOVE);
+
+
+            SnapshotParameters snapshotParameters = new SnapshotParameters();
+
             // db.setDragView(this.snapshot(null, null)); // show a snapshot of the card while dragging
             ClipboardContent content = new ClipboardContent();
             content.putString(String.valueOf(cardID));
             db.setContent(content);
+
+            snapshotParameters.setFill(Color.TRANSPARENT);
+            db.setDragView(
+                    cardFrame.snapshot(snapshotParameters, null), 0,0);
+//                    event.getX() - (cardFrame.getWidth() / 2),
+//                    event.getY() - (cardFrame.getHeight() / 2));
+
             event.consume();
 
         });
         setOnDragDone(event ->  {
 
             if (event.getTransferMode() == TransferMode.MOVE) {
-
-
                 System.out.println("successfull dropping said by cardcomponent");
                 boardOverviewCtrl.sendMessage("/app/update/card/"+boardID,
                         "Done dragging card in component");
@@ -217,38 +184,108 @@ public class CardComponent extends HBox implements Initializable {
     }
 
 
-    /**
-     * get tasks, update card component to show how many are completed
-     */
-    public void setTaskProgress() {
-        List<Task> tasks = server.getTasksFromCard(cardID);
-        int completed = 0;
-        for (Task t : tasks) {
-            if (t.isChecked()) completed++;
-        }
-        text.setText(completed+"/"+tasks.size());
+    ///////////////////////////////////////////////////////////////////////
+    /////////// Methods relating to the card component's styling //////////
 
+
+
+
+
+    /**
+     * update the styles of the cardComponent
+     */
+    public void handleCardHoverStyles() {
+        cardFrame.setOnMouseEntered(event -> {
+            highlighted = true;
+            boardOverviewCtrl.highlightedCardComponent= this;
+            mainCtrl.appendStyle(tfTitle,"-fx-border-color: black; -fx-alignment: center;");
+
+            mainCtrl.appendStyle(cardFrame, "-fx-effect: dropshadow(gaussian, "+
+                    getRgbaColor(getShadowColor(MainCtrl.colorParseToFXColor(boardOverviewCtrl.listsBackgroundColor)))
+                    +", 9, 0, 0, 3);");
+        });
+        cardFrame.setOnMouseExited(event -> {
+            highlighted = false;
+            boardOverviewCtrl.highlightedCardComponent = null;
+            mainCtrl.removeStyle(cardFrame, "-fx-effect");
+            mainCtrl.removeStyle(tfTitle, "-fx-border-color");
+            mainCtrl.appendStyle(tfTitle,"-fx-background-color: transparent;" +
+                    " -fx-border-color: transparent; " +
+                    "-fx-alignment: center;");
+            tfTitle.focusedProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue) {
+                    // TextField has received focus
+                    mainCtrl.appendStyle(tfTitle,"-fx-border-color: black; -fx-alignment: center;");
+                } else {
+                    // TextField has lost focus
+                    mainCtrl.removeStyle(tfTitle, "-fx-border-color: black; -fx-alignment: center;");
+                    mainCtrl.appendStyle(tfTitle,"-fx-background-color: transparent;" +
+                            " -fx-border-color: transparent; " +
+                            "-fx-alignment: center;");
+                }
+            });
+        });
     }
+
+
+    /**
+     * get the appropriate shadow colour to contrast a certain background color
+     * use standard formula for coolour luminance
+     * @param backgroundColor javafx color instance
+     * @return new javafx colour instance for contrasting colour
+     */
+    public Color getShadowColor(Color backgroundColor) {
+        double luminance = 0.2126 * backgroundColor.getRed() + 0.7152 * backgroundColor.getGreen()
+                + 0.0722 * backgroundColor.getBlue();
+        if (luminance > 0.5) {
+            // background color is light -> use dark shadow
+            return Color.rgb(0, 0, 0, 0.3);
+        } else {
+            // background color is dark -> use light shadow
+            return Color.rgb(255, 255, 255, 0.3);
+        }
+    }
+
+    /**
+     * Hacky solution to convert a javafx color to a string that can be used
+     * with appendStyle method. Opacity attribute is specifically tailored
+     * for black and white shadows, this method is not to be used elsewhere.
+     * use with caution if you do
+     * @param color color object
+     * @return string rgba(r, g, b, a)
+     */
+    public String getRgbaColor(Color color) {
+        int r = (int) (color.getRed() * 255);
+        int g = (int) (color.getGreen() * 255);
+        int b = (int) (color.getBlue() * 255);
+        int a = (int) (color.getOpacity() * 255);
+//        return "rgba(" + r + ", " + g + ", " + b + ", " + a + ")";
+        return "rgba(" + r + ", " + g + ", " + b + ", "+ ((r>200)?0.9:0.3) +")";
+    }
+
     /**
      * get list of colors for a specific tag
      */
-    public void getTagColors() {
+    public void setColouredBorder() {
         List<Color> l = new ArrayList<>();
         for(Tag t : server.getTagsForCard(cardID)){
             l.add(MainCtrl.colorParseToFXColor(t.getColor()));
         }
-        setMulticolouredBorder(l);
+        System.out.println("\033[35;107mCreating coloured border with l="+l+"\033[0m");
+        createMultiColouredBorder(l);
     }
 
     /**
      * //todo make this set the border to every color of the tags in this card
      * @param colors the list of javafx color elements
      */
-    public void setMulticolouredBorder(List<Color> colors) {
+    public void createMultiColouredBorder (List<Color> colors) {
+        System.out.println("\033[41;34m \nSetting multicoloured border "+ colors +" \033[0m");
         List<Stop> stops = new ArrayList<>();
         double size = colors.size();
         double i = 0;
         for (Color c : colors) {
+            System.out.println("Adding color c="+c);
             double offset1 = i++ / size;
             double offset2 = i / size;
             stops.add(new Stop(offset1, c));
@@ -262,12 +299,32 @@ public class CardComponent extends HBox implements Initializable {
                         null,
                         new BorderWidths(3)));
 
+        System.out.println("\033[93;40mCreated border="+border+"\033[0m");
+
         // Set the HBox's border to the custom border
-        this.setBorder(border);
+        mainCtrl.removeStyle(cardFrame, "-fx-border-width");
+        mainCtrl.removeStyle(cardFrame, "-fx-border-color");
+        cardFrame.setBorder(border);
     }
 
+    ///////////////////////////////////////////////////////////////////////
+
+
     /**
-     *
+     * get tasks, update card component to show how many are completed
+     */
+    public void setTaskProgress() {
+        List<Task> tasks = server.getTasksFromCard(cardID);
+        int completed = 0;
+        for (Task t : tasks) {
+            if (t.isChecked()) completed++;
+        }
+        text.setText(completed+"/"+tasks.size());
+    }
+
+
+
+    /**
      * @return the cards title text field
      */
     public TextField getTfTitle() {
@@ -353,8 +410,6 @@ public class CardComponent extends HBox implements Initializable {
                 return ;
             });
             tfTitle.setEditable(false);
-
-
         }
     }
 

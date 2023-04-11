@@ -9,7 +9,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -248,18 +247,9 @@ public class CardCtrl {
         else{
             theme.setText(c.getPalette());
         }
-        escShortcut();
         shortcut();
     }
 
-    private void escShortcut() {
-        Scene scene = taglist.getScene();
-        scene.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ESCAPE) {
-                exit();
-            }
-        });
-    }
 
     /**
      * launch card overview scene util
@@ -402,7 +392,9 @@ public class CardCtrl {
         if(event.getClickCount()==2 && palette!=null ){
             showDropDownColors();
         }
-        theme.setText(palette.getName());
+        if(palette!=null){
+            theme.setText(palette.getName());
+        }
     }
 
     /**
@@ -412,6 +404,9 @@ public class CardCtrl {
         taglist.getScene().setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.SLASH) {
                 mainCtrl.showHelpScene();
+            }
+            if (event.getCode() == KeyCode.ESCAPE) {
+                exit();
             }
         });
     }

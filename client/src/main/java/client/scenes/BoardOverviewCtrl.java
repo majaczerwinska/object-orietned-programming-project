@@ -50,7 +50,7 @@ public class BoardOverviewCtrl {
 
 
     @FXML
-    private ScrollPane scrollPaneOverview;
+    public ScrollPane scrollPaneOverview;
 
     @FXML
     private VBox vboxTags;
@@ -87,6 +87,12 @@ public class BoardOverviewCtrl {
     private Preferences pref;
     private boolean isLocked;
 
+
+    public int boardBackgroundColor;
+
+    public int listsBackgroundColor;
+
+
     private boolean isAdmin;
 
     /**
@@ -107,24 +113,6 @@ public class BoardOverviewCtrl {
         this.websocketClient = websocketClient;
         System.out.println("Inject called in board overview");
     }
-
-//    /**
-//     *
-//     * @param location
-//     * The location used to resolve relative paths for the root object, or
-//     * {@code null} if the location is not known.
-//     *
-//     * @param resources
-//     * The resources used to localize the root object, or {@code null} if
-//     * the root object was not localized.
-//     */
-//    @Override
-//    public void initialize(URL location, ResourceBundle resources) {
-//        if (server.testConnection(ServerUtils.SERVER) != 200) {
-//            System.out.println("No server to connect to, halting tag init function");
-//            return;
-//        }
-//    }
 
     /**
      * Creates stomp session
@@ -191,12 +179,14 @@ public class BoardOverviewCtrl {
      */
     public void setColor(){
         Board board = server.getBoard(boardID);
-        mainCtrl.appendStyle(scrollPaneOverview,"-fx-background: " + String.format("rgb(%d, %d, %d)",
+        boardBackgroundColor = board.getbColor();
+        String colour = String.format("rgb(%d, %d, %d)",
                 (board.getbColor() >> 16) & 0xFF,
-                (board.getbColor() >> 8) & 0xFF, board.getbColor()& 0xFF)+";");
-        mainCtrl.appendStyle(vboxList1,"-fx-background-color: " + String.format("rgb(%d, %d, %d)",
-                (board.getbColor() >> 16) & 0xFF,
-                (board.getbColor() >> 8) & 0xFF, board.getbColor()& 0xFF)+";");
+                (board.getbColor() >> 8) & 0xFF, board.getbColor()& 0xFF);
+        String colourString = "-fx-background: " + colour +";";
+        String colourStringList = "-fx-background-color: " + colour +";";
+        mainCtrl.appendStyle(scrollPaneOverview, colourString);
+        mainCtrl.appendStyle(vboxList1,colourStringList);
         String hexColor = String.format("#%06X", (0xFFFFFF & board.getfColor()));
         mainCtrl.appendStyle(labelBoardTitle,"-fx-text-fill: " + hexColor+";");
         mainCtrl.appendStyle(boardKey,"-fx-text-fill: " + hexColor+";");
@@ -287,7 +277,7 @@ public class BoardOverviewCtrl {
 
         List<Card> cards = server.getCardsFromList(listId);
         cards.sort(Comparator.comparing(Card::getPosition));
-        System.out.println("\n\n\n\n\n=======================================\n"+cards);
+        System.out.println("\n=======================================\n"+cards);
         for (Card card : cards) {
             CardComponent cardComponent = new CardComponent(mainCtrl, isLocked);
             mainCtrl.cardIdComponentMap.remove(card.getId());
@@ -295,7 +285,7 @@ public class BoardOverviewCtrl {
             mainCtrl.cardIdComponentMap.put(card.getId(), cardComponent);
             cardComponent.boardID = boardID;
             cardComponent.setData(card, listId);
-            cardComponent.getTagColors();
+            cardComponent.setColouredBorder();
             if(isLocked) cardComponent.readmode();
             mainCtrl.appendStyle(cardComponent, "-fx-background-color: " +
                     String.format("rgb(%d, %d, %d)", (card.getColor() >> 16) & 0xFF,
@@ -346,6 +336,7 @@ public class BoardOverviewCtrl {
             CardListComponent cardListComponent = new CardListComponent(mainCtrl, boardID,cardList.getId());
 
             cardListComponent.setTitle(cardList.getName());
+            listsBackgroundColor = cardList.getbColor();
             mainCtrl.appendStyle(cardListComponent,String.format("-fx-background-color: rgb(%d, %d, %d);",
                     (cardList.getbColor() >> 16) & 0xFF,
                     (cardList.getbColor() >> 8) & 0xFF, cardList.getbColor()& 0xFF) + ";");

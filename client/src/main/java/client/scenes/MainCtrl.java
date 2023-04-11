@@ -26,7 +26,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import javafx.stage.Screen;
-import javafx.scene.text.Font;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +36,7 @@ public class MainCtrl {
 
     private Stage primaryStage;
     private Stage locker;
+    private Stage helpStage;
 
     private LandingCtrl landingCtrl;
     private Scene landing;
@@ -111,6 +112,7 @@ public class MainCtrl {
      *
      * @param primaryStage
      * @param locker
+     * @param helpStage
      * @param landing
      * @param card
      * @param publicBoard
@@ -137,6 +139,7 @@ public class MainCtrl {
      */
     public void initialize(Stage primaryStage,
                            Stage locker,
+                           Stage helpStage,
                            Pair<LandingCtrl, Parent> landing,
                            Pair<CardCtrl, Parent> card,
                            Pair<PublicBoardCtrl, Parent> publicBoard,
@@ -169,6 +172,10 @@ public class MainCtrl {
         this.locker = locker;
         locker.initModality(Modality.APPLICATION_MODAL);
         locker.initOwner(primaryStage);
+        this.helpStage = helpStage;
+        helpStage.initModality(Modality.NONE);
+        helpStage.initOwner(primaryStage);
+
         this.landingCtrl = landing.getKey();
         this.landing = new Scene(landing.getValue());
 
@@ -225,16 +232,12 @@ public class MainCtrl {
 
         this.warningCtrl = warning.getKey();
         this.warning = new Scene(warning.getValue());
-
         this.customizationCtrl = customization.getKey();
         this.customization = new Scene(customization.getValue());
-
-
         this.adminPasswordCtrl = adminPwd.getKey();
         this.enterPasswordScene = new Scene(adminPwd.getValue());
         this.adminCtrl = adminPage.getKey();
         this.adminScene = new Scene(adminPage.getValue());
-
         this.paletteCreationCtrl = paletteCreate.getKey();
         this.paletteCreation = new Scene(paletteCreate.getValue());
         showLanding();
@@ -529,13 +532,11 @@ public class MainCtrl {
 
         // changing the font family for the texts
        // editBoardCtrl.getColorLabel().setStyle("-fx-font-family: Avenir Book;");
-        this.appendStyle(editBoardCtrl.getExit(),"-fx-font-family: Avenir Book;");
         this.appendStyle(editBoardCtrl.getNameLabel(),"-fx-font-family: Avenir Book;");
         this.appendStyle(editBoardCtrl.getSave(),"-fx-font-family: Avenir Book;");
         this.appendStyle(editBoardCtrl.getTitleLabel(),"-fx-font-family: Avenir Book;");
 
         // rounding the buttons and text fields
-        appendStyle(editBoardCtrl.getExit(),"-fx-background-radius: 15;");
         appendStyle(editBoardCtrl.getName(),"-fx-background-radius: 7;");
         appendStyle(editBoardCtrl.getSave(),"-fx-background-radius: 7;");
 
@@ -570,8 +571,30 @@ public class MainCtrl {
      * @param style the style you want to append
      */
     public void appendStyle(Node node, String style) {
+        removeStyle(node, style);
         String existingStyle = node.getStyle();
-        node.setStyle(existingStyle.replaceAll(style, "") + style);
+        node.setStyle(existingStyle + style);
+    }
+
+
+    /**
+     * remove a style from a node
+     * @param node the node instance
+     * @param style the style string to remove
+     */
+    public void removeStyle(Node node, String style) {
+        String existingStyle = node.getStyle();
+        System.out.println("\033[96;40m Removing style from element="+node+
+                "\n'"+style+
+                "'\n'"+existingStyle+"'");
+
+        if (style.contains(":")) {
+            node.setStyle(existingStyle.replaceAll("(?i)" + style + "\\s*;?", ""));
+        } else {
+            String regex = "(?i)"+style+":[^;]*;?";
+            node.setStyle(existingStyle.replaceAll(regex, ""));
+        }
+        System.out.println("'"+node.getStyle()+"'\033[0m\n");
     }
 
     /**
@@ -694,11 +717,11 @@ public class MainCtrl {
 
         // setting the font size for the text
         double screenWidth = Screen.getPrimary().getBounds().getWidth();
-        boardCreationCtrl.getTitleLabel().setFont(Font.font(screenWidth * 0.03));
-        boardCreationCtrl.getBoardKeyLabel().setFont(Font.font(screenWidth * 0.015));
-        boardCreationCtrl.getBoardTitleLabel().setFont(Font.font(screenWidth * 0.015));
-        boardCreationCtrl.getStopCreatingBoardButton().setFont(Font.font(screenWidth * 0.012));
-        boardCreationCtrl.getCreateBoardButton().setFont(Font.font(screenWidth * 0.015));
+       // boardCreationCtrl.getTitleLabel().setFont(Font.font(screenWidth * 0.03));
+       // boardCreationCtrl.getBoardKeyLabel().setFont(Font.font(screenWidth * 0.015));
+       // boardCreationCtrl.getBoardTitleLabel().setFont(Font.font(screenWidth * 0.015));
+       // boardCreationCtrl.getStopCreatingBoardButton().setFont(Font.font(screenWidth * 0.012));
+        //boardCreationCtrl.getCreateBoardButton().setFont(Font.font(screenWidth * 0.015));
 
         // setting the font family for the text
         this.appendStyle(boardCreationCtrl.getTitleLabel(),"-fx-font-family: Avenir Book;");
@@ -708,12 +731,12 @@ public class MainCtrl {
         this.appendStyle(boardCreationCtrl.getStopCreatingBoardButton(),"-fx-font-family: Avenir Book;");
 
         // round the corners for the text areas
-        this.appendStyle(boardCreationCtrl.getBoardKeyTextField(),"-fx-background-radius: 7;");
-        this.appendStyle(boardCreationCtrl.getBoardTitleTextField(),"-fx-background-radius: 7;");
+       // this.appendStyle(boardCreationCtrl.getBoardKeyTextField(),"-fx-background-radius: 7;");
+        //this.appendStyle(boardCreationCtrl.getBoardTitleTextField(),"-fx-background-radius: 7;");
 
         // round the corners of the buttons
-        this.appendStyle(boardCreationCtrl.getCreateBoardButton(),"-fx-background-radius: 7;");
-        this.appendStyle(boardCreationCtrl.getStopCreatingBoardButton(),"-fx-background-radius: 7;");
+       // this.appendStyle(boardCreationCtrl.getCreateBoardButton(),"-fx-background-radius: 7;");
+        //this.appendStyle(boardCreationCtrl.getStopCreatingBoardButton(),"-fx-background-radius: 7;");
 
         locker.setScene(boardCreation);
         locker.setResizable(false);
@@ -904,9 +927,9 @@ public class MainCtrl {
      * shows board selection scene
      */
     public void showHelpScene() {
-        primaryStage.setTitle("Help Scene");
-        primaryStage.setScene(helpScene);
-        primaryStage.show();
+        helpStage.setTitle("Help Scene");
+        helpStage.setScene(helpScene);
+        helpStage.show();
         helpCtrl.refresh();
     }
 
