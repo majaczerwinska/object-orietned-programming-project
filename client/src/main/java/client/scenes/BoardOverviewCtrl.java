@@ -468,9 +468,9 @@ public class BoardOverviewCtrl {
 
     private void switchShortcut() {
         listViewTags.getScene().setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.S) {
+            if (event.getCode() == KeyCode.S || event.getCode() == KeyCode.KP_DOWN) {
                 if (highlightedCardComponent != null) getCardForSwitchingHighlight(1);
-            }   else if (event.getCode() == KeyCode.W) {
+            }   else if (event.getCode() == KeyCode.W || event.getCode() == KeyCode.KP_UP) {
                 if (highlightedCardComponent != null) getCardForSwitchingHighlight(-1);
             } else if (event.getCode() == KeyCode.O) {
                 if (highlightedCardComponent != null) switchPosition(-1);
