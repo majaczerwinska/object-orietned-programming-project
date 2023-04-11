@@ -50,8 +50,6 @@ public class CardListControllerTest {
     private CardService cardService;
     @Autowired
     private SimpMessagingTemplate msgs;
-    @Autowired
-    private TestRestTemplate restTemplate;
     private StompSession session;
 
     @BeforeEach
@@ -62,44 +60,6 @@ public class CardListControllerTest {
         con = new CardListController(ser, msgs);
         cr = new CardRepositoryTest();
         cardService = new CardService(cr, repo);
-    }
-
-    @Test
-    public void websocketTest() throws ExecutionException, InterruptedException {
-        int boardID = 0;
-        String[] messages = new String[1];
-        CountDownLatch latch = new CountDownLatch(1);
-        Consumer<String> consumer = message -> {
-            System.out.println("Message received in test");
-            messages[0] = message;
-            latch.countDown();
-        };
-        StandardWebSocketClient client = new StandardWebSocketClient();
-        WebSocketStompClient stompClient = new WebSocketStompClient(client);
-        stompClient.setMessageConverter(new StringMessageConverter());
-        System.out.println("Connecting to WebSocket server...");
-        session = stompClient.connect("ws://localhost:" + port + "/websocketTest", new StompSessionHandlerAdapter() {
-            @Override
-            public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
-                session.subscribe("/topic/boards/" + boardID, new StompFrameHandler() {
-                    @Override
-                    public Type getPayloadType(StompHeaders headers) {
-                        return String.class;
-                    }
-
-                    @Override
-                    public void handleFrame(StompHeaders headers, Object payload) {
-                        consumer.accept((String)payload);
-                    }
-                });
-                latch.countDown();
-            }
-        }).get();
-
-        latch.await();
-
-        con.messageClient(boardID);
-        assertEquals(messages[0], "CardList added on board#" + boardID);
     }
 
     @Test
@@ -116,7 +76,8 @@ public class CardListControllerTest {
         int boardId = 123;
         String expectedMessage = "CardList added on board#" + boardId;
 
-        con.messageClient(boardId);
+        session.send("/app/update/list/"+boardId, "Done updating card in component");
+//        con.messageClient(boardID);
 
         final BlockingQueue<String> messages = new LinkedBlockingQueue<>();
 
