@@ -37,7 +37,7 @@ public class BoardOverviewCtrl {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
     private final WebsocketClient websocketClient;
-    public int boardID = 0;
+    public int boardID = 1;
     public CardComponent highlightedCardComponent;
 
     private boolean isCreatingCard = false;
@@ -580,7 +580,7 @@ public class BoardOverviewCtrl {
      * clicking the lock button
      */
     public void clickLockInUnlockedBoard(){
-        if(boardID==0){
+        if(boardID==1){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("This is the public board");
             alert.setHeaderText("Board cannot be locked!");

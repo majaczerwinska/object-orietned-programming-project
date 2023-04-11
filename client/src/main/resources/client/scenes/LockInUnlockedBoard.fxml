@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.LockInUnlockedBoardCtrl">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.LockInUnlockedBoardCtrl">
    <children>
       <VBox layoutX="72.0" layoutY="29.0" prefHeight="345.0" prefWidth="436.0">
          <children>
@@ -39,7 +38,7 @@
                               <Insets />
                            </VBox.margin>
                         </Label>
-                        <TextField fx:id="password1" prefHeight="26.0" prefWidth="265.0" />
+                        <TextField fx:id="password1" prefHeight="26.0" prefWidth="265.0" style="-fx-background-color: white; -fx-background-radius: 7; -fx-border-radius: 7; -fx-border-color: black;" />
                      </children>
                      <opaqueInsets>
                         <Insets left="30.0" />
@@ -66,7 +65,7 @@
                   <VBox prefHeight="43.0" prefWidth="293.0">
                      <children>
                         <Label fx:id="warning2" prefHeight="18.0" prefWidth="259.0" textFill="#c11717" />
-                        <TextField fx:id="password2" prefHeight="26.0" prefWidth="289.0" />
+                        <TextField fx:id="password2" prefHeight="26.0" prefWidth="289.0" style="-fx-background-color: white; -fx-background-radius: 7; -fx-border-radius: 7; -fx-border-color: black;" />
                      </children>
                      <HBox.margin>
                         <Insets left="30.0" />
@@ -76,15 +75,21 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="40.0" prefWidth="436.0">
                <children>
-                  <Button fx:id="cancel" mnemonicParsing="false" onAction="#cancel" prefHeight="26.0" prefWidth="140.0" text="Cancel">
+                  <Button fx:id="cancel" mnemonicParsing="false" onAction="#cancel" prefHeight="26.0" prefWidth="140.0" style="-fx-background-color: white; -fx-border-color: #36a9a9; -fx-border-radius: 7; -fx-background-radius: 7; -fx-border-width: 3;" text="Cancel" textFill="#36a9a9">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
                   </Button>
-                  <Button fx:id="setpassword" mnemonicParsing="false" onAction="#setPassword" prefHeight="26.0" prefWidth="140.0" text="Set password">
+                  <Button fx:id="setpassword" mnemonicParsing="false" onAction="#setPassword" prefHeight="26.0" prefWidth="140.0" style="-fx-background-color: white; -fx-background-radius: 7; -fx-border-radius: 7; -fx-border-width: 3; -fx-border-color: #36a9a9;" text="Set password" textFill="#36a9a9">
                      <HBox.margin>
                         <Insets left="40.0" />
                      </HBox.margin>
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
                   </Button>
                </children>
                <VBox.margin>

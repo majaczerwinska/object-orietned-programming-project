@@ -237,6 +237,7 @@ public class ServerSelectCtrl {
      */
     public void enterServer(){
         if (!verifyServerConnection()) return;
+        server.addPublicBoard();
         mainCtrl.showSelect();
     }
 
@@ -283,6 +284,7 @@ public class ServerSelectCtrl {
      */
     public void enterAdminPage() {
         if (!verifyServerConnection()) return;
+        server.addPublicBoard();
         mainCtrl.showAdminPasswordEnter(serverAddress);
     }
 

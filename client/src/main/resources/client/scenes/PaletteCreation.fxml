@@ -8,11 +8,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="218.0" prefWidth="602.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.PaletteCreationCtrl">
    <children>
-      <VBox prefHeight="218.0" prefWidth="602.0">
+      <VBox prefHeight="218.0" prefWidth="602.0" style="-fx-background-color: white;">
          <children>
             <HBox prefHeight="50.0" prefWidth="577.0">
                <children>
@@ -21,7 +21,7 @@
                         <Insets right="24.0" />
                      </padding>
                   </Label>
-                  <TextField fx:id="name" prefHeight="25.0" prefWidth="189.0" />
+                  <TextField fx:id="name" prefHeight="25.0" prefWidth="189.0" style="-fx-background-color: white; -fx-background-radius: 7; -fx-border-radius: 7; -fx-border-color: black;" />
                </children>
             </HBox>
             <Label fx:id="nameExists" text="You already created a palette with this name for this board. Choose a different name." textFill="#676060">
@@ -36,7 +36,7 @@
                         <Insets right="5.0" />
                      </padding>
                   </Label>
-                  <ColorPicker fx:id="background" />
+                  <ColorPicker fx:id="background" style="-fx-background-color: white; -fx-background-radius: 7; -fx-border-radius: 7; -fx-border-color: black;" />
                </children>
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
@@ -46,13 +46,19 @@
                         <Insets right="46.0" />
                      </padding>
                   </Label>
-                  <ColorPicker fx:id="font" />
+                  <ColorPicker fx:id="font" style="-fx-background-color: white; -fx-background-radius: 7; -fx-border-color: black; -fx-border-radius: 7;" />
                </children>
             </HBox>
             <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
-                  <Button mnemonicParsing="false" onMouseClicked="#create" text="Create Palette" />
-                  <Button mnemonicParsing="false" onMouseClicked="#cancel" text="Cancel" />
+                  <Button mnemonicParsing="false" onMouseClicked="#create" style="-fx-background-color: white; -fx-background-radius: 7; -fx-border-radius: 7; -fx-border-color: #36a9a9; -fx-border-width: 3;" text="Create Palette" textFill="#36a9a9">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Button>
+                  <Button mnemonicParsing="false" onMouseClicked="#cancel" style="-fx-background-color: white; -fx-background-radius: 7; -fx-border-radius: 7; -fx-border-width: 3; -fx-border-color: #36a9a9;" text="Cancel" textFill="#36a9a9">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Button>
                </children>
                <padding>
                   <Insets right="10.0" />

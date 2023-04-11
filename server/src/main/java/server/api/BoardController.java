@@ -50,6 +50,21 @@ public class BoardController {
         return ResponseEntity.ok(saved);
     }
 
+    /**
+     *Adds the public board to the database if it doesn't already exists
+     * @return - a response entity
+     */
+    @GetMapping("/publicBoard")
+    public ResponseEntity<Board> addPublicBoard() {
+        if (!abs.existsById(1)) {
+            abs.addPublicBoard();
+        } else {
+            System.out.println("Public board already exists");
+        }
+        return ResponseEntity.ok().build();
+
+    }
+
 //    /**
 //     *deletes a board from the database
 //     * @param id - the id of the board to be deleted
