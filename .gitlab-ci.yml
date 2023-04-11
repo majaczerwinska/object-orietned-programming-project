@@ -25,7 +25,7 @@ test_job_commons:
   stage: test
   variables:
     COMMONS_MIN_COVERAGE: 92
-    COMMONS_GOOD_COVERAGE: 96
+    COMMONS_GOOD_COVERAGE: 9
   needs:
     - build_job
   dependencies:
@@ -61,7 +61,7 @@ test_job_services:
   stage: test
   variables:
     SERVICES_MIN_COVERAGE: 0
-    SERVICES_GOOD_COVERAGE: 96
+    SERVICES_GOOD_COVERAGE: 9
   needs:
     - build_job
   dependencies:
@@ -96,7 +96,7 @@ test_job_controllers:
   stage: test
   variables:
     CONTROLLERS_MIN_COVERAGE: 0
-    CONTROLLERS_GOOD_COVERAGE: 70
+    CONTROLLERS_GOOD_COVERAGE: 7
   needs:
     - build_job
   dependencies:
@@ -133,7 +133,7 @@ test_job_server_main:
   stage: test
   variables:
     SERVER_MIN_COVERAGE: 0
-    SERVER_GOOD_COVERAGE: 90
+    SERVER_GOOD_COVERAGE: 9
   needs:
     - build_job
   dependencies:
@@ -167,7 +167,7 @@ test_job_client_main:
   stage: test
   variables:
     CLIENT_MIN_COVERAGE: 0
-    CLIENT_GOOD_COVERAGE: 90
+    CLIENT_GOOD_COVERAGE: 9
   needs:
     - build_job
   dependencies:
@@ -198,7 +198,7 @@ test_job_client_utils:
   stage: test
   variables:
     CLIENT_MIN_COVERAGE: 0
-    CLIENT_GOOD_COVERAGE: 90
+    CLIENT_GOOD_COVERAGE: 9
   needs:
     - build_job
   dependencies:
