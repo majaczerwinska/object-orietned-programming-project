@@ -50,7 +50,7 @@ public class BoardController {
     }
 
     /**
-     *Adds a board to the database
+     *Adds the public board to the database if it doesn't already exists
      * @return - a response entity
      */
     @GetMapping("/publicBoard")

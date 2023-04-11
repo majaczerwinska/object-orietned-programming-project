@@ -51,7 +51,7 @@ public class BoardService {
     }
 
     /**
-     * save a board to the database
+     * save the public board to the database
      * @return the board
      */
     public Board addPublicBoard(){
