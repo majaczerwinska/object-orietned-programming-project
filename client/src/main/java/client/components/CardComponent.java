@@ -192,7 +192,8 @@ public class CardComponent extends HBox implements Initializable {
             boardOverviewCtrl.highlightedCardComponent= this;
 
             mainCtrl.appendStyle(cardFrame, "-fx-effect: dropshadow(gaussian, "+
-                    mainCtrl.getRgbaColor(mainCtrl.getShadowColor(MainCtrl.colorParseToFXColor(boardOverviewCtrl.listsBackgroundColor)))
+                    mainCtrl.getRgbaColor(mainCtrl.getShadowColor(
+                            MainCtrl.colorParseToFXColor(boardOverviewCtrl.listsBackgroundColor)))
                     +", 9, 0, 0, 3);");
             setColouredBorder();
         });

@@ -472,6 +472,7 @@ public class BoardOverviewCtrl {
     //////////////////////    Keyboard shortcuts     //////////////////////
 
 
+    @SuppressWarnings({"checkstyle:CyclomaticComplexity"})
     private void initialiseBoardShortcuts() {
         listViewTags.getScene().setOnKeyPressed(event -> {
             System.out.println("Key event in board listener: "+ event);
@@ -479,7 +480,8 @@ public class BoardOverviewCtrl {
             switch (event.getCode()) {
                 case E:
                     if (highlightedCardComponent != null)
-                        mainCtrl.showCard(highlightedCardComponent.cardID, highlightedCardComponent.cardListID , boardID, isLocked);
+                        mainCtrl.showCard(highlightedCardComponent.cardID,
+                                highlightedCardComponent.cardListID , boardID, isLocked);
                     break;
                 case DELETE:
                     if (highlightedCardComponent != null) highlightedCardComponent.deleteCard();
@@ -505,7 +507,6 @@ public class BoardOverviewCtrl {
                     }
                 case UP:
                 case KP_UP:
-                case CHANNEL_UP:
                 case PAGE_UP:
                     System.out.println("\n\n\nmoving highlight up\n\n\n");
                     if (highlightedCardComponent != null) swapHighlight(true, false);
@@ -520,7 +521,6 @@ public class BoardOverviewCtrl {
                 case DOWN:
                 case KP_DOWN:
                 case PAGE_DOWN:
-                case CHANNEL_DOWN:
                     if (highlightedCardComponent != null) swapHighlight(false, false);
                     break;
             }
