@@ -447,6 +447,11 @@ public class BoardOverviewCtrl {
         });
     }
 
+
+    ///////////////////////////////////////////////////////////////////////
+    //////////////////////    Keyboard shortcuts     //////////////////////
+
+
     private void shortcut() {
         listViewTags.getScene().setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.E) {
@@ -595,7 +600,6 @@ public class BoardOverviewCtrl {
             isCreatingCard = true;
             // when the user presses the enter button
             Card createdCardElement = createCard(listID);
-
         }
     }
 
