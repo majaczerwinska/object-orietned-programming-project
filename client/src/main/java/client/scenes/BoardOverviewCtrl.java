@@ -140,6 +140,7 @@ public class BoardOverviewCtrl {
                 if (update.contains("refreshnamecolor")) {
                     setBoardName();
                     setColor();
+                    setLock();
                 } else if(update.contains("Added card")) {
                     String[] words = update.split(" ");
                     Card c = server.getCard(Integer.parseInt(words[2]));
