@@ -82,6 +82,13 @@ public class TagManagerCtrl {
     }
 
     /**
+     * Disconnects the stomp session
+     */
+    public void disconnectStompSession(){
+        websocketClient.disconnect();
+    }
+
+    /**
      * Subscribes to endpoint that listens to all updates of tags from specific board
      */
     public void subscribe(){

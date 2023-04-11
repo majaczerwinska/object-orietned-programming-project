@@ -70,6 +70,13 @@ public class CustomizationCtrl {
         System.out.println("StompSession created in customization");
     }
 
+    /**
+     * Disconnects the stomp session
+     */
+    public void disconnectStompSession(){
+        websocketClient.disconnect();
+    }
+
 
     /**
      * takes you back to the board overview

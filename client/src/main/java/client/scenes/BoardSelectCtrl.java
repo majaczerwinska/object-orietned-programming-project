@@ -132,6 +132,7 @@ public class BoardSelectCtrl {
      * takes you back to the landing page
      */
     public void back() {
+        mainCtrl.disconnectStompSessions();
         mainCtrl.showServerSelect();
     }
 
@@ -161,7 +162,6 @@ public class BoardSelectCtrl {
         System.out.println(selection);
         mainCtrl.showBoardOverview(selection.id);
         mainCtrl.subscribeToBoard(selection.id);
-        mainCtrl.subscribeToTagsFromBoard(selection.id);
     }
 
     /**

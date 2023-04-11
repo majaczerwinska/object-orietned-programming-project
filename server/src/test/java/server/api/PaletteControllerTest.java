@@ -31,6 +31,9 @@ public class PaletteControllerTest {
 
     private PaletteController pat;
 
+    @Autowired
+    private SimpMessagingTemplate msgs;
+
 
 
     @BeforeEach
@@ -38,7 +41,7 @@ public class PaletteControllerTest {
         repo = new PaletteRepositoryTest();
         br = new BoardRepositoryTest();
         pas = new PaletteService(repo, br);
-        pat = new PaletteController(pas);
+        pat = new PaletteController(pas, msgs);
     }
 
     @Test

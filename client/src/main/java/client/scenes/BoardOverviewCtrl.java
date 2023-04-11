@@ -123,16 +123,24 @@ public class BoardOverviewCtrl {
     }
 
     /**
+     * Disconnects the stomp session
+     */
+    public void disconnectStompSession(){
+        websocketClient.disconnect();
+    }
+
+    /**
      * Subscribes to endpoint that listens to all updates of cards and lists from a specific board
      * @param boardID the boarId from the board we want updates from
      */
-    public void subscribeToBoard(int boardID) {
+    public void subscribeToBoardUpdates(int boardID) {
         websocketClient.registerForMessages("/topic/boards/" + boardID, String.class, update -> {
             Platform.runLater(() -> {
                 System.out.println("payload: " + update);
                 if (update.contains("refreshnamecolor")) {
                     setBoardName();
                     setColor();
+                    setLock();
                 } else if(update.contains("Added card")) {
                     String[] words = update.split(" ");
                     Card c = server.getCard(Integer.parseInt(words[2]));
@@ -152,8 +160,27 @@ public class BoardOverviewCtrl {
      */
     public void subscribeToTagsFromBoard(int boardID){
         websocketClient.registerForMessages("/topic/tags/"+boardID, String.class, update -> {
-                    System.out.println("payload: "+ update);
+                    System.out.println("payload in board: "+ update);
                     refreshListViewTags();
+        });
+    }
+
+    /**
+     * Subscribes to endpoint that listens to the deletion of this board
+     *
+     * @param boardID the boarId from the board we want to listen for deletion
+     */
+    public void subscribeToListenForDeletes(int boardID){
+        websocketClient.registerForMessages("/topic/boards/delete/"+boardID, String.class, update -> {
+            System.out.println("payload in board: "+ update);
+                Platform.runLater(() -> {
+                    mainCtrl.showSelect();
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Board deleted");
+                    alert.setHeaderText("This board got deleted!");
+                    alert.setContentText("You were viewing a board that someone just deleted!");
+                    alert.show();
+                });
         });
     }
 
@@ -263,6 +290,7 @@ public class BoardOverviewCtrl {
         mainCtrl.showSelect();
         websocketClient.unsubscribe("/topic/boards/"+boardID);
         websocketClient.unsubscribe("/topic/tags/"+boardID);
+        websocketClient.unsubscribe("/topic/boards/delete/"+boardID);
     }
 
 
@@ -441,7 +469,8 @@ public class BoardOverviewCtrl {
         listViewTags.getScene().setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.E) {
                 if (highlightedCardComponent != null)
-                    mainCtrl.showCard(highlightedCardComponent.cardID, boardID,isLocked);
+                    mainCtrl.showCard(highlightedCardComponent.cardID,
+                            highlightedCardComponent.cardListID, boardID,isLocked);
             } else if (event.getCode() == KeyCode.DELETE) {
                 if (highlightedCardComponent != null) highlightedCardComponent.deleteCard();
             } else if (event.getCode() == KeyCode.T) {
@@ -552,6 +581,11 @@ public class BoardOverviewCtrl {
      */
     public void clickLockInUnlockedBoard(){
         if(boardID==1){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("This is the public board");
+            alert.setHeaderText("Board cannot be locked!");
+            alert.setContentText("Since this is the public board, it cannot be locked");
+            alert.show();
             return;
         }
         if(server.getBoard(boardID).getPassword().equals("")){

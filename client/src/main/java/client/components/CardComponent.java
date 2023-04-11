@@ -40,7 +40,7 @@ public class CardComponent extends HBox implements Initializable {
     public int cardID;
     public int boardID;
 
-    private int cardListID;
+    public int cardListID;
 
     public Card self;
 
@@ -48,7 +48,7 @@ public class CardComponent extends HBox implements Initializable {
 
     private BoardOverviewCtrl boardOverviewCtrl;
 
-    String originalValue = "title..";
+    String originalValue = "Untitled Card";
 
     @FXML
     public TextField tfTitle;
@@ -354,7 +354,7 @@ public class CardComponent extends HBox implements Initializable {
         }
         System.out.println("joining card #" + cardID);
         System.out.println(self);
-        mainCtrl.showCard(cardID, boardID, isLocked);
+        mainCtrl.showCard(cardID, cardListID, boardID, isLocked);
     }
 
     /**

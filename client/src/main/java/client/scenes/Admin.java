@@ -2,7 +2,9 @@ package client.scenes;
 
 import client.services.AdminService;
 import client.utils.ServerUtils;
+import client.utils.WebsocketClient;
 import commons.Board;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -22,6 +24,7 @@ public class Admin {
 
     private final AdminService service;
 
+    private final WebsocketClient websocketClient;
 
     private String token;
 
@@ -94,12 +97,40 @@ public class Admin {
      * @param serverUtils injected server instance
      * @param mainCtrl injected mainctrl instance
      * @param adminService the service for generating boards
+     * @param websocketClient the websocket client
      */
     @Inject
-    public Admin(ServerUtils serverUtils, MainCtrl mainCtrl, AdminService adminService) {
+    public Admin(ServerUtils serverUtils, MainCtrl mainCtrl, AdminService adminService,
+                 WebsocketClient websocketClient) {
         this.server = serverUtils;
         this.mainCtrl = mainCtrl;
         this.service = adminService;
+        this.websocketClient = websocketClient;
+    }
+
+    /**
+     * Creates stomp session
+     */
+    public void setStompSession(){
+        websocketClient.setStompSession(ip);
+        System.out.println("StompSession created in Admin");
+    }
+
+    /**
+     * Disconnects the stomp session
+     */
+    public void disconnectStompSession(){
+        websocketClient.disconnect();
+    }
+
+    /**
+     * Subscribes to endpoint that listens to all updates from all boards and refreshes when receives message
+     */
+    public void subscribeToAllBoards(){
+        websocketClient.registerForMessages("/topic/admin/*", String.class, update -> {
+            System.out.println("payload in Admin: "+ update);
+            Platform.runLater(() -> refresh(ip));
+        });
     }
 
 
@@ -206,6 +237,8 @@ public class Admin {
      */
     public void goBack() {
         mainCtrl.showServerSelect();
+        websocketClient.unsubscribe("/topic/boards/*");
+        disconnectStompSession();
     }
 
 
@@ -232,7 +265,8 @@ public class Admin {
             }
             mainCtrl.showBoardOverview(b.getId(), true);
             mainCtrl.subscribeToBoard(b.getId());
-            mainCtrl.subscribeToTagsFromBoard(b.getId());
+            websocketClient.unsubscribe("/topic/boards/*");
+            disconnectStompSession();
         } catch (Exception e) {
             refresh(this.ip);
             saveText.setText("Could not join: "+e.getMessage());
