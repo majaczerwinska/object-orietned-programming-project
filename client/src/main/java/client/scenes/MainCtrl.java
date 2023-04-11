@@ -574,6 +574,7 @@ public class MainCtrl {
         removeStyle(node, style);
         String existingStyle = node.getStyle();
         node.setStyle(existingStyle + style);
+//        System.out.println("\033[48;90mSetting style for "+node+" to "+style+"\033[0m");
     }
 
 
@@ -584,9 +585,9 @@ public class MainCtrl {
      */
     public void removeStyle(Node node, String style) {
         String existingStyle = node.getStyle();
-        System.out.println("\033[96;40m Removing style from element="+node+
-                "\n'"+style+
-                "'\n'"+existingStyle+"'");
+//        System.out.println("\033[96;40m Removing style from element="+node+
+//                "\n'"+style+
+//                "'\n'"+existingStyle+"'");
 
         if (style.contains(":")) {
             node.setStyle(existingStyle.replaceAll("(?i)" + style + "\\s*;?", ""));
@@ -594,8 +595,47 @@ public class MainCtrl {
             String regex = "(?i)"+style+":[^;]*;?";
             node.setStyle(existingStyle.replaceAll(regex, ""));
         }
-        System.out.println("'"+node.getStyle()+"'\033[0m\n");
+//        System.out.println("'"+node.getStyle()+"'\033[0m\n");
     }
+
+
+    /**
+     * Hacky solution to convert a javafx color to a string that can be used
+     * with appendStyle method. Opacity attribute is specifically tailored
+     * for black and white shadows, this method is not to be used elsewhere.
+     * use with caution if you do
+     * @param color color object
+     * @return string rgba(r, g, b, a)
+     */
+    public String getRgbaColor(Color color) {
+        int r = (int) (color.getRed() * 255);
+        int g = (int) (color.getGreen() * 255);
+        int b = (int) (color.getBlue() * 255);
+        int a = (int) (color.getOpacity() * 255);
+//        return "rgba(" + r + ", " + g + ", " + b + ", " + a + ")";
+        return "rgba(" + r + ", " + g + ", " + b + ", "+ ((r>200)?0.9:0.3) +")";
+    }
+
+
+    /**
+     * get the appropriate shadow colour to contrast a certain background color
+     * use standard formula for coolour luminance
+     * @param backgroundColor javafx color instance
+     * @return new javafx colour instance for contrasting colour
+     */
+    public Color getShadowColor(Color backgroundColor) {
+        double luminance = 0.2126 * backgroundColor.getRed() + 0.7152 * backgroundColor.getGreen()
+                + 0.0722 * backgroundColor.getBlue();
+        if (luminance > 0.5) {
+            // background color is light -> use dark shadow
+            return Color.rgb(0, 0, 0, 0.3);
+        } else {
+            // background color is dark -> use light shadow
+            return Color.rgb(255, 255, 255, 0.3);
+        }
+    }
+
+
 
     /**
      * show board overview util function, prevent duplicate code
