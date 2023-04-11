@@ -237,7 +237,7 @@ public class Admin {
      */
     public void goBack() {
         mainCtrl.showServerSelect();
-        websocketClient.unsubscribe("/topic/boards/*");
+        websocketClient.unsubscribe("/topic/admin/*");
         disconnectStompSession();
     }
 
@@ -265,7 +265,7 @@ public class Admin {
             }
             mainCtrl.showBoardOverview(b.getId(), true);
             mainCtrl.subscribeToBoard(b.getId());
-            websocketClient.unsubscribe("/topic/boards/*");
+            websocketClient.unsubscribe("/topic/admin/*");
             disconnectStompSession();
         } catch (Exception e) {
             refresh(this.ip);
