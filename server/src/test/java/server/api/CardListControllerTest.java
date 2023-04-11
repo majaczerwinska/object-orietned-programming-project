@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.converter.StringMessageConverter;
@@ -16,6 +17,7 @@ import org.springframework.messaging.simp.stomp.StompFrameHandler;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 import server.database.CardRepositoryTest;
@@ -29,8 +31,7 @@ import server.service.CardService;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.*;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -59,6 +60,43 @@ public class CardListControllerTest {
         con = new CardListController(ser, msgs);
         cr = new CardRepositoryTest();
         cardService = new CardService(cr, repo);
+    }
+
+    @Test
+    public void testMessageClient() throws Exception {
+        StandardWebSocketClient client = new StandardWebSocketClient();
+        WebSocketStompClient stompClient = new WebSocketStompClient(client);
+        stompClient.setMessageConverter(new StringMessageConverter());
+        String wsUrl = "ws://localhost:" + port + "/websocket";
+        WebSocketHttpHeaders headers = new WebSocketHttpHeaders();
+        System.out.println(stompClient);
+        this.session = stompClient
+                .connect(wsUrl, headers, new StompSessionHandlerAdapter() {})
+                .get(1, TimeUnit.SECONDS);
+        int boardId = 123;
+        String expectedMessage = "CardList added on board#" + boardId;
+
+        session.send("/app/update/list/"+boardId, "Done updating card in component");
+//        con.messageClient(boardID);
+
+        final BlockingQueue<String> messages = new LinkedBlockingQueue<>();
+
+        session.subscribe("/topic/boards/" + boardId, new StompFrameHandler() {
+            @Override
+            public Type getPayloadType(StompHeaders headers) {
+                return String.class;
+            }
+
+            @Override
+            public void handleFrame(StompHeaders headers, Object payload) {
+                messages.add((String) payload);
+            }
+        });
+
+        String messageBody = messages.poll(5, TimeUnit.SECONDS);
+
+        assertEquals(expectedMessage, messageBody);
+        session.disconnect();
     }
 
     @Test
