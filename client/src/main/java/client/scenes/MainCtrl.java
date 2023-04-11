@@ -687,6 +687,8 @@ public class MainCtrl {
         cardCtrl.setStompSession();
         listCreationCtrl.setStompSession();
         customizationCtrl.setStompSession();
+        adminCtrl.setStompSession();
+
     }
 
     /**

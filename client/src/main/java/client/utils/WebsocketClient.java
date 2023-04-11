@@ -23,6 +23,7 @@ public class WebsocketClient {
      * @return sessionId
      */
     public String setStompSession(String httpUrl) {
+        if (httpUrl==null) return null;
         String ip = httpUrl.replace("http://", "").replaceAll("(/)", "");
         String wsUrl = "ws://" + ip + "/websocket";
         this.session = connect(wsUrl);
@@ -98,6 +99,7 @@ public class WebsocketClient {
      * Disconnects session
      */
     public void disconnect(){
+        if (session==null) return;
         session.disconnect();
     }
 }
